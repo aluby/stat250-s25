@@ -1,0 +1,6 @@
+---
+title: "Stat250-S25"
+format: html
+---
+
+Landing page for Stat250 course materials in Spring 2025

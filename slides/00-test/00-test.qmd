@@ -1,0 +1,138 @@
+---
+title: "Test slides"
+subtitle: "Day 00"
+title-slide-attributes:
+  data-background-color: "#440154"
+  data-slide-number: none
+author: "Prof Amanda Luby"
+format: 
+  revealjs:
+    incremental: true
+---
+
+```{r setup}
+#| include: false
+
+library(tidyverse)
+
+knitr::opts_chunk$set(echo = TRUE,
+                  message = FALSE,
+                  warning = FALSE)
+
+slides_theme = theme_minimal(
+  base_family = "Linux Libertine"
+) +
+  theme(plot.background = element_rect(fill = "#f0f1eb", colour = NA))
+  
+
+theme_set(slides_theme)
+```
+
+## R Code
+
+```{r}
+palmerpenguins::penguins %>%
+  ggplot(aes(x = flipper_length_mm)) +
+  geom_histogram(col = "white")
+```
+
+
+## Plan for today
+
+1.  Syllabus
+2.  Context for the class
+3.  Course expectations
+
+## A bit about me
+
+
+# Syllabus
+
+## Course description
+
+This course is an introduction to the mathematical theory of frequentist and Bayesian statistical inference. Topics include parameter estimation, confidence intervals and hypothesis testing, linear models, and Bayesian inference.
+
+Students who analyze data, or who aspire to develop new methods for analyzing data, should be well-grounded in mathematical statistics. 
+
+## Course Objectives 
+
+By the end of this course, you should be able to: 
+
+  - Derive estimators for parameters using maximum likelihood, the method of moments, and Bayesian techniques 
+  - Evaluate the performance of estimators and describe their strengths and weaknesses 
+  - Demonstrate a sophisticated understanding of the mathematics behind hypothesis tests, confidence intervals, and linear models   
+  - Use the statistical package R to implement basic simulations of estimation scenarios
+
+## Textbook:
+
+
+
+## Computing: {.scrollable}
+
+
+
+## Assignments
+
+
+## Regrade request policy
+
+Grading is often a tedious task, and the grading team will sometimes make mistakes. I am always happy to fix these mistakes, and gradescope makes it easy to do so. However, it takes time to read through these requests and I've noticed an increase in unwarranted regrade requests in recent years. This semester, I am instituting an "NFL Coaches Challenge"-style regrade request rule. Every student will start the semester with 2 regrade requests available to them. If you submit a regrade request and I agree with you, you get it back. If you submit a regrade request for something that was not a grading mistake, you lose that request.
+
+## Exams
+
+
+## Final Exam 
+
+## Course project
+
+## Final grades
+
+
+## Advice from past students: {.smaller}
+
+-   Start the problem sets early and go to office hours!
+-   Work with other people in the class, collaboration is key
+-   Be willing to ask lots of questions and don't be afraid to ask for help!
+-   I would advise for them to attend office hours and the stat clinic since early on to get help and not be worrying about assignments at the last minute.
+-   I would advise future students to reach out and ask questions as soon if they have any confusion. Understanding statistical concepts and working with R can be frustrating at times, but people are here to help you along the way!
+-   Don't let work snowball! Try to get help early and often and an imperfect problem set is better than no problem set.
+-   lots of R here! Organization is key, and you'll do well as long as you start homeworks early, communicate with the professor and with your fellow classmates. There's a good support system.
+
+## The "Genius Myth" {style="font-size: 90%;"}
+
+It's sometimes easy to buy into the "genius myth" when it comes to math/stat courses: that you need to be a "math person" and have some innate mathematical ability in order to do well or become a statistics major. **This could not be further from the truth!** The best statisticians don't necessarily have the "best" math or programming background, but are people that are able to formulate interesting questions and use math and programming to rigorously answer those questions. Many of the best statisticians I know became statisticians because they were initially interested in something else (biology, public health, psychology, neuroscience, physics, etc.) and realized that being able to answer important questions with data was not only valuable but fun and interesting. Being able to perform interesting statistical analyses is a skill that is learned, not an innate ability, and working hard at developing that skill is the point of this course.
+
+## Academic Integrity {style="font-size: 80%;"}
+
+
+## Diversity & Inclusion
+
+We all come to class with different backgrounds and experiences, and this diversity makes our class environment richer. We value diversity and inclusion, and are committed to a climate of mutual respect and full participation in and out of the classroom. This class strives to be a learning environment that is usable, equitable, inclusive and welcoming, regardless of race, ethnicity, religion, gender and gender identities, sexual orientation, ability, socioeconomic background, and nationality. If you anticipate or experience any barriers to learning, please discuss your concerns with me.
+
+## Accomodations {style="font-size: 90%;"}
+
+
+## Stat Lab
+
+## Title IX
+
+Please be aware that all faculty are "responsible employees", which means that if you tell me about a situation involving sexual harassment, sexual assault, dating violence, domestic violence, or stalking, I must share that information with the Title IX Coordinator. Although I have to make this notification, you will control how your case will be handled, including whether or not you wish to meet with the Title IX coordinator or pursue a formal complaint.
+
+
+## Take care of yourself
+
+Do your best to maintain a healthy lifestyle this semester by wearing a mask if you don't feel well, eating a vegetable every day, exercising, avoiding excessive drug and alcohol use, getting enough sleep, and taking some time to relax. Your mental health is more important than your grade in this course. There are many helpful resources available on campus and an important part of the college experience is learning how to ask for help. If you are experiencing mental health symptoms as a result of coursework, please speak with me so we can address the problem together.
+
+# Context for the class
+
+## Prerequisites
+
+
+## History
+
+> Statistics seems to be a difficult subject for mathematicians, perhaps because its elusive and wide-ranging character mitigates against the traditional theorem-proof method of presentation. It may come as some comfort then that statistics is also a difficult subject for statisticians 
+
+> *Controversies in the Foundations of Statistics*, Bradley Efron 1978
+
+## Fisher vs Neyman-Pearson
+

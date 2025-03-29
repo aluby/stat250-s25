@@ -1,0 +1,120 @@
+/*-- scss:defaults --*/
+
+// fonts
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Source+Code+Pro&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville&display=swap');
+
+$font-family-sans-serif: "Libertine", "Palatino Linotype", "Book Antiqua", Libertine, Palatino,
+  FreeSerif, serif !default;
+$font-family-serif: "Libertine", "Palatino Linotype", "Book Antiqua", Libertine, Palatino,
+  FreeSerif, serif !default;
+$font-family-monospace: "Source Code Pro", monospace;
+$presentation-heading-color: #440154; 
+$link-color: #440154;
+$code-color: #440154;
+$code-block-font-size: 0.7em;
+$presentation-h2-font-size: 1.4em !default;
+$presentation-font-size-root: 36px !default;
+$presentation-title-slide-text-align: left;
+$presentation-heading-font: $font-family-serif !default;
+
+$body-bg: #f0f1eb !default;
+
+/*-- scss:rules --*/
+
+details>summary {
+  font-size: 0.75em;
+}
+
+#title-slide .subtitle {
+  color: #f0f1eb;
+  font-weight: bold;
+  text-align: left;
+}
+
+#title-slide .title {
+  text-align: left;
+  color: #f0f1eb;
+  font-family: serif;
+}
+
+#title-slide .author {
+  text-align: left;
+  color: #f0f1eb;
+}
+
+#title-slide .institute {
+  text-align: left;
+  padding-bottom: 200px;
+  color: #f0f1eb;
+}
+
+.small {
+  font-size: 0.75em;
+}
+
+.smallest {
+  font-size: 0.5em;
+}
+
+.large {
+  font-size: 1.5em;
+}
+
+.medium {
+  font-size: 0.9em;
+}
+
+.center-align {
+  text-align: center;
+}
+
+.reveal .hand {
+  font-family: 'Gochi Hand', cursive;
+  font-size: 1.2em
+}
+
+.reveal .slide .task {
+  padding-right: 10px;
+  padding-left: 10px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  margin-bottom: 6px;
+  margin-top: 6px;
+  border-left: solid 5px #F1DE67;
+  background-color: #F1DE6750;
+}
+
+.reveal .slide .popup {
+  padding-right: 20px;
+  padding-left: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-bottom: 6px;
+  margin-top: 6px;
+  border-left: solid 5px #DCDCDC;
+  background-color: #000000;
+  color: #DCDCDC;
+  font-family: Monospace;
+}
+
+.maize {
+    background-color: #F3B61D !important;
+}
+
+.reveal .quarto-title-block .quarto-title-authors .quarto-title-author {
+  background-color: transparent;
+}
+
+.reveal .footer a {
+  color: #1B365D;
+  background-color: transparent;
+}
+
+.reveal div.sourceCode {
+  border-radius: 0px;
+  margin-bottom: 10px !important;
+}
+

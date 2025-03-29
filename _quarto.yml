@@ -1,0 +1,21 @@
+project:
+  type: website
+  resources: 
+    - "data/"
+
+website:
+  page-navigation: true
+  title: "Stat 250"
+  description: "Homepage for Stat 250 - Intro to Statistical Inference at Carleton College, Spring 2025."
+
+  repo-url: https://github.com/aluby/stat250-s25
+    
+format:
+  html:
+    theme: solar
+    linkcolor: "#440154" 
+
+execute:
+  freeze: auto
+
+editor: source

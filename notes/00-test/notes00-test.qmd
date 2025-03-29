@@ -1,0 +1,82 @@
+---
+title: "00: Test"
+subtitle: "Reading"
+date: "Stat250-S25"
+author: "Prof Amanda Luby"
+callout-appearance: minimal
+knitr:
+    opts_chunk: 
+      dev: "ragg_png"
+      echo: false
+      warning: false
+      message: false
+format:
+  pdf:
+    include-in-header: 
+       - "../preamble.tex"
+    toc: false
+    number-sections: true
+    colorlinks: true
+    geometry:
+      - top=1in
+      - left=1in
+      - right=1in
+      - bottom=1in
+      - heightrounded
+    fontfamily: libertine
+    fontsize: 11pt
+---
+
+
+```{r, echo = FALSE}
+library(tidyverse)
+```
+
+The first topic we're going to cover in this class is *estimation*. That is, how to use observed sample data to estimate population parameters. A health-care study, for example, might want to estimate the proportion of people who have private health insurance and the mean annual cost for those who have it. Some studies assume a particular *parametric* family of probability distributions for a response variable and then estimate the parameters of that distribution in order to fit the distribution to the data.
+
+This set of notes covers the basics of estimating a parameter by constructing an *estimator*, that yields a single number, called a *point estimate*.
+
+**Motivating Example:** The 2018 General Social Survey asked "Do you believe there is a life after death?" For the 2,123 people interviewed, one point estimate for the *population* proportion of Americans who would respond yes is the sample proportion, which was 0.81.
+
+\vspace{1in}
+
+# Definitions and Notation
+
+Before we get started, let's re-introduce ourselves to some key definitions from probability, add some new definitions, and introduce the notation that we'll use.
+
+::: callout-note
+## Parameter
+
+\vspace{.5in}
+
+:::
+
+::: callout-note
+## Estimator
+
+\vspace{.5in}
+:::
+
+::: callout-note
+## Estimate
+
+\vspace{.5in}
+:::
+
+::: callout-note
+## Probability Density Function (PDF)
+
+\vspace{.5in}
+:::
+
+::: callout-note
+## Probability Mass Function (PMF)
+
+\vspace{.5in}
+:::
+
+::: callout-note
+## Likelihood function
+
+\vspace{.5in}
+:::
