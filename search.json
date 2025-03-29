@@ -1,0 +1,177 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Stat250-S25",
+    "section": "",
+    "text": "Landing page for Stat250 course materials in Spring 2025"
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#r-code",
+    "href": "slides/00-test/00-test.html#r-code",
+    "title": "Test slides",
+    "section": "R Code",
+    "text": "R Code\n\npalmerpenguins::penguins %&gt;%\n  ggplot(aes(x = flipper_length_mm)) +\n  geom_histogram(col = \"white\")"
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#plan-for-today",
+    "href": "slides/00-test/00-test.html#plan-for-today",
+    "title": "Test slides",
+    "section": "Plan for today",
+    "text": "Plan for today\n\nSyllabus\nContext for the class\nCourse expectations"
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#a-bit-about-me",
+    "href": "slides/00-test/00-test.html#a-bit-about-me",
+    "title": "Test slides",
+    "section": "A bit about me",
+    "text": "A bit about me"
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#course-description",
+    "href": "slides/00-test/00-test.html#course-description",
+    "title": "Test slides",
+    "section": "Course description",
+    "text": "Course description\nThis course is an introduction to the mathematical theory of frequentist and Bayesian statistical inference. Topics include parameter estimation, confidence intervals and hypothesis testing, linear models, and Bayesian inference.\nStudents who analyze data, or who aspire to develop new methods for analyzing data, should be well-grounded in mathematical statistics."
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#course-objectives",
+    "href": "slides/00-test/00-test.html#course-objectives",
+    "title": "Test slides",
+    "section": "Course Objectives",
+    "text": "Course Objectives\nBy the end of this course, you should be able to:\n\nDerive estimators for parameters using maximum likelihood, the method of moments, and Bayesian techniques\nEvaluate the performance of estimators and describe their strengths and weaknesses\nDemonstrate a sophisticated understanding of the mathematics behind hypothesis tests, confidence intervals, and linear models\n\nUse the statistical package R to implement basic simulations of estimation scenarios"
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#textbook",
+    "href": "slides/00-test/00-test.html#textbook",
+    "title": "Test slides",
+    "section": "Textbook:",
+    "text": "Textbook:"
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#computing",
+    "href": "slides/00-test/00-test.html#computing",
+    "title": "Test slides",
+    "section": "Computing:",
+    "text": "Computing:"
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#assignments",
+    "href": "slides/00-test/00-test.html#assignments",
+    "title": "Test slides",
+    "section": "Assignments",
+    "text": "Assignments"
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#regrade-request-policy",
+    "href": "slides/00-test/00-test.html#regrade-request-policy",
+    "title": "Test slides",
+    "section": "Regrade request policy",
+    "text": "Regrade request policy\nGrading is often a tedious task, and the grading team will sometimes make mistakes. I am always happy to fix these mistakes, and gradescope makes it easy to do so. However, it takes time to read through these requests and I’ve noticed an increase in unwarranted regrade requests in recent years. This semester, I am instituting an “NFL Coaches Challenge”-style regrade request rule. Every student will start the semester with 2 regrade requests available to them. If you submit a regrade request and I agree with you, you get it back. If you submit a regrade request for something that was not a grading mistake, you lose that request."
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#exams",
+    "href": "slides/00-test/00-test.html#exams",
+    "title": "Test slides",
+    "section": "Exams",
+    "text": "Exams"
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#final-exam",
+    "href": "slides/00-test/00-test.html#final-exam",
+    "title": "Test slides",
+    "section": "Final Exam",
+    "text": "Final Exam"
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#course-project",
+    "href": "slides/00-test/00-test.html#course-project",
+    "title": "Test slides",
+    "section": "Course project",
+    "text": "Course project"
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#final-grades",
+    "href": "slides/00-test/00-test.html#final-grades",
+    "title": "Test slides",
+    "section": "Final grades",
+    "text": "Final grades"
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#advice-from-past-students",
+    "href": "slides/00-test/00-test.html#advice-from-past-students",
+    "title": "Test slides",
+    "section": "Advice from past students:",
+    "text": "Advice from past students:\n\nStart the problem sets early and go to office hours!\nWork with other people in the class, collaboration is key\nBe willing to ask lots of questions and don’t be afraid to ask for help!\nI would advise for them to attend office hours and the stat clinic since early on to get help and not be worrying about assignments at the last minute.\nI would advise future students to reach out and ask questions as soon if they have any confusion. Understanding statistical concepts and working with R can be frustrating at times, but people are here to help you along the way!\nDon’t let work snowball! Try to get help early and often and an imperfect problem set is better than no problem set.\nlots of R here! Organization is key, and you’ll do well as long as you start homeworks early, communicate with the professor and with your fellow classmates. There’s a good support system."
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#the-genius-myth",
+    "href": "slides/00-test/00-test.html#the-genius-myth",
+    "title": "Test slides",
+    "section": "The “Genius Myth”",
+    "text": "The “Genius Myth”\nIt’s sometimes easy to buy into the “genius myth” when it comes to math/stat courses: that you need to be a “math person” and have some innate mathematical ability in order to do well or become a statistics major. This could not be further from the truth! The best statisticians don’t necessarily have the “best” math or programming background, but are people that are able to formulate interesting questions and use math and programming to rigorously answer those questions. Many of the best statisticians I know became statisticians because they were initially interested in something else (biology, public health, psychology, neuroscience, physics, etc.) and realized that being able to answer important questions with data was not only valuable but fun and interesting. Being able to perform interesting statistical analyses is a skill that is learned, not an innate ability, and working hard at developing that skill is the point of this course."
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#academic-integrity",
+    "href": "slides/00-test/00-test.html#academic-integrity",
+    "title": "Test slides",
+    "section": "Academic Integrity",
+    "text": "Academic Integrity"
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#diversity-inclusion",
+    "href": "slides/00-test/00-test.html#diversity-inclusion",
+    "title": "Test slides",
+    "section": "Diversity & Inclusion",
+    "text": "Diversity & Inclusion\nWe all come to class with different backgrounds and experiences, and this diversity makes our class environment richer. We value diversity and inclusion, and are committed to a climate of mutual respect and full participation in and out of the classroom. This class strives to be a learning environment that is usable, equitable, inclusive and welcoming, regardless of race, ethnicity, religion, gender and gender identities, sexual orientation, ability, socioeconomic background, and nationality. If you anticipate or experience any barriers to learning, please discuss your concerns with me."
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#accomodations",
+    "href": "slides/00-test/00-test.html#accomodations",
+    "title": "Test slides",
+    "section": "Accomodations",
+    "text": "Accomodations"
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#stat-lab",
+    "href": "slides/00-test/00-test.html#stat-lab",
+    "title": "Test slides",
+    "section": "Stat Lab",
+    "text": "Stat Lab"
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#title-ix",
+    "href": "slides/00-test/00-test.html#title-ix",
+    "title": "Test slides",
+    "section": "Title IX",
+    "text": "Title IX\nPlease be aware that all faculty are “responsible employees”, which means that if you tell me about a situation involving sexual harassment, sexual assault, dating violence, domestic violence, or stalking, I must share that information with the Title IX Coordinator. Although I have to make this notification, you will control how your case will be handled, including whether or not you wish to meet with the Title IX coordinator or pursue a formal complaint."
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#take-care-of-yourself",
+    "href": "slides/00-test/00-test.html#take-care-of-yourself",
+    "title": "Test slides",
+    "section": "Take care of yourself",
+    "text": "Take care of yourself\nDo your best to maintain a healthy lifestyle this semester by wearing a mask if you don’t feel well, eating a vegetable every day, exercising, avoiding excessive drug and alcohol use, getting enough sleep, and taking some time to relax. Your mental health is more important than your grade in this course. There are many helpful resources available on campus and an important part of the college experience is learning how to ask for help. If you are experiencing mental health symptoms as a result of coursework, please speak with me so we can address the problem together."
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#prerequisites",
+    "href": "slides/00-test/00-test.html#prerequisites",
+    "title": "Test slides",
+    "section": "Prerequisites",
+    "text": "Prerequisites"
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#history",
+    "href": "slides/00-test/00-test.html#history",
+    "title": "Test slides",
+    "section": "History",
+    "text": "History\n\nStatistics seems to be a difficult subject for mathematicians, perhaps because its elusive and wide-ranging character mitigates against the traditional theorem-proof method of presentation. It may come as some comfort then that statistics is also a difficult subject for statisticians\n\n\nControversies in the Foundations of Statistics, Bradley Efron 1978"
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#fisher-vs-neyman-pearson",
+    "href": "slides/00-test/00-test.html#fisher-vs-neyman-pearson",
+    "title": "Test slides",
+    "section": "Fisher vs Neyman-Pearson",
+    "text": "Fisher vs Neyman-Pearson"
+  }
+]
