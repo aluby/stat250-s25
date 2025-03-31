@@ -1,12 +1,5 @@
 [
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Stat250-S25",
-    "section": "",
-    "text": "Landing page for Stat250 course materials in Spring 2025"
-  },
-  {
     "objectID": "slides/00-test/00-test.html#r-code",
     "href": "slides/00-test/00-test.html#r-code",
     "title": "Test slides",
@@ -173,5 +166,250 @@
     "title": "Test slides",
     "section": "Fisher vs Neyman-Pearson",
     "text": "Fisher vs Neyman-Pearson"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Stat250-S25",
+    "section": "",
+    "text": "Landing page for Stat250 course materials in Spring 2025"
+  },
+  {
+    "objectID": "slides/01/slides01.html#plan-for-today",
+    "href": "slides/01/slides01.html#plan-for-today",
+    "title": "Welcome to Stat250!",
+    "section": "Plan for today",
+    "text": "Plan for today\n\nIntros\nContext for the class\nSyllabus\nSetting course expectations"
+  },
+  {
+    "objectID": "slides/01/slides01.html#about-me",
+    "href": "slides/01/slides01.html#about-me",
+    "title": "Welcome to Stat250!",
+    "section": "About me",
+    "text": "About me\n\n\n\nFirst year at Carleton!\nTaught at Swarthmore for 5 years before moving here this fall\nPhD in Statistics & Data Science from Carnegie Mellon University\nGrew up in Minnesota, went to St Ben’s as an undergrad"
+  },
+  {
+    "objectID": "slides/01/slides01.html#three-prongs-of-statistics",
+    "href": "slides/01/slides01.html#three-prongs-of-statistics",
+    "title": "Welcome to Stat250!",
+    "section": "Three prongs of statistics",
+    "text": "Three prongs of statistics\n\n\nDesign  The design of surveys/experiments and collection of data to more efficiently/correctly address scientific questions \n\n\n\nExploration  Understand the major features of and detect patterns in data \n\n\n\n\nInference  Account for randomness, variability, and bias in a sample in order to draw reasonable and correct conclusions about a population"
+  },
+  {
+    "objectID": "slides/01/slides01.html#statistics-vs.-probability",
+    "href": "slides/01/slides01.html#statistics-vs.-probability",
+    "title": "Welcome to Stat250!",
+    "section": "Statistics vs. probability",
+    "text": "Statistics vs. probability\nProbability (Math 240)\nWe learned how to calculate the probability of seeing a result (data) given a specific probability model (e.g., a specific distribution)\n\n\nStatistics (Stat 250)\nWe will learn how to make statements about the underlying probability models given the data we see"
+  },
+  {
+    "objectID": "slides/01/slides01.html#example-spies-vs.-statisticians",
+    "href": "slides/01/slides01.html#example-spies-vs.-statisticians",
+    "title": "Welcome to Stat250!",
+    "section": "Example: Spies vs. Statisticians",
+    "text": "Example: Spies vs. Statisticians\nDuring WWII, the Allies wanted to determine production rates of tanks (and airplanes, missiles, etc.)\nSpies\nGathered intelligence (intercepted messages, interrogated of prisoners, etc.) and made the following estimates:\n\nJune 1940: 1000\nJune 1941: 1550\nAugust 1942: 1550"
+  },
+  {
+    "objectID": "slides/01/slides01.html#example-spies-vs.-statisticians-1",
+    "href": "slides/01/slides01.html#example-spies-vs.-statisticians-1",
+    "title": "Welcome to Stat250!",
+    "section": "Example: Spies vs. Statisticians",
+    "text": "Example: Spies vs. Statisticians\nStatisticians\n\n\nThe Allies had a sample of serial numbers (via capture, photography, etc.), \\(X_1, X_2, \\ldots, X_n\\), and there were \\(N\\) produced.\nAllied statisticians needed to devise an estimator to obtain \\(N\\)\nUltimately, they used \\(\\widehat{N} = X_{\\text{max}} + \\dfrac{X_{\\text{max}}}{n} - 1\\)\n\nJune 1940: 169\nJune 1941: 244\nAugust 1942: 327"
+  },
+  {
+    "objectID": "slides/01/slides01.html#example-spies-vs.-statisticians-2",
+    "href": "slides/01/slides01.html#example-spies-vs.-statisticians-2",
+    "title": "Welcome to Stat250!",
+    "section": "Example: Spies vs. Statisticians",
+    "text": "Example: Spies vs. Statisticians\nAfter the war, the Allies discovered documents revealing the true number of tanks produced:\n\n\n\n\nMonth\nTruth\nStatisticians\nSpies\n\n\n\n\nJune 1940\n122\n169\n1000\n\n\nJune 1941\n271\n244\n1550\n\n\nAugust 1942\n342\n327\n1550"
+  },
+  {
+    "objectID": "slides/01/slides01.html#prereqs",
+    "href": "slides/01/slides01.html#prereqs",
+    "title": "Welcome to Stat250!",
+    "section": "Prereqs",
+    "text": "Prereqs\n\nMath240 (Probability)\nStat120 or other applied intro stats course is helpful but not required\nI’ll assume some experience with R\nWe’re going to use mechanics from calculus & probability, but it’s not the focus of the course\nPart of HW1 is Calc/Prob review. refresh your memory, use resources that you need, talk to me sooner rather than later if it’s especially tough"
+  },
+  {
+    "objectID": "slides/01/slides01.html#section",
+    "href": "slides/01/slides01.html#section",
+    "title": "Welcome to Stat250!",
+    "section": "",
+    "text": "Statistics seems to be a difficult subject for mathematicians, perhaps because its elusive and wide-ranging character mitigates against the traditional theorem-proof method of presentation. It may come as some comfort then that statistics is also a difficult subject for statisticians\n\n\nControversies in the Foundations of Statistics, Bradley Efron 1978"
+  },
+  {
+    "objectID": "slides/01/slides01.html#statistical-models",
+    "href": "slides/01/slides01.html#statistical-models",
+    "title": "Welcome to Stat250!",
+    "section": "Statistical models",
+    "text": "Statistical models\nA statistical model consists of\n\na collection of random variables to describe observable data,\nthe possible joint distribution(s) of the random variables,\nand the parameters, \\(\\boldsymbol \\theta\\), that define those distributions\n\n\n\nMorris and DeGroot, 377"
+  },
+  {
+    "objectID": "slides/01/slides01.html#r.a.-fisher",
+    "href": "slides/01/slides01.html#r.a.-fisher",
+    "title": "Welcome to Stat250!",
+    "section": "R.A. Fisher",
+    "text": "R.A. Fisher\n1890-1962\n\n\n\n\n\nVariance\nANOVA\nNull hypothesis\nMaximum likelihood estimation\np-value\nLots of contributions in genetics\nAlso a eugenecist"
+  },
+  {
+    "objectID": "slides/01/slides01.html#neyman-pearson",
+    "href": "slides/01/slides01.html#neyman-pearson",
+    "title": "Welcome to Stat250!",
+    "section": "Neyman & Pearson",
+    "text": "Neyman & Pearson\n\n\n\n\n\nConfidence interval\nCorrelation\nRegression\nStandard deviation\nEffect size\n“Optimal” tests\n\\(\\alpha\\) and \\(\\beta\\)\nType I and II error"
+  },
+  {
+    "objectID": "slides/01/slides01.html#frequentist-vs-bayesian",
+    "href": "slides/01/slides01.html#frequentist-vs-bayesian",
+    "title": "Welcome to Stat250!",
+    "section": "Frequentist vs Bayesian",
+    "text": "Frequentist vs Bayesian"
+  },
+  {
+    "objectID": "slides/01/slides01.html#frequentist-vs-bayesian-1",
+    "href": "slides/01/slides01.html#frequentist-vs-bayesian-1",
+    "title": "Welcome to Stat250!",
+    "section": "Frequentist vs Bayesian",
+    "text": "Frequentist vs Bayesian\n\n\nFrequentist\n\n“Classical” statistics\nProbability is a long-run frequency\nType I and Type II errors\nConfidence intervals\n\n\nBayesian\n\nProbability is a subjective belief\nUpdate “prior” probabilities with data to obtain “posterior” probabilities\n“Credible” intervals\nComputationally intensive"
+  },
+  {
+    "objectID": "slides/01/slides01.html#parametric-vs-nonparametric",
+    "href": "slides/01/slides01.html#parametric-vs-nonparametric",
+    "title": "Welcome to Stat250!",
+    "section": "Parametric vs Nonparametric",
+    "text": "Parametric vs Nonparametric\n\nNonparametric \n\nThe basic idea of nonparametric inference is to use data to infer an unknown quantity while making as few assumptions as possible. Usually, this means using statistical models that are infinite-dimensional. (Wasserman, 2006)\n\n\nParametric\n\nA parametric inference uses models that consist of a set of distributions/densities that can be parameterized by a finite number of parameters."
+  },
+  {
+    "objectID": "slides/01/slides01.html#tentative-schedule",
+    "href": "slides/01/slides01.html#tentative-schedule",
+    "title": "Welcome to Stat250!",
+    "section": "Tentative schedule",
+    "text": "Tentative schedule\n\n\n\n\nTopic\nChapters\nApprox. Duration\n\n\n\n\nReview\n1-4\n1 week\n\n\nParametric estimation\n6\n3 weeks\n\n\nParametric & Nonparametric inference\n3-5, 7-9\n4 weeks\n\n\nModeling\n8-10\n2 weeks"
+  },
+  {
+    "objectID": "slides/01/slides01.html#course-description",
+    "href": "slides/01/slides01.html#course-description",
+    "title": "Welcome to Stat250!",
+    "section": "Course description",
+    "text": "Course description\nThis course is an introduction to the mathematical theory of frequentist and Bayesian statistical inference. Topics include parameter estimation, confidence intervals and hypothesis testing, linear models, and Bayesian inference.\nStudents who analyze data, or who aspire to develop new methods for analyzing data, should be well-grounded in mathematical statistics."
+  },
+  {
+    "objectID": "slides/01/slides01.html#course-objectives",
+    "href": "slides/01/slides01.html#course-objectives",
+    "title": "Welcome to Stat250!",
+    "section": "Course Objectives",
+    "text": "Course Objectives\nBy the end of this course, you should be able to:\n\nDerive estimators for parameters using maximum likelihood, the method of moments, and Bayesian techniques\nEvaluate the performance of estimators and describe their strengths and weaknesses\nDemonstrate a sophisticated understanding of the mathematics behind hypothesis tests, confidence intervals, and linear models\n\nUse the statistical package R to implement basic simulations of estimation scenarios"
+  },
+  {
+    "objectID": "slides/01/slides01.html#textbook",
+    "href": "slides/01/slides01.html#textbook",
+    "title": "Welcome to Stat250!",
+    "section": "Textbook:",
+    "text": "Textbook:\nMathematical Statistics with Resampling and R (3rd edition) by Chihara and Hesterberg\n\nSometimes, it can help to see a second way of topics being explained. I recommend Mathematical Statistics with applications by Larsen & Marx."
+  },
+  {
+    "objectID": "slides/01/slides01.html#computing",
+    "href": "slides/01/slides01.html#computing",
+    "title": "Welcome to Stat250!",
+    "section": "Computing:",
+    "text": "Computing:\nWe’ll be using R and RStudio throughout the course. If you’ve downloaded R to your own computer from a different class, great! If not, you can access anything you need through the maize server:\nhttps://maize.mathcs.carleton.edu/"
+  },
+  {
+    "objectID": "slides/01/slides01.html#what-will-you-do-in-this-course",
+    "href": "slides/01/slides01.html#what-will-you-do-in-this-course",
+    "title": "Welcome to Stat250!",
+    "section": "What will you do in this course?",
+    "text": "What will you do in this course?\nEach of the following components are important for your learning and therefore part of your final grade calculation:\n\nDaily Prep (5%)\nHomework (15%)\n\nDue once per week, typically Wednesdays but sometimes Fridays\n\nGroup work and attendance (5%)\n\nmore than 5 absences \\(\\to\\) 0\n\nMidterm exams (2 x 17.5%)\nCourse Project (10%)\nFinal Exam (30%)"
+  },
+  {
+    "objectID": "slides/01/slides01.html#what-will-a-typical-dayweek-look-like",
+    "href": "slides/01/slides01.html#what-will-a-typical-dayweek-look-like",
+    "title": "Welcome to Stat250!",
+    "section": "What will a typical day/week look like?",
+    "text": "What will a typical day/week look like?\n\n\nBefore class:\n\nRead a chapter\nCome with questions\nBe prepared to try what was covered\n\n\nIn class:\n\nMini lecture\n\nSometimes review\nSometimes new\n\nHands-on work or coding in R\n\n\nAfter class:\n\nFinish in-class exercises\nWork on homework"
+  },
+  {
+    "objectID": "slides/01/slides01.html#office-hours-tentative",
+    "href": "slides/01/slides01.html#office-hours-tentative",
+    "title": "Welcome to Stat250!",
+    "section": "Office hours (tentative)",
+    "text": "Office hours (tentative)\n\n\n\nDay\nTime\nType\nLocation\n\n\n\n\nMonday\n4:15-5:15\nDrop-in\nCMC 307\n\n\nTuesday\n10:30-11:30\nDrop-in\nCMC 307\n\n\nWednesday\n2:15-3:15\nDrop-in\nCMC 307\n\n\nFriday\n11-12\nDrop-in\nCMC 307"
+  },
+  {
+    "objectID": "slides/01/slides01.html#where-is-amanda-this-term",
+    "href": "slides/01/slides01.html#where-is-amanda-this-term",
+    "title": "Welcome to Stat250!",
+    "section": "Where is Amanda this term?",
+    "text": "Where is Amanda this term?"
+  },
+  {
+    "objectID": "slides/01/slides01.html#communication",
+    "href": "slides/01/slides01.html#communication",
+    "title": "Welcome to Stat250!",
+    "section": "Communication",
+    "text": "Communication\n\n\nMoodle: assignments, note sets, and grades\nSlack: homework questions, announcements, discussion\nEmail: personal matters, time-sensitive annoucements\n\n\n\nSlack is the fastest way to reach me. I typically will respond to messages 3x per weekday. I try to respond to emails within 48 hours. I’m online sporadically on evenings and weekends to devote time to family and rest – I hope you also use this time to reset and recharge!"
+  },
+  {
+    "objectID": "slides/01/slides01.html#advice-from-past-students",
+    "href": "slides/01/slides01.html#advice-from-past-students",
+    "title": "Welcome to Stat250!",
+    "section": "Advice from past students:",
+    "text": "Advice from past students:\n\nStart the problem sets early and go to office hours!\nWork with other people in the class, collaboration is key\nBe willing to ask lots of questions and don’t be afraid to ask for help!\nI would advise for them to attend office hours and the stat clinic since early on to get help and not be worrying about assignments at the last minute.\nI would advise future students to reach out and ask questions as soon if they have any confusion. Understanding statistical concepts and working with R can be frustrating at times, but people are here to help you along the way!\nDon’t let work snowball! Try to get help early and often and an imperfect problem set is better than no problem set.\nStart the homework early! Give yourself time to get things done, to understand, and to pause. Don’t feel afraid to ask questions; she’s so accessible.\nSpend some time reviewing handouts before doing homework."
+  },
+  {
+    "objectID": "slides/01/slides01.html#the-genius-myth",
+    "href": "slides/01/slides01.html#the-genius-myth",
+    "title": "Welcome to Stat250!",
+    "section": "The “Genius Myth”",
+    "text": "The “Genius Myth”\nIt’s sometimes easy to buy into the “genius myth” when it comes to math/stat courses: that you need to be a “math person” and have some innate mathematical ability in order to do well or become a statistics major. This could not be further from the truth! The best statisticians don’t necessarily have the “best” math or programming background, but are people that are able to formulate interesting questions and use math and programming to rigorously answer those questions. Many of the best statisticians I know became statisticians because they were initially interested in something else (biology, public health, psychology, neuroscience, physics, etc.) and realized that being able to answer important questions with data was not only valuable but fun and interesting. Being able to perform interesting statistical analyses is a skill that is learned, not an innate ability, and working hard at developing that skill is the point of this course."
+  },
+  {
+    "objectID": "slides/01/slides01.html#academic-integrity",
+    "href": "slides/01/slides01.html#academic-integrity",
+    "title": "Welcome to Stat250!",
+    "section": "Academic Integrity",
+    "text": "Academic Integrity\nYou are expected to follow Carleton’s policies regarding academic integrity. I encourage you to discuss the homework problems with others and use the resources available to you to try to figure out tough problems. You should code and write up your solutions on your own. Exams must be done by yourself without communicating with others; all work must be your own. The use of textbook solution manuals (physical or online), course materials from other students, or materials from previous versions of this course are not allowed. Copying, paraphrasing, summarizing, or submitting work generated by anyone but yourself without proper attribution is considered academic dishonesty (this includes output from LLMs).\nPlease ask if you are unsure of whether or not your actions are complying with the assignment/exam/project instructions. Always default to acknowledging any help received. Cases of suspected academic dishonesty are handled by the Provost’s Office and I am obligated to report any suspected violations of this policy."
+  },
+  {
+    "objectID": "slides/01/slides01.html#more-on-ai",
+    "href": "slides/01/slides01.html#more-on-ai",
+    "title": "Welcome to Stat250!",
+    "section": "More on “AI”",
+    "text": "More on “AI”\nLarge-language models (e.g. ChatGPT, Gemini, etc.) should only be used for help interpreting R’s error messages. You should not copy and paste course material into or out of an AI text generator.\nI also have a few rules in place to protect my intellectual property. You may not record my lectures using tools such as Otter.ai or upload any video or audio recordings to generate transcripts or study notes. You may not upload my course materials (slides, assignment prompts, note sets, etc.) into AI tools or homework help sites (such as chegg).\n“AI” tools are new for all of us and it’s OK to have questions about what is and isn’t appropriate!"
+  },
+  {
+    "objectID": "slides/01/slides01.html#diversity-inclusion",
+    "href": "slides/01/slides01.html#diversity-inclusion",
+    "title": "Welcome to Stat250!",
+    "section": "Diversity & Inclusion",
+    "text": "Diversity & Inclusion\nWe all come to class with different backgrounds and experiences, and this diversity makes our class environment richer. We value diversity and inclusion, and are committed to a climate of mutual respect and full participation in and out of the classroom. This class strives to be a learning environment that is usable, equitable, inclusive and welcoming, regardless of race, ethnicity, religion, gender and gender identities, sexual orientation, ability, socioeconomic background, and nationality. If you anticipate or experience any barriers to learning, please discuss your concerns with me."
+  },
+  {
+    "objectID": "slides/01/slides01.html#accomodations",
+    "href": "slides/01/slides01.html#accomodations",
+    "title": "Welcome to Stat250!",
+    "section": "Accomodations",
+    "text": "Accomodations\nCarleton College is committed to providing equitable access to learning opportunities for all students. The Office of Accessibility Resources (Henry House, 107 Union Street) is the campus office that collaborates with students who have disabilities to provide and/or arrange reasonable accommodations. If you have, or think you may have, a disability, please contact OAR@carleton.edu to arrange a confidential discussion regarding equitable access and reasonable accommodations. You are also welcome to contact me privately to discuss your academic needs. However, all disability-related accommodations must be arranged, in advance, through OAR."
+  },
+  {
+    "objectID": "slides/01/slides01.html#stat-lab",
+    "href": "slides/01/slides01.html#stat-lab",
+    "title": "Welcome to Stat250!",
+    "section": "Stat Lab",
+    "text": "Stat Lab\nThe Stats Lab (CMC 304) offers drop-in help R/RStudio help sessions run by friendly and knowledgeable lab assistants on most weekday evenings and some weekend times. The Stat Lab is primarily meant to serve Stat120 students, but many of the lab assistants can also help with Stat250."
+  },
+  {
+    "objectID": "slides/01/slides01.html#title-ix",
+    "href": "slides/01/slides01.html#title-ix",
+    "title": "Welcome to Stat250!",
+    "section": "Title IX",
+    "text": "Title IX\nPlease be aware that all faculty are “responsible employees”, which means that if you tell me about a situation involving sexual harassment, sexual assault, dating violence, domestic violence, or stalking, I must share that information with the Title IX Coordinator. Although I have to make this notification, you will control how your case will be handled, including whether or not you wish to meet with the Title IX coordinator or pursue a formal complaint."
+  },
+  {
+    "objectID": "slides/01/slides01.html#take-care-of-yourself",
+    "href": "slides/01/slides01.html#take-care-of-yourself",
+    "title": "Welcome to Stat250!",
+    "section": "Take care of yourself",
+    "text": "Take care of yourself\nDo your best to maintain a healthy lifestyle this semester by wearing a mask if you don’t feel well, eating a vegetable every day, exercising, avoiding excessive drug and alcohol use, getting enough sleep, and taking some time to relax. Your mental health is more important than your grade in this course. There are many helpful resources available on campus and an important part of the college experience is learning how to ask for help. If you are experiencing mental health symptoms as a result of coursework, please speak with me so we can address the problem together."
   }
 ]
