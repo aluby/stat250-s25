@@ -1,0 +1,63 @@
+---
+title: "01: Welcome"
+subtitle: "Group Names:"
+date: "Stat250-S25"
+author: "Prof Amanda Luby"
+callout-appearance: minimal
+knitr:
+    opts_chunk: 
+      dev: "ragg_png"
+      echo: false
+      warning: false
+      message: false
+format:
+  pdf:
+    include-in-header: 
+       - "../preamble.tex"
+    toc: false
+    number-sections: true
+    colorlinks: true
+    geometry:
+      - top=1in
+      - left=1in
+      - right=1in
+      - bottom=1in
+      - heightrounded
+    fontfamily: libertine
+    fontsize: 12pt
+---
+
+
+```{r, echo = FALSE}
+library(tidyverse)
+```
+
+With the folks around you, try your best to answer the following questions. 
+
+1. What is a *probability density function*? 
+
+\vspace{2in}
+
+2. What is the difference between an *observational study* and an *experiment*?
+
+\vspace{2in}
+
+3. I am trying to estimate the proportion of the US population who believes that hot dogs are sandwiches. I come up with a confidence interval of 53-61%. What does this mean?
+
+\pagebreak
+
+Next, think of a class (preferably a quantitative class) that was enjoyable and you felt like you learned a lot. Discuss the following with your group and record any consensus here:
+
+1. What did *the professor do* to help the classroom atmosphere and your learning?
+
+\vspace{2in}
+
+2. What did *your classmates do* to help the classroom atmosphere and your learning?
+
+\vspace{2in}
+
+3. What did *you do* to help the classroom atmosphere and your learning?
+
+\vspace{2in}
+
+4. Does your group have any lingering questions or concerns for me?
