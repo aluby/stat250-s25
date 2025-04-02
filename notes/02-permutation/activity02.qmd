@@ -1,0 +1,195 @@
+---
+title: "02: Permutation Tests"
+format: 
+  html:
+    code-tools: true
+---
+
+```{r setup}
+#| include: false
+
+knitr::opts_chunk$set(echo = TRUE,
+                  message = FALSE,
+                  warning = FALSE)
+```
+
+# Class Example: Motivation Experiment
+
+## Load Data
+
+The data for this example lives in the {Sleuth3} R package. This chunk of code loads in the data package, and the {tidyverse} package, which provides data wrangling and visualization code. 
+
+```{r}
+library(Sleuth3)
+library(tidyverse)
+```
+
+The dataset is called `case0101`. We can print the first 10 rows of the dataset with the following:
+
+```{r}
+case0101 |>
+  slice_head(n = 10)
+```
+
+The `|>` is called a "pipe", and tells R to take the output of the first line of code and "pipe" it into the second.
+
+## EDA
+
+The next thing we should do is **E**ploratory **D**ata **A**nalysis, or **EDA**. In this class, that typically means (1) create a visualization and (2) compute summary statistics. 
+
+We'll make the side-by-side boxplots from the slides:
+
+```{r}
+case0101 |>
+  ggplot(aes(x = Score, y = Treatment, fill = Treatment)) + 
+  geom_boxplot()
+```
+
+You can also use the {esquisse} package for this class. 
+
+To compute summary statistics, we can either use `summary()`: 
+
+```{r}
+summary(case0101)
+```
+
+or the `favstats()` function from the {mosaic} package. This function uses *formula syntax*, which says to group "Score" based on the "Treatment" variable. 
+
+```{r}
+library(mosaic) 
+favstats(Score ~ Treatment, data = case0101)
+```
+
+
+## Compute Test Statistic
+
+We'll follow the code in the book to create two vectors, one for the "Extrinsic" group and one for the "Intrinsic" group. We can check that we've done this correctly using `summary()` and comparing it to the results from `favstats()`
+
+```{r}
+Score <- case0101 |>
+  pull(Score)
+
+Score_Extrinsic <- case0101 |>
+  filter(Treatment == "Extrinsic") |>
+  pull(Score)
+
+summary(Score_Extrinsic)
+```
+
+```{r}
+Score_Intrinsic <- case0101 |>
+  filter(Treatment == "Intrinsic") |>
+  pull(Score)
+
+summary(Score_Intrinsic)
+```
+
+Since our test statistic is the difference between the two means, we will compute the difference in means between `Score_Extrinsic` and `Score_Intrinsic` and save it to a vector called `observed`
+
+```{r}
+observed <- mean(Score_Intrinsic) - mean(Score_Extrinsic)
+observed
+```
+
+## Conduct Permutations
+
+To conduct the permutation test, we want to do a large number of *permutations* (called `N` in the code chunk below). The code in the `for` loop is run `N` times. Each time, we randomly sample observations in our dataset and assign them to the "Intrinsic" group. The observations that were not sampled are assigned to the "Extrinsic" group. In each simulation, we compute the difference in the means between the two groups and save it to our `result` vector. 
+
+```{r}
+N <- 10^4 - 1 # Number of permutations to do
+sample_size <- nrow(case0101) # Sample size for each permutation (same as data)
+
+result <- numeric(N) # Create an empty vector to store results
+for (i in 1:N){
+  index <- sample(sample_size, 24, replace = FALSE) # Sample indices for group 1
+  result[i] <- mean(Score[index]) - mean(Score[-index]) # Compute differences between groups
+}
+```
+
+## Make plot of test statistics
+
+We can visualize the results of the permutation distribution using {ggplot2}. I've also overlayed a red line that shows what our observed test statistic was.  
+
+```{r}
+ggplot() + 
+  geom_histogram(aes(x = result), col = "white") + 
+  geom_vline(xintercept = observed, linetype = "dashed", col = "darkred")
+```
+
+## Compute p-value
+
+The following code chunk computes the fraction of simulations which resulted in a test statistic that was larger than the observed difference:
+
+```{r}
+(sum(result >= observed) + 1)/(N+1)
+```
+
+# Your turn: Verizon Response Times
+
+*Note:* this example has been adapted from the textbook
+
+> Verizon is the primary local telephone company (incumbent local exchange carrier (ILEC)) for a large area of the Eastern US. As such, it is responsible for providing repair service for the customers of other telephone companies known as competing local exchange carriers (CLECs) in this region. Verizon is subject to fines if the repair times (the time it takes to fix a problem) for CLEC customers are substantially worse than for Verizon customers. 
+
+> The dataset `Verizon` contains a sample of repair times for 1664 ILEC and 23 CLEC customers. The mean repair times are 8.4h for ILEC customers and 16.5 for CLEC customers. Could a difference this large be explained by chance?
+
+To load in the data, use
+
+```{r}
+library(resampledata3)
+```
+
+```{r}
+Verizon |>
+  slice_head(n=10)
+```
+
+## EDA
+
+Create an appropriate EDA 
+
+```{r}
+# your graph code here
+```
+
+```{r}
+# your summary code here
+```
+
+## Test statistic
+
+Compute the appropriate test statistic
+
+```{r}
+# your code here
+```
+
+## Conduct Permutations
+
+```{r}
+# your permutation code here
+```
+
+
+## Make plot of test statistics
+
+```{r}
+# your code here
+```
+
+## Compute p-value
+
+```{r}
+# your code here
+```
+
+## What do you conclude?
+
+# Your turn: Verizon Response Times
+
+Create a *histogram* of the repair times for each group. 
+
+```{r}
+# your code here
+```
+
+You should observe a long tail -- there are some very large response times. The mean is sensitive to outliers, and so we may wish to use a test statistic that is more robust. Repeat the last example, but replace the difference in *means* with a difference in *medians*. How do your results and conclusions change?

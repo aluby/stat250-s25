@@ -1,0 +1,105 @@
+---
+title: "02: Permutation Tests"
+subtitle: "Reference: MSwRR Ch 3"
+date: "Stat250-S25"
+author: "Prof Amanda Luby"
+callout-appearance: minimal
+knitr:
+    opts_chunk: 
+      dev: "ragg_png"
+      echo: false
+      warning: false
+      message: false
+format:
+  pdf:
+    include-in-header: 
+       - "../preamble.tex"
+    toc: false
+    number-sections: true
+    colorlinks: true
+    geometry:
+      - top=1in
+      - left=1in
+      - right=1in
+      - bottom=1in
+      - heightrounded
+fontfamily: libertine
+fontsize: 11pt
+---
+
+
+```{r, echo = FALSE}
+library(tidyverse)
+library(Sleuth3)
+library(mosaic)
+library(infer)
+```
+
+# Example: Motivation Experiment
+
+```{r poem_boxes, fig.height=2.5, fig.width=4, echo=FALSE, fig.align='left', out.width = "50%"}
+orig.means <- case0101 %>%
+  group_by(Treatment) %>%
+  summarize(mean = mean(Score))
+ggplot(data = case0101) +
+  geom_boxplot(mapping = aes(x = Treatment, y = Score, fill = Treatment), alpha = 0.5) +
+  geom_point(data = orig.means, mapping = aes(x = Treatment, y = mean)) +
+  scale_fill_viridis_d() +
+  theme_minimal() + 
+  labs(caption = "Dot denotes mean") +
+  coord_flip() +
+  theme(legend.position = "none")
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, results='asis'}
+knitr::kable(favstats(Score ~ Treatment, data = case0101), format = "markdown", digits = 1)
+```
+
+# Logic of Hypothesis Testing
+
+1. Formulate two competing _________________ about the _________________
+
+2. Calculate a __________________________ summarizing the relevant information to the claims
+
+3. Look at the ______________________________________ assuming that the initial claim is true
+
+4. ______________________ the observed test statistic to the expected behavior (the distribution created in step 3). 
+
+
+**Example:** Write down the competing hypotheses being tested by the researchers, both in words and using proper notation.
+
+\vspace{2in}
+
+::: callout-note
+## P-value
+
+\vspace{1in}
+:::
+
+```{r}
+#| echo: false
+#| fig-width: 4
+#| fig-height: 3
+#| fig-align: 'left'
+
+perm_dsn <-   case0101 %>%
+  specify(Score ~ Treatment) %>% # 
+  hypothesize(null = "independence") %>%
+  generate(reps = 1999, type = "permute") %>%
+  calculate(stat = "diff in means", order = c("Intrinsic", "Extrinsic"))
+
+null_dsn <- perm_dsn %>%
+  visualize(bins = 40) +
+  scale_x_continuous(breaks = -5:5) +
+  labs(title = "Distribution of difference in means",
+       subtitle = "Assuming equal means, based on 1,999 trials",
+       x = "Test statistics") +
+  theme_minimal(base_size = 10) + 
+  theme(panel.grid.minor.x = element_blank(),
+        panel.grid.major.x = element_blank())
+null_dsn
+```
+
+# R Code
+
+Use this space to jot down any notes about the R code we talked through

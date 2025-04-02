@@ -4,3 +4,5 @@ format: html
 ---
 
 Landing page for Stat250 course materials in Spring 2025
+
+Day02: [slides](/slides/02/slides02.html) [handout](/notes/02-permutation/notes02.pdf) [r code](/notes/02-permutation/activity02.html)

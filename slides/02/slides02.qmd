@@ -1,0 +1,391 @@
+---
+title: Intro to Permutation Tests
+subtitle: Day 02
+title-slide-attributes:
+  data-background-gradient: "linear-gradient(to right, #46337e, #440154)"
+  data-slide-number: none
+author: "Prof Amanda Luby"
+format: 
+  revealjs:
+    incremental: true
+---
+
+```{r setup}
+#| include: false
+
+library(tidyverse)
+library(countdown)
+
+library(ggformula)
+library(openintro)
+library(patchwork)
+library(fivethirtyeight)
+library(dplyr)
+library(tidyr)
+library(fontawesome)
+
+library(gridExtra)
+library(tidyverse)
+library(knitr)
+library(mosaic)
+library(infer)
+library(kableExtra)
+
+# #440154
+knitr::opts_chunk$set(echo = TRUE,
+                  message = FALSE,
+                  warning = FALSE)
+
+slides_theme = theme_minimal(base_family = "serif") +
+  theme(plot.background = element_rect(fill = "#f0f1eb", colour = NA))
+  
+
+theme_set(slides_theme)
+```
+
+## Goals for today: 
+
+- Review (or introduce!) hypothesis testing
+- Practice with notation
+- Ask questions and talk to each other
+- Get comfier in R
+
+## Example
+
+Evidence suggests that reward systems may operate in the opposite way from what is intended: 
+
+- Ranking systems may decrease productivity;
+- Rewards may not stimulate learning
+
+## Experiment
+
+- 47 subjects with considerable experience in creativity were recruited
+- Randomly assigned to either intrinsic- or extrinsic-motivation group
+- Subjects completed a questionnaire related to either intrinsic or extrinsic reasons for writing
+- All subjects were asked to write a Haiku about laughter
+- Poems were scored by a panel of 12 poets, evaluated on 40-point creativity scale
+
+::: aside
+Source: Amabile, T. M. (1985). Motivation and creativity: Effects of motivational orientation on creative writers. Journal of Personality and Social Psychology, 48(2), 393.
+:::
+
+## Results
+
+```{r include=FALSE}
+library(Sleuth3)
+library(mosaic)
+library(ggplot2)
+```
+
+```{r poem_boxes, fig.height=2.5, fig.width=4, echo=FALSE, fig.align='center', out.width = "50%"}
+orig.means <- case0101 %>%
+  group_by(Treatment) %>%
+  summarize(mean = mean(Score))
+ggplot(data = case0101) +
+  geom_boxplot(mapping = aes(x = Treatment, y = Score, fill = Treatment), alpha = 0.5) +
+  geom_point(data = orig.means, mapping = aes(x = Treatment, y = mean)) +
+  scale_fill_viridis_d() +
+  labs(caption = "Dot denotes mean") +
+  coord_flip() +
+  theme(legend.position = "none")
+```
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, results='asis'}
+knitr::kable(favstats(Score ~ Treatment, data = case0101), format = "markdown", digits = 1)
+```
+
+
+## The logic of hypothesis testing
+
+
+1. Formulate two competing **hypotheses** about the population
+
+2. Calculate a **test statistic** summarizing the relevant information to the claims
+
+3. Look at the **behavior of the test statistic** assuming that the initial claim is true
+
+4. **Compare** the observed test statistic to the expected behavior (the distribution created in step 3). 
+
+
+    **How likely** is it that the observed test statistic occurred by chance alone?
+
+# Your turn
+
+Write down the competing hypotheses being tested by the researchers, both in words and using proper notation.
+
+
+## Permutation resampling
+
+```{r echo=FALSE, results='asis'}
+intrinsic <- case0101 %>%
+  filter(Treatment == "Intrinsic") %>%
+  arrange(Score) %>%
+  mutate(Score = cell_spec(Score, "html", background = ifelse(Treatment == "Intrinsic", "#666666", "white"), color = ifelse(Treatment == "Intrinsic", "white", "black"))) %>%
+  pull(Score) %>%
+  matrix(ncol = 6, byrow = F)
+
+extrinsic <- case0101 %>%
+  filter(Treatment == "Extrinsic") %>%
+  arrange(Score) %>%
+  mutate(Score = cell_spec(Score, "html", background = ifelse(Treatment == "Intrinsic", "#666666", "white"), color = ifelse(Treatment == "Intrinsic", "white", "black"))) %>%
+  pull(Score) 
+
+extrinsic <- c(extrinsic, " ") %>%
+  matrix(ncol=6, byrow = F)
+```
+
+::::: {style="font-size: 65%;"}
+::::{.columns}
+:::{.column width="50%"}
+```{r echo=FALSE, results='asis', message=FALSE}
+kable(intrinsic, format = "html", booktabs = TRUE, caption = "Intrinsic", escape = F) %>%
+  kable_styling(position = "center", full_width = F)
+```
+:::
+
+:::{.column width="50%"}
+```{r echo=FALSE, results='asis', message=FALSE}
+kable(extrinsic, format = "html", booktabs = TRUE, caption = "Extrinsic", escape = F) %>%
+  kable_styling(position = "center", full_width = F)
+```
+:::
+::::
+::::: 
+
+```{r echo=FALSE, fig.width = 8, fig.height = 6, out.width=650, fig.align='center', message=FALSE}
+orig_data <- cbind(case0101, replicate = 20)
+
+writing_sim <- 
+  case0101 %>%
+  specify(Score ~ Treatment) %>% # alt: response = rat, explanatory = type
+  hypothesize(null = "independence") %>%
+  generate(reps = 19, type = "permute") %>%
+  as_tibble() %>%
+  rbind(orig_data) %>%
+  mutate(replicate = fct_rev(factor(replicate)))
+
+sim_means <- writing_sim %>%
+  group_by(Treatment, replicate) %>%
+  summarize(mean = mean(Score))
+```
+
+
+```{r poem_boxes, fig.height=2.5, fig.width=4, echo=FALSE, fig.align='center', out.width = "40%"}
+```
+
+
+
+## Permutation resampling
+
+```{r echo=FALSE, results='asis'}
+set.seed(1234)
+sim1 <- case0101 %>%
+  mutate(resample = sample(Treatment))
+
+intrinsic1 <- sim1 %>%
+  filter(resample == "Intrinsic") %>%
+  arrange(Score) %>%
+  mutate(Score = cell_spec(Score, "html", background = ifelse(Treatment == "Intrinsic", "#666666", "white"), color = ifelse(Treatment == "Intrinsic", "white", "black"))) %>%
+  pull(Score) %>%
+  matrix(ncol = 6, byrow = F)
+
+extrinsic1 <- sim1 %>%
+  filter(resample == "Extrinsic") %>%
+  arrange(Score) %>%
+  mutate(Score = cell_spec(Score, "html", background = ifelse(Treatment == "Intrinsic", "#666666", "white"), color = ifelse(Treatment == "Intrinsic", "white", "black"))) %>%
+  pull(Score) 
+
+extrinsic1 <- c(extrinsic1, " ") %>%
+  matrix(ncol = 6, byrow = F)
+```
+
+::::: {style="font-size: 65%;"}
+::::{.columns}
+:::{.column width="50%"}
+```{r echo=FALSE, results='asis'}
+kable(intrinsic1, format = "html", booktabs = TRUE, caption = "Intrinsic", escape = F) %>%
+  kable_styling(position = "center", full_width = F)
+```
+:::
+:::{.column width="50%"}
+```{r echo=FALSE, results='asis'}
+kable(extrinsic1, format = "html", booktabs = TRUE, caption = "Extrinsic", escape = F) %>%
+  kable_styling(position = "center", full_width = F)
+```
+:::
+::::
+:::::
+
+```{r fig.height=2.5, fig.width=4, echo=FALSE, fig.align='center', out.width = "40%"}
+sim1_means <- sim1 %>%
+  group_by(resample) %>%
+  summarize(mean = mean(Score))
+
+ggplot(data = sim1) +
+  geom_boxplot(mapping = aes(x = resample, y = Score, fill = resample), alpha = 0.5) +
+  geom_point(data = sim1_means, mapping = aes(x = resample, y = mean)) +
+  scale_fill_viridis_d() +
+  xlab("Treatment") +
+  coord_flip() +
+  theme(legend.position = "none")
+```
+
+
+
+## Permutation resampling
+
+```{r echo=FALSE, results='asis'}
+sim1 <- case0101 %>%
+  mutate(resample = sample(Treatment))
+
+intrinsic1 <- sim1 %>%
+  filter(resample == "Intrinsic") %>%
+  arrange(Score) %>%
+  mutate(Score = cell_spec(Score, "html", background = ifelse(Treatment == "Intrinsic", "#666666", "white"), color = ifelse(Treatment == "Intrinsic", "white", "black"))) %>%
+  pull(Score) %>%
+  matrix(ncol = 6, byrow = F)
+
+extrinsic1 <- sim1 %>%
+  filter(resample == "Extrinsic") %>%
+  arrange(Score) %>%
+  mutate(Score = cell_spec(Score, "html", background = ifelse(Treatment == "Intrinsic", "#666666", "white"), color = ifelse(Treatment == "Intrinsic", "white", "black"))) %>%
+  pull(Score) 
+
+extrinsic1 <- c(extrinsic1, " ") %>%
+  matrix(ncol=6, byrow = F)
+```
+
+::::: {style="font-size: 65%;"}
+::::{.columns}
+:::{.column width="50%"}
+```{r echo=FALSE, results='asis'}
+kable(intrinsic1, format = "html", booktabs = TRUE, caption = "Intrinsic", escape = F) %>%
+  kable_styling(position = "center", full_width = F)
+```
+:::
+:::{.column width="50%"}
+```{r echo=FALSE, results='asis'}
+kable(extrinsic1, format = "html", booktabs = TRUE, caption = "Extrinsic", escape = F) %>%
+  kable_styling(position = "center", full_width = F)
+```
+:::
+::::
+:::::
+
+```{r fig.height=2.5, fig.width=4, echo=FALSE, fig.align='center', out.width = "40%"}
+sim1_means <- sim1 %>%
+  group_by(resample) %>%
+  summarize(mean = mean(Score))
+
+ggplot(data = sim1) +
+  geom_boxplot(mapping = aes(x = resample, y = Score, fill = resample), alpha = 0.5) +
+  geom_point(data = sim1_means, mapping = aes(x = resample, y = mean)) +
+  scale_fill_viridis_d() +
+  xlab("Treatment") +
+  coord_flip() +
+  theme(legend.position = "none")
+```
+
+
+```{r}
+#| echo: false
+
+perm_dsn <-   case0101 %>%
+  specify(Score ~ Treatment) %>% # 
+  hypothesize(null = "independence") %>%
+  generate(reps = 1999, type = "permute") %>%
+  calculate(stat = "diff in means", order = c("Intrinsic", "Extrinsic"))
+
+null_dsn <- perm_dsn %>%
+  visualize(bins = 40) +
+  scale_x_continuous(breaks = -5:5) +
+  labs(title = "Distribution of difference in means (Intrinsic - Extrinsic)",
+       subtitle = "Assuming equal means, based on 1,999 trials",
+       x = "Test statistics") +
+  theme(panel.grid.minor.x = element_blank(),
+        panel.grid.major.x = element_blank())
+
+```
+
+## Your turn
+
+How likely is it that the observed results occurred by chance alone? 
+
+What does this say about the null hypothesis?
+
+![](../img/lineup-creativity.png)
+
+
+## Your turn
+
+How likely is it that the observed test statistic occurred by chance alone? 
+
+What does this say about the null hypothesis?
+
+```{r}
+#| echo: false
+
+null_dsn
+```
+
+## _p_-value
+
+**Definition:** fraction of times the random test statistic exceeds the original test statistic
+
+
+::::{.columns}
+:::{.column width="50%"}
+```{r echo=FALSE, fig.width = 6, fig.height = 4, out.width = "95%"}
+perm_dsn %>%
+  visualize(bins = 40) +
+  shade_p_value(obs_stat = 4.14, direction = "both") +
+  scale_x_continuous(breaks = -5:5) +
+  labs(title = "Distribution of difference in means (Intrinsic - Extrinsic)",
+       subtitle = "Assuming equal means, based on 1,999 trials",
+       x = "Test statistics") +
+  theme(panel.grid.minor.x = element_blank(),
+        panel.grid.major.x = element_blank())
+
+```
+:::
+:::{.column width="50%"}
+Observed test statistic: <br>
+$\overline{x}_{int} - \overline{x}_{ext} \approx 4.2$
+
+`r sum(perm_dsn$stat >= 4.2)` of the random test statistics exceed 4.2
+:::
+::::
+
+
+## Strength of evidence
+
+
+**p-values** provide a *continuous* measurement of the strength of evidence against the null hypothesis
+
+```{r echo=FALSE, fig.align='center'}
+include_graphics("../img/03-strength-pvalue.png")
+```
+
+## Permutation test algorithm
+
+:::{style="font-size: 90%;"}
+
+1. Pool the $m+n$ data values
+
+1. Draw a resample of size $m$ without replacement, assign these values to group 1. Assign the remaining $n$ values to group 2.
+
+1. Calculate the test statistic comparing the samples from the resampled groups.
+
+1. Repeat steps 2 and 3 until we have enough samples.
+
+1. Estimate the p-value as the proportion of times the observed test statistic exceeds the original (observed) test statistic
+
+    $p\text{-value}=\frac{\text{# statistics that exceed the original} + 1}{\text{# of statistics in the distribution} + 1}$
+:::
+
+# R walkthrough
+
+## Where we're going
+
+Instead of a permutation test, we can also use facts about the *sampling distribution* from probability to compute p-values with math.

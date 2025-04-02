@@ -12,7 +12,7 @@ website:
     
 format:
   html:
-    theme: solar
+    theme: pulse
     linkcolor: "#440154" 
 
 execute:
