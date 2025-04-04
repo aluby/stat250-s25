@@ -1,8 +1,7 @@
 ---
 title: "03: Sampling Distributions"
-subtitle: "Reference: MSwRR Ch 4"
+subtitle: "GROUP NAMES HERE:"
 date: "Stat250-S25"
-author: "Prof Amanda Luby"
 callout-appearance: minimal
 knitr:
     opts_chunk: 
@@ -35,5 +34,23 @@ library(mosaic)
 library(infer)
 ```
 
-# Example: Motivation Experiment
+The problem descriptions can be found in the activity file on moodle. Use this page to turn in your answers to the math-y questions (no need to type them up!) Make sure to include everybody's names at the top, leave this page on the front table in the classroom, and submit your .rmd as a group assignment on gradescope.
+
+# Part 1, Q1 {-}
+
+\vspace{3in}
+
+# Part 2, Q1 {-}
+
+\vspace{1in}
+
+# Part 2, Q3 {-}
+
+\vspace{2in} 
+
+# Part 3, Q2 {-}
+
+\vspace{2in} 
+
+# Part 4 {-}
 
