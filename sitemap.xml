@@ -2,26 +2,30 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://aluby.github.io/stat250-s25/notes/02-permutation/activity02.html</loc>
-    <lastmod>2025-04-03T15:27:48.843Z</lastmod>
+    <lastmod>2025-04-02T17:06:58.371Z</lastmod>
   </url>
   <url>
     <loc>https://aluby.github.io/stat250-s25/notes/03-sampling-dists/activity03.html</loc>
-    <lastmod>2025-04-04T00:17:59.708Z</lastmod>
-  </url>
-  <url>
-    <loc>https://aluby.github.io/stat250-s25/slides/00-test/00-test.html</loc>
-    <lastmod>2025-04-03T15:27:48.843Z</lastmod>
-  </url>
-  <url>
-    <loc>https://aluby.github.io/stat250-s25/slides/02/slides02.html</loc>
-    <lastmod>2025-04-03T15:27:48.849Z</lastmod>
-  </url>
-  <url>
-    <loc>https://aluby.github.io/stat250-s25/index.html</loc>
-    <lastmod>2025-04-04T00:18:42.646Z</lastmod>
+    <lastmod>2025-04-07T13:50:41.596Z</lastmod>
   </url>
   <url>
     <loc>https://aluby.github.io/stat250-s25/slides/01/slides01.html</loc>
-    <lastmod>2025-04-03T15:27:48.849Z</lastmod>
+    <lastmod>2025-03-31T17:15:38.262Z</lastmod>
+  </url>
+  <url>
+    <loc>https://aluby.github.io/stat250-s25/slides/04/slides04.html</loc>
+    <lastmod>2025-04-07T17:19:38.200Z</lastmod>
+  </url>
+  <url>
+    <loc>https://aluby.github.io/stat250-s25/index.html</loc>
+    <lastmod>2025-04-07T13:50:41.595Z</lastmod>
+  </url>
+  <url>
+    <loc>https://aluby.github.io/stat250-s25/slides/02/slides02.html</loc>
+    <lastmod>2025-04-02T17:09:36.145Z</lastmod>
+  </url>
+  <url>
+    <loc>https://aluby.github.io/stat250-s25/slides/00-test/00-test.html</loc>
+    <lastmod>2025-03-31T16:41:45.925Z</lastmod>
   </url>
 </urlset>
