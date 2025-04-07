@@ -1,0 +1,211 @@
+---
+title: Sampling Distributions + Probability Review
+subtitle: Day 04
+title-slide-attributes:
+  data-background-gradient: "linear-gradient(to right, #46337e, #440154)"
+  data-slide-number: none
+author: "Prof Amanda Luby"
+format: 
+  revealjs:
+    incremental: true
+---
+
+```{r setup}
+#| include: false
+
+library(tidyverse)
+library(countdown)
+
+library(ggformula)
+library(openintro)
+library(patchwork)
+library(fivethirtyeight)
+library(dplyr)
+library(tidyr)
+library(fontawesome)
+
+library(gridExtra)
+library(tidyverse)
+library(knitr)
+library(mosaic)
+library(infer)
+library(kableExtra)
+
+# #440154
+knitr::opts_chunk$set(echo = TRUE,
+                  message = FALSE,
+                  warning = FALSE)
+
+slides_theme = theme_minimal(base_family = "serif") +
+  theme(plot.background = element_rect(fill = "#f0f1eb", colour = NA))
+  
+
+theme_set(slides_theme)
+```
+
+## Plan for today: 
+
+- HW00 probability review
+- More on sampling distributions
+- Intro to Estimation
+
+# Probability Review
+
+## Overview of HW00 Topics
+
+::: nonincremental
+1. Working with a PDF
+2. Working with a CDF
+3. Calculating Moments
+4. Moments from PDF
+5. Deriving and Using MGFs
+6. Recognizing distribution from MGF
+7. Transformation of a Random Variable
+8. Joint PDF Calculations
+:::
+
+## Generally went OK
+
+::: nonincremental
+1. **Working with a PDF**
+2. **Working with a CDF**
+3. **Calculating Moments**
+4. **Moments from PDF**
+5. Deriving and Using MGFs
+6. Recognizing distribution from MGF
+7. Transformation of a Random Variable
+8. *Joint PDF Calculations*
+:::
+
+## Big mechanics to know (1 variable)
+
+- PDF $f_X(x)$ gives probabilities by integrating
+- CDF $F_X(x)$ gives probabilities directly
+- Find $E[X]$ with pdf by $\int_\infty x f_X(x) dx$
+- LoTUS: $E[g(X)] = \int_\infty g(x) f_X(x) dx$
+- $V[X] = E[(X-E[X])^2] = E[X^2] - E[X]^2$
+
+## Big mechanics to know (2 variable)
+
+- PDF $f_{X,Y}(x,y)$ gives probabilities by integrating
+- CDF $F_{X, Y}(x,y)$ gives probabilities directly
+- *Marginal* pdf: $f_X(x) = \int_\infty y f_{X,Y} dy$
+- *Conditional* pdf $f_{X|Y}(x,y) = \frac{f_{X,Y}(x,y)}{f_Y(y)}$
+- Two variables are *independent* if $f_{X,Y} = f_{X} f_{Y}$ or $f_X = f_{X|Y}$
+
+## Working with moments 
+
+For *any* two variables X and Y: 
+
+- $E[aX + b] = a E[X] + b$
+- $V[aX + b] = a^2 V[X]$
+- $E[X + Y] = E[X] + E[Y]$
+- $E[aX + bY + c] = a E[X] + b E[Y] + c$
+- $V[X + Y] = V[X] + V[Y] + 2 Cov(X,Y)$
+- $Cov(X,Y) = E[(X - E[X])(Y-E[Y])] = E[XY] - E[X]E[Y]$
+
+::: fragment
+If X and Y are *independent*:
+
+- $Cov(X,Y) = 0$
+- $V[X + Y] = V[X] + V[Y]$
+- $V[aX + bY + c] = a^2 V[X] + b^2 V[Y]$
+:::
+
+
+## Some issues
+
+::: nonincremental
+1. Working with a PDF
+2. Working with a CDF
+3. Calculating Moments
+4. Moments from PDF
+5. **Deriving and Using MGFs**
+6. **Recognizing distribution from MGF**
+7. **Transformation of a Random Variable**
+8. Joint PDF Calculations
+:::
+
+
+# iPad time (Q5-Q7)
+
+# Sampling distributions
+
+## Recap from Friday
+
+::: callout-note
+## Central Limit Theorem
+
+Suppose we have an iid sample $X_1, ..., X_n \sim F_x$. The CLT tells us that, as our sample size approaches $\infty$, 
+
+$$F_\bar{X}(\bar{X}) \to N(\mu, \frac{\sigma}{\sqrt{n}})$$
+:::
+
+- Sampling distribution is centered at population mean
+- As $n \to \infty$, $\sigma_\bar{X} \to 0$
+- *It doesn't matter what shape $X_i$ is!*
+
+## Example: Binomial data
+
+According to the 2004 American Community Survey, 28% of adults over 25 years old in Utah have completed a bachelor's degree. In a random sample of 64 adults over age 25 from Utah, what is the probability that at least 30 have a bachelor's degree?
+
+Let $X_i$ indicate whether a sampled person has a bachelor's degree. Then, $X_1, ...., X_{64} \sim \text{Binom}(n=1,p=.28)$. 
+
+::: fragment
+Or, $X = \sum X_i \sim \text{Binom}(64, p = .28)$
+:::
+
+::: fragment
+Using the CLT, $\bar{X} \sim N(p, SE_\bar{X}) \sim N(0.28, \sqrt{\frac{.28(1-.28)}{64}} = .056)$
+:::
+
+## Example: Binomial data
+
+$\bar{X} \sim N(0.28, .056)$. To find the probability that at least 30% of people in the sample have a bachelor's degree,
+
+$$P(\hat{p} \ge 0.30) = P(\bar{X} \ge 0.30)$$
+
+. . . 
+
+```{r}
+pnorm(0.30, mean = 0.28, sd = .056, lower.tail = FALSE)
+```
+
+
+
+::: aside
+*Note:* It's really important to be careful about when you're working with *variance* and when you're working with *standard error*
+:::
+
+## Issue
+
+In this case, the CLT uses a *continuous* density to approximate a *discrete* random variable. 30% of 64 people is 19.2 -- we can't actually have 19.2 answer "yes"! 
+
+. . . 
+
+$$P(X \ge 19.2) = P(X \ge 20)$$
+
+. . . 
+
+$$\sum_{k=20}^{64} \binom{64}{k} .28^k .72^{64-k}$$
+
+. . . 
+
+```{r}
+1 - pbinom(19, 64, .28)
+```
+
+. . .
+
+The CLT overestimates this probability by .04! 
+
+## Continuity Correction
+
+When using the CLT with discrete data, split the difference between 19 and 20: 
+
+$$P(X \ge 19.2) \approx P(X \ge 19.5)$$
+
+# Intro to Estimation
+
+Where we're going... 
+

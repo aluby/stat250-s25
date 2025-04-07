@@ -1,0 +1,68 @@
+---
+title: "04: Probability Review"
+date: "Stat250-S25"
+callout-appearance: minimal
+knitr:
+    opts_chunk: 
+      dev: "ragg_png"
+      echo: false
+      warning: false
+      message: false
+format:
+  pdf:
+    include-in-header: 
+       - "../preamble.tex"
+    toc: false
+    number-sections: true
+    colorlinks: true
+    geometry:
+      - top=1in
+      - left=1in
+      - right=1in
+      - bottom=1in
+      - heightrounded
+fontfamily: libertine
+fontsize: 11pt
+---
+
+
+```{r, echo = FALSE}
+library(tidyverse)
+library(Sleuth3)
+library(mosaic)
+library(infer)
+```
+
+# Probability Review
+
+## Big mechanics to know (1 variable)
+
+\vspace{2in}
+
+## Big mechanics to know (2 variable)
+
+\vspace{2in}
+
+## Working with moments 
+
+\vspace{2in}
+
+# Sampling distributions
+
+## Recap from Friday
+
+## Central Limit Theorem
+
+Suppose we have an iid sample $X_1, ..., X_n \sim F_x$. The CLT tells us that:
+
+\vspace{1in}
+
+- Sampling distribution is centered at population mean
+- As
+- *It doesn't matter what shape $X_i$ is!*
+
+## Example: Binomial data
+
+According to the 2004 American Community Survey, 28% of adults over 25 years old in Utah have completed a bachelor's degree. In a random sample of 64 adults over age 25 from Utah, what is the probability that at least 30 have a bachelor's degree?
+
+\vspace{3in}
