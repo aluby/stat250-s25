@@ -11,7 +11,7 @@ Day02: [slides](/slides/02/slides02.html) [handout](/notes/02-permutation/notes0
 
 Day03: [handout](/notes/03-sampling-dists/notes03.pdf) [activity qmd](/notes/03-sampling-dists/activity03.html)
 
-Day04: [slides](/slides/04/slides04.html) | [handout](/notes/04-probability-notes04.pdf)
+Day04: [slides](/slides/04/slides04.html) | [handout](/notes/04-probability/04-probability.pdf)
 
 # Other Resources and Readings
 
