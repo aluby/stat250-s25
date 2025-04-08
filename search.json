@@ -385,6 +385,83 @@
     "text": "Take care of yourself\nDo your best to maintain a healthy lifestyle this semester by wearing a mask if you don’t feel well, eating a vegetable every day, exercising, avoiding excessive drug and alcohol use, getting enough sleep, and taking some time to relax. Your mental health is more important than your grade in this course. There are many helpful resources available on campus and an important part of the college experience is learning how to ask for help. If you are experiencing mental health symptoms as a result of coursework, please speak with me so we can address the problem together."
   },
   {
+    "objectID": "slides/05/slides05.html#section",
+    "href": "slides/05/slides05.html#section",
+    "title": "Maximum Likelihood Estimation: Discrete Case",
+    "section": "",
+    "text": "You are testing seeds from a new plant variety. You plant 10 seeds (n=10) and observe that 3 of them successfully germinate (k=3). Consider two hypotheses about the true germination probability (p) for this variety:\nHypothesis A: \\(p = 0.1\\) (10% germination rate)\nHypothesis B: $p = 0.4 (40% germination rate)\nGiven that you observed 3 germinations out of 10 seeds, which hypothesis (A or B) is more supported by the data?\n\n\n\n−+\n02:00"
+  },
+  {
+    "objectID": "slides/05/slides05.html#evaluating-intuitively",
+    "href": "slides/05/slides05.html#evaluating-intuitively",
+    "title": "Maximum Likelihood Estimation: Discrete Case",
+    "section": "Evaluating Intuitively",
+    "text": "Evaluating Intuitively"
+  },
+  {
+    "objectID": "slides/05/slides05.html#evaluating-formally-problem-set-up",
+    "href": "slides/05/slides05.html#evaluating-formally-problem-set-up",
+    "title": "Maximum Likelihood Estimation: Discrete Case",
+    "section": "Evaluating Formally: Problem Set Up",
+    "text": "Evaluating Formally: Problem Set Up\n\nLet \\(X\\) be the number of plants that successfully germinate\n\\(X \\sim \\text{Binom}(10, p)\\) and we observed \\(X=3\\)\n\n\n\n\n\\(P(X=3)\\) if \\(p=.1\\)\n\n\\(P(X=3)\\) if \\(p=.4\\)"
+  },
+  {
+    "objectID": "slides/05/slides05.html#what-value-of-p-maximizes-the-probability-of-observing-the-data",
+    "href": "slides/05/slides05.html#what-value-of-p-maximizes-the-probability-of-observing-the-data",
+    "title": "Maximum Likelihood Estimation: Discrete Case",
+    "section": "What value of \\(p\\) maximizes the probability of observing the data?",
+    "text": "What value of \\(p\\) maximizes the probability of observing the data?"
+  },
+  {
+    "objectID": "slides/05/slides05.html#can-we-generalize-to-any-data",
+    "href": "slides/05/slides05.html#can-we-generalize-to-any-data",
+    "title": "Maximum Likelihood Estimation: Discrete Case",
+    "section": "Can we generalize to any data?",
+    "text": "Can we generalize to any data?"
+  },
+  {
+    "objectID": "slides/05/slides05.html#section-1",
+    "href": "slides/05/slides05.html#section-1",
+    "title": "Maximum Likelihood Estimation: Discrete Case",
+    "section": "",
+    "text": "Likelihood function\n\n\nLet \\(f(x; \\theta)\\) denote the probability mass function for a discrete distribution with associated parameter \\(\\theta\\). Suppose \\(X_1, X_2, ... , X_n\\) are a random sample from this distribution and \\(x_1, x_2, ... , x_n\\) are the actual observed values. Then, the likelihood function of \\(\\theta\\) is:\n  \n\n\n\n\n\n\n\n\n\n\nMaximum likelihood estimate\n\n\nA maximum likelihood estimate (MLE), \\(\\hat{\\theta}_{MLE}\\) is the value of \\(\\theta\\) that maximizes the likelihood function, or equivalently, that maximizes the log-likelihood \\(\\ln L(\\theta)\\)"
+  },
+  {
+    "objectID": "slides/05/slides05.html#binomial-data",
+    "href": "slides/05/slides05.html#binomial-data",
+    "title": "Maximum Likelihood Estimation: Discrete Case",
+    "section": "Binomial Data",
+    "text": "Binomial Data"
+  },
+  {
+    "objectID": "slides/05/slides05.html#is-the-likelihood-also-a-pdf",
+    "href": "slides/05/slides05.html#is-the-likelihood-also-a-pdf",
+    "title": "Maximum Likelihood Estimation: Discrete Case",
+    "section": "Is the likelihood also a PDF?",
+    "text": "Is the likelihood also a PDF?\n\ncountdown::countdown(2)\n\n\n−+\n02:00"
+  },
+  {
+    "objectID": "slides/05/slides05.html#aside-notation",
+    "href": "slides/05/slides05.html#aside-notation",
+    "title": "Maximum Likelihood Estimation: Discrete Case",
+    "section": "Aside: notation",
+    "text": "Aside: notation\n\n\n\n\n\n\nEstimate\n\n\n  \n\n\n\n\n\n\n\n\n\nEstimator"
+  },
+  {
+    "objectID": "slides/05/slides05.html#german-tank-problem",
+    "href": "slides/05/slides05.html#german-tank-problem",
+    "title": "Maximum Likelihood Estimation: Discrete Case",
+    "section": "German Tank Problem",
+    "text": "German Tank Problem"
+  },
+  {
+    "objectID": "slides/05/slides05.html#intuitioncomputational-examples",
+    "href": "slides/05/slides05.html#intuitioncomputational-examples",
+    "title": "Maximum Likelihood Estimation: Discrete Case",
+    "section": "Intuition/computational examples",
+    "text": "Intuition/computational examples"
+  },
+  {
     "objectID": "index.html",
     "href": "index.html",
     "title": "Stat250-S25",

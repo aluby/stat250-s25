@@ -28,6 +28,71 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #657b83; background-color: #fdf6e3; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #657b83; } /* Normal */
+    code span.al { color: #d33682; font-weight: bold; } /* Alert */
+    code span.an { color: #268bd2; } /* Annotation */
+    code span.at { color: #268bd2; } /* Attribute */
+    code span.bn { color: #2aa198; } /* BaseN */
+    code span.bu { color: #cb4b16; } /* BuiltIn */
+    code span.cf { color: #859900; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #2aa198; } /* Char */
+    code span.cn { color: #2aa198; font-weight: bold; } /* Constant */
+    code span.co { color: #93a1a1; font-style: italic; } /* Comment */
+    code span.cv { color: #2aa198; } /* CommentVar */
+    code span.do { color: #dc322f; } /* Documentation */
+    code span.dt { color: #b58900; font-weight: bold; } /* DataType */
+    code span.dv { color: #2aa198; } /* DecVal */
+    code span.er { color: #dc322f; text-decoration: underline; } /* Error */
+    code span.ex { color: #268bd2; font-weight: bold; } /* Extension */
+    code span.fl { color: #2aa198; } /* Float */
+    code span.fu { color: #268bd2; } /* Function */
+    code span.im { color: #2aa198; } /* Import */
+    code span.in { color: #b58900; } /* Information */
+    code span.kw { color: #859900; font-weight: bold; } /* Keyword */
+    code span.op { color: #859900; } /* Operator */
+    code span.ot { color: #859900; } /* Other */
+    code span.pp { color: #cb4b16; } /* Preprocessor */
+    code span.re { color: #268bd2; background-color: #eee8d5; } /* RegionMarker */
+    code span.sc { color: #dc322f; } /* SpecialChar */
+    code span.ss { color: #dc322f; } /* SpecialString */
+    code span.st { color: #2aa198; } /* String */
+    code span.va { color: #268bd2; } /* Variable */
+    code span.vs { color: #2aa198; } /* VerbatimString */
+    code span.wa { color: #cb4b16; } /* Warning */
   </style>
   <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-d2e46961e301105f835e67c2e02815b4.css">
   <link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -321,6 +386,8 @@
       margin-right: 0; 
     }
   </style>
+  <link href="../../site_libs/countdown-0.4.0/countdown.css" rel="stylesheet">
+  <script src="../../site_libs/countdown-0.4.0/countdown.js"></script>
 </head>
 <body class="quarto-light">
   <div class="reveal">
@@ -349,6 +416,134 @@ Prof Amanda Luby
 </section>
 <section id="section" class="slide level2">
 <h2></h2>
+<p>You are testing seeds from a new plant variety. You plant 10 seeds (n=10) and observe that 3 of them successfully germinate (k=3). Consider two hypotheses about the true germination probability (p) for this variety:</p>
+<p>Hypothesis A: <span class="math inline">\(p = 0.1\)</span> (10% germination rate)</p>
+<p>Hypothesis B: $p = 0.4 (40% germination rate)</p>
+<p>Given that you observed 3 germinations out of 10 seeds, which hypothesis (A or B) is more supported by the data?</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="countdown" id="timer_192166cc" data-update-every="1" tabindex="0" style="right:0;bottom:0;">
+<div class="countdown-controls"><button class="countdown-bump-down">−</button><button class="countdown-bump-up">+</button></div>
+<code class="countdown-time"><span class="countdown-digits minutes">02</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+</div>
+</div>
+</section>
+<section id="evaluating-intuitively" class="slide level2">
+<h2>Evaluating Intuitively</h2>
+</section>
+<section id="evaluating-formally-problem-set-up" class="slide level2">
+<h2>Evaluating Formally: Problem Set Up</h2>
+<ul>
+<li class="fragment">Let <span class="math inline">\(X\)</span> be the number of plants that successfully germinate</li>
+<li class="fragment"><span class="math inline">\(X \sim \text{Binom}(10, p)\)</span> and we observed <span class="math inline">\(X=3\)</span></li>
+</ul>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><span class="math inline">\(P(X=3)\)</span> if <span class="math inline">\(p=.1\)</span></p>
+</div><div class="column fragment" style="width:50%;">
+<p><span class="math inline">\(P(X=3)\)</span> if <span class="math inline">\(p=.4\)</span></p>
+</div></div>
+</div>
+</section>
+<section id="what-value-of-p-maximizes-the-probability-of-observing-the-data" class="slide level2">
+<h2>What value of <span class="math inline">\(p\)</span> <em>maximizes</em> the probability of observing the data?</h2>
+</section>
+<section id="can-we-generalize-to-any-data" class="slide level2">
+<h2>Can we generalize to <em>any</em> data?</h2>
+</section></section>
+<section>
+<section id="maximum-likelihood-estimation" class="title-slide slide level1 center">
+<h1>Maximum Likelihood Estimation</h1>
+
+</section>
+<section id="section-1" class="slide level2">
+<h2></h2>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Likelihood function</strong></p>
+</div>
+<div class="callout-content">
+<p>Let <span class="math inline">\(f(x; \theta)\)</span> denote the probability mass function for a discrete distribution with associated parameter <span class="math inline">\(\theta\)</span>. Suppose <span class="math inline">\(X_1, X_2, ... , X_n\)</span> are a random sample from this distribution and <span class="math inline">\(x_1, x_2, ... , x_n\)</span> are the actual observed values. Then, the <em>likelihood function</em> of <span class="math inline">\(\theta\)</span> is:</p>
+<p><br> <br> <br></p>
+</div>
+</div>
+</div>
+<div class="fragment">
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Maximum likelihood estimate</strong></p>
+</div>
+<div class="callout-content">
+<p>A maximum likelihood estimate (MLE), <span class="math inline">\(\hat{\theta}_{MLE}\)</span> is the value of <span class="math inline">\(\theta\)</span> that maximizes the likelihood function, or equivalently, that maximizes the log-likelihood <span class="math inline">\(\ln L(\theta)\)</span></p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="binomial-data" class="slide level2">
+<h2>Binomial Data</h2>
+</section>
+<section id="is-the-likelihood-also-a-pdf" class="slide level2">
+<h2>Is the likelihood also a PDF?</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a></a>countdown<span class="sc">::</span><span class="fu">countdown</span>(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="countdown" id="timer_f31c46d1" data-update-every="1" tabindex="0" style="right:0;bottom:0;">
+<div class="countdown-controls"><button class="countdown-bump-down">−</button><button class="countdown-bump-up">+</button></div>
+<code class="countdown-time"><span class="countdown-digits minutes">02</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+</div>
+</div>
+</section>
+<section id="aside-notation" class="slide level2">
+<h2>Aside: notation</h2>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Estimate</strong></p>
+</div>
+<div class="callout-content">
+<p><br> <br> <br></p>
+</div>
+</div>
+</div>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Estimator</strong></p>
+</div>
+<div class="callout-content">
+<p><br> <br> <br></p>
+</div>
+</div>
+</div>
+</section>
+<section id="german-tank-problem" class="slide level2">
+<h2>German Tank Problem</h2>
+</section></section>
+<section>
+<section id="continuous-random-variables" class="title-slide slide level1 center">
+<h1>Continuous Random Variables</h1>
+
+</section>
+<section id="intuitioncomputational-examples" class="slide level2">
+<h2>Intuition/computational examples</h2>
 
 
 </section></section>
@@ -569,44 +764,6 @@ Prof Amanda Luby
         ]
       });
     </script>
-    
-    <script>
-      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
-      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
-      // slide changes (different for each slide format).
-      (function () {
-        // dispatch for htmlwidgets
-        function fireSlideEnter() {
-          const event = window.document.createEvent("Event");
-          event.initEvent("slideenter", true, true);
-          window.document.dispatchEvent(event);
-        }
-
-        function fireSlideChanged(previousSlide, currentSlide) {
-          fireSlideEnter();
-
-          // dispatch for shiny
-          if (window.jQuery) {
-            if (previousSlide) {
-              window.jQuery(previousSlide).trigger("hidden");
-            }
-            if (currentSlide) {
-              window.jQuery(currentSlide).trigger("shown");
-            }
-          }
-        }
-
-        // hookup for slidy
-        if (window.w3c_slidy) {
-          window.w3c_slidy.add_observer(function (slide_num) {
-            // slide_num starts at position 1
-            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
-          });
-        }
-
-      })();
-    </script>
-
     <script id="quarto-html-after-body" type="application/javascript">
     window.document.addEventListener("DOMContentLoaded", function (event) {
       const toggleBodyColorMode = (bsSheetEl) => {
