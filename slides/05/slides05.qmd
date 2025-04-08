@@ -45,21 +45,98 @@ theme_set(slides_theme)
 
 # Warm up: daily prep example
 
-## Problem Set Up
+## 
+
+You are testing seeds from a new plant variety. You plant 10 seeds (n=10) and observe that 3 of them successfully germinate (k=3). Consider two hypotheses about the true germination probability (p) for this variety:
+
+Hypothesis A: $p = 0.1$ (10% germination rate)
+
+Hypothesis B: $p = 0.4 (40% germination rate)
+
+Given that you observed 3 germinations out of 10 seeds, which hypothesis (A or B) is more supported by the data?
+
+```{r}
+#| echo: false
+countdown::countdown(2)
+```
 
 ## Evaluating Intuitively
 
-## Evaluating Formally
+## Evaluating Formally: Problem Set Up
 
-## What value *maximizes* the probability?
+- Let $X$ be the number of plants that successfully germinate
+- $X \sim \text{Binom}(10, p)$ and we observed $X=3$
+
+. . . 
+
+:::: columns
+::: {.column width="50%"}
+$P(X=3)$ if $p=.1$
+
+:::
+
+::: {.column .fragment width="50%"}
+$P(X=3)$ if $p=.4$
+
+:::
+::::
+
+## What value of $p$ *maximizes* the probability of observing the data? 
 
 ## Can we generalize to *any* data? 
 
 # Maximum Likelihood Estimation
 
+## 
+
+::: callout-note
+## Likelihood function
+
+Let $f(x; \theta)$ denote the probability mass function for a discrete distribution with associated parameter $\theta$. Suppose $X_1, X_2, ... , X_n$ are a random sample from this distribution and $x_1, x_2, ... , x_n$ are the actual observed values. Then, the *likelihood function* of $\theta$ is:
+
+<br>
+<br>
+<br>
+:::
+
+. . . 
+
+::: callout-note
+## Maximum likelihood estimate
+
+A maximum likelihood estimate (MLE), $\hat{\theta}_{MLE}$ is the value of $\theta$ that maximizes the likelihood function, or equivalently, that maximizes the log-likelihood $\ln L(\theta)$
+
+:::
+
 ## Binomial Data 
 
-## General Discrete Data
+## Is the likelihood also a PDF?
+
+```{r}
+countdown::countdown(2)
+```
+
+## Aside: notation
+
+::: callout-note
+## Estimate
+
+<br>
+<br>
+<br>
+:::
+
+::: callout-note
+## Estimator
+
+<br>
+<br>
+<br>
+:::
+
+## German Tank Problem
+
+# Continuous Random Variables
 
 ## Intuition/computational examples
 
