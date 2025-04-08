@@ -5,6 +5,15 @@ format: html
 
 Landing page for Stat250 course materials in Spring 2025
 
+# In-Class Materials
+
 Day02: [slides](/slides/02/slides02.html) [handout](/notes/02-permutation/notes02.pdf) [r code](/notes/02-permutation/activity02.html)
 
 Day03: [handout](/notes/03-sampling-dists/notes03.pdf) [activity qmd](/notes/03-sampling-dists/activity03.html)
+
+Day04: [slides](/slides/04/slides04.html) | [handout](/notes/04-probability-notes04.pdf)
+
+# Other Resources and Readings
+
+- [R Basics](readings/r-basics.html)
+- How to do [homework in R in Stat250](readings/r-homework-stat250.html)

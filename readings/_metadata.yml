@@ -1,0 +1,16 @@
+institute: "Carleton College <br> Stat 250 - Spring 2025"
+author: "Prof Amanda Luby"
+format:
+  html:
+    code-tools: true
+    table-of-contents: true
+execute:
+  freeze: auto
+  echo: true
+  warning: false
+  message: false
+engine: knitr
+knitr:
+  opts_chunk: 
+    R.options:
+      width: 80
