@@ -45,4 +45,21 @@ theme_set(slides_theme)
 
 # Warm up: daily prep example
 
-## 
+## Problem Set Up
+
+## Evaluating Intuitively
+
+## Evaluating Formally
+
+## What value *maximizes* the probability?
+
+## Can we generalize to *any* data? 
+
+# Maximum Likelihood Estimation
+
+## Binomial Data 
+
+## General Discrete Data
+
+## Intuition/computational examples
+
