@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.6.32">
 
   <meta name="author" content="Prof Amanda Luby">
-  <title>Stat 250 – Maximum Likelihood Estimation: Discrete Case</title>
+  <title>Stat 250 – Maximum Likelihood Estimation</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -388,13 +388,22 @@
   </style>
   <link href="../../site_libs/countdown-0.4.0/countdown.css" rel="stylesheet">
   <script src="../../site_libs/countdown-0.4.0/countdown.js"></script>
+  <link href="../../site_libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet">
+  <script src="../../site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+  <script src="../../site_libs/plotly-binding-4.10.4/plotly.js"></script>
+  <script src="../../site_libs/typedarray-0.1/typedarray.min.js"></script>
+  <script src="../../site_libs/jquery-3.5.1/jquery.min.js"></script>
+  <link href="../../site_libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet">
+  <script src="../../site_libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
+  <link href="../../site_libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet">
+  <script src="../../site_libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
 </head>
 <body class="quarto-light">
   <div class="reveal">
     <div class="slides">
 
 <section id="title-slide" data-background-gradient="linear-gradient(to right, #46337e, #440154)" data-slide-number="none" class="quarto-title-block center">
-  <h1 class="title">Maximum Likelihood Estimation: Discrete Case</h1>
+  <h1 class="title">Maximum Likelihood Estimation</h1>
   <p class="subtitle">Day 05</p>
 
 <div class="quarto-title-authors">
@@ -417,14 +426,18 @@ Prof Amanda Luby
 <section id="section" class="slide level2">
 <h2></h2>
 <p>You are testing seeds from a new plant variety. You plant 10 seeds (n=10) and observe that 3 of them successfully germinate (k=3). Consider two hypotheses about the true germination probability (p) for this variety:</p>
+<div class="fragment">
 <p>Hypothesis A: <span class="math inline">\(p = 0.1\)</span> (10% germination rate)</p>
-<p>Hypothesis B: $p = 0.4 (40% germination rate)</p>
+<p>Hypothesis B: <span class="math inline">\(p = 0.4\)</span> (40% germination rate)</p>
+</div>
+<div class="fragment">
 <p>Given that you observed 3 germinations out of 10 seeds, which hypothesis (A or B) is more supported by the data?</p>
 <div class="cell">
 <div class="cell-output-display">
-<div class="countdown" id="timer_192166cc" data-update-every="1" tabindex="0" style="right:0;bottom:0;">
+<div class="countdown" id="timer_18093097" data-update-every="1" tabindex="0" style="right:0;bottom:0;">
 <div class="countdown-controls"><button class="countdown-bump-down">−</button><button class="countdown-bump-up">+</button></div>
 <code class="countdown-time"><span class="countdown-digits minutes">02</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
 </div>
 </div>
 </div>
@@ -447,8 +460,78 @@ Prof Amanda Luby
 </div></div>
 </div>
 </section>
-<section id="what-value-of-p-maximizes-the-probability-of-observing-the-data" class="slide level2">
-<h2>What value of <span class="math inline">\(p\)</span> <em>maximizes</em> the probability of observing the data?</h2>
+<section id="section-1" class="slide level2">
+<h2></h2>
+<p>In general, the <em>likelihood</em> of seeing <span class="math inline">\(X=3\)</span> given <span class="math inline">\(p\)</span> is:</p>
+<p><span class="math display">\[{10 \choose 3} p^3 (1-p)^7\]</span></p>
+<div class="fragment">
+<p>What value of <span class="math inline">\(p\)</span> <em>maximizes</em> this likelihood?</p>
+</div>
+</section>
+<section id="methods-of-maximizing" class="slide level2">
+<h2>Methods of maximizing</h2>
+<ol type="1">
+<li class="fragment"><p>Approximate the solution graphically</p></li>
+<li class="fragment"><p>Find a numerical approximation</p></li>
+<li class="fragment"><p>Use calculus</p></li>
+</ol>
+</section>
+<section id="approximating-with-a-graph" class="slide level2">
+<h2>Approximating with a graph</h2>
+<div class="cell">
+<div class="cell-output-display">
+<div class="plotly html-widget html-fill-item" id="htmlwidget-821264599181211ac38b" style="width:960px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-821264599181211ac38b">{"x":{"data":[{"x":[0,0.01,0.02,0.029999999999999999,0.040000000000000001,0.050000000000000003,0.059999999999999998,0.070000000000000007,0.080000000000000002,0.089999999999999997,0.10000000000000001,0.11,0.12,0.13,0.14000000000000001,0.14999999999999999,0.16,0.17000000000000001,0.17999999999999999,0.19,0.20000000000000001,0.20999999999999999,0.22,0.23000000000000001,0.23999999999999999,0.25,0.26000000000000001,0.27000000000000002,0.28000000000000003,0.28999999999999998,0.29999999999999999,0.31,0.32000000000000001,0.33000000000000002,0.34000000000000002,0.35000000000000003,0.35999999999999999,0.37,0.38,0.39000000000000001,0.40000000000000002,0.41000000000000003,0.41999999999999998,0.42999999999999999,0.44,0.45000000000000001,0.46000000000000002,0.47000000000000003,0.47999999999999998,0.48999999999999999,0.5,0.51000000000000001,0.52000000000000002,0.53000000000000003,0.54000000000000004,0.55000000000000004,0.56000000000000005,0.57000000000000006,0.57999999999999996,0.58999999999999997,0.59999999999999998,0.60999999999999999,0.62,0.63,0.64000000000000001,0.65000000000000002,0.66000000000000003,0.67000000000000004,0.68000000000000005,0.69000000000000006,0.70000000000000007,0.70999999999999996,0.71999999999999997,0.72999999999999998,0.73999999999999999,0.75,0.76000000000000001,0.77000000000000002,0.78000000000000003,0.79000000000000004,0.80000000000000004,0.81000000000000005,0.82000000000000006,0.83000000000000007,0.83999999999999997,0.84999999999999998,0.85999999999999999,0.87,0.88,0.89000000000000001,0.90000000000000002,0.91000000000000003,0.92000000000000004,0.93000000000000005,0.94000000000000006,0.95000000000000007,0.95999999999999996,0.96999999999999997,0.97999999999999998,0.98999999999999999,1],"y":[0,0.00011184784174883881,0.00083340051191685123,0.0026178644170908602,0.0057711166318706684,0.010475059441406248,0.016808539241473217,0.024766007834207574,0.034274095179969349,0.045206253973377485,0.057395628000000018,0.070646288095138926,0.084742971663266595,0.099459454121591115,0.1145656732996006,0.1298337207539062,0.14504280713991288,0.15998330221444493,0.17445994372208523,0.18829430333829311,0.20132659200000011,0.21341688134498227,0.22444581260052363,0.23431485910536057,0.24294620371227768,0.25028228759765625,0.25628508249440385,0.26093513406166352,0.2642304200041562,0.26618506265159758,0.26682793199999982,0.2662011716974545,0.2643586771228556,0.26136455155259103,0.25729156343316584,0.2522196249726561,0.24623430962648188,0.23942542357887128,0.23188564400621445,0.2237092347479156,0.21499084799999998,0.20582441878225233,0.19630215720671124,0.18651364198955517,0.17654501719544965,0.16647829287890639,0.15639074908680323,0.1463544416055563,0.13643580687117191,0.12669536260619077,0.1171875,0.10796036260379124,0.099055806564217641,0.090509436366204024,0.082350709891032228,0.074603106316406223,0.067284350186343586,0.060406684856086343,0.053977188466420557,0.047998125618487104,0.042467328000000006,0.037378597352407325,0.032722124361583414,0.028484917297770303,0.024651234519338185,0.021203015285156241,0.018120303687599301,0.015381660918109731,0.012964561505432359,0.010845769618788588,0.0090016919999999882,0.0074087045755566036,0.0060434502974963744,0.0048831062663657427,0.0039056186961113097,0.00308990478515625,0.0024160210557861881,0.0018652982109543001,0.0014204430293594103,0.0010656082717993177,0.00078643199999999902,0.00057004810901507775,0.0004050702415245303,0.0002815515825823804,0.00019092332221562906,0.00012591481640625011,8.0458670040268841e-05,4.9584104028061208e-05,2.9302048633651192e-05,1.6485421743238787e-05,8.7479999999999881e-06,4.32516807875879e-06,1.9596325158911932e-06,7.949070922211962e-07,2.7901243514879817e-07,8.0378906249999271e-08,1.7394617548800103e-08,2.395219021200015e-09,1.4456709120000088e-10,1.1643588000000071e-12,0],"text":["p: 0.00<br />prob_p: 0.000000e+00","p: 0.01<br />prob_p: 1.118478e-04","p: 0.02<br />prob_p: 8.334005e-04","p: 0.03<br />prob_p: 2.617864e-03","p: 0.04<br />prob_p: 5.771117e-03","p: 0.05<br />prob_p: 1.047506e-02","p: 0.06<br />prob_p: 1.680854e-02","p: 0.07<br />prob_p: 2.476601e-02","p: 0.08<br />prob_p: 3.427410e-02","p: 0.09<br />prob_p: 4.520625e-02","p: 0.10<br />prob_p: 5.739563e-02","p: 0.11<br />prob_p: 7.064629e-02","p: 0.12<br />prob_p: 8.474297e-02","p: 0.13<br />prob_p: 9.945945e-02","p: 0.14<br />prob_p: 1.145657e-01","p: 0.15<br />prob_p: 1.298337e-01","p: 0.16<br />prob_p: 1.450428e-01","p: 0.17<br />prob_p: 1.599833e-01","p: 0.18<br />prob_p: 1.744599e-01","p: 0.19<br />prob_p: 1.882943e-01","p: 0.20<br />prob_p: 2.013266e-01","p: 0.21<br />prob_p: 2.134169e-01","p: 0.22<br />prob_p: 2.244458e-01","p: 0.23<br />prob_p: 2.343149e-01","p: 0.24<br />prob_p: 2.429462e-01","p: 0.25<br />prob_p: 2.502823e-01","p: 0.26<br />prob_p: 2.562851e-01","p: 0.27<br />prob_p: 2.609351e-01","p: 0.28<br />prob_p: 2.642304e-01","p: 0.29<br />prob_p: 2.661851e-01","p: 0.30<br />prob_p: 2.668279e-01","p: 0.31<br />prob_p: 2.662012e-01","p: 0.32<br />prob_p: 2.643587e-01","p: 0.33<br />prob_p: 2.613646e-01","p: 0.34<br />prob_p: 2.572916e-01","p: 0.35<br />prob_p: 2.522196e-01","p: 0.36<br />prob_p: 2.462343e-01","p: 0.37<br />prob_p: 2.394254e-01","p: 0.38<br />prob_p: 2.318856e-01","p: 0.39<br />prob_p: 2.237092e-01","p: 0.40<br />prob_p: 2.149908e-01","p: 0.41<br />prob_p: 2.058244e-01","p: 0.42<br />prob_p: 1.963022e-01","p: 0.43<br />prob_p: 1.865136e-01","p: 0.44<br />prob_p: 1.765450e-01","p: 0.45<br />prob_p: 1.664783e-01","p: 0.46<br />prob_p: 1.563907e-01","p: 0.47<br />prob_p: 1.463544e-01","p: 0.48<br />prob_p: 1.364358e-01","p: 0.49<br />prob_p: 1.266954e-01","p: 0.50<br />prob_p: 1.171875e-01","p: 0.51<br />prob_p: 1.079604e-01","p: 0.52<br />prob_p: 9.905581e-02","p: 0.53<br />prob_p: 9.050944e-02","p: 0.54<br />prob_p: 8.235071e-02","p: 0.55<br />prob_p: 7.460311e-02","p: 0.56<br />prob_p: 6.728435e-02","p: 0.57<br />prob_p: 6.040668e-02","p: 0.58<br />prob_p: 5.397719e-02","p: 0.59<br />prob_p: 4.799813e-02","p: 0.60<br />prob_p: 4.246733e-02","p: 0.61<br />prob_p: 3.737860e-02","p: 0.62<br />prob_p: 3.272212e-02","p: 0.63<br />prob_p: 2.848492e-02","p: 0.64<br />prob_p: 2.465123e-02","p: 0.65<br />prob_p: 2.120302e-02","p: 0.66<br />prob_p: 1.812030e-02","p: 0.67<br />prob_p: 1.538166e-02","p: 0.68<br />prob_p: 1.296456e-02","p: 0.69<br />prob_p: 1.084577e-02","p: 0.70<br />prob_p: 9.001692e-03","p: 0.71<br />prob_p: 7.408705e-03","p: 0.72<br />prob_p: 6.043450e-03","p: 0.73<br />prob_p: 4.883106e-03","p: 0.74<br />prob_p: 3.905619e-03","p: 0.75<br />prob_p: 3.089905e-03","p: 0.76<br />prob_p: 2.416021e-03","p: 0.77<br />prob_p: 1.865298e-03","p: 0.78<br />prob_p: 1.420443e-03","p: 0.79<br />prob_p: 1.065608e-03","p: 0.80<br />prob_p: 7.864320e-04","p: 0.81<br />prob_p: 5.700481e-04","p: 0.82<br />prob_p: 4.050702e-04","p: 0.83<br />prob_p: 2.815516e-04","p: 0.84<br />prob_p: 1.909233e-04","p: 0.85<br />prob_p: 1.259148e-04","p: 0.86<br />prob_p: 8.045867e-05","p: 0.87<br />prob_p: 4.958410e-05","p: 0.88<br />prob_p: 2.930205e-05","p: 0.89<br />prob_p: 1.648542e-05","p: 0.90<br />prob_p: 8.748000e-06","p: 0.91<br />prob_p: 4.325168e-06","p: 0.92<br />prob_p: 1.959633e-06","p: 0.93<br />prob_p: 7.949071e-07","p: 0.94<br />prob_p: 2.790124e-07","p: 0.95<br />prob_p: 8.037891e-08","p: 0.96<br />prob_p: 1.739462e-08","p: 0.97<br />prob_p: 2.395219e-09","p: 0.98<br />prob_p: 1.445671e-10","p: 0.99<br />prob_p: 1.164359e-12","p: 1.00<br />prob_p: 0.000000e+00"],"type":"scatter","mode":"lines","line":{"width":1.8897637795275593,"color":"rgba(0,0,0,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[0.29999999999999999,0.29999999999999999],"y":[-0.013341396599999993,0.28016932859999982],"text":"xintercept: 0.3","type":"scatter","mode":"lines","line":{"width":1.8897637795275593,"color":"rgba(139,0,0,1)","dash":"dash"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":30.611872146118724,"r":7.3059360730593621,"b":44.56621004566211,"l":43.105022831050235},"paper_bgcolor":"rgba(240,241,235,1)","font":{"color":"rgba(0,0,0,1)","family":"serif","size":14.611872146118724},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-0.050000000000000003,1.05],"tickmode":"array","ticktext":["0.00","0.25","0.50","0.75","1.00"],"tickvals":[0,0.25,0.5,0.75,1],"categoryorder":"array","categoryarray":["0.00","0.25","0.50","0.75","1.00"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.6529680365296811,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"serif","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176002,"zeroline":false,"anchor":"y","title":{"text":"p","font":{"color":"rgba(0,0,0,1)","family":"serif","size":14.611872146118724}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-0.013341396599999993,0.28016932859999982],"tickmode":"array","ticktext":["0.0","0.1","0.2"],"tickvals":[0,0.10000000000000001,0.20000000000000001],"categoryorder":"array","categoryarray":["0.0","0.1","0.2"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.6529680365296811,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"serif","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176002,"zeroline":false,"anchor":"x","title":{"text":"prob_p","font":{"color":"rgba(0,0,0,1)","family":"serif","size":14.611872146118724}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":null,"bordercolor":null,"borderwidth":0,"font":{"color":"rgba(0,0,0,1)","family":"serif","size":11.68949771689498}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"50917028c1b":{"x":{},"y":{},"type":"scatter"},"509283c4c6a":{"xintercept":{}}},"cur_data":"50917028c1b","visdat":{"50917028c1b":["function (y) ","x"],"509283c4c6a":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</section>
+<section id="approximating-with-a-graph-code" class="slide level2">
+<h2>Approximating with a graph: code</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1" data-code-line-numbers="1|2|3|4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a></a>germ_function <span class="ot">&lt;-</span> <span class="cf">function</span>(p) {<span class="fu">choose</span>(<span class="dv">10</span>,<span class="dv">3</span>) <span class="sc">*</span> p<span class="sc">^</span><span class="dv">3</span> <span class="sc">*</span> (<span class="dv">1</span><span class="sc">-</span>p)<span class="sc">^</span><span class="dv">7</span>} <span class="co"># define function</span></span>
+<span id="cb1-2"><a></a><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb1-3"><a></a>  <span class="fu">geom_function</span>(<span class="at">fun =</span> germ_function) <span class="sc">+</span></span>
+<span id="cb1-4"><a></a>  <span class="fu">xlim</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell fragment">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="slides05_files/figure-revealjs/unnamed-chunk-3-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="approximating-numerically" class="slide level2">
+<h2>Approximating numerically</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a></a><span class="fu">optimize</span>(germ_function, <span class="at">interval =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="at">maximum =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell fragment">
+<div class="cell-output cell-output-stdout">
+<pre><code>$maximum
+[1] 0.3000157
+
+$objective
+[1] 0.2668279</code></pre>
+</div>
+</div>
+</section>
+<section id="with-calculus" class="slide level2">
+<h2>With calculus</h2>
+</section>
+<section id="a-trick" class="slide level2">
+<h2>A “trick”</h2>
+<p>Probability functions often are tricky to differentiate because of the product rule. Lucky for us, we can maximize the log instead.</p>
+<div class="fragment">
+<div class="cell">
+<div class="cell-output-display">
+<div class="plotly html-widget html-fill-item" id="htmlwidget-c540368034c4566b916a" style="width:960px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-c540368034c4566b916a">{"x":{"data":[{"x":[0,0.01,0.02,0.029999999999999999,0.040000000000000001,0.050000000000000003,0.059999999999999998,0.070000000000000007,0.080000000000000002,0.089999999999999997,0.10000000000000001,0.11,0.12,0.13,0.14000000000000001,0.14999999999999999,0.16,0.17000000000000001,0.17999999999999999,0.19,0.20000000000000001,0.20999999999999999,0.22,0.23000000000000001,0.23999999999999999,0.25,0.26000000000000001,0.27000000000000002,0.28000000000000003,0.28999999999999998,0.29999999999999999,0.31,0.32000000000000001,0.33000000000000002,0.34000000000000002,0.35000000000000003,0.35999999999999999,0.37,0.38,0.39000000000000001,0.40000000000000002,0.41000000000000003,0.41999999999999998,0.42999999999999999,0.44,0.45000000000000001,0.46000000000000002,0.47000000000000003,0.47999999999999998,0.48999999999999999,0.5,0.51000000000000001,0.52000000000000002,0.53000000000000003,0.54000000000000004,0.55000000000000004,0.56000000000000005,0.57000000000000006,0.57999999999999996,0.58999999999999997,0.59999999999999998,0.60999999999999999,0.62,0.63,0.64000000000000001,0.65000000000000002,0.66000000000000003,0.67000000000000004,0.68000000000000005,0.69000000000000006,0.70000000000000007,0.70999999999999996,0.71999999999999997,0.72999999999999998,0.73999999999999999,0.75,0.76000000000000001,0.77000000000000002,0.78000000000000003,0.79000000000000004,0.80000000000000004,0.81000000000000005,0.82000000000000006,0.83000000000000007,0.83999999999999997,0.84999999999999998,0.85999999999999999,0.87,0.88,0.89000000000000001,0.90000000000000002,0.91000000000000003,0.92000000000000004,0.93000000000000005,0.94000000000000006,0.95000000000000007,0.95999999999999996,0.96999999999999997,0.97999999999999998,0.98999999999999999,1],"y":[0,0.00011184784174883881,0.00083340051191685123,0.0026178644170908602,0.0057711166318706684,0.010475059441406248,0.016808539241473217,0.024766007834207574,0.034274095179969349,0.045206253973377485,0.057395628000000018,0.070646288095138926,0.084742971663266595,0.099459454121591115,0.1145656732996006,0.1298337207539062,0.14504280713991288,0.15998330221444493,0.17445994372208523,0.18829430333829311,0.20132659200000011,0.21341688134498227,0.22444581260052363,0.23431485910536057,0.24294620371227768,0.25028228759765625,0.25628508249440385,0.26093513406166352,0.2642304200041562,0.26618506265159758,0.26682793199999982,0.2662011716974545,0.2643586771228556,0.26136455155259103,0.25729156343316584,0.2522196249726561,0.24623430962648188,0.23942542357887128,0.23188564400621445,0.2237092347479156,0.21499084799999998,0.20582441878225233,0.19630215720671124,0.18651364198955517,0.17654501719544965,0.16647829287890639,0.15639074908680323,0.1463544416055563,0.13643580687117191,0.12669536260619077,0.1171875,0.10796036260379124,0.099055806564217641,0.090509436366204024,0.082350709891032228,0.074603106316406223,0.067284350186343586,0.060406684856086343,0.053977188466420557,0.047998125618487104,0.042467328000000006,0.037378597352407325,0.032722124361583414,0.028484917297770303,0.024651234519338185,0.021203015285156241,0.018120303687599301,0.015381660918109731,0.012964561505432359,0.010845769618788588,0.0090016919999999882,0.0074087045755566036,0.0060434502974963744,0.0048831062663657427,0.0039056186961113097,0.00308990478515625,0.0024160210557861881,0.0018652982109543001,0.0014204430293594103,0.0010656082717993177,0.00078643199999999902,0.00057004810901507775,0.0004050702415245303,0.0002815515825823804,0.00019092332221562906,0.00012591481640625011,8.0458670040268841e-05,4.9584104028061208e-05,2.9302048633651192e-05,1.6485421743238787e-05,8.7479999999999881e-06,4.32516807875879e-06,1.9596325158911932e-06,7.949070922211962e-07,2.7901243514879817e-07,8.0378906249999271e-08,1.7394617548800103e-08,2.395219021200015e-09,1.4456709120000088e-10,1.1643588000000071e-12,0],"text":["p: 0.00<br />prob_p: 0.000000e+00","p: 0.01<br />prob_p: 1.118478e-04","p: 0.02<br />prob_p: 8.334005e-04","p: 0.03<br />prob_p: 2.617864e-03","p: 0.04<br />prob_p: 5.771117e-03","p: 0.05<br />prob_p: 1.047506e-02","p: 0.06<br />prob_p: 1.680854e-02","p: 0.07<br />prob_p: 2.476601e-02","p: 0.08<br />prob_p: 3.427410e-02","p: 0.09<br />prob_p: 4.520625e-02","p: 0.10<br />prob_p: 5.739563e-02","p: 0.11<br />prob_p: 7.064629e-02","p: 0.12<br />prob_p: 8.474297e-02","p: 0.13<br />prob_p: 9.945945e-02","p: 0.14<br />prob_p: 1.145657e-01","p: 0.15<br />prob_p: 1.298337e-01","p: 0.16<br />prob_p: 1.450428e-01","p: 0.17<br />prob_p: 1.599833e-01","p: 0.18<br />prob_p: 1.744599e-01","p: 0.19<br />prob_p: 1.882943e-01","p: 0.20<br />prob_p: 2.013266e-01","p: 0.21<br />prob_p: 2.134169e-01","p: 0.22<br />prob_p: 2.244458e-01","p: 0.23<br />prob_p: 2.343149e-01","p: 0.24<br />prob_p: 2.429462e-01","p: 0.25<br />prob_p: 2.502823e-01","p: 0.26<br />prob_p: 2.562851e-01","p: 0.27<br />prob_p: 2.609351e-01","p: 0.28<br />prob_p: 2.642304e-01","p: 0.29<br />prob_p: 2.661851e-01","p: 0.30<br />prob_p: 2.668279e-01","p: 0.31<br />prob_p: 2.662012e-01","p: 0.32<br />prob_p: 2.643587e-01","p: 0.33<br />prob_p: 2.613646e-01","p: 0.34<br />prob_p: 2.572916e-01","p: 0.35<br />prob_p: 2.522196e-01","p: 0.36<br />prob_p: 2.462343e-01","p: 0.37<br />prob_p: 2.394254e-01","p: 0.38<br />prob_p: 2.318856e-01","p: 0.39<br />prob_p: 2.237092e-01","p: 0.40<br />prob_p: 2.149908e-01","p: 0.41<br />prob_p: 2.058244e-01","p: 0.42<br />prob_p: 1.963022e-01","p: 0.43<br />prob_p: 1.865136e-01","p: 0.44<br />prob_p: 1.765450e-01","p: 0.45<br />prob_p: 1.664783e-01","p: 0.46<br />prob_p: 1.563907e-01","p: 0.47<br />prob_p: 1.463544e-01","p: 0.48<br />prob_p: 1.364358e-01","p: 0.49<br />prob_p: 1.266954e-01","p: 0.50<br />prob_p: 1.171875e-01","p: 0.51<br />prob_p: 1.079604e-01","p: 0.52<br />prob_p: 9.905581e-02","p: 0.53<br />prob_p: 9.050944e-02","p: 0.54<br />prob_p: 8.235071e-02","p: 0.55<br />prob_p: 7.460311e-02","p: 0.56<br />prob_p: 6.728435e-02","p: 0.57<br />prob_p: 6.040668e-02","p: 0.58<br />prob_p: 5.397719e-02","p: 0.59<br />prob_p: 4.799813e-02","p: 0.60<br />prob_p: 4.246733e-02","p: 0.61<br />prob_p: 3.737860e-02","p: 0.62<br />prob_p: 3.272212e-02","p: 0.63<br />prob_p: 2.848492e-02","p: 0.64<br />prob_p: 2.465123e-02","p: 0.65<br />prob_p: 2.120302e-02","p: 0.66<br />prob_p: 1.812030e-02","p: 0.67<br />prob_p: 1.538166e-02","p: 0.68<br />prob_p: 1.296456e-02","p: 0.69<br />prob_p: 1.084577e-02","p: 0.70<br />prob_p: 9.001692e-03","p: 0.71<br />prob_p: 7.408705e-03","p: 0.72<br />prob_p: 6.043450e-03","p: 0.73<br />prob_p: 4.883106e-03","p: 0.74<br />prob_p: 3.905619e-03","p: 0.75<br />prob_p: 3.089905e-03","p: 0.76<br />prob_p: 2.416021e-03","p: 0.77<br />prob_p: 1.865298e-03","p: 0.78<br />prob_p: 1.420443e-03","p: 0.79<br />prob_p: 1.065608e-03","p: 0.80<br />prob_p: 7.864320e-04","p: 0.81<br />prob_p: 5.700481e-04","p: 0.82<br />prob_p: 4.050702e-04","p: 0.83<br />prob_p: 2.815516e-04","p: 0.84<br />prob_p: 1.909233e-04","p: 0.85<br />prob_p: 1.259148e-04","p: 0.86<br />prob_p: 8.045867e-05","p: 0.87<br />prob_p: 4.958410e-05","p: 0.88<br />prob_p: 2.930205e-05","p: 0.89<br />prob_p: 1.648542e-05","p: 0.90<br />prob_p: 8.748000e-06","p: 0.91<br />prob_p: 4.325168e-06","p: 0.92<br />prob_p: 1.959633e-06","p: 0.93<br />prob_p: 7.949071e-07","p: 0.94<br />prob_p: 2.790124e-07","p: 0.95<br />prob_p: 8.037891e-08","p: 0.96<br />prob_p: 1.739462e-08","p: 0.97<br />prob_p: 2.395219e-09","p: 0.98<br />prob_p: 1.445671e-10","p: 0.99<br />prob_p: 1.164359e-12","p: 1.00<br />prob_p: 0.000000e+00"],"type":"scatter","mode":"lines","line":{"width":1.8897637795275593,"color":"rgba(0,0,0,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[0.29999999999999999,0.29999999999999999],"y":[-0.013341396599999993,0.28016932859999982],"text":"xintercept: 0.3","type":"scatter","mode":"lines","line":{"width":1.8897637795275593,"color":"rgba(139,0,0,1)","dash":"dash"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[0,0.01,0.02,0.029999999999999999,0.040000000000000001,0.050000000000000003,0.059999999999999998,0.070000000000000007,0.080000000000000002,0.089999999999999997,0.10000000000000001,0.11,0.12,0.13,0.14000000000000001,0.14999999999999999,0.16,0.17000000000000001,0.17999999999999999,0.19,0.20000000000000001,0.20999999999999999,0.22,0.23000000000000001,0.23999999999999999,0.25,0.26000000000000001,0.27000000000000002,0.28000000000000003,0.28999999999999998,0.29999999999999999,0.31,0.32000000000000001,0.33000000000000002,0.34000000000000002,0.35000000000000003,0.35999999999999999,0.37,0.38,0.39000000000000001,0.40000000000000002,0.41000000000000003,0.41999999999999998,0.42999999999999999,0.44,0.45000000000000001,0.46000000000000002,0.47000000000000003,0.47999999999999998,0.48999999999999999,0.5,0.51000000000000001,0.52000000000000002,0.53000000000000003,0.54000000000000004,0.55000000000000004,0.56000000000000005,0.57000000000000006,0.57999999999999996,0.58999999999999997,0.59999999999999998,0.60999999999999999,0.62,0.63,0.64000000000000001,0.65000000000000002,0.66000000000000003,0.67000000000000004,0.68000000000000005,0.69000000000000006,0.70000000000000007,0.70999999999999996,0.71999999999999997,0.72999999999999998,0.73999999999999999,0.75,0.76000000000000001,0.77000000000000002,0.78000000000000003,0.79000000000000004,0.80000000000000004,0.81000000000000005,0.82000000000000006,0.83000000000000007,0.83999999999999997,0.84999999999999998,0.85999999999999999,0.87,0.88,0.89000000000000001,0.90000000000000002,0.91000000000000003,0.92000000000000004,0.93000000000000005,0.94000000000000006,0.95000000000000007,0.95999999999999996,0.96999999999999997,0.97999999999999998,0.98999999999999999,1],"y":[null,-9.0983711661567384,-7.0899962247250281,-5.9453964015708589,-5.1548896934643427,-4.5587581385927809,-4.0858682335246765,-3.6982832178601366,-3.3733654527160772,-3.0965198394722591,-2.8577871458048749,-2.6500697105787769,-2.4681324663874218,-2.3080052141321712,-2.1666070544785376,-2.0415007183600227,-1.9307263584763288,-1.8326858303540341,-1.7460601125606015,-1.6697490968924744,-1.6028268537197228,-1.544507836659448,-1.4941209701967777,-1.4510895163356317,-1.4149152440507133,-1.3851658477400923,-1.3614648506052331,-1.3434834310471424,-1.3309337534608687,-1.3235634878502383,-1.3211512777668892,-1.3235029714626139,-1.3304484724669416,-1.3418390969626652,-1.3575453490654055,-1.3774550433611674,-1.4014717182128347,-1.4295132944254654,-1.4615109426040696,-1.4974081294967498,-1.5371598192023541,-1.5807318096459082,-1.6281001884238266,-1.6792508951763285,-1.734179380198039,-1.7928903511606111,-1.8553976016816616,-1.9217239171038385,-1.9919010543052034,-2.0659697936967074,-2.1439800628174073,-2.225991132151504,-2.3120718849993493,-2.4023011644720924,-2.49676820198238,-2.5955731330092169,-2.6988276074655926,-2.8066555037402807,-2.9191937574760312,-3.0365933184515543,-3.1590202516350114,-3.2866570016714087,-3.4197038438788927,-3.5583805494146983,-3.7029282978270821,-3.853611876986061,-4.0107222187064622,-4.1745793286606085,-4.3455356819724624,-4.5239801719110666,-4.7103427193157046,-4.9050996760696028,-5.1087801888242739,-5.3219737316233902,-5.5453390713359836,-5.7796150024125312,-6.0256332838042557,-6.2843343400337686,-6.556786463521882,-6.8442094956338435,-7.1480042981992868,-7.4697897989164703,-7.8114500700329579,-8.1751948853155643,-8.5636386648904566,-8.9799049399124478,-9.4277669210315338,-9.911840258904359,-10.437853125148246,-11.013034098313856,-11.646685455149754,-12.351059556194784,-13.142753594192898,-14.045040594251912,-15.092009485692477,-16.336514055258551,-17.867105014856119,-19.849791160911945,-22.657277417167528,-27.47885056669509,null],"text":["p: 0.00<br />log(prob_p):       -Inf","p: 0.01<br />log(prob_p):  -9.098371","p: 0.02<br />log(prob_p):  -7.089996","p: 0.03<br />log(prob_p):  -5.945396","p: 0.04<br />log(prob_p):  -5.154890","p: 0.05<br />log(prob_p):  -4.558758","p: 0.06<br />log(prob_p):  -4.085868","p: 0.07<br />log(prob_p):  -3.698283","p: 0.08<br />log(prob_p):  -3.373365","p: 0.09<br />log(prob_p):  -3.096520","p: 0.10<br />log(prob_p):  -2.857787","p: 0.11<br />log(prob_p):  -2.650070","p: 0.12<br />log(prob_p):  -2.468132","p: 0.13<br />log(prob_p):  -2.308005","p: 0.14<br />log(prob_p):  -2.166607","p: 0.15<br />log(prob_p):  -2.041501","p: 0.16<br />log(prob_p):  -1.930726","p: 0.17<br />log(prob_p):  -1.832686","p: 0.18<br />log(prob_p):  -1.746060","p: 0.19<br />log(prob_p):  -1.669749","p: 0.20<br />log(prob_p):  -1.602827","p: 0.21<br />log(prob_p):  -1.544508","p: 0.22<br />log(prob_p):  -1.494121","p: 0.23<br />log(prob_p):  -1.451090","p: 0.24<br />log(prob_p):  -1.414915","p: 0.25<br />log(prob_p):  -1.385166","p: 0.26<br />log(prob_p):  -1.361465","p: 0.27<br />log(prob_p):  -1.343483","p: 0.28<br />log(prob_p):  -1.330934","p: 0.29<br />log(prob_p):  -1.323563","p: 0.30<br />log(prob_p):  -1.321151","p: 0.31<br />log(prob_p):  -1.323503","p: 0.32<br />log(prob_p):  -1.330448","p: 0.33<br />log(prob_p):  -1.341839","p: 0.34<br />log(prob_p):  -1.357545","p: 0.35<br />log(prob_p):  -1.377455","p: 0.36<br />log(prob_p):  -1.401472","p: 0.37<br />log(prob_p):  -1.429513","p: 0.38<br />log(prob_p):  -1.461511","p: 0.39<br />log(prob_p):  -1.497408","p: 0.40<br />log(prob_p):  -1.537160","p: 0.41<br />log(prob_p):  -1.580732","p: 0.42<br />log(prob_p):  -1.628100","p: 0.43<br />log(prob_p):  -1.679251","p: 0.44<br />log(prob_p):  -1.734179","p: 0.45<br />log(prob_p):  -1.792890","p: 0.46<br />log(prob_p):  -1.855398","p: 0.47<br />log(prob_p):  -1.921724","p: 0.48<br />log(prob_p):  -1.991901","p: 0.49<br />log(prob_p):  -2.065970","p: 0.50<br />log(prob_p):  -2.143980","p: 0.51<br />log(prob_p):  -2.225991","p: 0.52<br />log(prob_p):  -2.312072","p: 0.53<br />log(prob_p):  -2.402301","p: 0.54<br />log(prob_p):  -2.496768","p: 0.55<br />log(prob_p):  -2.595573","p: 0.56<br />log(prob_p):  -2.698828","p: 0.57<br />log(prob_p):  -2.806656","p: 0.58<br />log(prob_p):  -2.919194","p: 0.59<br />log(prob_p):  -3.036593","p: 0.60<br />log(prob_p):  -3.159020","p: 0.61<br />log(prob_p):  -3.286657","p: 0.62<br />log(prob_p):  -3.419704","p: 0.63<br />log(prob_p):  -3.558381","p: 0.64<br />log(prob_p):  -3.702928","p: 0.65<br />log(prob_p):  -3.853612","p: 0.66<br />log(prob_p):  -4.010722","p: 0.67<br />log(prob_p):  -4.174579","p: 0.68<br />log(prob_p):  -4.345536","p: 0.69<br />log(prob_p):  -4.523980","p: 0.70<br />log(prob_p):  -4.710343","p: 0.71<br />log(prob_p):  -4.905100","p: 0.72<br />log(prob_p):  -5.108780","p: 0.73<br />log(prob_p):  -5.321974","p: 0.74<br />log(prob_p):  -5.545339","p: 0.75<br />log(prob_p):  -5.779615","p: 0.76<br />log(prob_p):  -6.025633","p: 0.77<br />log(prob_p):  -6.284334","p: 0.78<br />log(prob_p):  -6.556786","p: 0.79<br />log(prob_p):  -6.844209","p: 0.80<br />log(prob_p):  -7.148004","p: 0.81<br />log(prob_p):  -7.469790","p: 0.82<br />log(prob_p):  -7.811450","p: 0.83<br />log(prob_p):  -8.175195","p: 0.84<br />log(prob_p):  -8.563639","p: 0.85<br />log(prob_p):  -8.979905","p: 0.86<br />log(prob_p):  -9.427767","p: 0.87<br />log(prob_p):  -9.911840","p: 0.88<br />log(prob_p): -10.437853","p: 0.89<br />log(prob_p): -11.013034","p: 0.90<br />log(prob_p): -11.646685","p: 0.91<br />log(prob_p): -12.351060","p: 0.92<br />log(prob_p): -13.142754","p: 0.93<br />log(prob_p): -14.045041","p: 0.94<br />log(prob_p): -15.092009","p: 0.95<br />log(prob_p): -16.336514","p: 0.96<br />log(prob_p): -17.867105","p: 0.97<br />log(prob_p): -19.849791","p: 0.98<br />log(prob_p): -22.657277","p: 0.99<br />log(prob_p): -27.478851","p: 1.00<br />log(prob_p):       -Inf"],"type":"scatter","mode":"lines","line":{"width":1.8897637795275593,"color":"rgba(0,0,0,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x2","yaxis":"y2","hoverinfo":"text","frame":null},{"x":[0.29999999999999999,0.29999999999999999],"y":[-28.786735531141499,-0.013266313320479117],"text":"xintercept: 0.3","type":"scatter","mode":"lines","line":{"width":1.8897637795275593,"color":"rgba(139,0,0,1)","dash":"dash"},"hoveron":"points","showlegend":false,"xaxis":"x2","yaxis":"y2","hoverinfo":"text","frame":null}],"layout":{"xaxis":{"domain":[0,0.47999999999999998],"automargin":true,"type":"linear","autorange":false,"range":[-0.050000000000000003,1.05],"tickmode":"array","ticktext":["0.00","0.25","0.50","0.75","1.00"],"tickvals":[0,0.25,0.5,0.75,1],"categoryorder":"array","categoryarray":["0.00","0.25","0.50","0.75","1.00"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.6529680365296811,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"serif","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176002,"zeroline":false,"anchor":"y","hoverformat":".2f"},"xaxis2":{"domain":[0.52000000000000002,1],"automargin":true,"type":"linear","autorange":false,"range":[-0.050000000000000003,1.05],"tickmode":"array","ticktext":["0.00","0.25","0.50","0.75","1.00"],"tickvals":[0,0.25,0.5,0.75,1],"categoryorder":"array","categoryarray":["0.00","0.25","0.50","0.75","1.00"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.6529680365296811,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"serif","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176002,"zeroline":false,"anchor":"y2","hoverformat":".2f"},"yaxis2":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-28.786735531141499,-0.013266313320479117],"tickmode":"array","ticktext":["-20","-10"],"tickvals":[-20,-10],"categoryorder":"array","categoryarray":["-20","-10"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.6529680365296811,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"serif","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176002,"zeroline":false,"anchor":"x2","hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-0.013341396599999993,0.28016932859999982],"tickmode":"array","ticktext":["0.0","0.1","0.2"],"tickvals":[0,0.10000000000000001,0.20000000000000001],"categoryorder":"array","categoryarray":["0.0","0.1","0.2"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.6529680365296811,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"serif","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176002,"zeroline":false,"anchor":"x","hoverformat":".2f"},"annotations":[],"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":0.47999999999999998,"y0":0,"y1":1},{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0.52000000000000002,"x1":1,"y0":0,"y1":1}],"images":[],"margin":{"t":30.611872146118724,"r":7.3059360730593621,"b":44.56621004566211,"l":43.105022831050235},"paper_bgcolor":"rgba(240,241,235,1)","font":{"color":"rgba(0,0,0,1)","family":"serif","size":14.611872146118724},"showlegend":false,"legend":{"bgcolor":null,"bordercolor":null,"borderwidth":0,"font":{"color":"rgba(0,0,0,1)","family":"serif","size":11.68949771689498}},"hovermode":"closest","barmode":"relative"},"attrs":{"5096ad84188":{"x":{},"y":{},"type":"scatter"},"5091bb67e85":{"xintercept":{}},"5093c9de1d7":{"x":{},"y":{},"type":"scatter"},"50921560958":{"xintercept":{}}},"source":"A","config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"subplot":true,"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</div>
 </section>
 <section id="can-we-generalize-to-any-data" class="slide level2">
 <h2>Can we generalize to <em>any</em> data?</h2>
@@ -458,7 +541,7 @@ Prof Amanda Luby
 <h1>Maximum Likelihood Estimation</h1>
 
 </section>
-<section id="section-1" class="slide level2">
+<section id="section-2" class="slide level2">
 <h2></h2>
 <div class="callout callout-note callout-titled callout-style-default">
 <div class="callout-body">
@@ -490,15 +573,15 @@ Prof Amanda Luby
 </div>
 </div>
 </section>
-<section id="binomial-data" class="slide level2">
-<h2>Binomial Data</h2>
+<section id="bernoulli-data" class="slide level2">
+<h2>Bernoulli data</h2>
+<p>An alternative way to express this example is <span class="math inline">\(X_1, ..., X_n \sim \text{Bernoulli}(\theta)\)</span></p>
 </section>
 <section id="is-the-likelihood-also-a-pdf" class="slide level2">
 <h2>Is the likelihood also a PDF?</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a></a>countdown<span class="sc">::</span><span class="fu">countdown</span>(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div class="countdown" id="timer_f31c46d1" data-update-every="1" tabindex="0" style="right:0;bottom:0;">
+<div class="countdown" id="timer_75287cb9" data-update-every="1" tabindex="0" style="right:0;bottom:0;">
 <div class="countdown-controls"><button class="countdown-bump-down">−</button><button class="countdown-bump-up">+</button></div>
 <code class="countdown-time"><span class="countdown-digits minutes">02</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
@@ -513,7 +596,7 @@ Prof Amanda Luby
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>Estimate</strong></p>
+<p><strong>Estimator</strong></p>
 </div>
 <div class="callout-content">
 <p><br> <br> <br></p>
@@ -526,7 +609,7 @@ Prof Amanda Luby
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>Estimator</strong></p>
+<p><strong>Estimate</strong></p>
 </div>
 <div class="callout-content">
 <p><br> <br> <br></p>
@@ -534,16 +617,16 @@ Prof Amanda Luby
 </div>
 </div>
 </section>
-<section id="german-tank-problem" class="slide level2">
-<h2>German Tank Problem</h2>
-</section></section>
-<section>
-<section id="continuous-random-variables" class="title-slide slide level1 center">
-<h1>Continuous Random Variables</h1>
-
-</section>
-<section id="intuitioncomputational-examples" class="slide level2">
-<h2>Intuition/computational examples</h2>
+<section id="section-3" class="slide level2">
+<h2></h2>
+<p>Let <span class="math inline">\(X_1, ..., X_n\)</span> be an iid random sample from a distribution with PDF</p>
+<p><span class="math display">\[f(x|\theta)= (\theta + 1)x^\theta, 0 \le x \le 1\]</span></p>
+<div>
+<ol type="1">
+<li>Find the maximum likelihood estimator for a random sample of size <span class="math inline">\(n\)</span> using calculus.</li>
+<li>Suppose we observe a sample of size 5: {.83, .49, .72, .57, .66}. Find the maximum likelihood estimate and verify with a graph or numerical approximation</li>
+</ol>
+</div>
 
 
 </section></section>
@@ -764,6 +847,44 @@ Prof Amanda Luby
         ]
       });
     </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
     <script id="quarto-html-after-body" type="application/javascript">
     window.document.addEventListener("DOMContentLoaded", function (event) {
       const toggleBodyColorMode = (bsSheetEl) => {

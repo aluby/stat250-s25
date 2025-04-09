@@ -387,86 +387,121 @@
   {
     "objectID": "slides/05/slides05.html#section",
     "href": "slides/05/slides05.html#section",
-    "title": "Maximum Likelihood Estimation: Discrete Case",
+    "title": "Maximum Likelihood Estimation",
     "section": "",
-    "text": "You are testing seeds from a new plant variety. You plant 10 seeds (n=10) and observe that 3 of them successfully germinate (k=3). Consider two hypotheses about the true germination probability (p) for this variety:\nHypothesis A: \\(p = 0.1\\) (10% germination rate)\nHypothesis B: $p = 0.4 (40% germination rate)\nGiven that you observed 3 germinations out of 10 seeds, which hypothesis (A or B) is more supported by the data?\n\n\n\n−+\n02:00"
+    "text": "You are testing seeds from a new plant variety. You plant 10 seeds (n=10) and observe that 3 of them successfully germinate (k=3). Consider two hypotheses about the true germination probability (p) for this variety:\n\nHypothesis A: \\(p = 0.1\\) (10% germination rate)\nHypothesis B: \\(p = 0.4\\) (40% germination rate)\n\n\nGiven that you observed 3 germinations out of 10 seeds, which hypothesis (A or B) is more supported by the data?\n\n\n\n−+\n02:00"
   },
   {
     "objectID": "slides/05/slides05.html#evaluating-intuitively",
     "href": "slides/05/slides05.html#evaluating-intuitively",
-    "title": "Maximum Likelihood Estimation: Discrete Case",
+    "title": "Maximum Likelihood Estimation",
     "section": "Evaluating Intuitively",
     "text": "Evaluating Intuitively"
   },
   {
     "objectID": "slides/05/slides05.html#evaluating-formally-problem-set-up",
     "href": "slides/05/slides05.html#evaluating-formally-problem-set-up",
-    "title": "Maximum Likelihood Estimation: Discrete Case",
+    "title": "Maximum Likelihood Estimation",
     "section": "Evaluating Formally: Problem Set Up",
     "text": "Evaluating Formally: Problem Set Up\n\nLet \\(X\\) be the number of plants that successfully germinate\n\\(X \\sim \\text{Binom}(10, p)\\) and we observed \\(X=3\\)\n\n\n\n\n\\(P(X=3)\\) if \\(p=.1\\)\n\n\\(P(X=3)\\) if \\(p=.4\\)"
   },
   {
-    "objectID": "slides/05/slides05.html#what-value-of-p-maximizes-the-probability-of-observing-the-data",
-    "href": "slides/05/slides05.html#what-value-of-p-maximizes-the-probability-of-observing-the-data",
-    "title": "Maximum Likelihood Estimation: Discrete Case",
-    "section": "What value of \\(p\\) maximizes the probability of observing the data?",
-    "text": "What value of \\(p\\) maximizes the probability of observing the data?"
+    "objectID": "slides/05/slides05.html#section-1",
+    "href": "slides/05/slides05.html#section-1",
+    "title": "Maximum Likelihood Estimation",
+    "section": "",
+    "text": "In general, the likelihood of seeing \\(X=3\\) given \\(p\\) is:\n\\[{10 \\choose 3} p^3 (1-p)^7\\]\n\nWhat value of \\(p\\) maximizes this likelihood?"
+  },
+  {
+    "objectID": "slides/05/slides05.html#methods-of-maximizing",
+    "href": "slides/05/slides05.html#methods-of-maximizing",
+    "title": "Maximum Likelihood Estimation",
+    "section": "Methods of maximizing",
+    "text": "Methods of maximizing\n\nApproximate the solution graphically\nFind a numerical approximation\nUse calculus"
+  },
+  {
+    "objectID": "slides/05/slides05.html#approximating-with-a-graph",
+    "href": "slides/05/slides05.html#approximating-with-a-graph",
+    "title": "Maximum Likelihood Estimation",
+    "section": "Approximating with a graph",
+    "text": "Approximating with a graph"
+  },
+  {
+    "objectID": "slides/05/slides05.html#approximating-with-a-graph-code",
+    "href": "slides/05/slides05.html#approximating-with-a-graph-code",
+    "title": "Maximum Likelihood Estimation",
+    "section": "Approximating with a graph: code",
+    "text": "Approximating with a graph: code\n\ngerm_function &lt;- function(p) {choose(10,3) * p^3 * (1-p)^7} # define function\nggplot() + \n  geom_function(fun = germ_function) +\n  xlim(c(0,1))"
+  },
+  {
+    "objectID": "slides/05/slides05.html#approximating-numerically",
+    "href": "slides/05/slides05.html#approximating-numerically",
+    "title": "Maximum Likelihood Estimation",
+    "section": "Approximating numerically",
+    "text": "Approximating numerically\n\noptimize(germ_function, interval = c(0,1), maximum = TRUE)\n\n\n\n$maximum\n[1] 0.3000157\n\n$objective\n[1] 0.2668279"
+  },
+  {
+    "objectID": "slides/05/slides05.html#with-calculus",
+    "href": "slides/05/slides05.html#with-calculus",
+    "title": "Maximum Likelihood Estimation",
+    "section": "With calculus",
+    "text": "With calculus"
+  },
+  {
+    "objectID": "slides/05/slides05.html#a-trick",
+    "href": "slides/05/slides05.html#a-trick",
+    "title": "Maximum Likelihood Estimation",
+    "section": "A “trick”",
+    "text": "A “trick”\nProbability functions often are tricky to differentiate because of the product rule. Lucky for us, we can maximize the log instead."
   },
   {
     "objectID": "slides/05/slides05.html#can-we-generalize-to-any-data",
     "href": "slides/05/slides05.html#can-we-generalize-to-any-data",
-    "title": "Maximum Likelihood Estimation: Discrete Case",
+    "title": "Maximum Likelihood Estimation",
     "section": "Can we generalize to any data?",
     "text": "Can we generalize to any data?"
   },
   {
-    "objectID": "slides/05/slides05.html#section-1",
-    "href": "slides/05/slides05.html#section-1",
-    "title": "Maximum Likelihood Estimation: Discrete Case",
+    "objectID": "slides/05/slides05.html#section-2",
+    "href": "slides/05/slides05.html#section-2",
+    "title": "Maximum Likelihood Estimation",
     "section": "",
     "text": "Likelihood function\n\n\nLet \\(f(x; \\theta)\\) denote the probability mass function for a discrete distribution with associated parameter \\(\\theta\\). Suppose \\(X_1, X_2, ... , X_n\\) are a random sample from this distribution and \\(x_1, x_2, ... , x_n\\) are the actual observed values. Then, the likelihood function of \\(\\theta\\) is:\n  \n\n\n\n\n\n\n\n\n\n\nMaximum likelihood estimate\n\n\nA maximum likelihood estimate (MLE), \\(\\hat{\\theta}_{MLE}\\) is the value of \\(\\theta\\) that maximizes the likelihood function, or equivalently, that maximizes the log-likelihood \\(\\ln L(\\theta)\\)"
   },
   {
-    "objectID": "slides/05/slides05.html#binomial-data",
-    "href": "slides/05/slides05.html#binomial-data",
-    "title": "Maximum Likelihood Estimation: Discrete Case",
-    "section": "Binomial Data",
-    "text": "Binomial Data"
+    "objectID": "slides/05/slides05.html#bernoulli-data",
+    "href": "slides/05/slides05.html#bernoulli-data",
+    "title": "Maximum Likelihood Estimation",
+    "section": "Bernoulli data",
+    "text": "Bernoulli data\nAn alternative way to express this example is \\(X_1, ..., X_n \\sim \\text{Bernoulli}(\\theta)\\)"
   },
   {
     "objectID": "slides/05/slides05.html#is-the-likelihood-also-a-pdf",
     "href": "slides/05/slides05.html#is-the-likelihood-also-a-pdf",
-    "title": "Maximum Likelihood Estimation: Discrete Case",
+    "title": "Maximum Likelihood Estimation",
     "section": "Is the likelihood also a PDF?",
-    "text": "Is the likelihood also a PDF?\n\ncountdown::countdown(2)\n\n\n−+\n02:00"
+    "text": "Is the likelihood also a PDF?\n\n\n\n−+\n02:00"
   },
   {
     "objectID": "slides/05/slides05.html#aside-notation",
     "href": "slides/05/slides05.html#aside-notation",
-    "title": "Maximum Likelihood Estimation: Discrete Case",
+    "title": "Maximum Likelihood Estimation",
     "section": "Aside: notation",
-    "text": "Aside: notation\n\n\n\n\n\n\nEstimate\n\n\n  \n\n\n\n\n\n\n\n\n\nEstimator"
+    "text": "Aside: notation\n\n\n\n\n\n\nEstimator\n\n\n  \n\n\n\n\n\n\n\n\n\nEstimate"
   },
   {
-    "objectID": "slides/05/slides05.html#german-tank-problem",
-    "href": "slides/05/slides05.html#german-tank-problem",
-    "title": "Maximum Likelihood Estimation: Discrete Case",
-    "section": "German Tank Problem",
-    "text": "German Tank Problem"
-  },
-  {
-    "objectID": "slides/05/slides05.html#intuitioncomputational-examples",
-    "href": "slides/05/slides05.html#intuitioncomputational-examples",
-    "title": "Maximum Likelihood Estimation: Discrete Case",
-    "section": "Intuition/computational examples",
-    "text": "Intuition/computational examples"
+    "objectID": "slides/05/slides05.html#section-3",
+    "href": "slides/05/slides05.html#section-3",
+    "title": "Maximum Likelihood Estimation",
+    "section": "",
+    "text": "Let \\(X_1, ..., X_n\\) be an iid random sample from a distribution with PDF\n\\[f(x|\\theta)= (\\theta + 1)x^\\theta, 0 \\le x \\le 1\\]\n\n\nFind the maximum likelihood estimator for a random sample of size \\(n\\) using calculus.\nSuppose we observe a sample of size 5: {.83, .49, .72, .57, .66}. Find the maximum likelihood estimate and verify with a graph or numerical approximation"
   },
   {
     "objectID": "index.html",
     "href": "index.html",
     "title": "Stat250-S25",
     "section": "",
-    "text": "Landing page for Stat250 course materials in Spring 2025\n\nIn-Class Materials\nDay02: slides handout r code\nDay03: handout activity qmd\nDay04: slides | handout\n\n\nOther Resources and Readings\n\nR Basics\nHow to do homework in R in Stat250"
+    "text": "Landing page for Stat250 course materials in Spring 2025\n\nIn-Class Materials\nDay02: slides handout r code\nDay03: handout activity qmd\nDay04: slides | handout\nDay05: slides | handout\n\n\nOther Resources and Readings\n\nR Basics\nHow to do homework in R in Stat250"
   },
   {
     "objectID": "slides/04/slides04.html#plan-for-today",
