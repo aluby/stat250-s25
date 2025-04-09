@@ -1,0 +1,40 @@
+---
+title: "Untitled"
+format: pdf
+---
+
+
+```{r, echo = FALSE}
+library(tidyverse)
+library(Sleuth3)
+library(mosaic)
+library(infer)
+```
+
+# Warm up
+
+**Example:** You are testing seeds from a new plant variety. You plant 10 seeds (n=10) and observe that 3 of them successfully germinate (k=3). Consider two hypotheses about the true germination probability (p) for this variety:
+
+Hypothesis A: 
+
+Hypothesis B:
+
+Given you observed 3 germinations out of 10 seeds, which hypothesis (A or B) is more supported by the data?
+
+\vspace{3in}
+
+In general, the *likelihood* of seeing $X=3$ given $p$ is: 
+
+3 ways of finding the maximum: 
+
+1. Approximate solution graphically
+
+```{r}
+#| echo: true
+#| fig-width: 4
+#| fig-height: 3
+germ_function <- function(p) {choose(10,3) * p^3 * (1-p)^7} # define function
+ggplot() + 
+  geom_function(fun = germ_function) +
+  xlim(c(0,1))
+```
