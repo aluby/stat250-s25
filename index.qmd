@@ -13,6 +13,9 @@ Day03: [handout](/notes/03-sampling-dists/notes03.pdf) [activity qmd](/notes/03-
 
 Day04: [slides](/slides/04/slides04.html) | [handout](/notes/04-probability/04-probability.pdf)
 
+Day05: [slides](/slides/05/slides05.html) | [handout](/notes/05-mle/05-notes.pdf)
+
+
 # Other Resources and Readings
 
 - [R Basics](readings/r-basics.html)
