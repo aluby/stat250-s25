@@ -1,0 +1,97 @@
+---
+title: "05: Maximum Likelihood Estimation"
+date: "Stat250-S25"
+callout-appearance: minimal
+knitr:
+    opts_chunk: 
+      dev: "ragg_png"
+      echo: false
+      warning: false
+      message: false
+format:
+  pdf:
+    include-in-header: 
+       - "../preamble.tex"
+    toc: false
+    number-sections: true
+    colorlinks: true
+    geometry:
+      - top=1in
+      - left=1in
+      - right=1in
+      - bottom=1in
+      - heightrounded
+fontfamily: libertine
+fontsize: 11pt
+---
+
+
+```{r, echo = FALSE}
+library(tidyverse)
+library(Sleuth3)
+library(mosaic)
+library(infer)
+```
+
+# Warm up
+
+**Example:** You are testing seeds from a new plant variety. You plant 10 seeds (n=10) and observe that 3 of them successfully germinate (k=3). Consider two hypotheses about the true germination probability (p) for this variety:
+
+Hypothesis A: 
+
+Hypothesis B:
+
+Given you observed 3 germinations out of 10 seeds, which hypothesis (A or B) is more supported by the data?
+
+\vspace{3in}
+
+In general, the *likelihood* of seeing $X=3$ given $p$ is: 
+
+\vspace{1in}
+
+In general, the likelihood of ..... 
+
+\pagebreak
+
+# Definitions
+
+::: callout-note
+## Likelihood function
+
+Let $f(x; \theta)$ denote the probability mass function for a discrete distribution with associated parameter $\theta$. Suppose $X_1, X_2, ... , X_n$ are a random sample from this distribution and $x_1, x_2, ... , x_n$ are the actual observed values. Then, the *likelihood function* of $\theta$ is:
+
+\vspace{1in}
+:::
+
+::: callout-note
+## Maximum likelihood estimate
+
+A maximum likelihood estimate (MLE), $\hat{\theta}_{MLE}$ is the value of $\theta$ that maximizes the likelihood function, or equivalently, that maximizes the log-likelihood $l(\theta) = \ln L(\theta)$
+
+:::
+
+**Bernoulli Data Example**
+
+\vspace{2in}
+
+::: callout-note
+## Estimator
+
+\vspace{1in}
+:::
+
+::: callout-note
+## Estimate
+
+\vspace{1in}
+:::
+
+# Exercise
+
+Let $X_1, ..., X_n$ be an iid random sample from a distribution with PDF 
+
+$$f(x|\theta)= (\theta + 1)x^\theta, 0 \le x \le 1$$
+
+1. Find the maximum likelihood estimator for a random sample of size $n$ using calculus. 
+2. Suppose we observe a sample of size 5: {.83, .49, .72, .57, .66}. Find the maximum likelihood estimate and verify with a graph or numerical approximation
+

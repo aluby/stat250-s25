@@ -1,6 +1,6 @@
 ---
-title: "Maximum Likelihood Estimation: Discrete Case"
-subtitle: Day 05
+title: "Maximum Likelihood Estimation"
+subtitle: "Day 05"
 title-slide-attributes:
   data-background-gradient: "linear-gradient(to right, #46337e, #440154)"
   data-slide-number: none
@@ -30,6 +30,8 @@ library(knitr)
 library(mosaic)
 library(infer)
 library(kableExtra)
+
+library(plotly)
 
 # #440154
 knitr::opts_chunk$set(echo = TRUE,
@@ -85,16 +87,68 @@ $P(X=3)$ if $p=.4$
 :::
 ::::
 
-## What value of $p$ *maximizes* the probability of observing the data? 
+## 
+
+In general, the *likelihood* of seeing $X=3$ given $p$ is: 
+
+$${10 \choose 3} p^3 (1-p)^7$$
+
+. . . 
+
+What value of $p$ *maximizes* this likelihood? 
+
+## Methods of maximizing
+
+1. Approximate the solution graphically 
+
+2. Find a numerical approximation
+
+3. Use calculus
+
+## Approximating with a graph
 
 ```{r}
-tibble(
+#| echo: false
+
+p1 <- tibble(
   p = seq(0, 1, by = .01),
   prob_p = choose(10,3)*p^3*(1-p)^7
 ) |>
   ggplot(aes(x = p, y = prob_p)) + 
   geom_line() + 
-  geom_vline(xintercept = .3, linetype = "dashed", color = "darkred")
+  geom_vline(xintercept = .3, linetype = "dashed", color = "darkred") 
+
+plotly::ggplotly(p1)
+```
+
+## Approximating numerically 
+
+```{r}
+germ_function <- function(p) {choose(10,3) * p^3 * (1-p)^7}
+optimize(germ_function, interval = c(0,1), maximum = TRUE)
+```
+
+## With calculus
+
+## A "trick" 
+
+Probability functions often are tricky to differentiate because of the product rule. Lucky for us, we can maximize the log instead. 
+
+. . . 
+
+```{r}
+#| echo: false
+
+
+p2 <- tibble(
+  p = seq(0, 1, by = .01),
+  prob_p = choose(10,3)*p^3*(1-p)^7
+) |>
+  ggplot(aes(x = p, y = log(prob_p))) + 
+  geom_line() + 
+  geom_vline(xintercept = .3, linetype = "dashed", color = "darkred") 
+
+subplot(ggplotly(p1), ggplotly(p2), nrows=1)
 ```
 
 ## Can we generalize to *any* data? 
@@ -122,23 +176,20 @@ A maximum likelihood estimate (MLE), $\hat{\theta}_{MLE}$ is the value of $\thet
 
 :::
 
-## Binomial Data 
+## Bernoulli data
+
+An alternative way to express this example is $X_1, ..., X_n \sim \text{Bernoulli}(\theta)$
 
 ## Is the likelihood also a PDF?
 
 ```{r}
+#| echo: false
+
+
 countdown::countdown(2)
 ```
 
 ## Aside: notation
-
-::: callout-note
-## Estimate
-
-<br>
-<br>
-<br>
-:::
 
 ::: callout-note
 ## Estimator
@@ -148,9 +199,37 @@ countdown::countdown(2)
 <br>
 :::
 
-## German Tank Problem
+::: callout-note
+## Estimate
 
-# Continuous Random Variables
+<br>
+<br>
+<br>
+:::
 
-## Intuition/computational examples
+## 
 
+Let $X_1, ..., X_n$ be an iid random sample from a distribution with PDF 
+
+$$f(x|\theta)= (\theta + 1)x^\theta, 0 \le x \le 1$$
+
+::: nonincremental
+1. Find the maximum likelihood estimator for a random sample of size $n$ using calculus. 
+2. Suppose we observe a sample of size 5: {.83, .49, .72, .57, .66}. Find the maximum likelihood estimate and verify with a graph or numerical approximation
+:::
+
+## solution
+
+```{r}
+set.seed(0408)
+x <- rbeta(5, shape1 = 3, shape2 = 1)
+
+p3 <- tibble(
+  theta = seq(0, 10, by = .01),
+  log_lik = 5*log(theta+1) + theta*sum(log(x))
+) |>
+  ggplot(aes(x = theta, y = log_lik)) + 
+  geom_line() 
+
+ggplotly(p3)
+```
