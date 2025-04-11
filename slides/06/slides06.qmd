@@ -138,6 +138,6 @@ $$\frac{\partial}{\partial \theta_2} \ln L(\theta_1, \theta_2) = 0$$
 
 Suppose a random sample of size $n$ is drawn from the two parameter normal pdf:
 
-$f_y(y|\mu, \sigma^2) = \frac{1}{\sqrt{2\pi \sigma}} \exp(-(\frac{y-\mu}{\sigma})^2)$$
+$f_y(y|\mu, \sigma^2) = \frac{1}{\sqrt{2\pi \sigma}} \exp(-(\frac{y-\mu}{\sigma})^2)$
 
 find the MLEs $\hat{\mu}$ and $\hat\sigma^2$
