@@ -147,6 +147,174 @@
     "text": "library(tidyverse)\n\nThe goal for today is to understand the concept of a sampling distribution by comparing theoretical results with simulation results using R. We will investigate the sampling distributions of the sample mean.\nYou’ve been assigned to groups of 3-4 for this activity. You should submit your rendered file on gradescope as a group assignment. If folks from your assigned group did not show up, groups of 2 can combine into groups of 4.\n\nIntroduction\nA sampling distribution is the probability distribution of a statistic (like the sample mean \\(\\bar{x}\\) or sample variance \\(s^2\\)) obtained through a large number of samples drawn from a specific population. Understanding sampling distributions is crucial for statistical inference, as it allows us to make probability statements about sample statistics. In this activity, we will generate empirical sampling distributions through simulation and compare them to theoretical results.\nAlong the way, you’ll get some practice in R and some probability review.\n\n\nPart 1: Sampling distribution of the mean (Normal population)\nAssume data points \\(X_1, X_2, ..., X_n\\) are sampled from a normally distributed population\n\nIf \\(X_1, X_2, ..., X_n \\sim N(\\mu, \\sigma^2)\\), what is the expected value \\(E[\\bar{X}]\\) and theoretical standard deviation of \\(\\bar{X}\\) (also known as the standard error)?\nWhat is the theoretical distribution of \\(\\bar{X}\\)? (Note: you do not need to prove/derive this!)\n\nLet’s simulate this. Assume our population is \\(N(50, 10^2)\\) (so \\(\\sigma=10\\)). We will draw samples of size n = 25:\n\npop_mean &lt;- 50\npop_sd &lt;- 10\nsample_size &lt;- 25\nn_simulations &lt;- 100\n\nsample_means &lt;- numeric(n_simulations)\n\nfor(i in 1:n_simulations){\n  x &lt;- rnorm(sample_size, mean = pop_mean, sd = pop_sd)\n  sample_means[i] &lt;- mean(x)\n}\n\n\nWhat is the mean of sample_means? How close is it to \\(E[\\bar{X}]\\) above?\nWhat is the sd of sample_means? How close is it to the theoretical standard error you found above?\nThe code below makes a histogram of sample_means and overlays an incorrect theoretical density curve on top. Replace pop_mean and pop_sd with the theoretical values that you found in Q1.\n\n\ndf &lt;- data.frame(\n  sample_means = sample_means\n)\n\nggplot(df, aes(x = sample_means)) + \n  geom_histogram(aes(y = stat(density)), col = \"white\", bins = 20) + \n  stat_function(fun = dnorm, args = list(mean = pop_mean, s = pop_sd), col = \"cornflowerblue\")\n\n\n\n\n\n\n\n\n\nTry different values for sample_size and n_simulations. When does the histogram match the theoretical density most closely?\n\n\n\n\n\n\n\nCentral Limit Theorem\n\n\n\nYou have (hopefully) just demonstrated the Central Limit Theorem in action. Nice work! The CLT tells us that, as our sample size approaches \\(\\infty\\),\n\\[F_\\bar{X}(\\bar{X}) \\to N(\\mu, \\frac{\\sigma}{\\sqrt{n}})\\]\n\n\n\n\nPart 2: Non-normal population\nWe often use the Exponential distribution to model the time until an event occurs in a process where events happen randomly and independently at a constant average rate (a Poisson process). A common example is the time between consecutive arrivals of customers, like a coffee shop, during a period where the arrival rate is relatively stable. The key parameter is the rate \\(\\lambda\\) (e.g., average customers per minute) or its reciprocal, the mean time \\(\\mu = 1/\\lambda\\) (e.g., average minutes between customers). Individual inter-arrival times will follow a skewed distribution (many short times, fewer long times), but the CLT tells us something interesting about the average of these times if we look at many samples.\n\nLet \\(X\\) be the time (in minutes) between consecutive customer arrivals at a small coffee shop during a specific hour. Suppose this time can be modeled by an Exponential distribution. We observe that, on average over a long period of time, a customer arrives every 5 minutes. This average time is the mean of the distribution, \\(\\mu = 5\\) minutes. What is the rate, \\(\\lambda\\)? What is \\(E[X]\\) and \\(\\sigma_X\\)? (You can use the distributions cheat sheet in the back of the book)\nThe code below plots a theoretical exponential distribution with \\(\\lambda=1\\). Change it to the appropriate value.\n\n\n\n\n\n\n\n\n\n\n\nAccording to the CLT, if we take a sample of n = 40 consecutive inter-arrival times, what should the approximate distribution of the average inter-arrival time (\\(\\bar{X}\\)) be across many such samples? What are its approximate mean and standard error?\nLet’s check our answers through simulation. Replace all _____ with appropriate values in the code chunk below, and then remove the line with #| eval: false.\n\n\npop_lambda &lt;- ____\nsample_size &lt;- ____\nn_simulations &lt;- 1000\n\nsample_means &lt;- numeric(n_simulations)\n\nfor(i in 1:n_simulations){\n  x &lt;- rexp(sample_size, rate = pop_lambda)\n  sample_means[i] &lt;- mean(x)\n}\n\ndf &lt;- data.frame(\n  sample_means = sample_means\n)\n\nggplot(df, aes(x = sample_means)) + \n  geom_histogram(aes(y = stat(density)), col = \"white\", bins = 20) + \n  stat_function(fun = dnorm, args = list(mean = ______, s = ______), col = \"cornflowerblue\")\n\n\nHow well does the normal curve approximate the distribution of the average inter-arrival times, even though the distribution of individual inter-arrival times is heavily skewed (Exponential)?\nWhat happens if the sample size n is much smaller (e.g., \\(n=5\\))?\n\n\n\nPart 3: Discrete data\nThe true magic of the CLT is that it applies to any probability distribution, even discrete ones!\nExample: According to the 2004 American Community Survey, 28% of adults over 25 years old in Utah have completed a bachelor’s degree. In a random sample of 64 adults over age 25 from Utah, what is the probability that at least 30 have a bachelor’s degree?\nLet \\(X_i\\) indicate whether a sampled person has a bachelor’s degree. Then, \\(X_1, ...., X_n \\sim Binom(n,p)\\).\n\nWhat is \\(n\\) and what is \\(p\\)?\n\nWe are interested in how many people have a bachelor’s degree, or \\(\\frac{\\sum X_i}{n}\\). This is also an \\(\\bar{X}\\)!\n\nUse the CLT to find \\(E[\\hat{p}]\\) and \\(s_{\\hat{p}}\\).\nUse the normal distribution to find \\(P(\\bar{X} &gt; .3)\\) (Hint: use pnorm)\nAlternatively, we can answer this question through simulation. Use sample_means to estimate this probability. How close are you to your answer from (3)?\n\n\npop_p &lt;- .28\nsample_size &lt;- 64\nn_simulations &lt;- 1000\n\nsample_means &lt;- numeric(n_simulations)\n\nfor(i in 1:n_simulations){\n  x &lt;- rbinom(1, size = sample_size, prob = pop_p)\n  sample_means[i] &lt;- x/sample_size\n}\n\n\n\nPart 4: Summary and Reflection\n\nWhat is the difference between a population distribution, sample distribution, and distribution of a sample?\nWhy is the CLT important?\nGive one benefit of finding sampling distributions theoretically with probability\nGive one benefit of finding sampling distributions computationally through simulation\nDoes your group have any lingering questions for me?"
   },
   {
+    "objectID": "slides/00-test/00-test.html#r-code",
+    "href": "slides/00-test/00-test.html#r-code",
+    "title": "Test slides",
+    "section": "R Code",
+    "text": "R Code\n\npalmerpenguins::penguins %&gt;%\n  ggplot(aes(x = flipper_length_mm)) +\n  geom_histogram(col = \"white\")"
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#plan-for-today",
+    "href": "slides/00-test/00-test.html#plan-for-today",
+    "title": "Test slides",
+    "section": "Plan for today",
+    "text": "Plan for today\n\nSyllabus\nContext for the class\nCourse expectations"
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#a-bit-about-me",
+    "href": "slides/00-test/00-test.html#a-bit-about-me",
+    "title": "Test slides",
+    "section": "A bit about me",
+    "text": "A bit about me"
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#course-description",
+    "href": "slides/00-test/00-test.html#course-description",
+    "title": "Test slides",
+    "section": "Course description",
+    "text": "Course description\nThis course is an introduction to the mathematical theory of frequentist and Bayesian statistical inference. Topics include parameter estimation, confidence intervals and hypothesis testing, linear models, and Bayesian inference.\nStudents who analyze data, or who aspire to develop new methods for analyzing data, should be well-grounded in mathematical statistics."
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#course-objectives",
+    "href": "slides/00-test/00-test.html#course-objectives",
+    "title": "Test slides",
+    "section": "Course Objectives",
+    "text": "Course Objectives\nBy the end of this course, you should be able to:\n\nDerive estimators for parameters using maximum likelihood, the method of moments, and Bayesian techniques\nEvaluate the performance of estimators and describe their strengths and weaknesses\nDemonstrate a sophisticated understanding of the mathematics behind hypothesis tests, confidence intervals, and linear models\n\nUse the statistical package R to implement basic simulations of estimation scenarios"
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#textbook",
+    "href": "slides/00-test/00-test.html#textbook",
+    "title": "Test slides",
+    "section": "Textbook:",
+    "text": "Textbook:"
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#computing",
+    "href": "slides/00-test/00-test.html#computing",
+    "title": "Test slides",
+    "section": "Computing:",
+    "text": "Computing:"
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#assignments",
+    "href": "slides/00-test/00-test.html#assignments",
+    "title": "Test slides",
+    "section": "Assignments",
+    "text": "Assignments"
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#regrade-request-policy",
+    "href": "slides/00-test/00-test.html#regrade-request-policy",
+    "title": "Test slides",
+    "section": "Regrade request policy",
+    "text": "Regrade request policy\nGrading is often a tedious task, and the grading team will sometimes make mistakes. I am always happy to fix these mistakes, and gradescope makes it easy to do so. However, it takes time to read through these requests and I’ve noticed an increase in unwarranted regrade requests in recent years. This semester, I am instituting an “NFL Coaches Challenge”-style regrade request rule. Every student will start the semester with 2 regrade requests available to them. If you submit a regrade request and I agree with you, you get it back. If you submit a regrade request for something that was not a grading mistake, you lose that request."
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#exams",
+    "href": "slides/00-test/00-test.html#exams",
+    "title": "Test slides",
+    "section": "Exams",
+    "text": "Exams"
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#final-exam",
+    "href": "slides/00-test/00-test.html#final-exam",
+    "title": "Test slides",
+    "section": "Final Exam",
+    "text": "Final Exam"
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#course-project",
+    "href": "slides/00-test/00-test.html#course-project",
+    "title": "Test slides",
+    "section": "Course project",
+    "text": "Course project"
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#final-grades",
+    "href": "slides/00-test/00-test.html#final-grades",
+    "title": "Test slides",
+    "section": "Final grades",
+    "text": "Final grades"
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#advice-from-past-students",
+    "href": "slides/00-test/00-test.html#advice-from-past-students",
+    "title": "Test slides",
+    "section": "Advice from past students:",
+    "text": "Advice from past students:\n\nStart the problem sets early and go to office hours!\nWork with other people in the class, collaboration is key\nBe willing to ask lots of questions and don’t be afraid to ask for help!\nI would advise for them to attend office hours and the stat clinic since early on to get help and not be worrying about assignments at the last minute.\nI would advise future students to reach out and ask questions as soon if they have any confusion. Understanding statistical concepts and working with R can be frustrating at times, but people are here to help you along the way!\nDon’t let work snowball! Try to get help early and often and an imperfect problem set is better than no problem set.\nlots of R here! Organization is key, and you’ll do well as long as you start homeworks early, communicate with the professor and with your fellow classmates. There’s a good support system."
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#the-genius-myth",
+    "href": "slides/00-test/00-test.html#the-genius-myth",
+    "title": "Test slides",
+    "section": "The “Genius Myth”",
+    "text": "The “Genius Myth”\nIt’s sometimes easy to buy into the “genius myth” when it comes to math/stat courses: that you need to be a “math person” and have some innate mathematical ability in order to do well or become a statistics major. This could not be further from the truth! The best statisticians don’t necessarily have the “best” math or programming background, but are people that are able to formulate interesting questions and use math and programming to rigorously answer those questions. Many of the best statisticians I know became statisticians because they were initially interested in something else (biology, public health, psychology, neuroscience, physics, etc.) and realized that being able to answer important questions with data was not only valuable but fun and interesting. Being able to perform interesting statistical analyses is a skill that is learned, not an innate ability, and working hard at developing that skill is the point of this course."
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#academic-integrity",
+    "href": "slides/00-test/00-test.html#academic-integrity",
+    "title": "Test slides",
+    "section": "Academic Integrity",
+    "text": "Academic Integrity"
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#diversity-inclusion",
+    "href": "slides/00-test/00-test.html#diversity-inclusion",
+    "title": "Test slides",
+    "section": "Diversity & Inclusion",
+    "text": "Diversity & Inclusion\nWe all come to class with different backgrounds and experiences, and this diversity makes our class environment richer. We value diversity and inclusion, and are committed to a climate of mutual respect and full participation in and out of the classroom. This class strives to be a learning environment that is usable, equitable, inclusive and welcoming, regardless of race, ethnicity, religion, gender and gender identities, sexual orientation, ability, socioeconomic background, and nationality. If you anticipate or experience any barriers to learning, please discuss your concerns with me."
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#accomodations",
+    "href": "slides/00-test/00-test.html#accomodations",
+    "title": "Test slides",
+    "section": "Accomodations",
+    "text": "Accomodations"
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#stat-lab",
+    "href": "slides/00-test/00-test.html#stat-lab",
+    "title": "Test slides",
+    "section": "Stat Lab",
+    "text": "Stat Lab"
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#title-ix",
+    "href": "slides/00-test/00-test.html#title-ix",
+    "title": "Test slides",
+    "section": "Title IX",
+    "text": "Title IX\nPlease be aware that all faculty are “responsible employees”, which means that if you tell me about a situation involving sexual harassment, sexual assault, dating violence, domestic violence, or stalking, I must share that information with the Title IX Coordinator. Although I have to make this notification, you will control how your case will be handled, including whether or not you wish to meet with the Title IX coordinator or pursue a formal complaint."
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#take-care-of-yourself",
+    "href": "slides/00-test/00-test.html#take-care-of-yourself",
+    "title": "Test slides",
+    "section": "Take care of yourself",
+    "text": "Take care of yourself\nDo your best to maintain a healthy lifestyle this semester by wearing a mask if you don’t feel well, eating a vegetable every day, exercising, avoiding excessive drug and alcohol use, getting enough sleep, and taking some time to relax. Your mental health is more important than your grade in this course. There are many helpful resources available on campus and an important part of the college experience is learning how to ask for help. If you are experiencing mental health symptoms as a result of coursework, please speak with me so we can address the problem together."
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#prerequisites",
+    "href": "slides/00-test/00-test.html#prerequisites",
+    "title": "Test slides",
+    "section": "Prerequisites",
+    "text": "Prerequisites"
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#history",
+    "href": "slides/00-test/00-test.html#history",
+    "title": "Test slides",
+    "section": "History",
+    "text": "History\n\nStatistics seems to be a difficult subject for mathematicians, perhaps because its elusive and wide-ranging character mitigates against the traditional theorem-proof method of presentation. It may come as some comfort then that statistics is also a difficult subject for statisticians\n\n\nControversies in the Foundations of Statistics, Bradley Efron 1978"
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#fisher-vs-neyman-pearson",
+    "href": "slides/00-test/00-test.html#fisher-vs-neyman-pearson",
+    "title": "Test slides",
+    "section": "Fisher vs Neyman-Pearson",
+    "text": "Fisher vs Neyman-Pearson"
+  },
+  {
     "objectID": "slides/01/slides01.html#plan-for-today",
     "href": "slides/01/slides01.html#plan-for-today",
     "title": "Welcome to Stat250!",
@@ -501,7 +669,7 @@
     "href": "index.html",
     "title": "Stat250-S25",
     "section": "",
-    "text": "Landing page for Stat250 course materials in Spring 2025\n\nIn-Class Materials\nDay02: slides handout r code\nDay03: handout activity qmd\nDay04: slides | handout\nDay05: slides | handout\n\n\nOther Resources and Readings\n\nR Basics\nHow to do homework in R in Stat250"
+    "text": "Landing page for Stat250 course materials in Spring 2025\n\nIn-Class Materials\nDay02: slides handout r code\nDay03: handout activity qmd\nDay04: slides | handout\nDay05: slides | handout\nDay06: slides | handout\n\n\nOther Resources and Readings\n\nR Basics\nHow to do homework in R in Stat250"
   },
   {
     "objectID": "slides/04/slides04.html#plan-for-today",
@@ -686,172 +854,53 @@
     "text": "Where we’re going\nInstead of a permutation test, we can also use facts about the sampling distribution from probability to compute p-values with math."
   },
   {
-    "objectID": "slides/00-test/00-test.html#r-code",
-    "href": "slides/00-test/00-test.html#r-code",
-    "title": "Test slides",
-    "section": "R Code",
-    "text": "R Code\n\npalmerpenguins::penguins %&gt;%\n  ggplot(aes(x = flipper_length_mm)) +\n  geom_histogram(col = \"white\")"
+    "objectID": "slides/06/slides06.html#big-idea",
+    "href": "slides/06/slides06.html#big-idea",
+    "title": "Maximum Likelihood Estimation II",
+    "section": "Big Idea",
+    "text": "Big Idea\nWe’re interested in the proportion of Carleton students who have had some sort of research experience. We have the resources to randomly sample 10 students.\n\n\nProbability:\n\nStatistics:"
   },
   {
-    "objectID": "slides/00-test/00-test.html#plan-for-today",
-    "href": "slides/00-test/00-test.html#plan-for-today",
-    "title": "Test slides",
-    "section": "Plan for today",
-    "text": "Plan for today\n\nSyllabus\nContext for the class\nCourse expectations"
+    "objectID": "slides/06/slides06.html#example",
+    "href": "slides/06/slides06.html#example",
+    "title": "Maximum Likelihood Estimation II",
+    "section": "Example",
+    "text": "Example\nRecall that the likelihood function for \\(n\\) iid Bernoulli(\\(\\theta\\)) random variable is \\(L(\\theta) = \\theta^{\\sum x_i} (1-\\theta)^{n - \\sum x_i}\\).\n\n\n\n\n\n\n\n\n\n\n\n\nScenario 1: 0 yes responses\n\n\n\n\\(\\theta\\)\n0.0\n0.2\n0.4\n0.6\n0.8\n1.0\n\n\n\\(L(\\theta)\\)\n\n\n\n\n\n\n\n\n\nScenario 2: 6 yes responses\n\n\n\n\\(\\theta\\)\n0.0\n0.2\n0.4\n0.6\n0.8\n1.0\n\n\n\\(L(\\theta)\\)"
   },
   {
-    "objectID": "slides/00-test/00-test.html#a-bit-about-me",
-    "href": "slides/00-test/00-test.html#a-bit-about-me",
-    "title": "Test slides",
-    "section": "A bit about me",
-    "text": "A bit about me"
+    "objectID": "slides/06/slides06.html#exercise-from-last-class",
+    "href": "slides/06/slides06.html#exercise-from-last-class",
+    "title": "Maximum Likelihood Estimation II",
+    "section": "Exercise: from last class",
+    "text": "Exercise: from last class\nLet \\(X_1, ..., X_n\\) be an iid random sample from a distribution with PDF\n\\[f(x|\\theta)= (\\theta + 1)x^\\theta, 0 \\le x \\le 1\\]\n\\[L(\\theta) =\\] \\[\\hat\\theta_{MLE}=\\]\nSuppose we observe a sample of size 5: {.83, .49, .72, .57, .66}. Find the maximum likelihood estimate and verify with a graph or numerical approximation"
   },
   {
-    "objectID": "slides/00-test/00-test.html#course-description",
-    "href": "slides/00-test/00-test.html#course-description",
-    "title": "Test slides",
-    "section": "Course description",
-    "text": "Course description\nThis course is an introduction to the mathematical theory of frequentist and Bayesian statistical inference. Topics include parameter estimation, confidence intervals and hypothesis testing, linear models, and Bayesian inference.\nStudents who analyze data, or who aspire to develop new methods for analyzing data, should be well-grounded in mathematical statistics."
+    "objectID": "slides/06/slides06.html#example-uniform-disribution",
+    "href": "slides/06/slides06.html#example-uniform-disribution",
+    "title": "Maximum Likelihood Estimation II",
+    "section": "Example: Uniform disribution",
+    "text": "Example: Uniform disribution\nFind the MLE for \\(Y_1, ..., Y_n \\sim \\text{Unif}(0, \\theta)\\)"
   },
   {
-    "objectID": "slides/00-test/00-test.html#course-objectives",
-    "href": "slides/00-test/00-test.html#course-objectives",
-    "title": "Test slides",
-    "section": "Course Objectives",
-    "text": "Course Objectives\nBy the end of this course, you should be able to:\n\nDerive estimators for parameters using maximum likelihood, the method of moments, and Bayesian techniques\nEvaluate the performance of estimators and describe their strengths and weaknesses\nDemonstrate a sophisticated understanding of the mathematics behind hypothesis tests, confidence intervals, and linear models\n\nUse the statistical package R to implement basic simulations of estimation scenarios"
+    "objectID": "slides/06/slides06.html#exercise",
+    "href": "slides/06/slides06.html#exercise",
+    "title": "Maximum Likelihood Estimation II",
+    "section": "Exercise",
+    "text": "Exercise\nIs the likelihood function a probability distribution? Why or why not?"
   },
   {
-    "objectID": "slides/00-test/00-test.html#textbook",
-    "href": "slides/00-test/00-test.html#textbook",
-    "title": "Test slides",
-    "section": "Textbook:",
-    "text": "Textbook:"
+    "objectID": "slides/06/slides06.html#finding-the-mle-when-more-than-one-parameter-is-unknown",
+    "href": "slides/06/slides06.html#finding-the-mle-when-more-than-one-parameter-is-unknown",
+    "title": "Maximum Likelihood Estimation II",
+    "section": "Finding the MLE when more than one parameter is unknown",
+    "text": "Finding the MLE when more than one parameter is unknown\nIf the pdf or pmf that we’re using has two or more parameters, say \\(\\theta_1\\) and \\(\\theta_2\\), finding MLEs for the \\(\\theta_i\\)’s requires the solution of a sest of simultaneous equations\n\n\\[\\frac{\\partial}{\\partial \\theta_1} \\ln L(\\theta_1, \\theta_2) = 0\\]\n\n\n\\[\\frac{\\partial}{\\partial \\theta_2} \\ln L(\\theta_1, \\theta_2) = 0\\]"
   },
   {
-    "objectID": "slides/00-test/00-test.html#computing",
-    "href": "slides/00-test/00-test.html#computing",
-    "title": "Test slides",
-    "section": "Computing:",
-    "text": "Computing:"
-  },
-  {
-    "objectID": "slides/00-test/00-test.html#assignments",
-    "href": "slides/00-test/00-test.html#assignments",
-    "title": "Test slides",
-    "section": "Assignments",
-    "text": "Assignments"
-  },
-  {
-    "objectID": "slides/00-test/00-test.html#regrade-request-policy",
-    "href": "slides/00-test/00-test.html#regrade-request-policy",
-    "title": "Test slides",
-    "section": "Regrade request policy",
-    "text": "Regrade request policy\nGrading is often a tedious task, and the grading team will sometimes make mistakes. I am always happy to fix these mistakes, and gradescope makes it easy to do so. However, it takes time to read through these requests and I’ve noticed an increase in unwarranted regrade requests in recent years. This semester, I am instituting an “NFL Coaches Challenge”-style regrade request rule. Every student will start the semester with 2 regrade requests available to them. If you submit a regrade request and I agree with you, you get it back. If you submit a regrade request for something that was not a grading mistake, you lose that request."
-  },
-  {
-    "objectID": "slides/00-test/00-test.html#exams",
-    "href": "slides/00-test/00-test.html#exams",
-    "title": "Test slides",
-    "section": "Exams",
-    "text": "Exams"
-  },
-  {
-    "objectID": "slides/00-test/00-test.html#final-exam",
-    "href": "slides/00-test/00-test.html#final-exam",
-    "title": "Test slides",
-    "section": "Final Exam",
-    "text": "Final Exam"
-  },
-  {
-    "objectID": "slides/00-test/00-test.html#course-project",
-    "href": "slides/00-test/00-test.html#course-project",
-    "title": "Test slides",
-    "section": "Course project",
-    "text": "Course project"
-  },
-  {
-    "objectID": "slides/00-test/00-test.html#final-grades",
-    "href": "slides/00-test/00-test.html#final-grades",
-    "title": "Test slides",
-    "section": "Final grades",
-    "text": "Final grades"
-  },
-  {
-    "objectID": "slides/00-test/00-test.html#advice-from-past-students",
-    "href": "slides/00-test/00-test.html#advice-from-past-students",
-    "title": "Test slides",
-    "section": "Advice from past students:",
-    "text": "Advice from past students:\n\nStart the problem sets early and go to office hours!\nWork with other people in the class, collaboration is key\nBe willing to ask lots of questions and don’t be afraid to ask for help!\nI would advise for them to attend office hours and the stat clinic since early on to get help and not be worrying about assignments at the last minute.\nI would advise future students to reach out and ask questions as soon if they have any confusion. Understanding statistical concepts and working with R can be frustrating at times, but people are here to help you along the way!\nDon’t let work snowball! Try to get help early and often and an imperfect problem set is better than no problem set.\nlots of R here! Organization is key, and you’ll do well as long as you start homeworks early, communicate with the professor and with your fellow classmates. There’s a good support system."
-  },
-  {
-    "objectID": "slides/00-test/00-test.html#the-genius-myth",
-    "href": "slides/00-test/00-test.html#the-genius-myth",
-    "title": "Test slides",
-    "section": "The “Genius Myth”",
-    "text": "The “Genius Myth”\nIt’s sometimes easy to buy into the “genius myth” when it comes to math/stat courses: that you need to be a “math person” and have some innate mathematical ability in order to do well or become a statistics major. This could not be further from the truth! The best statisticians don’t necessarily have the “best” math or programming background, but are people that are able to formulate interesting questions and use math and programming to rigorously answer those questions. Many of the best statisticians I know became statisticians because they were initially interested in something else (biology, public health, psychology, neuroscience, physics, etc.) and realized that being able to answer important questions with data was not only valuable but fun and interesting. Being able to perform interesting statistical analyses is a skill that is learned, not an innate ability, and working hard at developing that skill is the point of this course."
-  },
-  {
-    "objectID": "slides/00-test/00-test.html#academic-integrity",
-    "href": "slides/00-test/00-test.html#academic-integrity",
-    "title": "Test slides",
-    "section": "Academic Integrity",
-    "text": "Academic Integrity"
-  },
-  {
-    "objectID": "slides/00-test/00-test.html#diversity-inclusion",
-    "href": "slides/00-test/00-test.html#diversity-inclusion",
-    "title": "Test slides",
-    "section": "Diversity & Inclusion",
-    "text": "Diversity & Inclusion\nWe all come to class with different backgrounds and experiences, and this diversity makes our class environment richer. We value diversity and inclusion, and are committed to a climate of mutual respect and full participation in and out of the classroom. This class strives to be a learning environment that is usable, equitable, inclusive and welcoming, regardless of race, ethnicity, religion, gender and gender identities, sexual orientation, ability, socioeconomic background, and nationality. If you anticipate or experience any barriers to learning, please discuss your concerns with me."
-  },
-  {
-    "objectID": "slides/00-test/00-test.html#accomodations",
-    "href": "slides/00-test/00-test.html#accomodations",
-    "title": "Test slides",
-    "section": "Accomodations",
-    "text": "Accomodations"
-  },
-  {
-    "objectID": "slides/00-test/00-test.html#stat-lab",
-    "href": "slides/00-test/00-test.html#stat-lab",
-    "title": "Test slides",
-    "section": "Stat Lab",
-    "text": "Stat Lab"
-  },
-  {
-    "objectID": "slides/00-test/00-test.html#title-ix",
-    "href": "slides/00-test/00-test.html#title-ix",
-    "title": "Test slides",
-    "section": "Title IX",
-    "text": "Title IX\nPlease be aware that all faculty are “responsible employees”, which means that if you tell me about a situation involving sexual harassment, sexual assault, dating violence, domestic violence, or stalking, I must share that information with the Title IX Coordinator. Although I have to make this notification, you will control how your case will be handled, including whether or not you wish to meet with the Title IX coordinator or pursue a formal complaint."
-  },
-  {
-    "objectID": "slides/00-test/00-test.html#take-care-of-yourself",
-    "href": "slides/00-test/00-test.html#take-care-of-yourself",
-    "title": "Test slides",
-    "section": "Take care of yourself",
-    "text": "Take care of yourself\nDo your best to maintain a healthy lifestyle this semester by wearing a mask if you don’t feel well, eating a vegetable every day, exercising, avoiding excessive drug and alcohol use, getting enough sleep, and taking some time to relax. Your mental health is more important than your grade in this course. There are many helpful resources available on campus and an important part of the college experience is learning how to ask for help. If you are experiencing mental health symptoms as a result of coursework, please speak with me so we can address the problem together."
-  },
-  {
-    "objectID": "slides/00-test/00-test.html#prerequisites",
-    "href": "slides/00-test/00-test.html#prerequisites",
-    "title": "Test slides",
-    "section": "Prerequisites",
-    "text": "Prerequisites"
-  },
-  {
-    "objectID": "slides/00-test/00-test.html#history",
-    "href": "slides/00-test/00-test.html#history",
-    "title": "Test slides",
-    "section": "History",
-    "text": "History\n\nStatistics seems to be a difficult subject for mathematicians, perhaps because its elusive and wide-ranging character mitigates against the traditional theorem-proof method of presentation. It may come as some comfort then that statistics is also a difficult subject for statisticians\n\n\nControversies in the Foundations of Statistics, Bradley Efron 1978"
-  },
-  {
-    "objectID": "slides/00-test/00-test.html#fisher-vs-neyman-pearson",
-    "href": "slides/00-test/00-test.html#fisher-vs-neyman-pearson",
-    "title": "Test slides",
-    "section": "Fisher vs Neyman-Pearson",
-    "text": "Fisher vs Neyman-Pearson"
+    "objectID": "slides/06/slides06.html#example-nmu-sigma2-distribution",
+    "href": "slides/06/slides06.html#example-nmu-sigma2-distribution",
+    "title": "Maximum Likelihood Estimation II",
+    "section": "Example: \\(N(\\mu, \\sigma^2)\\) distribution",
+    "text": "Example: \\(N(\\mu, \\sigma^2)\\) distribution\nSuppose a random sample of size \\(n\\) is drawn from the two parameter normal pdf:\n\\[f_y(y|\\mu, \\sigma^2) = \\frac{1}{\\sqrt{2\\pi \\sigma}} \\exp(\\frac{-(y-\\mu)^2}{2\\sigma^2})\\]\nfind the MLEs \\(\\hat{\\mu}\\) and \\(\\hat\\sigma^2\\)"
   },
   {
     "objectID": "readings/r-homework-stat250.html",
