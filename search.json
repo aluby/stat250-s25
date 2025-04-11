@@ -868,6 +868,13 @@
     "text": "Example\nRecall that the likelihood function for \\(n\\) iid Bernoulli(\\(\\theta\\)) random variable is \\(L(\\theta) = \\theta^{\\sum x_i} (1-\\theta)^{n - \\sum x_i}\\).\n\n\n\n\n\n\n\n\n\n\n\n\nScenario 1: 0 yes responses\n\n\n\n\\(\\theta\\)\n0.0\n0.2\n0.4\n0.6\n0.8\n1.0\n\n\n\\(L(\\theta)\\)\n\n\n\n\n\n\n\n\n\nScenario 2: 6 yes responses\n\n\n\n\\(\\theta\\)\n0.0\n0.2\n0.4\n0.6\n0.8\n1.0\n\n\n\\(L(\\theta)\\)"
   },
   {
+    "objectID": "slides/06/slides06.html#exercise",
+    "href": "slides/06/slides06.html#exercise",
+    "title": "Maximum Likelihood Estimation II",
+    "section": "Exercise",
+    "text": "Exercise\nIs the likelihood function a probability distribution? Why or why not?"
+  },
+  {
     "objectID": "slides/06/slides06.html#exercise-from-last-class",
     "href": "slides/06/slides06.html#exercise-from-last-class",
     "title": "Maximum Likelihood Estimation II",
@@ -882,13 +889,6 @@
     "text": "Example: Uniform disribution\nFind the MLE for \\(Y_1, ..., Y_n \\sim \\text{Unif}(0, \\theta)\\)"
   },
   {
-    "objectID": "slides/06/slides06.html#exercise",
-    "href": "slides/06/slides06.html#exercise",
-    "title": "Maximum Likelihood Estimation II",
-    "section": "Exercise",
-    "text": "Exercise\nIs the likelihood function a probability distribution? Why or why not?"
-  },
-  {
     "objectID": "slides/06/slides06.html#finding-the-mle-when-more-than-one-parameter-is-unknown",
     "href": "slides/06/slides06.html#finding-the-mle-when-more-than-one-parameter-is-unknown",
     "title": "Maximum Likelihood Estimation II",
@@ -900,7 +900,7 @@
     "href": "slides/06/slides06.html#example-nmu-sigma2-distribution",
     "title": "Maximum Likelihood Estimation II",
     "section": "Example: \\(N(\\mu, \\sigma^2)\\) distribution",
-    "text": "Example: \\(N(\\mu, \\sigma^2)\\) distribution\nSuppose a random sample of size \\(n\\) is drawn from the two parameter normal pdf:\n\\[f_y(y|\\mu, \\sigma^2) = \\frac{1}{\\sqrt{2\\pi \\sigma}} \\exp(\\frac{-(y-\\mu)^2}{2\\sigma^2})\\]\nfind the MLEs \\(\\hat{\\mu}\\) and \\(\\hat\\sigma^2\\)"
+    "text": "Example: \\(N(\\mu, \\sigma^2)\\) distribution\nSuppose a random sample of size \\(n\\) is drawn from the two parameter normal pdf:\n\\(f_y(y|\\mu, \\sigma^2) = \\frac{1}{\\sqrt{2\\pi \\sigma}} \\exp(-(\\frac{y-\\mu}{\\sigma})^2)\\)$\nfind the MLEs \\(\\hat{\\mu}\\) and \\(\\hat\\sigma^2\\)"
   },
   {
     "objectID": "readings/r-homework-stat250.html",
