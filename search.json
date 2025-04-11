@@ -900,7 +900,7 @@
     "href": "slides/06/slides06.html#example-nmu-sigma2-distribution",
     "title": "Maximum Likelihood Estimation II",
     "section": "Example: \\(N(\\mu, \\sigma^2)\\) distribution",
-    "text": "Example: \\(N(\\mu, \\sigma^2)\\) distribution\nSuppose a random sample of size \\(n\\) is drawn from the two parameter normal pdf:\n\\(f_y(y|\\mu, \\sigma^2) = \\frac{1}{\\sqrt{2\\pi \\sigma}} \\exp(-(\\frac{y-\\mu}{\\sigma})^2)\\)$\nfind the MLEs \\(\\hat{\\mu}\\) and \\(\\hat\\sigma^2\\)"
+    "text": "Example: \\(N(\\mu, \\sigma^2)\\) distribution\nSuppose a random sample of size \\(n\\) is drawn from the two parameter normal pdf:\n\\(f_y(y|\\mu, \\sigma^2) = \\frac{1}{\\sqrt{2\\pi \\sigma}} \\exp(-(\\frac{y-\\mu}{\\sigma})^2)\\)\nfind the MLEs \\(\\hat{\\mu}\\) and \\(\\hat\\sigma^2\\)"
   },
   {
     "objectID": "readings/r-homework-stat250.html",
