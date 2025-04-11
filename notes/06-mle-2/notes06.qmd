@@ -1,0 +1,89 @@
+---
+title: "06: More on MLEs"
+author: "Prof Amanda Luby"
+subtitle: "Stat250 S25"
+callout-appearance: minimal
+knitr:
+    opts_chunk: 
+      dev: "ragg_png"
+      echo: false
+      warning: false
+      message: false
+format:
+  pdf:
+    include-in-header: 
+       - "../preamble.tex"
+    toc: false
+    number-sections: true
+    colorlinks: true
+    geometry:
+      - top=1in
+      - left=1in
+      - right=1in
+      - bottom=1in
+      - heightrounded
+fontfamily: libertine
+fontsize: 11pt
+---
+
+
+```{r, echo = FALSE}
+library(tidyverse)
+library(Sleuth3)
+library(mosaic)
+library(infer)
+```
+
+# More on the likelihood function and MLEs
+
+**Example:** Recall that the likelihood function for $n$ iid Bernoulli($\theta$) random variable is $L(\theta) = \theta^{\sum x_i} (1-\theta)^{n - \sum x_i}$
+
+Scenario 1: 0 "Yes" responses
+Scenario 2: 6 "Yes" responses 
+
+```{r}
+#| fig-width: 3
+#| fig-height: 2
+#| fig-align: 'left'
+ggplot() + 
+  xlim(c(0,1)) + 
+  ylim(c(0,1)) + 
+  theme_bw()
+```
+
+
+**Exercise** Let $X_1, ..., X_n$ be an iid random sample from a distribution with PDF 
+
+$$f(x|\theta)= (\theta + 1)x^\theta, 0 \le x \le 1$$
+
+$$L(\theta) =$$
+$$\hat\theta_{MLE}=$$
+
+Suppose we observe a sample of size 5: {.83, .49, .72, .57, .66}. Find the maximum likelihood estimate and verify with a graph or numerical approximation
+
+\vspace{3in}
+
+# Uniform distribution
+
+Find the MLE for $Y_1, ..., Y_n \sim \text{Unif}(0, \theta)$
+
+\vspace{5in}
+
+**Exercise:** Is the likelihood function a probability distribution? Why or why not?
+
+\vspace{2in}
+
+# Finding the MLE when more than one parameter is unknown
+
+If the pdf or pmf that we're using has two or more parameters, say $\theta_1$ and $\theta_2$, finding MLEs for the $\theta_i$'s requires the solution of a sest of simultaneous equations. We would typically need to solve the following system: 
+
+$$\frac{\partial}{\partial \theta_1} \ln L(\theta_1, \theta_2) = 0$$
+
+
+$$\frac{\partial}{\partial \theta_2} \ln L(\theta_1, \theta_2) = 0$$
+
+**Example:** Suppose a random sample of size $n$ is drawn from the two parameter normal pdf
+
+$$f_y(y|\mu, \sigma^2) = \frac{1}{\sqrt{2\pi \sigma}} \exp(\frac{-(y-\mu)^2}{2\sigma^2})$$
+
+find the MLEs $\hat{\mu}$ and $\hat\sigma^2$
