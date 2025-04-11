@@ -1,0 +1,142 @@
+---
+title: "Maximum Likelihood Estimation II"
+subtitle: "Day 06"
+title-slide-attributes:
+  data-background-gradient: "linear-gradient(to right, #46337e, #440154)"
+  data-slide-number: none
+author: "Prof Amanda Luby"
+format: 
+  revealjs:
+    incremental: true
+editor: 
+  markdown: 
+    wrap: 72
+---
+
+```{r setup}
+#| include: false
+
+library(tidyverse)
+library(countdown)
+
+library(ggformula)
+library(openintro)
+library(patchwork)
+library(fivethirtyeight)
+library(dplyr)
+library(tidyr)
+library(fontawesome)
+
+library(gridExtra)
+library(tidyverse)
+library(knitr)
+library(mosaic)
+library(infer)
+library(kableExtra)
+
+library(plotly)
+
+# #440154
+knitr::opts_chunk$set(echo = TRUE,
+                  message = FALSE,
+                  warning = FALSE)
+
+slides_theme = theme_minimal(base_family = "serif", base_size = 16) +
+  theme(plot.background = element_rect(fill = "#f0f1eb", colour = NA))
+  
+
+theme_set(slides_theme)
+```
+
+## Big Idea
+
+We're interested in the *proportion* of Carleton students who have had
+some sort of research experience. We have the resources to randomly
+sample 10 students.
+
+::::: columns
+::: {.column width="50%"}
+**Probability:**
+:::
+
+::: {.column width="50%"}
+**Statistics:**
+:::
+:::::
+
+## Example
+
+Recall that the likelihood function for $n$ iid Bernoulli($\theta$)
+random variable is
+$L(\theta) = \theta^{\sum x_i} (1-\theta)^{n - \sum x_i}$.
+
+::::: columns
+::: {.column width="50%"}
+```{r}
+#| fig-align: 'left'
+#| echo: false
+ggplot() + 
+  xlim(c(0,1)) + 
+  ylim(c(0,1)) +
+  theme(text = element_text(size = 24))
+```
+:::
+
+::: {.column width="50%"}
+**Scenario 1: 0 yes responses**
+
+|             |     |     |     |     |     |     |
+|-------------|-----|-----|-----|-----|-----|-----|
+| $\theta$    | 0.0   | 0.2  | 0.4  | 0.6  | 0.8  | 1.0   |
+| $L(\theta)$ |     |     |     |     |     |     |
+
+**Scenario 2: 6 yes responses**
+
+|             |     |     |     |     |     |     |
+|-------------|-----|-----|-----|-----|-----|-----|
+| $\theta$    | 0.0   | 0.2  | 0.4  | 0.6  | 0.8  | 1.0   |
+| $L(\theta)$ |     |     |     |     |     |     |
+
+:::
+:::::
+
+## Exercise: from last class
+
+Let $X_1, ..., X_n$ be an iid random sample from a distribution with PDF 
+
+$$f(x|\theta)= (\theta + 1)x^\theta, 0 \le x \le 1$$
+
+$$L(\theta) =$$
+$$\hat\theta_{MLE}=$$
+
+Suppose we observe a sample of size 5: {.83, .49, .72, .57, .66}. Find the maximum likelihood estimate and verify with a graph or numerical approximation
+
+\vspace{3in}
+
+## Example: Uniform disribution
+
+Find the MLE for $Y_1, ..., Y_n \sim \text{Unif}(0, \theta)$
+
+## Exercise
+
+Is the likelihood function a probability distribution? Why or why not?
+
+## Finding the MLE when more than one parameter is unknown
+
+If the pdf or pmf that we're using has two or more parameters, say $\theta_1$ and $\theta_2$, finding MLEs for the $\theta_i$'s requires the solution of a sest of simultaneous equations
+
+. . . 
+
+$$\frac{\partial}{\partial \theta_1} \ln L(\theta_1, \theta_2) = 0$$
+
+. . . 
+
+$$\frac{\partial}{\partial \theta_2} \ln L(\theta_1, \theta_2) = 0$$
+
+## Example: $N(\mu, \sigma^2)$ distribution
+
+Suppose a random sample of size $n$ is drawn from the two parameter normal pdf:
+
+$$f_y(y|\mu, \sigma^2) = \frac{1}{\sqrt{2\pi \sigma}} \exp(\frac{-(y-\mu)^2}{2\sigma^2})$$
+
+find the MLEs $\hat{\mu}$ and $\hat\sigma^2$

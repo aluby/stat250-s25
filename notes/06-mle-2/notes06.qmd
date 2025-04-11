@@ -1,5 +1,5 @@
 ---
-title: "06: More on MLEs"
+title: "06: More on Maximum Likelihood"
 author: "Prof Amanda Luby"
 subtitle: "Stat250 S25"
 callout-appearance: minimal
@@ -34,13 +34,17 @@ library(mosaic)
 library(infer)
 ```
 
+# Overview
+
+\vspace{1in}
+
 # More on the likelihood function and MLEs
 
 **Example:** Recall that the likelihood function for $n$ iid Bernoulli($\theta$) random variable is $L(\theta) = \theta^{\sum x_i} (1-\theta)^{n - \sum x_i}$
 
-Scenario 1: 0 "Yes" responses
-Scenario 2: 6 "Yes" responses 
+:::: {layout="[0.5, 0.5]"}
 
+:::{#firstcol}
 ```{r}
 #| fig-width: 3
 #| fig-height: 2
@@ -50,6 +54,25 @@ ggplot() +
   ylim(c(0,1)) + 
   theme_bw()
 ```
+:::
+
+:::{#secondcol}
+Scenario 1: 0 "Yes" responses
+
+|             |     |     |     |     |     |     |
+|-------------|-----|-----|-----|-----|-----|-----|
+| $\theta$    | 0.0   | 0.2  | 0.4  | 0.6  | 0.8  | 1.0   |
+| $L(\theta)$ |     |     |     |     |     |     |
+
+Scenario 2: 6 "Yes" responses 
+
+|             |     |     |     |     |     |     |
+|-------------|-----|-----|-----|-----|-----|-----|
+| $\theta$    | 0.0   | 0.2  | 0.4  | 0.6  | 0.8  | 1.0   |
+| $L(\theta)$ |     |     |     |     |     |     |
+:::
+
+::::
 
 
 **Exercise** Let $X_1, ..., X_n$ be an iid random sample from a distribution with PDF 
@@ -77,10 +100,10 @@ Find the MLE for $Y_1, ..., Y_n \sim \text{Unif}(0, \theta)$
 
 If the pdf or pmf that we're using has two or more parameters, say $\theta_1$ and $\theta_2$, finding MLEs for the $\theta_i$'s requires the solution of a sest of simultaneous equations. We would typically need to solve the following system: 
 
-$$\frac{\partial}{\partial \theta_1} \ln L(\theta_1, \theta_2) = 0$$
+$$\frac{\partial}{\partial \theta_1} \ln L(\theta_1, \theta_2) = $$
 
 
-$$\frac{\partial}{\partial \theta_2} \ln L(\theta_1, \theta_2) = 0$$
+$$\frac{\partial}{\partial \theta_2} \ln L(\theta_1, \theta_2) = $$
 
 **Example:** Suppose a random sample of size $n$ is drawn from the two parameter normal pdf
 
