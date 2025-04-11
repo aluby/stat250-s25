@@ -76,7 +76,7 @@ $L(\theta) = \theta^{\sum x_i} (1-\theta)^{n - \sum x_i}$.
 #| fig-align: 'left'
 #| echo: false
 ggplot() + 
-  xlim(c(0,1)) + 
+  scale_x_continuous(limits = c(0,1), breaks = c(0, .2, .4, .6, .8, 1)) + 
   ylim(c(0,1)) +
   theme(text = element_text(size = 24))
 ```
@@ -100,6 +100,10 @@ ggplot() +
 :::
 :::::
 
+## Exercise
+
+Is the likelihood function a probability distribution? Why or why not?
+
 ## Exercise: from last class
 
 Let $X_1, ..., X_n$ be an iid random sample from a distribution with PDF 
@@ -117,9 +121,6 @@ Suppose we observe a sample of size 5: {.83, .49, .72, .57, .66}. Find the maxim
 
 Find the MLE for $Y_1, ..., Y_n \sim \text{Unif}(0, \theta)$
 
-## Exercise
-
-Is the likelihood function a probability distribution? Why or why not?
 
 ## Finding the MLE when more than one parameter is unknown
 
@@ -137,6 +138,6 @@ $$\frac{\partial}{\partial \theta_2} \ln L(\theta_1, \theta_2) = 0$$
 
 Suppose a random sample of size $n$ is drawn from the two parameter normal pdf:
 
-$$f_y(y|\mu, \sigma^2) = \frac{1}{\sqrt{2\pi \sigma}} \exp(\frac{-(y-\mu)^2}{2\sigma^2})$$
+$f_y(y|\mu, \sigma^2) = \frac{1}{\sqrt{2\pi \sigma}} \exp(-(\frac{y-\mu}{\sigma})^2)$$
 
 find the MLEs $\hat{\mu}$ and $\hat\sigma^2$

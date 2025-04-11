@@ -50,7 +50,7 @@ library(infer)
 #| fig-height: 2
 #| fig-align: 'left'
 ggplot() + 
-  xlim(c(0,1)) + 
+  scale_x_continuous(limits = c(0,1), breaks = c(0, .2, .4, .6, .8, 1)) + 
   ylim(c(0,1)) + 
   theme_bw()
 ```
@@ -75,9 +75,12 @@ Scenario 2: 6 "Yes" responses
 ::::
 
 
-**Exercise** Let $X_1, ..., X_n$ be an iid random sample from a distribution with PDF 
+**Exercise:** Is the likelihood function a probability distribution? Why or why not?
 
-$$f(x|\theta)= (\theta + 1)x^\theta, 0 \le x \le 1$$
+\vspace{2in}
+
+
+**Exercise** Let $X_1, ..., X_n$ be an iid random sample from a distribution with PDF $f(x|\theta)= (\theta + 1)x^\theta, 0 \le x \le 1$
 
 $$L(\theta) =$$
 $$\hat\theta_{MLE}=$$
@@ -92,13 +95,9 @@ Find the MLE for $Y_1, ..., Y_n \sim \text{Unif}(0, \theta)$
 
 \vspace{5in}
 
-**Exercise:** Is the likelihood function a probability distribution? Why or why not?
-
-\vspace{2in}
-
 # Finding the MLE when more than one parameter is unknown
 
-If the pdf or pmf that we're using has two or more parameters, say $\theta_1$ and $\theta_2$, finding MLEs for the $\theta_i$'s requires the solution of a sest of simultaneous equations. We would typically need to solve the following system: 
+If the pdf or pmf that we're using has two or more parameters, say $\theta_1$ and $\theta_2$, finding MLEs for the $\theta_i$'s requires the solution of a set of simultaneous equations. We would typically need to solve the following system: 
 
 $$\frac{\partial}{\partial \theta_1} \ln L(\theta_1, \theta_2) = $$
 
@@ -107,6 +106,6 @@ $$\frac{\partial}{\partial \theta_2} \ln L(\theta_1, \theta_2) = $$
 
 **Example:** Suppose a random sample of size $n$ is drawn from the two parameter normal pdf
 
-$$f_y(y|\mu, \sigma^2) = \frac{1}{\sqrt{2\pi \sigma}} \exp(\frac{-(y-\mu)^2}{2\sigma^2})$$
+$$f_y(y|\mu, \sigma^2) = \frac{1}{\sqrt{2\pi \sigma}} \exp(-(\frac{y-\mu}{\sigma})^2)$$
 
 find the MLEs $\hat{\mu}$ and $\hat\sigma^2$
