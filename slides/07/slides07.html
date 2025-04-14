@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.6.32">
 
   <meta name="author" content="Prof Amanda Luby">
-  <title>Stat 250 – Welcome to Stat250!</title>
+  <title>Stat 250 – Method of Moments</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -321,16 +321,14 @@
       margin-right: 0; 
     }
   </style>
-  <link href="../../site_libs/countdown-0.4.0/countdown.css" rel="stylesheet">
-  <script src="../../site_libs/countdown-0.4.0/countdown.js"></script>
 </head>
 <body class="quarto-light">
   <div class="reveal">
     <div class="slides">
 
 <section id="title-slide" data-background-gradient="linear-gradient(to right, #46337e, #440154)" data-slide-number="none" class="quarto-title-block center">
-  <h1 class="title">Welcome to Stat250!</h1>
-  <p class="subtitle">Day 01</p>
+  <h1 class="title">Method of Moments</h1>
+  <p class="subtitle">Day 07</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -344,484 +342,144 @@ Prof Amanda Luby
 </div>
 
 </section>
-<section id="plan-for-today" class="slide level2">
-<h2>Plan for today</h2>
-<ol type="1">
-<li class="fragment">Intros</li>
-<li class="fragment">Context for the class</li>
-<li class="fragment">Syllabus</li>
-<li class="fragment">Setting course expectations</li>
-</ol>
+<section id="recap" class="slide level2">
+<h2>Recap</h2>
+<ul>
+<li class="fragment">Observe data <span class="math inline">\(X_1, ..., X_n \sim F_x(x|\theta)\)</span>, where <span class="math inline">\(\theta\)</span> is unknown</li>
+<li class="fragment">Goal: <em>Estimate</em> <span class="math inline">\(\theta\)</span> based on the values of <span class="math inline">\(X_i\)</span> by formulating an <em>estimator</em> <span class="math inline">\(\hat \theta\)</span></li>
+<li class="fragment">One technique is to use the <em>maximum likelihood estimator</em>, which finds the value of <span class="math inline">\(\theta\)</span> that maximizes the joint probability <span class="math inline">\(\prod_{i=1}^n f_x(x_i | \theta)\)</span></li>
+<li class="fragment">Today, we’ll talk about another technique for estimating <span class="math inline">\(\theta\)</span></li>
+</ul>
 </section>
 <section>
-<section id="intros" class="title-slide slide level1 center">
-<h1>Intros</h1>
+<section id="warm-up" class="title-slide slide level1 center">
+<h1>Warm Up</h1>
 
 </section>
-<section id="about-me" class="slide level2">
-<h2>About me</h2>
+<section id="which-population-is-more-likely" class="slide level2">
+<h2>Which population is more likely?</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<ul>
-<li class="fragment">First year at Carleton!</li>
-<li class="fragment">Taught at Swarthmore for 5 years before moving here this fall</li>
-<li class="fragment">PhD in Statistics &amp; Data Science from Carnegie Mellon University</li>
-<li class="fragment">Grew up in Minnesota, went to St Ben’s as an undergrad</li>
-</ul>
+<div class="panel-tabset">
+<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">Sample</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="slides07_files/figure-revealjs/unnamed-chunk-1-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 2
+   mean   var
+  &lt;dbl&gt; &lt;dbl&gt;
+1  20.7  16.5</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div><div class="column fragment" style="width:50%;">
-<p><img data-src="IMG_8597.jpg"></p>
+<div class="panel-tabset">
+<ul id="tabset-2" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-2-1"><span class="math inline">\(N(10, 5)\)</span></a></li><li><a href="#tabset-2-2"><span class="math inline">\(N(20, 5)\)</span></a></li></ul>
+<div class="tab-content">
+<div id="tabset-2-1">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="slides07_files/figure-revealjs/unnamed-chunk-2-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-2-2">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="slides07_files/figure-revealjs/unnamed-chunk-3-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div></div>
 </section>
-<section id="three-prongs-of-statistics" class="slide level2">
-<h2>Three prongs of statistics</h2>
-<div style="font-size: 90%;">
-<ol type="1">
-<li class="fragment"><strong>Design</strong> <br> The design of surveys/experiments and collection of data to more efficiently/correctly address scientific questions <br></li>
-</ol>
-<div class="fragment">
-<ol start="2" type="1">
-<li class="fragment"><strong>Exploration</strong> <br> Understand the major features of and detect patterns in data <br></li>
-</ol>
-</div>
-<div class="fragment">
-<ol start="3" type="1">
-<li class="fragment"><strong>Inference</strong> <br> Account for randomness, variability, and bias in a sample in order to draw reasonable and correct conclusions about a population</li>
-</ol>
-</div>
-</div>
-</section>
-<section id="statistics-vs.-probability" class="slide level2">
-<h2>Statistics vs.&nbsp;probability</h2>
-<h4 id="probability-math-240">Probability (Math 240)</h4>
-<p>We learned how to calculate the probability of seeing a result (data) given a specific probability model (e.g., a specific distribution)</p>
-<p><br></p>
-<div class="fragment">
-<h4 id="statistics-stat-250">Statistics (Stat 250)</h4>
-<p>We will learn how to make statements about the underlying probability models given the data we see</p>
-</div>
-</section>
-<section id="example-spies-vs.-statisticians" class="slide level2">
-<h2>Example: Spies vs.&nbsp;Statisticians</h2>
-<p>During WWII, the Allies wanted to determine production rates of tanks (and airplanes, missiles, etc.)</p>
-<h4 id="spies">Spies</h4>
-<p>Gathered intelligence (intercepted messages, interrogated of prisoners, etc.) and made the following estimates:</p>
-<ul>
-<li class="fragment">June 1940: 1000</li>
-<li class="fragment">June 1941: 1550</li>
-<li class="fragment">August 1942: 1550</li>
-</ul>
-</section>
-<section id="example-spies-vs.-statisticians-1" class="slide level2">
-<h2>Example: Spies vs.&nbsp;Statisticians</h2>
-<h4 id="statisticians">Statisticians</h4>
-<div style="font-size: 90%;">
-<ul>
-<li class="fragment"><p>The Allies had a sample of serial numbers (via capture, photography, etc.), <span class="math inline">\(X_1, X_2, \ldots, X_n\)</span>, and there were <span class="math inline">\(N\)</span> produced.</p></li>
-<li class="fragment"><p>Allied statisticians needed to devise an <strong>estimator</strong> to obtain <span class="math inline">\(N\)</span></p></li>
-<li class="fragment"><p>Ultimately, they used <span class="math inline">\(\widehat{N} = X_{\text{max}} + \dfrac{X_{\text{max}}}{n} - 1\)</span></p>
-<ul>
-<li class="fragment">June 1940: 169</li>
-<li class="fragment">June 1941: 244</li>
-<li class="fragment">August 1942: 327</li>
-</ul></li>
-</ul>
-</div>
-</section>
-<section id="example-spies-vs.-statisticians-2" class="slide level2">
-<h2>Example: Spies vs.&nbsp;Statisticians</h2>
-<p>After the war, the Allies discovered documents revealing the true number of tanks produced:</p>
-<p><br></p>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Month</th>
-<th style="text-align: center;">Truth</th>
-<th style="text-align: center;">Statisticians</th>
-<th style="text-align: center;">Spies</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>June 1940</td>
-<td style="text-align: center;">122</td>
-<td style="text-align: center;">169</td>
-<td style="text-align: center;">1000</td>
-</tr>
-<tr class="even">
-<td>June 1941</td>
-<td style="text-align: center;">271</td>
-<td style="text-align: center;">244</td>
-<td style="text-align: center;">1550</td>
-</tr>
-<tr class="odd">
-<td>August 1942</td>
-<td style="text-align: center;">342</td>
-<td style="text-align: center;">327</td>
-<td style="text-align: center;">1550</td>
-</tr>
-</tbody>
-</table>
-</section></section>
-<section>
-<section id="context-for-the-class" class="title-slide slide level1 center">
-<h1>Context for the class</h1>
-
-</section>
-<section id="prereqs" class="slide level2">
-<h2>Prereqs</h2>
-<ul>
-<li class="fragment">Math240 (Probability)</li>
-<li class="fragment">Stat120 or other applied intro stats course is helpful but not required</li>
-<li class="fragment">I’ll assume some experience with R</li>
-<li class="fragment">We’re going to use mechanics from calculus &amp; probability, but it’s not the focus of the course</li>
-<li class="fragment">Part of HW1 is Calc/Prob review. refresh your memory, use resources that you need, talk to me sooner rather than later if it’s especially tough</li>
-</ul>
-</section>
-<section id="section" class="slide level2">
-<h2></h2>
-<blockquote>
-<p>Statistics seems to be a difficult subject for mathematicians, perhaps because its elusive and wide-ranging character mitigates against the traditional theorem-proof method of presentation. It may come as some comfort then that statistics is also a difficult subject for statisticians</p>
-</blockquote>
-<blockquote>
-<p><em>Controversies in the Foundations of Statistics</em>, Bradley Efron 1978</p>
-</blockquote>
-</section>
-<section id="statistical-models" class="slide level2">
-<h2>Statistical models</h2>
-<p>A statistical model consists of</p>
-<ul>
-<li class="fragment"><p>a collection of random variables to describe observable data,</p></li>
-<li class="fragment"><p>the possible joint distribution(s) of the random variables,</p></li>
-<li class="fragment"><p>and the parameters, <span class="math inline">\(\boldsymbol \theta\)</span>, that define those distributions</p></li>
-</ul>
-
-<aside><div>
-<p>Morris and DeGroot, 377</p>
-</div></aside></section>
-<section id="r.a.-fisher" class="slide level2">
-<h2>R.A. Fisher</h2>
-<p>1890-1962</p>
-<div class="columns">
-<div class="column" style="width:40%;">
-<p><img data-src="RA-fisher.jpeg"></p>
-</div><div class="column" style="width:60%;">
-<ul>
-<li class="fragment">Variance</li>
-<li class="fragment">ANOVA</li>
-<li class="fragment">Null hypothesis</li>
-<li class="fragment">Maximum likelihood estimation</li>
-<li class="fragment">p-value</li>
-<li class="fragment">Lots of contributions in genetics</li>
-<li class="fragment">Also a eugenecist</li>
-</ul>
-</div></div>
-</section>
-<section id="neyman-pearson" class="slide level2">
-<h2>Neyman &amp; Pearson</h2>
-<div class="columns">
-<div class="column" style="width:60%;">
-<p><img data-src="neyman-pearson.jpeg"></p>
-</div><div class="column" style="width:40%;">
-<ul>
-<li class="fragment">Confidence interval</li>
-<li class="fragment">Correlation</li>
-<li class="fragment">Regression</li>
-<li class="fragment">Standard deviation</li>
-<li class="fragment">Effect size</li>
-<li class="fragment">“Optimal” tests</li>
-<li class="fragment"><span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span></li>
-<li class="fragment">Type I and II error</li>
-</ul>
-</div></div>
-</section>
-<section id="frequentist-vs-bayesian" class="slide level2">
-<h2>Frequentist vs Bayesian</h2>
-<div class="columns">
-<div class="column" style="width:70%;">
-<p><img data-src="fisher-neyman-pearson.webp"></p>
-</div><div class="column" style="width:30%;">
-<p><img data-src="bayes.gif"></p>
-</div></div>
-</section>
-<section id="frequentist-vs-bayesian-1" class="slide level2">
-<h2>Frequentist vs Bayesian</h2>
+<section id="which-population-is-more-likely-1" class="slide level2">
+<h2>Which population is more likely?</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<p><strong>Frequentist</strong></p>
-<ul>
-<li class="fragment">“Classical” statistics</li>
-<li class="fragment">Probability is a long-run frequency</li>
-<li class="fragment">Type I and Type II errors</li>
-<li class="fragment">Confidence intervals</li>
-</ul>
-</div><div class="column" style="width:50%;">
-<p><strong>Bayesian</strong></p>
-<ul>
-<li class="fragment">Probability is a subjective belief</li>
-<li class="fragment">Update “prior” probabilities with data to obtain “posterior” probabilities</li>
-<li class="fragment">“Credible” intervals</li>
-<li class="fragment">Computationally intensive</li>
-</ul>
-</div></div>
-</section>
-<section id="parametric-vs-nonparametric" class="slide level2">
-<h2>Parametric vs Nonparametric</h2>
-<div style="font-size: 90%;">
-<p><strong>Nonparametric</strong> <br></p>
-<blockquote>
-<p>The basic idea of nonparametric inference is to use data to infer an unknown quantity while making as few assumptions as possible. Usually, this means using statistical models that are infinite-dimensional. (Wasserman, 2006)</p>
-</blockquote>
-<div class="fragment">
-<p><strong>Parametric</strong><br></p>
-<blockquote>
-<p>A parametric inference uses models that consist of a set of distributions/densities that can be parameterized by a finite number of parameters.</p>
-</blockquote>
-</div>
-</div>
-</section>
-<section id="tentative-schedule" class="slide level2">
-<h2>Tentative schedule</h2>
-<p><br></p>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Topic</th>
-<th style="text-align: center;">Chapters</th>
-<th style="text-align: center;">Approx. Duration</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Review</td>
-<td style="text-align: center;">1-4</td>
-<td style="text-align: center;">1 week</td>
-</tr>
-<tr class="even">
-<td>Parametric estimation</td>
-<td style="text-align: center;">6</td>
-<td style="text-align: center;">3 weeks</td>
-</tr>
-<tr class="odd">
-<td>Parametric &amp; Nonparametric inference</td>
-<td style="text-align: center;">3-5, 7-9</td>
-<td style="text-align: center;">4 weeks</td>
-</tr>
-<tr class="even">
-<td>Modeling</td>
-<td style="text-align: center;">8-10</td>
-<td style="text-align: center;">2 weeks</td>
-</tr>
-</tbody>
-</table>
-</section></section>
-<section id="discuss-front-page-of-handout" class="title-slide slide level1 center">
-<h1>Discuss front page of handout</h1>
+<div class="panel-tabset">
+<ul id="tabset-3" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-3-1">Sample</a></li></ul>
+<div class="tab-content">
+<div id="tabset-3-1">
 <div class="cell">
 <div class="cell-output-display">
-<div class="countdown" id="timer_23841f85" data-update-every="1" tabindex="0" style="right:0;bottom:0;">
-<div class="countdown-controls"><button class="countdown-bump-down">−</button><button class="countdown-bump-up">+</button></div>
-<code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+<div>
+<figure>
+<p><img data-src="slides07_files/figure-revealjs/unnamed-chunk-4-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 2
+   mean   var
+  &lt;dbl&gt; &lt;dbl&gt;
+1  20.7  16.5</code></pre>
 </div>
 </div>
 </div>
-</section>
-
-<section>
-<section id="syllabus" class="title-slide slide level1 center">
-<h1>Syllabus</h1>
-
-</section>
-<section id="course-description" class="slide level2">
-<h2>Course description</h2>
-<p>This course is an introduction to the mathematical theory of frequentist and Bayesian statistical inference. Topics include parameter estimation, confidence intervals and hypothesis testing, linear models, and Bayesian inference.</p>
-<p>Students who analyze data, or who aspire to develop new methods for analyzing data, should be well-grounded in mathematical statistics.</p>
-</section>
-<section id="course-objectives" class="slide level2">
-<h2>Course Objectives</h2>
-<p>By the end of this course, you should be able to:</p>
-<ul>
-<li class="fragment">Derive estimators for parameters using maximum likelihood, the method of moments, and Bayesian techniques</li>
-<li class="fragment">Evaluate the performance of estimators and describe their strengths and weaknesses</li>
-<li class="fragment">Demonstrate a sophisticated understanding of the mathematics behind hypothesis tests, confidence intervals, and linear models<br>
-</li>
-<li class="fragment">Use the statistical package R to implement basic simulations of estimation scenarios</li>
-</ul>
-</section>
-<section id="textbook" class="slide level2">
-<h2>Textbook:</h2>
-<p><em>Mathematical Statistics with Resampling and R</em> (3rd edition) by Chihara and Hesterberg</p>
-<div class="fragment">
-<p>Sometimes, it can help to see a second way of topics being explained. I recommend <em>Mathematical Statistics with applications</em> by Larsen &amp; Marx.</p>
 </div>
-</section>
-<section id="computing" class="slide level2">
-<h2>Computing:</h2>
-<p>We’ll be using R and RStudio throughout the course. If you’ve downloaded R to your own computer from a different class, great! If not, you can access anything you need through the maize server:</p>
-<p><a href="https://maize.mathcs.carleton.edu/" class="uri">https://maize.mathcs.carleton.edu/</a></p>
-</section>
-<section id="what-will-you-do-in-this-course" class="slide level2">
-<h2>What will you do in this course?</h2>
-<p>Each of the following components are important for your learning and therefore part of your final grade calculation:</p>
-<ul>
-<li class="fragment">Daily Prep (5%)</li>
-<li class="fragment">Homework (15%)
-<ul>
-<li class="fragment">Due once per week, typically Wednesdays but sometimes Fridays</li>
-</ul></li>
-<li class="fragment">Group work and attendance (5%)
-<ul>
-<li class="fragment">more than 5 absences <span class="math inline">\(\to\)</span> 0</li>
-</ul></li>
-<li class="fragment">Midterm exams (2 x 17.5%)</li>
-<li class="fragment">Course Project (10%)</li>
-<li class="fragment">Final Exam (30%)</li>
-</ul>
-</section>
-<section id="what-will-a-typical-dayweek-look-like" class="slide level2">
-<h2>What will a typical day/week look like?</h2>
-<div class="columns">
-<div class="column" style="width:30%;">
-<p><strong>Before class:</strong></p>
-<ul>
-<li class="fragment">Read a chapter</li>
-<li class="fragment">Come with questions</li>
-<li class="fragment">Be prepared to try what was covered</li>
-</ul>
-</div><div class="column" style="width:30%;">
-<p><strong>In class:</strong></p>
-<ul>
-<li class="fragment">Mini lecture
-<ul>
-<li class="fragment">Sometimes review</li>
-<li class="fragment">Sometimes new</li>
-</ul></li>
-<li class="fragment">Hands-on work or coding in R</li>
-</ul>
-</div><div class="column" style="width:30%;">
-<p><strong>After class:</strong></p>
-<ul>
-<li class="fragment">Finish in-class exercises</li>
-<li class="fragment">Work on homework</li>
-</ul>
-</div></div>
-</section>
-<section id="office-hours-tentative" class="slide level2">
-<h2>Office hours (<em>tentative</em>)</h2>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th style="text-align: left;">Day</th>
-<th style="text-align: left;">Time</th>
-<th style="text-align: left;">Type</th>
-<th style="text-align: left;">Location</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Monday</td>
-<td style="text-align: left;">4:15-5:15</td>
-<td style="text-align: left;">Drop-in</td>
-<td style="text-align: left;">CMC 307</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Tuesday</td>
-<td style="text-align: left;">10:30-11:30</td>
-<td style="text-align: left;">Drop-in</td>
-<td style="text-align: left;">CMC 307</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Wednesday</td>
-<td style="text-align: left;">2:15-3:15</td>
-<td style="text-align: left;">Drop-in</td>
-<td style="text-align: left;">CMC 307</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Friday</td>
-<td style="text-align: left;">11-12</td>
-<td style="text-align: left;">Drop-in</td>
-<td style="text-align: left;">CMC 307</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="where-is-amanda-this-term" class="slide level2">
-<h2>Where is Amanda this term?</h2>
-
-<img data-src="amanda-spring-schedule.png" class="r-stretch"></section>
-<section id="communication" class="slide level2">
-<h2>Communication</h2>
-<div class="fragment">
-<ul>
-<li>Moodle: assignments, note sets, and grades</li>
-<li>Slack: homework questions, announcements, discussion</li>
-<li>Email: personal matters, time-sensitive annoucements</li>
-</ul>
 </div>
-<div class="fragment">
-<p><strong>Slack</strong> is the fastest way to reach me. I typically will respond to messages 3x per weekday. I try to respond to emails within 48 hours. I’m online sporadically on evenings and weekends to devote time to family and rest – I hope you also use this time to reset and recharge!</p>
-</div>
-</section>
-<section id="advice-from-past-students" class="slide level2 smaller">
-<h2>Advice from past students:</h2>
-<ul>
-<li class="fragment">Start the problem sets early and go to office hours!</li>
-<li class="fragment">Work with other people in the class, collaboration is key</li>
-<li class="fragment">Be willing to ask lots of questions and don’t be afraid to ask for help!</li>
-<li class="fragment">I would advise for them to attend office hours and the stat clinic since early on to get help and not be worrying about assignments at the last minute.</li>
-<li class="fragment">I would advise future students to reach out and ask questions as soon if they have any confusion. Understanding statistical concepts and working with R can be frustrating at times, but people are here to help you along the way!</li>
-<li class="fragment">Don’t let work snowball! Try to get help early and often and an imperfect problem set is better than no problem set.</li>
-<li class="fragment">Start the homework early! Give yourself time to get things done, to understand, and to pause. Don’t feel afraid to ask questions; she’s so accessible.</li>
-<li class="fragment">Spend some time reviewing handouts before doing homework.</li>
-</ul>
-</section>
-<section id="the-genius-myth" class="slide level2" style="font-size: 90%;">
-<h2>The “Genius Myth”</h2>
-<p>It’s sometimes easy to buy into the “genius myth” when it comes to math/stat courses: that you need to be a “math person” and have some innate mathematical ability in order to do well or become a statistics major. <strong>This could not be further from the truth!</strong> The best statisticians don’t necessarily have the “best” math or programming background, but are people that are able to formulate interesting questions and use math and programming to rigorously answer those questions. Many of the best statisticians I know became statisticians because they were initially interested in something else (biology, public health, psychology, neuroscience, physics, etc.) and realized that being able to answer important questions with data was not only valuable but fun and interesting. Being able to perform interesting statistical analyses is a skill that is learned, not an innate ability, and working hard at developing that skill is the point of this course.</p>
-</section>
-<section id="academic-integrity" class="slide level2">
-<h2>Academic Integrity</h2>
-<p>You are expected to follow Carleton’s policies regarding academic integrity. I encourage you to discuss the homework problems with others and use the resources available to you to try to figure out tough problems. You should code and write up your solutions on your own. Exams must be done by yourself without communicating with others; all work must be your own. The use of textbook solution manuals (physical or online), course materials from other students, or materials from previous versions of this course are not allowed. Copying, paraphrasing, summarizing, or submitting work generated by anyone but yourself without proper attribution is considered academic dishonesty (this includes output from LLMs).</p>
-<p>Please ask if you are unsure of whether or not your actions are complying with the assignment/exam/project instructions. Always default to acknowledging any help received. Cases of suspected academic dishonesty are handled by the Provost’s Office and I am obligated to report any suspected violations of this policy.</p>
-</section>
-<section id="more-on-ai" class="slide level2">
-<h2>More on “AI”</h2>
-<p>Large-language models (e.g.&nbsp;ChatGPT, Gemini, etc.) should only be used for help interpreting R’s error messages. You should not copy and paste course material into or out of an AI text generator.</p>
-<p>I also have a few rules in place to protect my intellectual property. You may not record my lectures using tools such as Otter.ai or upload any video or audio recordings to generate transcripts or study notes. You may not upload my course materials (slides, assignment prompts, note sets, etc.) into AI tools or homework help sites (such as chegg).</p>
-<p>“AI” tools are new for all of us and it’s OK to have questions about what is and isn’t appropriate!</p>
-</section>
-<section id="diversity-inclusion" class="slide level2">
-<h2>Diversity &amp; Inclusion</h2>
-<p>We all come to class with different backgrounds and experiences, and this diversity makes our class environment richer. We value diversity and inclusion, and are committed to a climate of mutual respect and full participation in and out of the classroom. This class strives to be a learning environment that is usable, equitable, inclusive and welcoming, regardless of race, ethnicity, religion, gender and gender identities, sexual orientation, ability, socioeconomic background, and nationality. If you anticipate or experience any barriers to learning, please discuss your concerns with me.</p>
-</section>
-<section id="accomodations" class="slide level2" style="font-size: 90%;">
-<h2>Accomodations</h2>
-<p>Carleton College is committed to providing equitable access to learning opportunities for all students. The Office of Accessibility Resources (Henry House, 107 Union Street) is the campus office that collaborates with students who have disabilities to provide and/or arrange reasonable accommodations. If you have, or think you may have, a disability, please contact OAR@carleton.edu to arrange a confidential discussion regarding equitable access and reasonable accommodations. You are also welcome to contact me privately to discuss your academic needs. However, all disability-related accommodations must be arranged, in advance, through OAR.</p>
-</section>
-<section id="stat-lab" class="slide level2">
-<h2>Stat Lab</h2>
-<p>The Stats Lab (CMC 304) offers drop-in help R/RStudio help sessions run by friendly and knowledgeable lab assistants on most weekday evenings and some weekend times. The Stat Lab is primarily meant to serve Stat120 students, but many of the lab assistants can also help with Stat250.</p>
-</section>
-<section id="title-ix" class="slide level2">
-<h2>Title IX</h2>
-<p>Please be aware that all faculty are “responsible employees”, which means that if you tell me about a situation involving sexual harassment, sexual assault, dating violence, domestic violence, or stalking, I must share that information with the Title IX Coordinator. Although I have to make this notification, you will control how your case will be handled, including whether or not you wish to meet with the Title IX coordinator or pursue a formal complaint.</p>
-</section>
-<section id="take-care-of-yourself" class="slide level2">
-<h2>Take care of yourself</h2>
-<p>Do your best to maintain a healthy lifestyle this semester by wearing a mask if you don’t feel well, eating a vegetable every day, exercising, avoiding excessive drug and alcohol use, getting enough sleep, and taking some time to relax. Your mental health is more important than your grade in this course. There are many helpful resources available on campus and an important part of the college experience is learning how to ask for help. If you are experiencing mental health symptoms as a result of coursework, please speak with me so we can address the problem together.</p>
-</section></section>
-<section id="discuss-back-page-of-handout" class="title-slide slide level1 center">
-<h1>Discuss back page of handout</h1>
+</div><div class="column fragment" style="width:50%;">
+<div class="panel-tabset">
+<ul id="tabset-4" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-4-1"><span class="math inline">\(N(20, 1.5^2)\)</span></a></li><li><a href="#tabset-4-2"><span class="math inline">\(N(20, 4^2)\)</span></a></li></ul>
+<div class="tab-content">
+<div id="tabset-4-1">
 <div class="cell">
 <div class="cell-output-display">
-<div class="countdown" id="timer_998d43d4" data-update-every="1" tabindex="0" style="right:0;bottom:0;">
-<div class="countdown-controls"><button class="countdown-bump-down">−</button><button class="countdown-bump-up">+</button></div>
-<code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+<div>
+<figure>
+<p><img data-src="slides07_files/figure-revealjs/unnamed-chunk-5-1.png" width="960"></p>
+</figure>
 </div>
 </div>
 </div>
-
-
+</div>
+<div id="tabset-4-2">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="slides07_files/figure-revealjs/unnamed-chunk-6-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div></div>
 </section>
+<section id="method-of-moments-mom" class="slide level2">
+<h2>Method of Moments (MoM)</h2>
+<ul>
+<li class="fragment">Mean of sample data should match mean of theoretical distribution</li>
+<li class="fragment">Variance of sample data should match variance of theoretical distribution</li>
+<li class="fragment">Skewness of sample data should match skewness of theoretical distribution</li>
+<li class="fragment"><span class="math inline">\(\vdots\)</span></li>
+<li class="fragment">(for as many unknown parameters as we have)</li>
+</ul>
+
+
+</section></section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">

@@ -147,172 +147,382 @@
     "text": "library(tidyverse)\n\nThe goal for today is to understand the concept of a sampling distribution by comparing theoretical results with simulation results using R. We will investigate the sampling distributions of the sample mean.\nYou’ve been assigned to groups of 3-4 for this activity. You should submit your rendered file on gradescope as a group assignment. If folks from your assigned group did not show up, groups of 2 can combine into groups of 4.\n\nIntroduction\nA sampling distribution is the probability distribution of a statistic (like the sample mean \\(\\bar{x}\\) or sample variance \\(s^2\\)) obtained through a large number of samples drawn from a specific population. Understanding sampling distributions is crucial for statistical inference, as it allows us to make probability statements about sample statistics. In this activity, we will generate empirical sampling distributions through simulation and compare them to theoretical results.\nAlong the way, you’ll get some practice in R and some probability review.\n\n\nPart 1: Sampling distribution of the mean (Normal population)\nAssume data points \\(X_1, X_2, ..., X_n\\) are sampled from a normally distributed population\n\nIf \\(X_1, X_2, ..., X_n \\sim N(\\mu, \\sigma^2)\\), what is the expected value \\(E[\\bar{X}]\\) and theoretical standard deviation of \\(\\bar{X}\\) (also known as the standard error)?\nWhat is the theoretical distribution of \\(\\bar{X}\\)? (Note: you do not need to prove/derive this!)\n\nLet’s simulate this. Assume our population is \\(N(50, 10^2)\\) (so \\(\\sigma=10\\)). We will draw samples of size n = 25:\n\npop_mean &lt;- 50\npop_sd &lt;- 10\nsample_size &lt;- 25\nn_simulations &lt;- 100\n\nsample_means &lt;- numeric(n_simulations)\n\nfor(i in 1:n_simulations){\n  x &lt;- rnorm(sample_size, mean = pop_mean, sd = pop_sd)\n  sample_means[i] &lt;- mean(x)\n}\n\n\nWhat is the mean of sample_means? How close is it to \\(E[\\bar{X}]\\) above?\nWhat is the sd of sample_means? How close is it to the theoretical standard error you found above?\nThe code below makes a histogram of sample_means and overlays an incorrect theoretical density curve on top. Replace pop_mean and pop_sd with the theoretical values that you found in Q1.\n\n\ndf &lt;- data.frame(\n  sample_means = sample_means\n)\n\nggplot(df, aes(x = sample_means)) + \n  geom_histogram(aes(y = stat(density)), col = \"white\", bins = 20) + \n  stat_function(fun = dnorm, args = list(mean = pop_mean, s = pop_sd), col = \"cornflowerblue\")\n\n\n\n\n\n\n\n\n\nTry different values for sample_size and n_simulations. When does the histogram match the theoretical density most closely?\n\n\n\n\n\n\n\nCentral Limit Theorem\n\n\n\nYou have (hopefully) just demonstrated the Central Limit Theorem in action. Nice work! The CLT tells us that, as our sample size approaches \\(\\infty\\),\n\\[F_\\bar{X}(\\bar{X}) \\to N(\\mu, \\frac{\\sigma}{\\sqrt{n}})\\]\n\n\n\n\nPart 2: Non-normal population\nWe often use the Exponential distribution to model the time until an event occurs in a process where events happen randomly and independently at a constant average rate (a Poisson process). A common example is the time between consecutive arrivals of customers, like a coffee shop, during a period where the arrival rate is relatively stable. The key parameter is the rate \\(\\lambda\\) (e.g., average customers per minute) or its reciprocal, the mean time \\(\\mu = 1/\\lambda\\) (e.g., average minutes between customers). Individual inter-arrival times will follow a skewed distribution (many short times, fewer long times), but the CLT tells us something interesting about the average of these times if we look at many samples.\n\nLet \\(X\\) be the time (in minutes) between consecutive customer arrivals at a small coffee shop during a specific hour. Suppose this time can be modeled by an Exponential distribution. We observe that, on average over a long period of time, a customer arrives every 5 minutes. This average time is the mean of the distribution, \\(\\mu = 5\\) minutes. What is the rate, \\(\\lambda\\)? What is \\(E[X]\\) and \\(\\sigma_X\\)? (You can use the distributions cheat sheet in the back of the book)\nThe code below plots a theoretical exponential distribution with \\(\\lambda=1\\). Change it to the appropriate value.\n\n\n\n\n\n\n\n\n\n\n\nAccording to the CLT, if we take a sample of n = 40 consecutive inter-arrival times, what should the approximate distribution of the average inter-arrival time (\\(\\bar{X}\\)) be across many such samples? What are its approximate mean and standard error?\nLet’s check our answers through simulation. Replace all _____ with appropriate values in the code chunk below, and then remove the line with #| eval: false.\n\n\npop_lambda &lt;- ____\nsample_size &lt;- ____\nn_simulations &lt;- 1000\n\nsample_means &lt;- numeric(n_simulations)\n\nfor(i in 1:n_simulations){\n  x &lt;- rexp(sample_size, rate = pop_lambda)\n  sample_means[i] &lt;- mean(x)\n}\n\ndf &lt;- data.frame(\n  sample_means = sample_means\n)\n\nggplot(df, aes(x = sample_means)) + \n  geom_histogram(aes(y = stat(density)), col = \"white\", bins = 20) + \n  stat_function(fun = dnorm, args = list(mean = ______, s = ______), col = \"cornflowerblue\")\n\n\nHow well does the normal curve approximate the distribution of the average inter-arrival times, even though the distribution of individual inter-arrival times is heavily skewed (Exponential)?\nWhat happens if the sample size n is much smaller (e.g., \\(n=5\\))?\n\n\n\nPart 3: Discrete data\nThe true magic of the CLT is that it applies to any probability distribution, even discrete ones!\nExample: According to the 2004 American Community Survey, 28% of adults over 25 years old in Utah have completed a bachelor’s degree. In a random sample of 64 adults over age 25 from Utah, what is the probability that at least 30 have a bachelor’s degree?\nLet \\(X_i\\) indicate whether a sampled person has a bachelor’s degree. Then, \\(X_1, ...., X_n \\sim Binom(n,p)\\).\n\nWhat is \\(n\\) and what is \\(p\\)?\n\nWe are interested in how many people have a bachelor’s degree, or \\(\\frac{\\sum X_i}{n}\\). This is also an \\(\\bar{X}\\)!\n\nUse the CLT to find \\(E[\\hat{p}]\\) and \\(s_{\\hat{p}}\\).\nUse the normal distribution to find \\(P(\\bar{X} &gt; .3)\\) (Hint: use pnorm)\nAlternatively, we can answer this question through simulation. Use sample_means to estimate this probability. How close are you to your answer from (3)?\n\n\npop_p &lt;- .28\nsample_size &lt;- 64\nn_simulations &lt;- 1000\n\nsample_means &lt;- numeric(n_simulations)\n\nfor(i in 1:n_simulations){\n  x &lt;- rbinom(1, size = sample_size, prob = pop_p)\n  sample_means[i] &lt;- x/sample_size\n}\n\n\n\nPart 4: Summary and Reflection\n\nWhat is the difference between a population distribution, sample distribution, and distribution of a sample?\nWhy is the CLT important?\nGive one benefit of finding sampling distributions theoretically with probability\nGive one benefit of finding sampling distributions computationally through simulation\nDoes your group have any lingering questions for me?"
   },
   {
-    "objectID": "slides/00-test/00-test.html#r-code",
-    "href": "slides/00-test/00-test.html#r-code",
-    "title": "Test slides",
-    "section": "R Code",
-    "text": "R Code\n\npalmerpenguins::penguins %&gt;%\n  ggplot(aes(x = flipper_length_mm)) +\n  geom_histogram(col = \"white\")"
+    "objectID": "slides/06/slides06.html#big-idea",
+    "href": "slides/06/slides06.html#big-idea",
+    "title": "Maximum Likelihood Estimation II",
+    "section": "Big Idea",
+    "text": "Big Idea\nWe’re interested in the proportion of Carleton students who have had some sort of research experience. We have the resources to randomly sample 10 students.\n\n\nProbability:\n\nStatistics:"
   },
   {
-    "objectID": "slides/00-test/00-test.html#plan-for-today",
-    "href": "slides/00-test/00-test.html#plan-for-today",
-    "title": "Test slides",
-    "section": "Plan for today",
-    "text": "Plan for today\n\nSyllabus\nContext for the class\nCourse expectations"
+    "objectID": "slides/06/slides06.html#example",
+    "href": "slides/06/slides06.html#example",
+    "title": "Maximum Likelihood Estimation II",
+    "section": "Example",
+    "text": "Example\nRecall that the likelihood function for \\(n\\) iid Bernoulli(\\(\\theta\\)) random variable is \\(L(\\theta) = \\theta^{\\sum x_i} (1-\\theta)^{n - \\sum x_i}\\).\n\n\n\n\n\n\n\n\n\n\n\n\nScenario 1: 0 yes responses\n\n\n\n\\(\\theta\\)\n0.0\n0.2\n0.4\n0.6\n0.8\n1.0\n\n\n\\(L(\\theta)\\)\n\n\n\n\n\n\n\n\n\nScenario 2: 6 yes responses\n\n\n\n\\(\\theta\\)\n0.0\n0.2\n0.4\n0.6\n0.8\n1.0\n\n\n\\(L(\\theta)\\)"
   },
   {
-    "objectID": "slides/00-test/00-test.html#a-bit-about-me",
-    "href": "slides/00-test/00-test.html#a-bit-about-me",
-    "title": "Test slides",
-    "section": "A bit about me",
-    "text": "A bit about me"
+    "objectID": "slides/06/slides06.html#exercise",
+    "href": "slides/06/slides06.html#exercise",
+    "title": "Maximum Likelihood Estimation II",
+    "section": "Exercise",
+    "text": "Exercise\nIs the likelihood function a probability distribution? Why or why not?"
   },
   {
-    "objectID": "slides/00-test/00-test.html#course-description",
-    "href": "slides/00-test/00-test.html#course-description",
-    "title": "Test slides",
-    "section": "Course description",
-    "text": "Course description\nThis course is an introduction to the mathematical theory of frequentist and Bayesian statistical inference. Topics include parameter estimation, confidence intervals and hypothesis testing, linear models, and Bayesian inference.\nStudents who analyze data, or who aspire to develop new methods for analyzing data, should be well-grounded in mathematical statistics."
+    "objectID": "slides/06/slides06.html#exercise-from-last-class",
+    "href": "slides/06/slides06.html#exercise-from-last-class",
+    "title": "Maximum Likelihood Estimation II",
+    "section": "Exercise: from last class",
+    "text": "Exercise: from last class\nLet \\(X_1, ..., X_n\\) be an iid random sample from a distribution with PDF\n\\[f(x|\\theta)= (\\theta + 1)x^\\theta, 0 \\le x \\le 1\\]\n\\[L(\\theta) =\\] \\[\\hat\\theta_{MLE}=\\]\nSuppose we observe a sample of size 5: {.83, .49, .72, .57, .66}. Find the maximum likelihood estimate and verify with a graph or numerical approximation"
   },
   {
-    "objectID": "slides/00-test/00-test.html#course-objectives",
-    "href": "slides/00-test/00-test.html#course-objectives",
-    "title": "Test slides",
-    "section": "Course Objectives",
-    "text": "Course Objectives\nBy the end of this course, you should be able to:\n\nDerive estimators for parameters using maximum likelihood, the method of moments, and Bayesian techniques\nEvaluate the performance of estimators and describe their strengths and weaknesses\nDemonstrate a sophisticated understanding of the mathematics behind hypothesis tests, confidence intervals, and linear models\n\nUse the statistical package R to implement basic simulations of estimation scenarios"
+    "objectID": "slides/06/slides06.html#example-uniform-disribution",
+    "href": "slides/06/slides06.html#example-uniform-disribution",
+    "title": "Maximum Likelihood Estimation II",
+    "section": "Example: Uniform disribution",
+    "text": "Example: Uniform disribution\nFind the MLE for \\(Y_1, ..., Y_n \\sim \\text{Unif}(0, \\theta)\\)"
   },
   {
-    "objectID": "slides/00-test/00-test.html#textbook",
-    "href": "slides/00-test/00-test.html#textbook",
-    "title": "Test slides",
-    "section": "Textbook:",
-    "text": "Textbook:"
+    "objectID": "slides/06/slides06.html#finding-the-mle-when-more-than-one-parameter-is-unknown",
+    "href": "slides/06/slides06.html#finding-the-mle-when-more-than-one-parameter-is-unknown",
+    "title": "Maximum Likelihood Estimation II",
+    "section": "Finding the MLE when more than one parameter is unknown",
+    "text": "Finding the MLE when more than one parameter is unknown\nIf the pdf or pmf that we’re using has two or more parameters, say \\(\\theta_1\\) and \\(\\theta_2\\), finding MLEs for the \\(\\theta_i\\)’s requires the solution of a sest of simultaneous equations\n\n\\[\\frac{\\partial}{\\partial \\theta_1} \\ln L(\\theta_1, \\theta_2) = 0\\]\n\n\n\\[\\frac{\\partial}{\\partial \\theta_2} \\ln L(\\theta_1, \\theta_2) = 0\\]"
   },
   {
-    "objectID": "slides/00-test/00-test.html#computing",
-    "href": "slides/00-test/00-test.html#computing",
-    "title": "Test slides",
-    "section": "Computing:",
-    "text": "Computing:"
+    "objectID": "slides/06/slides06.html#example-nmu-sigma2-distribution",
+    "href": "slides/06/slides06.html#example-nmu-sigma2-distribution",
+    "title": "Maximum Likelihood Estimation II",
+    "section": "Example: \\(N(\\mu, \\sigma^2)\\) distribution",
+    "text": "Example: \\(N(\\mu, \\sigma^2)\\) distribution\nSuppose a random sample of size \\(n\\) is drawn from the two parameter normal pdf:\n\\(f_y(y|\\mu, \\sigma^2) = \\frac{1}{\\sqrt{2\\pi \\sigma}} \\exp(-(\\frac{y-\\mu}{\\sigma})^2)\\)\nfind the MLEs \\(\\hat{\\mu}\\) and \\(\\hat\\sigma^2\\)"
   },
   {
-    "objectID": "slides/00-test/00-test.html#assignments",
-    "href": "slides/00-test/00-test.html#assignments",
-    "title": "Test slides",
-    "section": "Assignments",
-    "text": "Assignments"
+    "objectID": "slides/07/slides07.html#recap",
+    "href": "slides/07/slides07.html#recap",
+    "title": "Method of Moments",
+    "section": "Recap",
+    "text": "Recap\n\nObserve data \\(X_1, ..., X_n \\sim F_x(x|\\theta)\\), where \\(\\theta\\) is unknown\nGoal: Estimate \\(\\theta\\) based on the values of \\(X_i\\) by formulating an estimator \\(\\hat \\theta\\)\nOne technique is to use the maximum likelihood estimator, which finds the value of \\(\\theta\\) that maximizes the joint probability \\(\\prod_{i=1}^n f_x(x_i | \\theta)\\)\nToday, we’ll talk about another technique for estimating \\(\\theta\\)"
   },
   {
-    "objectID": "slides/00-test/00-test.html#regrade-request-policy",
-    "href": "slides/00-test/00-test.html#regrade-request-policy",
-    "title": "Test slides",
-    "section": "Regrade request policy",
-    "text": "Regrade request policy\nGrading is often a tedious task, and the grading team will sometimes make mistakes. I am always happy to fix these mistakes, and gradescope makes it easy to do so. However, it takes time to read through these requests and I’ve noticed an increase in unwarranted regrade requests in recent years. This semester, I am instituting an “NFL Coaches Challenge”-style regrade request rule. Every student will start the semester with 2 regrade requests available to them. If you submit a regrade request and I agree with you, you get it back. If you submit a regrade request for something that was not a grading mistake, you lose that request."
+    "objectID": "slides/07/slides07.html#which-population-is-more-likely",
+    "href": "slides/07/slides07.html#which-population-is-more-likely",
+    "title": "Method of Moments",
+    "section": "Which population is more likely?",
+    "text": "Which population is more likely?\n\n\n\nSample\n\n\n\n\n\n\n\n\n\n\n\n# A tibble: 1 × 2\n   mean   var\n  &lt;dbl&gt; &lt;dbl&gt;\n1  20.7  16.5\n\n\n\n\n\n\n\n\\(N(10, 5)\\)\\(N(20, 5)\\)"
   },
   {
-    "objectID": "slides/00-test/00-test.html#exams",
-    "href": "slides/00-test/00-test.html#exams",
-    "title": "Test slides",
-    "section": "Exams",
-    "text": "Exams"
+    "objectID": "slides/07/slides07.html#which-population-is-more-likely-1",
+    "href": "slides/07/slides07.html#which-population-is-more-likely-1",
+    "title": "Method of Moments",
+    "section": "Which population is more likely?",
+    "text": "Which population is more likely?\n\n\n\nSample\n\n\n\n\n\n\n\n\n\n\n\n# A tibble: 1 × 2\n   mean   var\n  &lt;dbl&gt; &lt;dbl&gt;\n1  20.7  16.5\n\n\n\n\n\n\n\n\\(N(20, 1.5^2)\\)\\(N(20, 4^2)\\)"
   },
   {
-    "objectID": "slides/00-test/00-test.html#final-exam",
-    "href": "slides/00-test/00-test.html#final-exam",
-    "title": "Test slides",
-    "section": "Final Exam",
-    "text": "Final Exam"
+    "objectID": "slides/07/slides07.html#method-of-moments-mom",
+    "href": "slides/07/slides07.html#method-of-moments-mom",
+    "title": "Method of Moments",
+    "section": "Method of Moments (MoM)",
+    "text": "Method of Moments (MoM)\n\nMean of sample data should match mean of theoretical distribution\nVariance of sample data should match variance of theoretical distribution\nSkewness of sample data should match skewness of theoretical distribution\n\\(\\vdots\\)\n(for as many unknown parameters as we have)"
   },
   {
-    "objectID": "slides/00-test/00-test.html#course-project",
-    "href": "slides/00-test/00-test.html#course-project",
-    "title": "Test slides",
-    "section": "Course project",
-    "text": "Course project"
+    "objectID": "slides/05/slides05.html#section",
+    "href": "slides/05/slides05.html#section",
+    "title": "Maximum Likelihood Estimation",
+    "section": "",
+    "text": "You are testing seeds from a new plant variety. You plant 10 seeds (n=10) and observe that 3 of them successfully germinate (k=3). Consider two hypotheses about the true germination probability (p) for this variety:\n\nHypothesis A: \\(p = 0.1\\) (10% germination rate)\nHypothesis B: \\(p = 0.4\\) (40% germination rate)\n\n\nGiven that you observed 3 germinations out of 10 seeds, which hypothesis (A or B) is more supported by the data?\n\n\n\n−+\n02:00"
   },
   {
-    "objectID": "slides/00-test/00-test.html#final-grades",
-    "href": "slides/00-test/00-test.html#final-grades",
-    "title": "Test slides",
-    "section": "Final grades",
-    "text": "Final grades"
+    "objectID": "slides/05/slides05.html#evaluating-intuitively",
+    "href": "slides/05/slides05.html#evaluating-intuitively",
+    "title": "Maximum Likelihood Estimation",
+    "section": "Evaluating Intuitively",
+    "text": "Evaluating Intuitively"
   },
   {
-    "objectID": "slides/00-test/00-test.html#advice-from-past-students",
-    "href": "slides/00-test/00-test.html#advice-from-past-students",
-    "title": "Test slides",
-    "section": "Advice from past students:",
-    "text": "Advice from past students:\n\nStart the problem sets early and go to office hours!\nWork with other people in the class, collaboration is key\nBe willing to ask lots of questions and don’t be afraid to ask for help!\nI would advise for them to attend office hours and the stat clinic since early on to get help and not be worrying about assignments at the last minute.\nI would advise future students to reach out and ask questions as soon if they have any confusion. Understanding statistical concepts and working with R can be frustrating at times, but people are here to help you along the way!\nDon’t let work snowball! Try to get help early and often and an imperfect problem set is better than no problem set.\nlots of R here! Organization is key, and you’ll do well as long as you start homeworks early, communicate with the professor and with your fellow classmates. There’s a good support system."
+    "objectID": "slides/05/slides05.html#evaluating-formally-problem-set-up",
+    "href": "slides/05/slides05.html#evaluating-formally-problem-set-up",
+    "title": "Maximum Likelihood Estimation",
+    "section": "Evaluating Formally: Problem Set Up",
+    "text": "Evaluating Formally: Problem Set Up\n\nLet \\(X\\) be the number of plants that successfully germinate\n\\(X \\sim \\text{Binom}(10, p)\\) and we observed \\(X=3\\)\n\n\n\n\n\\(P(X=3)\\) if \\(p=.1\\)\n\n\\(P(X=3)\\) if \\(p=.4\\)"
   },
   {
-    "objectID": "slides/00-test/00-test.html#the-genius-myth",
-    "href": "slides/00-test/00-test.html#the-genius-myth",
-    "title": "Test slides",
-    "section": "The “Genius Myth”",
-    "text": "The “Genius Myth”\nIt’s sometimes easy to buy into the “genius myth” when it comes to math/stat courses: that you need to be a “math person” and have some innate mathematical ability in order to do well or become a statistics major. This could not be further from the truth! The best statisticians don’t necessarily have the “best” math or programming background, but are people that are able to formulate interesting questions and use math and programming to rigorously answer those questions. Many of the best statisticians I know became statisticians because they were initially interested in something else (biology, public health, psychology, neuroscience, physics, etc.) and realized that being able to answer important questions with data was not only valuable but fun and interesting. Being able to perform interesting statistical analyses is a skill that is learned, not an innate ability, and working hard at developing that skill is the point of this course."
+    "objectID": "slides/05/slides05.html#section-1",
+    "href": "slides/05/slides05.html#section-1",
+    "title": "Maximum Likelihood Estimation",
+    "section": "",
+    "text": "In general, the likelihood of seeing \\(X=3\\) given \\(p\\) is:\n\\[{10 \\choose 3} p^3 (1-p)^7\\]\n\nWhat value of \\(p\\) maximizes this likelihood?"
   },
   {
-    "objectID": "slides/00-test/00-test.html#academic-integrity",
-    "href": "slides/00-test/00-test.html#academic-integrity",
-    "title": "Test slides",
-    "section": "Academic Integrity",
-    "text": "Academic Integrity"
+    "objectID": "slides/05/slides05.html#methods-of-maximizing",
+    "href": "slides/05/slides05.html#methods-of-maximizing",
+    "title": "Maximum Likelihood Estimation",
+    "section": "Methods of maximizing",
+    "text": "Methods of maximizing\n\nApproximate the solution graphically\nFind a numerical approximation\nUse calculus"
   },
   {
-    "objectID": "slides/00-test/00-test.html#diversity-inclusion",
-    "href": "slides/00-test/00-test.html#diversity-inclusion",
-    "title": "Test slides",
-    "section": "Diversity & Inclusion",
-    "text": "Diversity & Inclusion\nWe all come to class with different backgrounds and experiences, and this diversity makes our class environment richer. We value diversity and inclusion, and are committed to a climate of mutual respect and full participation in and out of the classroom. This class strives to be a learning environment that is usable, equitable, inclusive and welcoming, regardless of race, ethnicity, religion, gender and gender identities, sexual orientation, ability, socioeconomic background, and nationality. If you anticipate or experience any barriers to learning, please discuss your concerns with me."
+    "objectID": "slides/05/slides05.html#approximating-with-a-graph",
+    "href": "slides/05/slides05.html#approximating-with-a-graph",
+    "title": "Maximum Likelihood Estimation",
+    "section": "Approximating with a graph",
+    "text": "Approximating with a graph"
   },
   {
-    "objectID": "slides/00-test/00-test.html#accomodations",
-    "href": "slides/00-test/00-test.html#accomodations",
-    "title": "Test slides",
-    "section": "Accomodations",
-    "text": "Accomodations"
+    "objectID": "slides/05/slides05.html#approximating-with-a-graph-code",
+    "href": "slides/05/slides05.html#approximating-with-a-graph-code",
+    "title": "Maximum Likelihood Estimation",
+    "section": "Approximating with a graph: code",
+    "text": "Approximating with a graph: code\n\ngerm_function &lt;- function(p) {choose(10,3) * p^3 * (1-p)^7} # define function\nggplot() + \n  geom_function(fun = germ_function) +\n  xlim(c(0,1))"
   },
   {
-    "objectID": "slides/00-test/00-test.html#stat-lab",
-    "href": "slides/00-test/00-test.html#stat-lab",
-    "title": "Test slides",
-    "section": "Stat Lab",
-    "text": "Stat Lab"
+    "objectID": "slides/05/slides05.html#approximating-numerically",
+    "href": "slides/05/slides05.html#approximating-numerically",
+    "title": "Maximum Likelihood Estimation",
+    "section": "Approximating numerically",
+    "text": "Approximating numerically\n\noptimize(germ_function, interval = c(0,1), maximum = TRUE)\n\n\n\n$maximum\n[1] 0.3000157\n\n$objective\n[1] 0.2668279"
   },
   {
-    "objectID": "slides/00-test/00-test.html#title-ix",
-    "href": "slides/00-test/00-test.html#title-ix",
-    "title": "Test slides",
-    "section": "Title IX",
-    "text": "Title IX\nPlease be aware that all faculty are “responsible employees”, which means that if you tell me about a situation involving sexual harassment, sexual assault, dating violence, domestic violence, or stalking, I must share that information with the Title IX Coordinator. Although I have to make this notification, you will control how your case will be handled, including whether or not you wish to meet with the Title IX coordinator or pursue a formal complaint."
+    "objectID": "slides/05/slides05.html#with-calculus",
+    "href": "slides/05/slides05.html#with-calculus",
+    "title": "Maximum Likelihood Estimation",
+    "section": "With calculus",
+    "text": "With calculus"
   },
   {
-    "objectID": "slides/00-test/00-test.html#take-care-of-yourself",
-    "href": "slides/00-test/00-test.html#take-care-of-yourself",
-    "title": "Test slides",
-    "section": "Take care of yourself",
-    "text": "Take care of yourself\nDo your best to maintain a healthy lifestyle this semester by wearing a mask if you don’t feel well, eating a vegetable every day, exercising, avoiding excessive drug and alcohol use, getting enough sleep, and taking some time to relax. Your mental health is more important than your grade in this course. There are many helpful resources available on campus and an important part of the college experience is learning how to ask for help. If you are experiencing mental health symptoms as a result of coursework, please speak with me so we can address the problem together."
+    "objectID": "slides/05/slides05.html#a-trick",
+    "href": "slides/05/slides05.html#a-trick",
+    "title": "Maximum Likelihood Estimation",
+    "section": "A “trick”",
+    "text": "A “trick”\nProbability functions often are tricky to differentiate because of the product rule. Lucky for us, we can maximize the log instead."
   },
   {
-    "objectID": "slides/00-test/00-test.html#prerequisites",
-    "href": "slides/00-test/00-test.html#prerequisites",
-    "title": "Test slides",
-    "section": "Prerequisites",
-    "text": "Prerequisites"
+    "objectID": "slides/05/slides05.html#can-we-generalize-to-any-data",
+    "href": "slides/05/slides05.html#can-we-generalize-to-any-data",
+    "title": "Maximum Likelihood Estimation",
+    "section": "Can we generalize to any data?",
+    "text": "Can we generalize to any data?"
   },
   {
-    "objectID": "slides/00-test/00-test.html#history",
-    "href": "slides/00-test/00-test.html#history",
-    "title": "Test slides",
-    "section": "History",
-    "text": "History\n\nStatistics seems to be a difficult subject for mathematicians, perhaps because its elusive and wide-ranging character mitigates against the traditional theorem-proof method of presentation. It may come as some comfort then that statistics is also a difficult subject for statisticians\n\n\nControversies in the Foundations of Statistics, Bradley Efron 1978"
+    "objectID": "slides/05/slides05.html#section-2",
+    "href": "slides/05/slides05.html#section-2",
+    "title": "Maximum Likelihood Estimation",
+    "section": "",
+    "text": "Likelihood function\n\n\nLet \\(f(x; \\theta)\\) denote the probability mass function for a discrete distribution with associated parameter \\(\\theta\\). Suppose \\(X_1, X_2, ... , X_n\\) are a random sample from this distribution and \\(x_1, x_2, ... , x_n\\) are the actual observed values. Then, the likelihood function of \\(\\theta\\) is:\n  \n\n\n\n\n\n\n\n\n\n\nMaximum likelihood estimate\n\n\nA maximum likelihood estimate (MLE), \\(\\hat{\\theta}_{MLE}\\) is the value of \\(\\theta\\) that maximizes the likelihood function, or equivalently, that maximizes the log-likelihood \\(\\ln L(\\theta)\\)"
   },
   {
-    "objectID": "slides/00-test/00-test.html#fisher-vs-neyman-pearson",
-    "href": "slides/00-test/00-test.html#fisher-vs-neyman-pearson",
-    "title": "Test slides",
-    "section": "Fisher vs Neyman-Pearson",
-    "text": "Fisher vs Neyman-Pearson"
+    "objectID": "slides/05/slides05.html#bernoulli-data",
+    "href": "slides/05/slides05.html#bernoulli-data",
+    "title": "Maximum Likelihood Estimation",
+    "section": "Bernoulli data",
+    "text": "Bernoulli data\nAn alternative way to express this example is \\(X_1, ..., X_n \\sim \\text{Bernoulli}(\\theta)\\)"
+  },
+  {
+    "objectID": "slides/05/slides05.html#is-the-likelihood-also-a-pdf",
+    "href": "slides/05/slides05.html#is-the-likelihood-also-a-pdf",
+    "title": "Maximum Likelihood Estimation",
+    "section": "Is the likelihood also a PDF?",
+    "text": "Is the likelihood also a PDF?\n\n\n\n−+\n02:00"
+  },
+  {
+    "objectID": "slides/05/slides05.html#aside-notation",
+    "href": "slides/05/slides05.html#aside-notation",
+    "title": "Maximum Likelihood Estimation",
+    "section": "Aside: notation",
+    "text": "Aside: notation\n\n\n\n\n\n\nEstimator\n\n\n  \n\n\n\n\n\n\n\n\n\nEstimate"
+  },
+  {
+    "objectID": "slides/05/slides05.html#section-3",
+    "href": "slides/05/slides05.html#section-3",
+    "title": "Maximum Likelihood Estimation",
+    "section": "",
+    "text": "Let \\(X_1, ..., X_n\\) be an iid random sample from a distribution with PDF\n\\[f(x|\\theta)= (\\theta + 1)x^\\theta, 0 \\le x \\le 1\\]\n\n\nFind the maximum likelihood estimator for a random sample of size \\(n\\) using calculus.\nSuppose we observe a sample of size 5: {.83, .49, .72, .57, .66}. Find the maximum likelihood estimate and verify with a graph or numerical approximation"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Stat250-S25",
+    "section": "",
+    "text": "Landing page for Stat250 course materials in Spring 2025\n\nIn-Class Materials\nDay02: slides handout r code\nDay03: handout activity qmd\nDay04: slides | handout\nDay05: slides | handout\nDay06: slides | handout\nDay07: slides | handout\n\n\nOther Resources and Readings\n\nR Basics\nHow to do homework in R in Stat250"
+  },
+  {
+    "objectID": "slides/04/slides04.html#plan-for-today",
+    "href": "slides/04/slides04.html#plan-for-today",
+    "title": "Sampling Distributions + Probability Review",
+    "section": "Plan for today:",
+    "text": "Plan for today:\n\nHW00 probability review\nMore on sampling distributions\nIntro to Estimation"
+  },
+  {
+    "objectID": "slides/04/slides04.html#overview-of-hw00-topics",
+    "href": "slides/04/slides04.html#overview-of-hw00-topics",
+    "title": "Sampling Distributions + Probability Review",
+    "section": "Overview of HW00 Topics",
+    "text": "Overview of HW00 Topics\n\n\nWorking with a PDF\nWorking with a CDF\nCalculating Moments\nMoments from PDF\nDeriving and Using MGFs\nRecognizing distribution from MGF\nTransformation of a Random Variable\nJoint PDF Calculations"
+  },
+  {
+    "objectID": "slides/04/slides04.html#generally-went-ok",
+    "href": "slides/04/slides04.html#generally-went-ok",
+    "title": "Sampling Distributions + Probability Review",
+    "section": "Generally went OK",
+    "text": "Generally went OK\n\n\nWorking with a PDF\nWorking with a CDF\nCalculating Moments\nMoments from PDF\nDeriving and Using MGFs\nRecognizing distribution from MGF\nTransformation of a Random Variable\nJoint PDF Calculations"
+  },
+  {
+    "objectID": "slides/04/slides04.html#big-mechanics-to-know-1-variable",
+    "href": "slides/04/slides04.html#big-mechanics-to-know-1-variable",
+    "title": "Sampling Distributions + Probability Review",
+    "section": "Big mechanics to know (1 variable)",
+    "text": "Big mechanics to know (1 variable)\n\nPDF \\(f_X(x)\\) gives probabilities by integrating\nCDF \\(F_X(x)\\) gives probabilities directly\nFind \\(E[X]\\) with pdf by \\(\\int_\\infty x f_X(x) dx\\)\nLoTUS: \\(E[g(X)] = \\int_\\infty g(x) f_X(x) dx\\)\n\\(V[X] = E[(X-E[X])^2] = E[X^2] - E[X]^2\\)"
+  },
+  {
+    "objectID": "slides/04/slides04.html#big-mechanics-to-know-2-variable",
+    "href": "slides/04/slides04.html#big-mechanics-to-know-2-variable",
+    "title": "Sampling Distributions + Probability Review",
+    "section": "Big mechanics to know (2 variable)",
+    "text": "Big mechanics to know (2 variable)\n\nPDF \\(f_{X,Y}(x,y)\\) gives probabilities by integrating\nCDF \\(F_{X, Y}(x,y)\\) gives probabilities directly\nMarginal pdf: \\(f_X(x) = \\int_\\infty y f_{X,Y} dy\\)\nConditional pdf \\(f_{X|Y}(x,y) = \\frac{f_{X,Y}(x,y)}{f_Y(y)}\\)\nTwo variables are independent if \\(f_{X,Y} = f_{X} f_{Y}\\) or \\(f_X = f_{X|Y}\\)"
+  },
+  {
+    "objectID": "slides/04/slides04.html#working-with-moments",
+    "href": "slides/04/slides04.html#working-with-moments",
+    "title": "Sampling Distributions + Probability Review",
+    "section": "Working with moments",
+    "text": "Working with moments\nFor any two variables X and Y:\n\n\\(E[aX + b] = a E[X] + b\\)\n\\(V[aX + b] = a^2 V[X]\\)\n\\(E[X + Y] = E[X] + E[Y]\\)\n\\(E[aX + bY + c] = a E[X] + b E[Y] + c\\)\n\\(V[X + Y] = V[X] + V[Y] + 2 Cov(X,Y)\\)\n\\(Cov(X,Y) = E[(X - E[X])(Y-E[Y])] = E[XY] - E[X]E[Y]\\)\n\n\nIf X and Y are independent:\n\n\\(Cov(X,Y) = 0\\)\n\\(V[X + Y] = V[X] + V[Y]\\)\n\\(V[aX + bY + c] = a^2 V[X] + b^2 V[Y]\\)"
+  },
+  {
+    "objectID": "slides/04/slides04.html#some-issues",
+    "href": "slides/04/slides04.html#some-issues",
+    "title": "Sampling Distributions + Probability Review",
+    "section": "Some issues",
+    "text": "Some issues\n\n\nWorking with a PDF\nWorking with a CDF\nCalculating Moments\nMoments from PDF\nDeriving and Using MGFs\nRecognizing distribution from MGF\nTransformation of a Random Variable\nJoint PDF Calculations"
+  },
+  {
+    "objectID": "slides/04/slides04.html#recap-from-friday",
+    "href": "slides/04/slides04.html#recap-from-friday",
+    "title": "Sampling Distributions + Probability Review",
+    "section": "Recap from Friday",
+    "text": "Recap from Friday\n\n\n\n\n\n\nCentral Limit Theorem\n\n\nSuppose we have an iid sample \\(X_1, ..., X_n \\sim F_x\\). The CLT tells us that, as our sample size approaches \\(\\infty\\),\n\\[F_\\bar{X}(\\bar{X}) \\to N(\\mu, \\frac{\\sigma}{\\sqrt{n}})\\]\n\n\n\n\nSampling distribution is centered at population mean\nAs \\(n \\to \\infty\\), \\(\\sigma_\\bar{X} \\to 0\\)\nIt doesn’t matter what shape \\(X_i\\) is!"
+  },
+  {
+    "objectID": "slides/04/slides04.html#example-binomial-data",
+    "href": "slides/04/slides04.html#example-binomial-data",
+    "title": "Sampling Distributions + Probability Review",
+    "section": "Example: Binomial data",
+    "text": "Example: Binomial data\nAccording to the 2004 American Community Survey, 28% of adults over 25 years old in Utah have completed a bachelor’s degree. In a random sample of 64 adults over age 25 from Utah, what is the probability that at least 30 have a bachelor’s degree?\nLet \\(X_i\\) indicate whether a sampled person has a bachelor’s degree. Then, \\(X_1, ...., X_{64} \\sim \\text{Binom}(n=1,p=.28)\\).\n\nOr, \\(X = \\sum X_i \\sim \\text{Binom}(64, p = .28)\\)\n\n\nUsing the CLT, \\(\\bar{X} \\sim N(p, SE_\\bar{X}) \\sim N(0.28, \\sqrt{\\frac{.28(1-.28)}{64}} = .056)\\)"
+  },
+  {
+    "objectID": "slides/04/slides04.html#example-binomial-data-1",
+    "href": "slides/04/slides04.html#example-binomial-data-1",
+    "title": "Sampling Distributions + Probability Review",
+    "section": "Example: Binomial data",
+    "text": "Example: Binomial data\n\\(\\bar{X} \\sim N(0.28, .056)\\). To find the probability that at least 30% of people in the sample have a bachelor’s degree,\n\\[P(\\hat{p} \\ge 0.30) = P(\\bar{X} \\ge 0.30)\\]\n\n\npnorm(0.30, mean = 0.28, sd = .056, lower.tail = FALSE)\n\n[1] 0.3604924\n\n\n\n\n\nNote: It’s really important to be careful about when you’re working with variance and when you’re working with standard error"
+  },
+  {
+    "objectID": "slides/04/slides04.html#issue",
+    "href": "slides/04/slides04.html#issue",
+    "title": "Sampling Distributions + Probability Review",
+    "section": "Issue",
+    "text": "Issue\nIn this case, the CLT uses a continuous density to approximate a discrete random variable. 30% of 64 people is 19.2 – we can’t actually have 19.2 answer “yes”!\n\n\\[P(X \\ge 19.2) = P(X \\ge 20)\\]\n\n\n\\[\\sum_{k=20}^{64} \\binom{64}{k} .28^k .72^{64-k}\\]\n\n\n\n1 - pbinom(19, 64, .28)\n\n[1] 0.3242167\n\n\n\n\nThe CLT overestimates this probability by .04!"
+  },
+  {
+    "objectID": "slides/04/slides04.html#continuity-correction",
+    "href": "slides/04/slides04.html#continuity-correction",
+    "title": "Sampling Distributions + Probability Review",
+    "section": "Continuity Correction",
+    "text": "Continuity Correction\nWhen using the CLT with discrete data, split the difference between 19 and 20:\n\\[P(X \\ge 19.2) \\approx P(X \\ge 19.5)\\]"
+  },
+  {
+    "objectID": "slides/02/slides02.html#goals-for-today",
+    "href": "slides/02/slides02.html#goals-for-today",
+    "title": "Intro to Permutation Tests",
+    "section": "Goals for today:",
+    "text": "Goals for today:\n\nReview (or introduce!) hypothesis testing\nPractice with notation\nAsk questions and talk to each other\nGet comfier in R"
+  },
+  {
+    "objectID": "slides/02/slides02.html#example",
+    "href": "slides/02/slides02.html#example",
+    "title": "Intro to Permutation Tests",
+    "section": "Example",
+    "text": "Example\nEvidence suggests that reward systems may operate in the opposite way from what is intended:\n\nRanking systems may decrease productivity;\nRewards may not stimulate learning"
+  },
+  {
+    "objectID": "slides/02/slides02.html#experiment",
+    "href": "slides/02/slides02.html#experiment",
+    "title": "Intro to Permutation Tests",
+    "section": "Experiment",
+    "text": "Experiment\n\n47 subjects with considerable experience in creativity were recruited\nRandomly assigned to either intrinsic- or extrinsic-motivation group\nSubjects completed a questionnaire related to either intrinsic or extrinsic reasons for writing\nAll subjects were asked to write a Haiku about laughter\nPoems were scored by a panel of 12 poets, evaluated on 40-point creativity scale\n\n\n\nSource: Amabile, T. M. (1985). Motivation and creativity: Effects of motivational orientation on creative writers. Journal of Personality and Social Psychology, 48(2), 393."
+  },
+  {
+    "objectID": "slides/02/slides02.html#results",
+    "href": "slides/02/slides02.html#results",
+    "title": "Intro to Permutation Tests",
+    "section": "Results",
+    "text": "Results\n\n\n\n\nTreatment\nmin\nQ1\nmedian\nQ3\nmax\nmean\nsd\nn\nmissing\n\n\n\n\nExtrinsic\n5\n12.2\n17.2\n19.0\n24.0\n15.7\n5.3\n23\n0\n\n\nIntrinsic\n12\n17.4\n20.4\n22.3\n29.7\n19.9\n4.4\n24\n0"
+  },
+  {
+    "objectID": "slides/02/slides02.html#the-logic-of-hypothesis-testing",
+    "href": "slides/02/slides02.html#the-logic-of-hypothesis-testing",
+    "title": "Intro to Permutation Tests",
+    "section": "The logic of hypothesis testing",
+    "text": "The logic of hypothesis testing\n\nFormulate two competing hypotheses about the population\nCalculate a test statistic summarizing the relevant information to the claims\nLook at the behavior of the test statistic assuming that the initial claim is true\nCompare the observed test statistic to the expected behavior (the distribution created in step 3).\nHow likely is it that the observed test statistic occurred by chance alone?"
+  },
+  {
+    "objectID": "slides/02/slides02.html#permutation-resampling",
+    "href": "slides/02/slides02.html#permutation-resampling",
+    "title": "Intro to Permutation Tests",
+    "section": "Permutation resampling",
+    "text": "Permutation resampling\n\n\n\n\nIntrinsic\n\n\n12\n16.6\n19.1\n20.5\n22.1\n24\n\n\n12\n17.2\n19.3\n20.6\n22.2\n24.3\n\n\n12.9\n17.5\n19.8\n21.3\n22.6\n26.7\n\n\n13.6\n18.2\n20.3\n21.6\n23.1\n29.7\n\n\n\n\n\n\n\nExtrinsic\n\n\n5\n11.8\n15\n17.4\n18.7\n21.2\n\n\n5.4\n12\n16.8\n17.5\n19.2\n22.1\n\n\n6.1\n12.3\n17.2\n18.5\n19.5\n24\n\n\n10.9\n14.8\n17.2\n18.7\n20.7"
+  },
+  {
+    "objectID": "slides/02/slides02.html#permutation-resampling-1",
+    "href": "slides/02/slides02.html#permutation-resampling-1",
+    "title": "Intro to Permutation Tests",
+    "section": "Permutation resampling",
+    "text": "Permutation resampling\n\n\n\n\nIntrinsic\n\n\n5\n12.9\n17.2\n18.2\n20.3\n21.3\n\n\n10.9\n13.6\n17.2\n18.7\n20.6\n22.2\n\n\n12\n14.8\n17.2\n19.2\n20.7\n23.1\n\n\n12.3\n16.8\n17.5\n19.5\n21.2\n26.7\n\n\n\n\n\n\n\nExtrinsic\n\n\n5.4\n12\n17.5\n19.3\n22.1\n24\n\n\n6.1\n15\n18.5\n19.8\n22.1\n24.3\n\n\n11.8\n16.6\n18.7\n20.5\n22.6\n29.7\n\n\n12\n17.4\n19.1\n21.6\n24"
+  },
+  {
+    "objectID": "slides/02/slides02.html#permutation-resampling-2",
+    "href": "slides/02/slides02.html#permutation-resampling-2",
+    "title": "Intro to Permutation Tests",
+    "section": "Permutation resampling",
+    "text": "Permutation resampling\n\n\n\n\nIntrinsic\n\n\n5\n12\n17.2\n19.2\n21.3\n22.6\n\n\n6.1\n12.9\n17.5\n19.8\n21.6\n23.1\n\n\n10.9\n14.8\n17.5\n20.7\n22.1\n26.7\n\n\n12\n15\n18.7\n21.2\n22.2\n29.7\n\n\n\n\n\n\n\nExtrinsic\n\n\n5.4\n13.6\n17.2\n18.7\n20.3\n24\n\n\n11.8\n16.6\n17.4\n19.1\n20.5\n24\n\n\n12\n16.8\n18.2\n19.3\n20.6\n24.3\n\n\n12.3\n17.2\n18.5\n19.5\n22.1"
+  },
+  {
+    "objectID": "slides/02/slides02.html#your-turn-1",
+    "href": "slides/02/slides02.html#your-turn-1",
+    "title": "Intro to Permutation Tests",
+    "section": "Your turn",
+    "text": "Your turn\nHow likely is it that the observed results occurred by chance alone?\nWhat does this say about the null hypothesis?"
+  },
+  {
+    "objectID": "slides/02/slides02.html#your-turn-2",
+    "href": "slides/02/slides02.html#your-turn-2",
+    "title": "Intro to Permutation Tests",
+    "section": "Your turn",
+    "text": "Your turn\nHow likely is it that the observed test statistic occurred by chance alone?\nWhat does this say about the null hypothesis?"
+  },
+  {
+    "objectID": "slides/02/slides02.html#p-value",
+    "href": "slides/02/slides02.html#p-value",
+    "title": "Intro to Permutation Tests",
+    "section": "p-value",
+    "text": "p-value\nDefinition: fraction of times the random test statistic exceeds the original test statistic\n\n\n\n\n\n\n\n\n\n\n\n\nObserved test statistic:  \\(\\overline{x}_{int} - \\overline{x}_{ext} \\approx 4.2\\)\n10 of the random test statistics exceed 4.2"
+  },
+  {
+    "objectID": "slides/02/slides02.html#strength-of-evidence",
+    "href": "slides/02/slides02.html#strength-of-evidence",
+    "title": "Intro to Permutation Tests",
+    "section": "Strength of evidence",
+    "text": "Strength of evidence\np-values provide a continuous measurement of the strength of evidence against the null hypothesis"
+  },
+  {
+    "objectID": "slides/02/slides02.html#permutation-test-algorithm",
+    "href": "slides/02/slides02.html#permutation-test-algorithm",
+    "title": "Intro to Permutation Tests",
+    "section": "Permutation test algorithm",
+    "text": "Permutation test algorithm\n\n\nPool the \\(m+n\\) data values\nDraw a resample of size \\(m\\) without replacement, assign these values to group 1. Assign the remaining \\(n\\) values to group 2.\nCalculate the test statistic comparing the samples from the resampled groups.\nRepeat steps 2 and 3 until we have enough samples.\nEstimate the p-value as the proportion of times the observed test statistic exceeds the original (observed) test statistic\n\\(p\\text{-value}=\\frac{\\text{# statistics that exceed the original} + 1}{\\text{# of statistics in the distribution} + 1}\\)"
+  },
+  {
+    "objectID": "slides/02/slides02.html#where-were-going",
+    "href": "slides/02/slides02.html#where-were-going",
+    "title": "Intro to Permutation Tests",
+    "section": "Where we’re going",
+    "text": "Where we’re going\nInstead of a permutation test, we can also use facts about the sampling distribution from probability to compute p-values with math."
   },
   {
     "objectID": "slides/01/slides01.html#plan-for-today",
@@ -553,354 +763,172 @@
     "text": "Take care of yourself\nDo your best to maintain a healthy lifestyle this semester by wearing a mask if you don’t feel well, eating a vegetable every day, exercising, avoiding excessive drug and alcohol use, getting enough sleep, and taking some time to relax. Your mental health is more important than your grade in this course. There are many helpful resources available on campus and an important part of the college experience is learning how to ask for help. If you are experiencing mental health symptoms as a result of coursework, please speak with me so we can address the problem together."
   },
   {
-    "objectID": "slides/05/slides05.html#section",
-    "href": "slides/05/slides05.html#section",
-    "title": "Maximum Likelihood Estimation",
-    "section": "",
-    "text": "You are testing seeds from a new plant variety. You plant 10 seeds (n=10) and observe that 3 of them successfully germinate (k=3). Consider two hypotheses about the true germination probability (p) for this variety:\n\nHypothesis A: \\(p = 0.1\\) (10% germination rate)\nHypothesis B: \\(p = 0.4\\) (40% germination rate)\n\n\nGiven that you observed 3 germinations out of 10 seeds, which hypothesis (A or B) is more supported by the data?\n\n\n\n−+\n02:00"
+    "objectID": "slides/00-test/00-test.html#r-code",
+    "href": "slides/00-test/00-test.html#r-code",
+    "title": "Test slides",
+    "section": "R Code",
+    "text": "R Code\n\npalmerpenguins::penguins %&gt;%\n  ggplot(aes(x = flipper_length_mm)) +\n  geom_histogram(col = \"white\")"
   },
   {
-    "objectID": "slides/05/slides05.html#evaluating-intuitively",
-    "href": "slides/05/slides05.html#evaluating-intuitively",
-    "title": "Maximum Likelihood Estimation",
-    "section": "Evaluating Intuitively",
-    "text": "Evaluating Intuitively"
+    "objectID": "slides/00-test/00-test.html#plan-for-today",
+    "href": "slides/00-test/00-test.html#plan-for-today",
+    "title": "Test slides",
+    "section": "Plan for today",
+    "text": "Plan for today\n\nSyllabus\nContext for the class\nCourse expectations"
   },
   {
-    "objectID": "slides/05/slides05.html#evaluating-formally-problem-set-up",
-    "href": "slides/05/slides05.html#evaluating-formally-problem-set-up",
-    "title": "Maximum Likelihood Estimation",
-    "section": "Evaluating Formally: Problem Set Up",
-    "text": "Evaluating Formally: Problem Set Up\n\nLet \\(X\\) be the number of plants that successfully germinate\n\\(X \\sim \\text{Binom}(10, p)\\) and we observed \\(X=3\\)\n\n\n\n\n\\(P(X=3)\\) if \\(p=.1\\)\n\n\\(P(X=3)\\) if \\(p=.4\\)"
+    "objectID": "slides/00-test/00-test.html#a-bit-about-me",
+    "href": "slides/00-test/00-test.html#a-bit-about-me",
+    "title": "Test slides",
+    "section": "A bit about me",
+    "text": "A bit about me"
   },
   {
-    "objectID": "slides/05/slides05.html#section-1",
-    "href": "slides/05/slides05.html#section-1",
-    "title": "Maximum Likelihood Estimation",
-    "section": "",
-    "text": "In general, the likelihood of seeing \\(X=3\\) given \\(p\\) is:\n\\[{10 \\choose 3} p^3 (1-p)^7\\]\n\nWhat value of \\(p\\) maximizes this likelihood?"
+    "objectID": "slides/00-test/00-test.html#course-description",
+    "href": "slides/00-test/00-test.html#course-description",
+    "title": "Test slides",
+    "section": "Course description",
+    "text": "Course description\nThis course is an introduction to the mathematical theory of frequentist and Bayesian statistical inference. Topics include parameter estimation, confidence intervals and hypothesis testing, linear models, and Bayesian inference.\nStudents who analyze data, or who aspire to develop new methods for analyzing data, should be well-grounded in mathematical statistics."
   },
   {
-    "objectID": "slides/05/slides05.html#methods-of-maximizing",
-    "href": "slides/05/slides05.html#methods-of-maximizing",
-    "title": "Maximum Likelihood Estimation",
-    "section": "Methods of maximizing",
-    "text": "Methods of maximizing\n\nApproximate the solution graphically\nFind a numerical approximation\nUse calculus"
+    "objectID": "slides/00-test/00-test.html#course-objectives",
+    "href": "slides/00-test/00-test.html#course-objectives",
+    "title": "Test slides",
+    "section": "Course Objectives",
+    "text": "Course Objectives\nBy the end of this course, you should be able to:\n\nDerive estimators for parameters using maximum likelihood, the method of moments, and Bayesian techniques\nEvaluate the performance of estimators and describe their strengths and weaknesses\nDemonstrate a sophisticated understanding of the mathematics behind hypothesis tests, confidence intervals, and linear models\n\nUse the statistical package R to implement basic simulations of estimation scenarios"
   },
   {
-    "objectID": "slides/05/slides05.html#approximating-with-a-graph",
-    "href": "slides/05/slides05.html#approximating-with-a-graph",
-    "title": "Maximum Likelihood Estimation",
-    "section": "Approximating with a graph",
-    "text": "Approximating with a graph"
+    "objectID": "slides/00-test/00-test.html#textbook",
+    "href": "slides/00-test/00-test.html#textbook",
+    "title": "Test slides",
+    "section": "Textbook:",
+    "text": "Textbook:"
   },
   {
-    "objectID": "slides/05/slides05.html#approximating-with-a-graph-code",
-    "href": "slides/05/slides05.html#approximating-with-a-graph-code",
-    "title": "Maximum Likelihood Estimation",
-    "section": "Approximating with a graph: code",
-    "text": "Approximating with a graph: code\n\ngerm_function &lt;- function(p) {choose(10,3) * p^3 * (1-p)^7} # define function\nggplot() + \n  geom_function(fun = germ_function) +\n  xlim(c(0,1))"
+    "objectID": "slides/00-test/00-test.html#computing",
+    "href": "slides/00-test/00-test.html#computing",
+    "title": "Test slides",
+    "section": "Computing:",
+    "text": "Computing:"
   },
   {
-    "objectID": "slides/05/slides05.html#approximating-numerically",
-    "href": "slides/05/slides05.html#approximating-numerically",
-    "title": "Maximum Likelihood Estimation",
-    "section": "Approximating numerically",
-    "text": "Approximating numerically\n\noptimize(germ_function, interval = c(0,1), maximum = TRUE)\n\n\n\n$maximum\n[1] 0.3000157\n\n$objective\n[1] 0.2668279"
+    "objectID": "slides/00-test/00-test.html#assignments",
+    "href": "slides/00-test/00-test.html#assignments",
+    "title": "Test slides",
+    "section": "Assignments",
+    "text": "Assignments"
   },
   {
-    "objectID": "slides/05/slides05.html#with-calculus",
-    "href": "slides/05/slides05.html#with-calculus",
-    "title": "Maximum Likelihood Estimation",
-    "section": "With calculus",
-    "text": "With calculus"
+    "objectID": "slides/00-test/00-test.html#regrade-request-policy",
+    "href": "slides/00-test/00-test.html#regrade-request-policy",
+    "title": "Test slides",
+    "section": "Regrade request policy",
+    "text": "Regrade request policy\nGrading is often a tedious task, and the grading team will sometimes make mistakes. I am always happy to fix these mistakes, and gradescope makes it easy to do so. However, it takes time to read through these requests and I’ve noticed an increase in unwarranted regrade requests in recent years. This semester, I am instituting an “NFL Coaches Challenge”-style regrade request rule. Every student will start the semester with 2 regrade requests available to them. If you submit a regrade request and I agree with you, you get it back. If you submit a regrade request for something that was not a grading mistake, you lose that request."
   },
   {
-    "objectID": "slides/05/slides05.html#a-trick",
-    "href": "slides/05/slides05.html#a-trick",
-    "title": "Maximum Likelihood Estimation",
-    "section": "A “trick”",
-    "text": "A “trick”\nProbability functions often are tricky to differentiate because of the product rule. Lucky for us, we can maximize the log instead."
+    "objectID": "slides/00-test/00-test.html#exams",
+    "href": "slides/00-test/00-test.html#exams",
+    "title": "Test slides",
+    "section": "Exams",
+    "text": "Exams"
   },
   {
-    "objectID": "slides/05/slides05.html#can-we-generalize-to-any-data",
-    "href": "slides/05/slides05.html#can-we-generalize-to-any-data",
-    "title": "Maximum Likelihood Estimation",
-    "section": "Can we generalize to any data?",
-    "text": "Can we generalize to any data?"
+    "objectID": "slides/00-test/00-test.html#final-exam",
+    "href": "slides/00-test/00-test.html#final-exam",
+    "title": "Test slides",
+    "section": "Final Exam",
+    "text": "Final Exam"
   },
   {
-    "objectID": "slides/05/slides05.html#section-2",
-    "href": "slides/05/slides05.html#section-2",
-    "title": "Maximum Likelihood Estimation",
-    "section": "",
-    "text": "Likelihood function\n\n\nLet \\(f(x; \\theta)\\) denote the probability mass function for a discrete distribution with associated parameter \\(\\theta\\). Suppose \\(X_1, X_2, ... , X_n\\) are a random sample from this distribution and \\(x_1, x_2, ... , x_n\\) are the actual observed values. Then, the likelihood function of \\(\\theta\\) is:\n  \n\n\n\n\n\n\n\n\n\n\nMaximum likelihood estimate\n\n\nA maximum likelihood estimate (MLE), \\(\\hat{\\theta}_{MLE}\\) is the value of \\(\\theta\\) that maximizes the likelihood function, or equivalently, that maximizes the log-likelihood \\(\\ln L(\\theta)\\)"
+    "objectID": "slides/00-test/00-test.html#course-project",
+    "href": "slides/00-test/00-test.html#course-project",
+    "title": "Test slides",
+    "section": "Course project",
+    "text": "Course project"
   },
   {
-    "objectID": "slides/05/slides05.html#bernoulli-data",
-    "href": "slides/05/slides05.html#bernoulli-data",
-    "title": "Maximum Likelihood Estimation",
-    "section": "Bernoulli data",
-    "text": "Bernoulli data\nAn alternative way to express this example is \\(X_1, ..., X_n \\sim \\text{Bernoulli}(\\theta)\\)"
+    "objectID": "slides/00-test/00-test.html#final-grades",
+    "href": "slides/00-test/00-test.html#final-grades",
+    "title": "Test slides",
+    "section": "Final grades",
+    "text": "Final grades"
   },
   {
-    "objectID": "slides/05/slides05.html#is-the-likelihood-also-a-pdf",
-    "href": "slides/05/slides05.html#is-the-likelihood-also-a-pdf",
-    "title": "Maximum Likelihood Estimation",
-    "section": "Is the likelihood also a PDF?",
-    "text": "Is the likelihood also a PDF?\n\n\n\n−+\n02:00"
+    "objectID": "slides/00-test/00-test.html#advice-from-past-students",
+    "href": "slides/00-test/00-test.html#advice-from-past-students",
+    "title": "Test slides",
+    "section": "Advice from past students:",
+    "text": "Advice from past students:\n\nStart the problem sets early and go to office hours!\nWork with other people in the class, collaboration is key\nBe willing to ask lots of questions and don’t be afraid to ask for help!\nI would advise for them to attend office hours and the stat clinic since early on to get help and not be worrying about assignments at the last minute.\nI would advise future students to reach out and ask questions as soon if they have any confusion. Understanding statistical concepts and working with R can be frustrating at times, but people are here to help you along the way!\nDon’t let work snowball! Try to get help early and often and an imperfect problem set is better than no problem set.\nlots of R here! Organization is key, and you’ll do well as long as you start homeworks early, communicate with the professor and with your fellow classmates. There’s a good support system."
   },
   {
-    "objectID": "slides/05/slides05.html#aside-notation",
-    "href": "slides/05/slides05.html#aside-notation",
-    "title": "Maximum Likelihood Estimation",
-    "section": "Aside: notation",
-    "text": "Aside: notation\n\n\n\n\n\n\nEstimator\n\n\n  \n\n\n\n\n\n\n\n\n\nEstimate"
+    "objectID": "slides/00-test/00-test.html#the-genius-myth",
+    "href": "slides/00-test/00-test.html#the-genius-myth",
+    "title": "Test slides",
+    "section": "The “Genius Myth”",
+    "text": "The “Genius Myth”\nIt’s sometimes easy to buy into the “genius myth” when it comes to math/stat courses: that you need to be a “math person” and have some innate mathematical ability in order to do well or become a statistics major. This could not be further from the truth! The best statisticians don’t necessarily have the “best” math or programming background, but are people that are able to formulate interesting questions and use math and programming to rigorously answer those questions. Many of the best statisticians I know became statisticians because they were initially interested in something else (biology, public health, psychology, neuroscience, physics, etc.) and realized that being able to answer important questions with data was not only valuable but fun and interesting. Being able to perform interesting statistical analyses is a skill that is learned, not an innate ability, and working hard at developing that skill is the point of this course."
   },
   {
-    "objectID": "slides/05/slides05.html#section-3",
-    "href": "slides/05/slides05.html#section-3",
-    "title": "Maximum Likelihood Estimation",
-    "section": "",
-    "text": "Let \\(X_1, ..., X_n\\) be an iid random sample from a distribution with PDF\n\\[f(x|\\theta)= (\\theta + 1)x^\\theta, 0 \\le x \\le 1\\]\n\n\nFind the maximum likelihood estimator for a random sample of size \\(n\\) using calculus.\nSuppose we observe a sample of size 5: {.83, .49, .72, .57, .66}. Find the maximum likelihood estimate and verify with a graph or numerical approximation"
+    "objectID": "slides/00-test/00-test.html#academic-integrity",
+    "href": "slides/00-test/00-test.html#academic-integrity",
+    "title": "Test slides",
+    "section": "Academic Integrity",
+    "text": "Academic Integrity"
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Stat250-S25",
-    "section": "",
-    "text": "Landing page for Stat250 course materials in Spring 2025\n\nIn-Class Materials\nDay02: slides handout r code\nDay03: handout activity qmd\nDay04: slides | handout\nDay05: slides | handout\nDay06: slides | handout\n\n\nOther Resources and Readings\n\nR Basics\nHow to do homework in R in Stat250"
+    "objectID": "slides/00-test/00-test.html#diversity-inclusion",
+    "href": "slides/00-test/00-test.html#diversity-inclusion",
+    "title": "Test slides",
+    "section": "Diversity & Inclusion",
+    "text": "Diversity & Inclusion\nWe all come to class with different backgrounds and experiences, and this diversity makes our class environment richer. We value diversity and inclusion, and are committed to a climate of mutual respect and full participation in and out of the classroom. This class strives to be a learning environment that is usable, equitable, inclusive and welcoming, regardless of race, ethnicity, religion, gender and gender identities, sexual orientation, ability, socioeconomic background, and nationality. If you anticipate or experience any barriers to learning, please discuss your concerns with me."
   },
   {
-    "objectID": "slides/04/slides04.html#plan-for-today",
-    "href": "slides/04/slides04.html#plan-for-today",
-    "title": "Sampling Distributions + Probability Review",
-    "section": "Plan for today:",
-    "text": "Plan for today:\n\nHW00 probability review\nMore on sampling distributions\nIntro to Estimation"
+    "objectID": "slides/00-test/00-test.html#accomodations",
+    "href": "slides/00-test/00-test.html#accomodations",
+    "title": "Test slides",
+    "section": "Accomodations",
+    "text": "Accomodations"
   },
   {
-    "objectID": "slides/04/slides04.html#overview-of-hw00-topics",
-    "href": "slides/04/slides04.html#overview-of-hw00-topics",
-    "title": "Sampling Distributions + Probability Review",
-    "section": "Overview of HW00 Topics",
-    "text": "Overview of HW00 Topics\n\n\nWorking with a PDF\nWorking with a CDF\nCalculating Moments\nMoments from PDF\nDeriving and Using MGFs\nRecognizing distribution from MGF\nTransformation of a Random Variable\nJoint PDF Calculations"
+    "objectID": "slides/00-test/00-test.html#stat-lab",
+    "href": "slides/00-test/00-test.html#stat-lab",
+    "title": "Test slides",
+    "section": "Stat Lab",
+    "text": "Stat Lab"
   },
   {
-    "objectID": "slides/04/slides04.html#generally-went-ok",
-    "href": "slides/04/slides04.html#generally-went-ok",
-    "title": "Sampling Distributions + Probability Review",
-    "section": "Generally went OK",
-    "text": "Generally went OK\n\n\nWorking with a PDF\nWorking with a CDF\nCalculating Moments\nMoments from PDF\nDeriving and Using MGFs\nRecognizing distribution from MGF\nTransformation of a Random Variable\nJoint PDF Calculations"
+    "objectID": "slides/00-test/00-test.html#title-ix",
+    "href": "slides/00-test/00-test.html#title-ix",
+    "title": "Test slides",
+    "section": "Title IX",
+    "text": "Title IX\nPlease be aware that all faculty are “responsible employees”, which means that if you tell me about a situation involving sexual harassment, sexual assault, dating violence, domestic violence, or stalking, I must share that information with the Title IX Coordinator. Although I have to make this notification, you will control how your case will be handled, including whether or not you wish to meet with the Title IX coordinator or pursue a formal complaint."
   },
   {
-    "objectID": "slides/04/slides04.html#big-mechanics-to-know-1-variable",
-    "href": "slides/04/slides04.html#big-mechanics-to-know-1-variable",
-    "title": "Sampling Distributions + Probability Review",
-    "section": "Big mechanics to know (1 variable)",
-    "text": "Big mechanics to know (1 variable)\n\nPDF \\(f_X(x)\\) gives probabilities by integrating\nCDF \\(F_X(x)\\) gives probabilities directly\nFind \\(E[X]\\) with pdf by \\(\\int_\\infty x f_X(x) dx\\)\nLoTUS: \\(E[g(X)] = \\int_\\infty g(x) f_X(x) dx\\)\n\\(V[X] = E[(X-E[X])^2] = E[X^2] - E[X]^2\\)"
+    "objectID": "slides/00-test/00-test.html#take-care-of-yourself",
+    "href": "slides/00-test/00-test.html#take-care-of-yourself",
+    "title": "Test slides",
+    "section": "Take care of yourself",
+    "text": "Take care of yourself\nDo your best to maintain a healthy lifestyle this semester by wearing a mask if you don’t feel well, eating a vegetable every day, exercising, avoiding excessive drug and alcohol use, getting enough sleep, and taking some time to relax. Your mental health is more important than your grade in this course. There are many helpful resources available on campus and an important part of the college experience is learning how to ask for help. If you are experiencing mental health symptoms as a result of coursework, please speak with me so we can address the problem together."
   },
   {
-    "objectID": "slides/04/slides04.html#big-mechanics-to-know-2-variable",
-    "href": "slides/04/slides04.html#big-mechanics-to-know-2-variable",
-    "title": "Sampling Distributions + Probability Review",
-    "section": "Big mechanics to know (2 variable)",
-    "text": "Big mechanics to know (2 variable)\n\nPDF \\(f_{X,Y}(x,y)\\) gives probabilities by integrating\nCDF \\(F_{X, Y}(x,y)\\) gives probabilities directly\nMarginal pdf: \\(f_X(x) = \\int_\\infty y f_{X,Y} dy\\)\nConditional pdf \\(f_{X|Y}(x,y) = \\frac{f_{X,Y}(x,y)}{f_Y(y)}\\)\nTwo variables are independent if \\(f_{X,Y} = f_{X} f_{Y}\\) or \\(f_X = f_{X|Y}\\)"
+    "objectID": "slides/00-test/00-test.html#prerequisites",
+    "href": "slides/00-test/00-test.html#prerequisites",
+    "title": "Test slides",
+    "section": "Prerequisites",
+    "text": "Prerequisites"
   },
   {
-    "objectID": "slides/04/slides04.html#working-with-moments",
-    "href": "slides/04/slides04.html#working-with-moments",
-    "title": "Sampling Distributions + Probability Review",
-    "section": "Working with moments",
-    "text": "Working with moments\nFor any two variables X and Y:\n\n\\(E[aX + b] = a E[X] + b\\)\n\\(V[aX + b] = a^2 V[X]\\)\n\\(E[X + Y] = E[X] + E[Y]\\)\n\\(E[aX + bY + c] = a E[X] + b E[Y] + c\\)\n\\(V[X + Y] = V[X] + V[Y] + 2 Cov(X,Y)\\)\n\\(Cov(X,Y) = E[(X - E[X])(Y-E[Y])] = E[XY] - E[X]E[Y]\\)\n\n\nIf X and Y are independent:\n\n\\(Cov(X,Y) = 0\\)\n\\(V[X + Y] = V[X] + V[Y]\\)\n\\(V[aX + bY + c] = a^2 V[X] + b^2 V[Y]\\)"
+    "objectID": "slides/00-test/00-test.html#history",
+    "href": "slides/00-test/00-test.html#history",
+    "title": "Test slides",
+    "section": "History",
+    "text": "History\n\nStatistics seems to be a difficult subject for mathematicians, perhaps because its elusive and wide-ranging character mitigates against the traditional theorem-proof method of presentation. It may come as some comfort then that statistics is also a difficult subject for statisticians\n\n\nControversies in the Foundations of Statistics, Bradley Efron 1978"
   },
   {
-    "objectID": "slides/04/slides04.html#some-issues",
-    "href": "slides/04/slides04.html#some-issues",
-    "title": "Sampling Distributions + Probability Review",
-    "section": "Some issues",
-    "text": "Some issues\n\n\nWorking with a PDF\nWorking with a CDF\nCalculating Moments\nMoments from PDF\nDeriving and Using MGFs\nRecognizing distribution from MGF\nTransformation of a Random Variable\nJoint PDF Calculations"
-  },
-  {
-    "objectID": "slides/04/slides04.html#recap-from-friday",
-    "href": "slides/04/slides04.html#recap-from-friday",
-    "title": "Sampling Distributions + Probability Review",
-    "section": "Recap from Friday",
-    "text": "Recap from Friday\n\n\n\n\n\n\nCentral Limit Theorem\n\n\nSuppose we have an iid sample \\(X_1, ..., X_n \\sim F_x\\). The CLT tells us that, as our sample size approaches \\(\\infty\\),\n\\[F_\\bar{X}(\\bar{X}) \\to N(\\mu, \\frac{\\sigma}{\\sqrt{n}})\\]\n\n\n\n\nSampling distribution is centered at population mean\nAs \\(n \\to \\infty\\), \\(\\sigma_\\bar{X} \\to 0\\)\nIt doesn’t matter what shape \\(X_i\\) is!"
-  },
-  {
-    "objectID": "slides/04/slides04.html#example-binomial-data",
-    "href": "slides/04/slides04.html#example-binomial-data",
-    "title": "Sampling Distributions + Probability Review",
-    "section": "Example: Binomial data",
-    "text": "Example: Binomial data\nAccording to the 2004 American Community Survey, 28% of adults over 25 years old in Utah have completed a bachelor’s degree. In a random sample of 64 adults over age 25 from Utah, what is the probability that at least 30 have a bachelor’s degree?\nLet \\(X_i\\) indicate whether a sampled person has a bachelor’s degree. Then, \\(X_1, ...., X_{64} \\sim \\text{Binom}(n=1,p=.28)\\).\n\nOr, \\(X = \\sum X_i \\sim \\text{Binom}(64, p = .28)\\)\n\n\nUsing the CLT, \\(\\bar{X} \\sim N(p, SE_\\bar{X}) \\sim N(0.28, \\sqrt{\\frac{.28(1-.28)}{64}} = .056)\\)"
-  },
-  {
-    "objectID": "slides/04/slides04.html#example-binomial-data-1",
-    "href": "slides/04/slides04.html#example-binomial-data-1",
-    "title": "Sampling Distributions + Probability Review",
-    "section": "Example: Binomial data",
-    "text": "Example: Binomial data\n\\(\\bar{X} \\sim N(0.28, .056)\\). To find the probability that at least 30% of people in the sample have a bachelor’s degree,\n\\[P(\\hat{p} \\ge 0.30) = P(\\bar{X} \\ge 0.30)\\]\n\n\npnorm(0.30, mean = 0.28, sd = .056, lower.tail = FALSE)\n\n[1] 0.3604924\n\n\n\n\n\nNote: It’s really important to be careful about when you’re working with variance and when you’re working with standard error"
-  },
-  {
-    "objectID": "slides/04/slides04.html#issue",
-    "href": "slides/04/slides04.html#issue",
-    "title": "Sampling Distributions + Probability Review",
-    "section": "Issue",
-    "text": "Issue\nIn this case, the CLT uses a continuous density to approximate a discrete random variable. 30% of 64 people is 19.2 – we can’t actually have 19.2 answer “yes”!\n\n\\[P(X \\ge 19.2) = P(X \\ge 20)\\]\n\n\n\\[\\sum_{k=20}^{64} \\binom{64}{k} .28^k .72^{64-k}\\]\n\n\n\n1 - pbinom(19, 64, .28)\n\n[1] 0.3242167\n\n\n\n\nThe CLT overestimates this probability by .04!"
-  },
-  {
-    "objectID": "slides/04/slides04.html#continuity-correction",
-    "href": "slides/04/slides04.html#continuity-correction",
-    "title": "Sampling Distributions + Probability Review",
-    "section": "Continuity Correction",
-    "text": "Continuity Correction\nWhen using the CLT with discrete data, split the difference between 19 and 20:\n\\[P(X \\ge 19.2) \\approx P(X \\ge 19.5)\\]"
-  },
-  {
-    "objectID": "slides/02/slides02.html#goals-for-today",
-    "href": "slides/02/slides02.html#goals-for-today",
-    "title": "Intro to Permutation Tests",
-    "section": "Goals for today:",
-    "text": "Goals for today:\n\nReview (or introduce!) hypothesis testing\nPractice with notation\nAsk questions and talk to each other\nGet comfier in R"
-  },
-  {
-    "objectID": "slides/02/slides02.html#example",
-    "href": "slides/02/slides02.html#example",
-    "title": "Intro to Permutation Tests",
-    "section": "Example",
-    "text": "Example\nEvidence suggests that reward systems may operate in the opposite way from what is intended:\n\nRanking systems may decrease productivity;\nRewards may not stimulate learning"
-  },
-  {
-    "objectID": "slides/02/slides02.html#experiment",
-    "href": "slides/02/slides02.html#experiment",
-    "title": "Intro to Permutation Tests",
-    "section": "Experiment",
-    "text": "Experiment\n\n47 subjects with considerable experience in creativity were recruited\nRandomly assigned to either intrinsic- or extrinsic-motivation group\nSubjects completed a questionnaire related to either intrinsic or extrinsic reasons for writing\nAll subjects were asked to write a Haiku about laughter\nPoems were scored by a panel of 12 poets, evaluated on 40-point creativity scale\n\n\n\nSource: Amabile, T. M. (1985). Motivation and creativity: Effects of motivational orientation on creative writers. Journal of Personality and Social Psychology, 48(2), 393."
-  },
-  {
-    "objectID": "slides/02/slides02.html#results",
-    "href": "slides/02/slides02.html#results",
-    "title": "Intro to Permutation Tests",
-    "section": "Results",
-    "text": "Results\n\n\n\n\nTreatment\nmin\nQ1\nmedian\nQ3\nmax\nmean\nsd\nn\nmissing\n\n\n\n\nExtrinsic\n5\n12.2\n17.2\n19.0\n24.0\n15.7\n5.3\n23\n0\n\n\nIntrinsic\n12\n17.4\n20.4\n22.3\n29.7\n19.9\n4.4\n24\n0"
-  },
-  {
-    "objectID": "slides/02/slides02.html#the-logic-of-hypothesis-testing",
-    "href": "slides/02/slides02.html#the-logic-of-hypothesis-testing",
-    "title": "Intro to Permutation Tests",
-    "section": "The logic of hypothesis testing",
-    "text": "The logic of hypothesis testing\n\nFormulate two competing hypotheses about the population\nCalculate a test statistic summarizing the relevant information to the claims\nLook at the behavior of the test statistic assuming that the initial claim is true\nCompare the observed test statistic to the expected behavior (the distribution created in step 3).\nHow likely is it that the observed test statistic occurred by chance alone?"
-  },
-  {
-    "objectID": "slides/02/slides02.html#permutation-resampling",
-    "href": "slides/02/slides02.html#permutation-resampling",
-    "title": "Intro to Permutation Tests",
-    "section": "Permutation resampling",
-    "text": "Permutation resampling\n\n\n\n\nIntrinsic\n\n\n12\n16.6\n19.1\n20.5\n22.1\n24\n\n\n12\n17.2\n19.3\n20.6\n22.2\n24.3\n\n\n12.9\n17.5\n19.8\n21.3\n22.6\n26.7\n\n\n13.6\n18.2\n20.3\n21.6\n23.1\n29.7\n\n\n\n\n\n\n\nExtrinsic\n\n\n5\n11.8\n15\n17.4\n18.7\n21.2\n\n\n5.4\n12\n16.8\n17.5\n19.2\n22.1\n\n\n6.1\n12.3\n17.2\n18.5\n19.5\n24\n\n\n10.9\n14.8\n17.2\n18.7\n20.7"
-  },
-  {
-    "objectID": "slides/02/slides02.html#permutation-resampling-1",
-    "href": "slides/02/slides02.html#permutation-resampling-1",
-    "title": "Intro to Permutation Tests",
-    "section": "Permutation resampling",
-    "text": "Permutation resampling\n\n\n\n\nIntrinsic\n\n\n5\n12.9\n17.2\n18.2\n20.3\n21.3\n\n\n10.9\n13.6\n17.2\n18.7\n20.6\n22.2\n\n\n12\n14.8\n17.2\n19.2\n20.7\n23.1\n\n\n12.3\n16.8\n17.5\n19.5\n21.2\n26.7\n\n\n\n\n\n\n\nExtrinsic\n\n\n5.4\n12\n17.5\n19.3\n22.1\n24\n\n\n6.1\n15\n18.5\n19.8\n22.1\n24.3\n\n\n11.8\n16.6\n18.7\n20.5\n22.6\n29.7\n\n\n12\n17.4\n19.1\n21.6\n24"
-  },
-  {
-    "objectID": "slides/02/slides02.html#permutation-resampling-2",
-    "href": "slides/02/slides02.html#permutation-resampling-2",
-    "title": "Intro to Permutation Tests",
-    "section": "Permutation resampling",
-    "text": "Permutation resampling\n\n\n\n\nIntrinsic\n\n\n5\n12\n17.2\n19.2\n21.3\n22.6\n\n\n6.1\n12.9\n17.5\n19.8\n21.6\n23.1\n\n\n10.9\n14.8\n17.5\n20.7\n22.1\n26.7\n\n\n12\n15\n18.7\n21.2\n22.2\n29.7\n\n\n\n\n\n\n\nExtrinsic\n\n\n5.4\n13.6\n17.2\n18.7\n20.3\n24\n\n\n11.8\n16.6\n17.4\n19.1\n20.5\n24\n\n\n12\n16.8\n18.2\n19.3\n20.6\n24.3\n\n\n12.3\n17.2\n18.5\n19.5\n22.1"
-  },
-  {
-    "objectID": "slides/02/slides02.html#your-turn-1",
-    "href": "slides/02/slides02.html#your-turn-1",
-    "title": "Intro to Permutation Tests",
-    "section": "Your turn",
-    "text": "Your turn\nHow likely is it that the observed results occurred by chance alone?\nWhat does this say about the null hypothesis?"
-  },
-  {
-    "objectID": "slides/02/slides02.html#your-turn-2",
-    "href": "slides/02/slides02.html#your-turn-2",
-    "title": "Intro to Permutation Tests",
-    "section": "Your turn",
-    "text": "Your turn\nHow likely is it that the observed test statistic occurred by chance alone?\nWhat does this say about the null hypothesis?"
-  },
-  {
-    "objectID": "slides/02/slides02.html#p-value",
-    "href": "slides/02/slides02.html#p-value",
-    "title": "Intro to Permutation Tests",
-    "section": "p-value",
-    "text": "p-value\nDefinition: fraction of times the random test statistic exceeds the original test statistic\n\n\n\n\n\n\n\n\n\n\n\n\nObserved test statistic:  \\(\\overline{x}_{int} - \\overline{x}_{ext} \\approx 4.2\\)\n10 of the random test statistics exceed 4.2"
-  },
-  {
-    "objectID": "slides/02/slides02.html#strength-of-evidence",
-    "href": "slides/02/slides02.html#strength-of-evidence",
-    "title": "Intro to Permutation Tests",
-    "section": "Strength of evidence",
-    "text": "Strength of evidence\np-values provide a continuous measurement of the strength of evidence against the null hypothesis"
-  },
-  {
-    "objectID": "slides/02/slides02.html#permutation-test-algorithm",
-    "href": "slides/02/slides02.html#permutation-test-algorithm",
-    "title": "Intro to Permutation Tests",
-    "section": "Permutation test algorithm",
-    "text": "Permutation test algorithm\n\n\nPool the \\(m+n\\) data values\nDraw a resample of size \\(m\\) without replacement, assign these values to group 1. Assign the remaining \\(n\\) values to group 2.\nCalculate the test statistic comparing the samples from the resampled groups.\nRepeat steps 2 and 3 until we have enough samples.\nEstimate the p-value as the proportion of times the observed test statistic exceeds the original (observed) test statistic\n\\(p\\text{-value}=\\frac{\\text{# statistics that exceed the original} + 1}{\\text{# of statistics in the distribution} + 1}\\)"
-  },
-  {
-    "objectID": "slides/02/slides02.html#where-were-going",
-    "href": "slides/02/slides02.html#where-were-going",
-    "title": "Intro to Permutation Tests",
-    "section": "Where we’re going",
-    "text": "Where we’re going\nInstead of a permutation test, we can also use facts about the sampling distribution from probability to compute p-values with math."
-  },
-  {
-    "objectID": "slides/06/slides06.html#big-idea",
-    "href": "slides/06/slides06.html#big-idea",
-    "title": "Maximum Likelihood Estimation II",
-    "section": "Big Idea",
-    "text": "Big Idea\nWe’re interested in the proportion of Carleton students who have had some sort of research experience. We have the resources to randomly sample 10 students.\n\n\nProbability:\n\nStatistics:"
-  },
-  {
-    "objectID": "slides/06/slides06.html#example",
-    "href": "slides/06/slides06.html#example",
-    "title": "Maximum Likelihood Estimation II",
-    "section": "Example",
-    "text": "Example\nRecall that the likelihood function for \\(n\\) iid Bernoulli(\\(\\theta\\)) random variable is \\(L(\\theta) = \\theta^{\\sum x_i} (1-\\theta)^{n - \\sum x_i}\\).\n\n\n\n\n\n\n\n\n\n\n\n\nScenario 1: 0 yes responses\n\n\n\n\\(\\theta\\)\n0.0\n0.2\n0.4\n0.6\n0.8\n1.0\n\n\n\\(L(\\theta)\\)\n\n\n\n\n\n\n\n\n\nScenario 2: 6 yes responses\n\n\n\n\\(\\theta\\)\n0.0\n0.2\n0.4\n0.6\n0.8\n1.0\n\n\n\\(L(\\theta)\\)"
-  },
-  {
-    "objectID": "slides/06/slides06.html#exercise",
-    "href": "slides/06/slides06.html#exercise",
-    "title": "Maximum Likelihood Estimation II",
-    "section": "Exercise",
-    "text": "Exercise\nIs the likelihood function a probability distribution? Why or why not?"
-  },
-  {
-    "objectID": "slides/06/slides06.html#exercise-from-last-class",
-    "href": "slides/06/slides06.html#exercise-from-last-class",
-    "title": "Maximum Likelihood Estimation II",
-    "section": "Exercise: from last class",
-    "text": "Exercise: from last class\nLet \\(X_1, ..., X_n\\) be an iid random sample from a distribution with PDF\n\\[f(x|\\theta)= (\\theta + 1)x^\\theta, 0 \\le x \\le 1\\]\n\\[L(\\theta) =\\] \\[\\hat\\theta_{MLE}=\\]\nSuppose we observe a sample of size 5: {.83, .49, .72, .57, .66}. Find the maximum likelihood estimate and verify with a graph or numerical approximation"
-  },
-  {
-    "objectID": "slides/06/slides06.html#example-uniform-disribution",
-    "href": "slides/06/slides06.html#example-uniform-disribution",
-    "title": "Maximum Likelihood Estimation II",
-    "section": "Example: Uniform disribution",
-    "text": "Example: Uniform disribution\nFind the MLE for \\(Y_1, ..., Y_n \\sim \\text{Unif}(0, \\theta)\\)"
-  },
-  {
-    "objectID": "slides/06/slides06.html#finding-the-mle-when-more-than-one-parameter-is-unknown",
-    "href": "slides/06/slides06.html#finding-the-mle-when-more-than-one-parameter-is-unknown",
-    "title": "Maximum Likelihood Estimation II",
-    "section": "Finding the MLE when more than one parameter is unknown",
-    "text": "Finding the MLE when more than one parameter is unknown\nIf the pdf or pmf that we’re using has two or more parameters, say \\(\\theta_1\\) and \\(\\theta_2\\), finding MLEs for the \\(\\theta_i\\)’s requires the solution of a sest of simultaneous equations\n\n\\[\\frac{\\partial}{\\partial \\theta_1} \\ln L(\\theta_1, \\theta_2) = 0\\]\n\n\n\\[\\frac{\\partial}{\\partial \\theta_2} \\ln L(\\theta_1, \\theta_2) = 0\\]"
-  },
-  {
-    "objectID": "slides/06/slides06.html#example-nmu-sigma2-distribution",
-    "href": "slides/06/slides06.html#example-nmu-sigma2-distribution",
-    "title": "Maximum Likelihood Estimation II",
-    "section": "Example: \\(N(\\mu, \\sigma^2)\\) distribution",
-    "text": "Example: \\(N(\\mu, \\sigma^2)\\) distribution\nSuppose a random sample of size \\(n\\) is drawn from the two parameter normal pdf:\n\\(f_y(y|\\mu, \\sigma^2) = \\frac{1}{\\sqrt{2\\pi \\sigma}} \\exp(-(\\frac{y-\\mu}{\\sigma})^2)\\)\nfind the MLEs \\(\\hat{\\mu}\\) and \\(\\hat\\sigma^2\\)"
+    "objectID": "slides/00-test/00-test.html#fisher-vs-neyman-pearson",
+    "href": "slides/00-test/00-test.html#fisher-vs-neyman-pearson",
+    "title": "Test slides",
+    "section": "Fisher vs Neyman-Pearson",
+    "text": "Fisher vs Neyman-Pearson"
   },
   {
     "objectID": "readings/r-homework-stat250.html",
