@@ -34,26 +34,35 @@ library(mosaic)
 library(infer)
 ```
 
-# Overview
-
-A second procedure for finding estimators of parameters is the *method of moments*. 
-
 ::: callout-note
-## Moment
+## Theoretical Moment
 
 \vspace{1.15in}
 
 :::
 
-**Example:** Suppose we observe $y_1, ..., y_n$ from $f_y(y|\theta) = \theta y ^{\theta -1}$, $0 < y < 1$. Find $E(Y)$
+::: callout-note
+## Sample Moment
 
-\vspace{1.5in}
+\vspace{.5in}
 
+:::
 
 ::: callout-note
 ## Method of Moments
 
 \vspace{1.5in}
+
+:::
+
+**Example:** Suppose we observe $y_1, ..., y_n$ from $f_y(y|\theta) = \theta y ^{\theta -1}$, $0 < y < 1$. Find $E(Y)$ and $\hat \theta_{MoM}$
+
+\vspace{2in}
+
+::: callout-note
+## A helpful fact
+
+\vspace{.5in}
 
 :::
 
@@ -63,9 +72,6 @@ A second procedure for finding estimators of parameters is the *method of moment
 \vspace{1in}
 
 :::
-
-
-\vspace{2in}
 
 # Exercises
 
@@ -99,16 +105,16 @@ A second procedure for finding estimators of parameters is the *method of moment
 
 (b) Now, suppose the rate of defective items is *unknown*. That is, $X_i \sim \text{Binom}(k, p)$ for $i = 1, ..., n$. Find the method of moments estimators for $k$ and $p$. (Note that $E(X_i) = kp$ and $\text{Var}(X_i)=kp(1-p)$) 
 
-\vspace{2in}
+\vspace{4.5in}
 
-(c) Suppose we observe 2 days of results and the following outcomes are recorded. For each situation, give $\hat{k}_{MoM}$ and $\hat{p}_{MoM}$
+(c) Suppose we observe 2 days of results and the following outcomes are recorded. For each situation, give $\hat{k}_{MoM}$ and $\hat{p}_{MoM}$. Do you obtain reasonable estimates?
 
 i. $X_1 = 1, X_2 = 1$ \hspace{1in} ii. $X_1 = 1, X_2 = 3$ \hspace{1in} iii. $X_1 = 1, X_2 = 5$
 
-\vspace{1in}
+\vspace{2in}
 
 
-**Exercise 4:** Let $Y_1, ..., Y_n$ be a random sample from a normal distribution with unknown mean $\mu$ and variance $\sigma^2$. 
+**Exercise 3:** Let $Y_1, ..., Y_n$ be a random sample from a normal distribution with unknown mean $\mu$ and variance $\sigma^2$. 
 
 (a) What are the first two theoretical moments of this distribution? (You do not need to derive them!) 
 
@@ -116,7 +122,7 @@ i. $X_1 = 1, X_2 = 1$ \hspace{1in} ii. $X_1 = 1, X_2 = 3$ \hspace{1in} iii. $X_1
 
 (b) Find the method of moments estimators for $\mu$ and $\sigma^2$.
 
-\vspace{1in}
+\vspace{2in}
 
-(c) When you use `var(x)` to compute the sample standard deviation of a variable, the standard deviation is computed with the formula $\frac{1}{n-1} \sum (X_i - \bar{X})^2$. Can you come up with a hypothesis for why we might prefer this formula? 
+(c) When you use `var(x)` to compute the sample standard deviation of a variable, the standard deviation is computed with the formula $\frac{1}{n-1} \sum (X_i - \bar{X})^2$. Can you come up with a reason for why we might prefer this formula? 
 

@@ -48,7 +48,14 @@ slides_theme = theme_minimal(base_family = "serif", base_size = 16) +
 theme_set(slides_theme)
 ```
 
-## Big Idea
+## Recap
+
+- Observe data $X_1, ..., X_n \sim F_x(x|\theta)$, where $\theta$ is unknown
+- Goal: *Estimate* $\theta$ based on the values of $X_i$ by formulating an *estimator* $\hat \theta$
+- One technique is to use the *maximum likelihood estimator*, which finds the value of $\theta$ that maximizes the joint probability $\prod_{i=1}^n f_x(x_i | \theta)$
+- Today, we'll talk about another technique for estimating $\theta$
+
+# Warm Up
 
 ## Which population is more likely?
 
@@ -64,27 +71,33 @@ theme_set(slides_theme)
 
 set.seed(0413)
 
-data <- tibble(
+sim_data <- tibble(
   sample = rnorm(40, mean = 20, sd = 5)
 ) 
 
-data |>
+sim_data |>
   ggplot(aes(x = sample)) +
   geom_histogram(bins = 15, col = "white") + 
-  geom_vline(xintercept = mean(data$sample), lty = "dashed", col = "darkred") + 
+  geom_vline(xintercept = mean(sim_data$sample), lty = "dashed", col = "darkred") + 
   annotate("text", 
-           x = mean(data$sample)+.5, 
+           x = mean(sim_data$sample)+.5, 
            y = 12, 
-           label = paste("Mean: ", round(mean(data$sample), 2)),
+           label = paste("Mean: ", round(mean(sim_data$sample), 2)),
            col = "darkred",
            hjust = 0) + 
   xlim(c(0,40))
+
+sim_data |>
+  summarize(
+    mean = mean(sample),
+    var = var(sample)
+  )
 ```
 
 :::
 :::
 
-::: {.column width="50%"}
+::: {.column .fragment width="50%"}
 
 ::: panel-tabset
 
@@ -124,44 +137,50 @@ ggplot() +
 
 ```{r}
 #| echo: false
-data |>
+sim_data |>
   ggplot(aes(x = sample)) +
   geom_histogram(bins = 15, col = "white") + 
-  geom_vline(xintercept = mean(data$sample), lty = "dashed", col = "darkred") + 
+  geom_vline(xintercept = mean(sim_data$sample), lty = "dashed", col = "darkred") + 
   annotate("text", 
-           x = mean(data$sample)+.5, 
+           x = mean(sim_data$sample)+.5, 
            y = 12, 
-           label = paste("Mean: ", round(mean(data$sample), 2)),
+           label = paste("Mean: ", round(mean(sim_data$sample), 2)),
            col = "darkred",
            hjust = 0) + 
   xlim(c(0,40))
+
+sim_data |>
+  summarize(
+    mean = mean(sample),
+    var = var(sample)
+  )
 ```
 
 :::
 :::
 
-::: {.column width="50%"}
+::: {.column .fragment width="50%"}
 
 ::: panel-tabset
 
-## $N(20, 15)$
+## $N(20, 1.5^2)$
 
 ```{r}
 #| echo: false
 ggplot() + 
-  geom_function(fun = dnorm, args = list(mean = 20, sd = 15)) + 
-  xlim(c(0,40))
+  geom_function(fun = dnorm, args = list(mean = 20, sd = 1.5^2)) + 
+  xlim(c(-10,50))
 
 ```
 
-## $N(20, 5)$
+## $N(20, 4^2)$
 
 ```{r}
 #| echo: false
 
 ggplot() + 
-  geom_function(fun = dnorm, args = list(mean = 20, sd = 5)) + 
-  xlim(c(0,40))
+  geom_function(fun = dnorm, args = list(mean = 20, sd = 4^2)) + 
+  xlim(c(-10,50))
 ```
 
 :::
@@ -171,8 +190,10 @@ ggplot() +
 
 ## Method of Moments (MoM) 
 
-- Idea: set theoretical moments ($E(X)$, $E(X^2)$, ...) equal to sample moments ($\frac{1}{n} \sum X_i$, $\frac{1}{n} \sum X_i^2$, ...) and solve
-- Can be more tractable than MLE when our probability distribution has multiple parameters
-- Helpful when we're working with named distributions
+- Mean of sample data should match mean of theoretical distribution
+- Variance of sample data should match variance of theoretical distribution
+- Skewness of sample data should match skewness of theoretical distribution
+- $\vdots$
+- (for as many unknown parameters as we have)
 
-## 
+
