@@ -1,0 +1,178 @@
+---
+title: "Method of Moments"
+subtitle: "Day 07"
+title-slide-attributes:
+  data-background-gradient: "linear-gradient(to right, #46337e, #440154)"
+  data-slide-number: none
+author: "Prof Amanda Luby"
+format: 
+  revealjs:
+    incremental: true
+editor: 
+  markdown: 
+    wrap: 72
+---
+
+```{r setup}
+#| include: false
+
+library(tidyverse)
+library(countdown)
+
+library(ggformula)
+library(openintro)
+library(patchwork)
+library(fivethirtyeight)
+library(dplyr)
+library(tidyr)
+library(fontawesome)
+
+library(gridExtra)
+library(tidyverse)
+library(knitr)
+library(mosaic)
+library(infer)
+library(kableExtra)
+
+library(plotly)
+
+# #440154
+knitr::opts_chunk$set(echo = TRUE,
+                  message = FALSE,
+                  warning = FALSE)
+
+slides_theme = theme_minimal(base_family = "serif", base_size = 16) +
+  theme(plot.background = element_rect(fill = "#f0f1eb", colour = NA))
+  
+
+theme_set(slides_theme)
+```
+
+## Big Idea
+
+## Which population is more likely?
+
+::::: columns
+::: {.column width="50%"}
+
+::: panel-tabset
+
+## Sample
+
+```{r}
+#| echo: false
+
+set.seed(0413)
+
+data <- tibble(
+  sample = rnorm(40, mean = 20, sd = 5)
+) 
+
+data |>
+  ggplot(aes(x = sample)) +
+  geom_histogram(bins = 15, col = "white") + 
+  geom_vline(xintercept = mean(data$sample), lty = "dashed", col = "darkred") + 
+  annotate("text", 
+           x = mean(data$sample)+.5, 
+           y = 12, 
+           label = paste("Mean: ", round(mean(data$sample), 2)),
+           col = "darkred",
+           hjust = 0) + 
+  xlim(c(0,40))
+```
+
+:::
+:::
+
+::: {.column width="50%"}
+
+::: panel-tabset
+
+## $N(10, 5)$
+
+```{r}
+#| echo: false
+ggplot() + 
+  geom_function(fun = dnorm, args = list(mean = 10, sd = 5)) + 
+  xlim(c(0,40))
+
+```
+
+## $N(20, 5)$
+
+```{r}
+#| echo: false
+
+ggplot() + 
+  geom_function(fun = dnorm, args = list(mean = 20, sd = 5)) + 
+  xlim(c(0,40))
+```
+
+:::
+:::
+
+:::::
+
+## Which population is more likely?
+
+::::: columns
+::: {.column width="50%"}
+
+::: panel-tabset
+
+## Sample
+
+```{r}
+#| echo: false
+data |>
+  ggplot(aes(x = sample)) +
+  geom_histogram(bins = 15, col = "white") + 
+  geom_vline(xintercept = mean(data$sample), lty = "dashed", col = "darkred") + 
+  annotate("text", 
+           x = mean(data$sample)+.5, 
+           y = 12, 
+           label = paste("Mean: ", round(mean(data$sample), 2)),
+           col = "darkred",
+           hjust = 0) + 
+  xlim(c(0,40))
+```
+
+:::
+:::
+
+::: {.column width="50%"}
+
+::: panel-tabset
+
+## $N(20, 15)$
+
+```{r}
+#| echo: false
+ggplot() + 
+  geom_function(fun = dnorm, args = list(mean = 20, sd = 15)) + 
+  xlim(c(0,40))
+
+```
+
+## $N(20, 5)$
+
+```{r}
+#| echo: false
+
+ggplot() + 
+  geom_function(fun = dnorm, args = list(mean = 20, sd = 5)) + 
+  xlim(c(0,40))
+```
+
+:::
+:::
+
+:::::
+
+## Method of Moments (MoM) 
+
+- Idea: set theoretical moments ($E(X)$, $E(X^2)$, ...) equal to sample moments ($\frac{1}{n} \sum X_i$, $\frac{1}{n} \sum X_i^2$, ...) and solve
+- Can be more tractable than MLE when our probability distribution has multiple parameters
+- Helpful when we're working with named distributions
+
+## 

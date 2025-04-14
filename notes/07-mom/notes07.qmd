@@ -1,0 +1,122 @@
+---
+title: "07: Method of Moments"
+author: "Prof Amanda Luby"
+subtitle: "Stat250 S25"
+callout-appearance: minimal
+knitr:
+    opts_chunk: 
+      dev: "ragg_png"
+      echo: false
+      warning: false
+      message: false
+format:
+  pdf:
+    include-in-header: 
+       - "../preamble.tex"
+    toc: false
+    number-sections: true
+    colorlinks: true
+    geometry:
+      - top=1in
+      - left=1in
+      - right=1in
+      - bottom=1in
+      - heightrounded
+fontfamily: libertine
+fontsize: 11pt
+---
+
+
+```{r, echo = FALSE}
+library(tidyverse)
+library(Sleuth3)
+library(mosaic)
+library(infer)
+```
+
+# Overview
+
+A second procedure for finding estimators of parameters is the *method of moments*. 
+
+::: callout-note
+## Moment
+
+\vspace{1.15in}
+
+:::
+
+**Example:** Suppose we observe $y_1, ..., y_n$ from $f_y(y|\theta) = \theta y ^{\theta -1}$, $0 < y < 1$. Find $E(Y)$
+
+\vspace{1.5in}
+
+
+::: callout-note
+## Method of Moments
+
+\vspace{1.5in}
+
+:::
+
+::: callout-note
+## Central Moment
+
+\vspace{1in}
+
+:::
+
+
+\vspace{2in}
+
+# Exercises
+
+**Exercise 1:** Let $X_1, ..., X_n$ be an iid sample from a Unif($0,\theta$) distribution. 
+
+(a) Compute the first theoretical moment of this distribution
+
+\vspace{1in}
+
+(b) Use (a) to derive the MoM estimator of $\theta$
+
+\vspace{1in}
+
+(c) Compute the MoM estimate if $X_1 = X_2 = X_3 = 1$ and $X_4 = 9$. 
+
+\vspace{1in}
+
+(d) Now compute the MLE estimate ($\hat\theta_{MLE} = X_{max}$) if $X_1 = X_2 = X_3 = 1$ and $X_4 = 9$. 
+
+\vspace{1in}
+
+(e) Which estimator, the MLE or MoM, do you think is better in this case? Why?
+
+\vspace{1in}
+
+**Exercise 2:** A manufacturing facility knows that historically 2% of items are defective. Each day, they manufacture $k$ items and record the number of defective items (so the data is $X_1, X_2, ..., X_n \sim \text{Binom}(k, .02)$. We are able to see results from $n$ days ($x_1, x_2, ..., x_n$), and our goal is to estimate $k$. 
+
+(a) Find $\hat \theta_{MoM}$ (Note that $E(X_i) = kp = .02k$ in this case) 
+
+\vspace{1in}
+
+(b) Now, suppose the rate of defective items is *unknown*. That is, $X_i \sim \text{Binom}(k, p)$ for $i = 1, ..., n$. Find the method of moments estimators for $k$ and $p$. (Note that $E(X_i) = kp$ and $\text{Var}(X_i)=kp(1-p)$) 
+
+\vspace{2in}
+
+(c) Suppose we observe 2 days of results and the following outcomes are recorded. For each situation, give $\hat{k}_{MoM}$ and $\hat{p}_{MoM}$
+
+i. $X_1 = 1, X_2 = 1$ \hspace{1in} ii. $X_1 = 1, X_2 = 3$ \hspace{1in} iii. $X_1 = 1, X_2 = 5$
+
+\vspace{1in}
+
+
+**Exercise 4:** Let $Y_1, ..., Y_n$ be a random sample from a normal distribution with unknown mean $\mu$ and variance $\sigma^2$. 
+
+(a) What are the first two theoretical moments of this distribution? (You do not need to derive them!) 
+
+\vspace{1in}
+
+(b) Find the method of moments estimators for $\mu$ and $\sigma^2$.
+
+\vspace{1in}
+
+(c) When you use `var(x)` to compute the sample standard deviation of a variable, the standard deviation is computed with the formula $\frac{1}{n-1} \sum (X_i - \bar{X})^2$. Can you come up with a hypothesis for why we might prefer this formula? 
+
