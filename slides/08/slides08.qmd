@@ -1,0 +1,279 @@
+---
+title: "Evaluating Estimators"
+subtitle: "Day 08"
+title-slide-attributes:
+  data-background-gradient: "linear-gradient(to right, #46337e, #440154)"
+  data-slide-number: none
+author: "Prof Amanda Luby"
+format: 
+  revealjs:
+    incremental: true
+editor: 
+  markdown: 
+    wrap: 72
+---
+
+```{r setup}
+#| include: false
+
+library(tidyverse)
+library(countdown)
+
+library(ggformula)
+library(openintro)
+library(patchwork)
+library(fivethirtyeight)
+library(dplyr)
+library(tidyr)
+library(fontawesome)
+
+library(gridExtra)
+library(tidyverse)
+library(knitr)
+library(mosaic)
+library(infer)
+library(kableExtra)
+
+library(plotly)
+
+# #440154
+knitr::opts_chunk$set(echo = TRUE,
+                  message = FALSE,
+                  warning = FALSE)
+
+slides_theme = theme_minimal(base_family = "serif", base_size = 24) +
+  theme(plot.background = element_rect(fill = "#f0f1eb", colour = NA))
+  
+
+theme_set(slides_theme)
+```
+
+## Recap
+
+- Observe data $X_1, ..., X_n \sim F_x(x|\theta)$, where $\theta$ is unknown
+- Goal: *Estimate* $\theta$ based on the values of $X_i$ by formulating an *estimator* $\hat \theta$
+- One technique is to use the *maximum likelihood estimator*, which finds the value of $\theta$ that maximizes the joint probability $\prod_{i=1}^n f_x(x_i | \theta)$
+- A second technique is to use the *method of moments estimator*, which finds the value of $\theta$ that make the theoretical moments equal to the sample moments
+- Today: if we have multiple estimators, how do we decide which is better?
+
+## Warm up
+
+Suppose we take a random sample of size 50 from an exponential distribution with mean 10 (rate is $\lambda = 1/10$). 
+
+What is $\mu = E(Y)$? 
+
+## Estimators for the mean
+
+Suppose we take a random sample of size 50 from an exponential distribution with mean 10 (rate is $\lambda = 1/10$). 
+
+Consider three estimators of $\mu$: 
+
+- $\hat{\mu_1} = \bar{X}$
+- $\hat{\mu_2} = \widetilde{X}$
+- $\hat{\mu_3} = \frac{X_{\max} - X_{\min}}{2}$
+
+## Aside: estimators are also random variables
+
+$X_1, ..., X_n \sim F_x(\theta)$ and each $\hat{\theta} = g(X_1, ..., X_n)$ is a function of the data
+
+. . . 
+
+This means that each $\hat\theta$ is itself a random variable, and so it has: 
+
+- a pdf $f_\hat{\theta}$
+- an expectation $E(\hat\theta)$
+- a variance $\text{Var}(\hat{\theta})$
+
+## Comparing Estimators: Simulation
+
+Suppose we take a random sample of size 50 from an exponential distribution with mean 10 (rate is $\lambda = 1/10$). 
+
+::::: columns
+::: {.column .nonincremental width="50%"}
+Consider three estimators of $\mu$: 
+
+- $\hat{\mu_1} = \bar{X}$
+- $\hat{\mu_2} = \tilde{X}$
+- $\hat{\mu_3} = \frac{X_{\max} - X_{\min}}{2}$
+:::
+::: {.column width="50%"}
+```{r}
+#| code-line-numbers: false
+
+n <- 50
+N_sims <- 100000
+theta <- 3
+est1 <- numeric(N_sims)
+est2 <- numeric(N_sims)
+est3 <- numeric(N_sims)
+for(i in 1:N_sims){
+  x <- rexp(n, rate = .1)
+  est1[i] <- mean(x)
+  est2[i] <- median(x)
+  est3[i] <- (max(x) - min(x))/2
+}
+```
+
+:::
+:::::
+
+## Sampling Distribution of the Estimators
+
+```{r}
+#| echo: false
+#| fig-width: 12
+#| fig-height: 4
+sims <- tibble(
+  mean = est1,
+  median = est2,
+  midpoint = est3
+) |>
+  pivot_longer(everything(), names_to = "estimator", values_to = "value") 
+
+sims |>
+  ggplot(aes(x = value, col = estimator, fill = estimator)) + 
+  geom_density(size = 1.5, alpha = .3) + 
+  scale_color_viridis_d(end = .8, option = "plasma") + 
+  scale_fill_viridis_d(end = .8, option = "plasma") + 
+  labs(
+    x = "Estimator Values",
+    y = "Density",
+  ) + 
+  xlim(c(0, 40)) +
+  theme(legend.position = "bottom")
+```
+
+which estimator is "best"?
+
+## Properties of Estimators
+
+![](../img/target-bias-variance-transparent.png){fig-align="center"}
+
+## Estimator properties: bias
+
+How *accurate* is the estimator?
+
+. . . 
+
+::: callout-note
+## Bias of an estimator
+
+If $\hat{\theta}(X)$ is an estimator of $\theta$, then the bias of the estimator is equal to
+
+$$\text{Bias}(\hat\theta) = E(\hat \theta(X)) - \theta$$
+
+*Note:* the expected value is computed from the sampling distribution of $\hat{\theta}(X)$
+:::
+
+## Estimator properties: variance
+
+How much *variability* does the estimator have around its mean?
+
+::: callout-note
+## Variance of an estimator
+
+The variance of an estimator is 
+
+$$\text{Var}(\hat{\theta}) = E[(\hat{\theta} - E(\hat{\theta})^2)]$$
+
+*Note:* the expected value is computed from the sampling distribution of $\hat{\theta}(X)$
+
+:::
+
+
+## Estimator properties: Mean Square Error (MSE)
+
+How much variabiliity does the estimator have **around $\theta$**?
+
+::: callout-note
+## MSE
+
+The MSE of an estimator is 
+
+$$MSE(\hat\theta) = E[(\hat\theta - \theta)^2] = \text{Var}(\hat{\theta}) - \text{Bias}(\hat\theta)^2$$
+:::
+
+## Comparing Estimators: simulation
+
+Recall that $E(Y) = \mu = 1/\lambda = 10$ is the true value
+
+```{r}
+#| code-line-numbers: false
+sims |>
+  group_by(estimator) |>
+  summarize(
+    bias = mean(value) - 10,
+    var = var(value),
+    MSE = var + bias^2
+  ) 
+```
+
+## Example: Unif(0, $\theta$) distribution
+
+Your task is to compare the estimators 
+
+$$\hat{\theta}_{MLE} = X_\max \hspace{1in} \hat{\theta}_{MoM} = 2\bar{X}$$ 
+
+::: nonincremental
+(a) What is the bias of each estimator?^[A helpful fact is that $f_{X_{max}}(x) = n[F(x)]^{n-1}f_X(x)$]
+(b) What is the SE of each estimator?
+(c) What is the MSE of each estimator?
+(d) When does $\hat{\theta}_{MLE}$ "beat"  $\hat{\theta}_{MoM}$ in terms of MSE?
+:::
+
+## Comparing unbiased estimators: efficiency
+
+::: callout-note
+## Efficiency
+
+For two unbiased estimators, $\hat \theta_1$ is more **efficient** than $\hat \theta_2$ if 
+
+$$\text{Var}(\hat \theta_1) < \text{Var}(\hat \theta_2) \iff \text{SE}(\hat \theta_1) < \text{SE}(\hat \theta_2)$$
+:::
+
+## Example: Uniform($0,\theta$)
+
+::: nonincremental
+(e) Since $\hat \theta_{MLE}$ beats $\hat \theta_{MoM}$ in terms of MSE but is biased, can we "unbias" the MLE? Call this third estimator $\hat\theta_3$
+
+(f) Does $\hat \theta_3$ ever "beat" $\hat \theta_{MLE}$ in terms of MSE?
+:::
+
+## Example: Uniform($0,\theta$)
+
+**(f) Does $\hat \theta_3$ ever "beat" $\hat \theta_{MLE}$ in terms of MSE?**
+
+# Can we find a "better" estimator?
+
+. . . 
+
+Is there another unbiased estimator with smaller variance?
+
+## Comparing unbiased estimators: Cramer-Rao Lower Bound (CRLB)
+
+. . . 
+
+::: callout-note
+## CRLB
+
+If $X_1, ..., X_n$ are an iid sample from a distribution with pdf $f(x|\theta)$, then any unbiased estimator $\hat\theta$ of $\theta$ satisfies: 
+
+$$V(\hat{\theta}) \ge \frac{1}{n I(\theta)}$$
+
+where $I(\theta)$ is the **Fisher Information** of $X_i$
+:::
+
+. . . 
+
+::: callout-note
+## Fisher Information
+
+The **Fisher Information** of an observation $X$ is
+$$I(\theta) = E[(\frac{d}{d\theta}) \ln f(x|\theta))^2] = -\frac{1}{n} E(l''(\theta))$$
+:::
+
+## Example: Uniform($0,\theta$)
+
+(f) Does $\hat{\theta}_3$ meet the CRLB? 
+
+
