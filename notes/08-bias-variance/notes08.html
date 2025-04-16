@@ -6,8 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Prof Amanda Luby">
 
-<title>Stat250-S25 – Stat 250</title>
+<title>08: Bias and Efficiency – Stat 250</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,21 +24,21 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-2486e1f0a3ee9ee1fc393803a1361cdb.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-9967aaa0b93e660d040aaaaf077e5b10.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-2486e1f0a3ee9ee1fc393803a1361cdb.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-c5bd1d45debbbbefa3cfb1ba9e9be448.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -66,29 +67,67 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
-<body class="fullcontent">
+<body>
 
 <div id="quarto-search-results"></div>
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        
+    <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="notes08.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Stat250-S25</h1>
+<h1 class="title">08: Bias and Efficiency</h1>
+<p class="subtitle lead">Stat250 S25</p>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Prof Amanda Luby </p>
+          </div>
+  </div>
     
   
     
@@ -99,23 +138,169 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>Landing page for Stat250 course materials in Spring 2025</p>
-<section id="in-class-materials" class="level1">
-<h1>In-Class Materials</h1>
-<p>Day02: <a href="./slides/02/slides02.html">slides</a> <a href="./notes/02-permutation/notes02.pdf">handout</a> <a href="./notes/02-permutation/activity02.html">r code</a></p>
-<p>Day03: <a href="./notes/03-sampling-dists/notes03.pdf">handout</a> <a href="./notes/03-sampling-dists/activity03.html">activity qmd</a></p>
-<p>Day04: <a href="./slides/04/slides04.html">slides</a> | <a href="./notes/04-probability/04-probability.pdf">handout</a></p>
-<p>Day05: <a href="./slides/05/slides05.html">slides</a> | <a href="./notes/05-mle/05-notes.pdf">handout</a></p>
-<p>Day06: <a href="./slides/06/slides06.html">slides</a> | <a href="./notes/06-mle-2/notes06.pdf">handout</a></p>
-<p>Day07: <a href="./slides/07/slides07.html">slides</a> | <a href="./notes/07-mom/notes07.pdf">handout</a></p>
-<p>Day08: <a href="./slides/08/slides08.html">slides</a> | <a href="./notes/08-bias-variance/notes08.pdf">handout</a></p>
-</section>
-<section id="other-resources-and-readings" class="level1">
-<h1>Other Resources and Readings</h1>
+<section id="recap" class="level1">
+<h1>Recap</h1>
 <ul>
-<li><a href="readings/r-basics.html">R Basics</a></li>
-<li>How to do <a href="readings/r-homework-stat250.html">homework in R in Stat250</a></li>
+<li><p>Observe data <span class="math inline">\(X_1, ..., X_n \sim F_x(x|\theta)\)</span>, where <span class="math inline">\(\theta\)</span> is unknown</p></li>
+<li><p>Goal: <em>Estimate</em> <span class="math inline">\(\theta\)</span> based on the values of <span class="math inline">\(X_i\)</span> by formulating an <em>estimator</em> <span class="math inline">\(\widehat \theta\)</span></p></li>
+<li><p>One technique is to use the <em>maximum likelihood estimator</em>, which finds the value of <span class="math inline">\(\theta\)</span> that maximizes the joint probability <span class="math inline">\(\prod_{i=1}^n f_x(x_i | \theta)\)</span></p></li>
+<li><p>A second technique is to use the <em>method of moments estimator</em>, which finds the value of <span class="math inline">\(\theta\)</span> that make the theoretical moments equal to the sample moments</p></li>
+<li><p>Today: if we have multiple estimators, how do we decide which is better?</p></li>
 </ul>
+</section>
+<section id="example-exponential-distribution" class="level1">
+<h1>Example: exponential distribution</h1>
+<p><strong>Warm up:</strong> Suppose we take a random sample of size 50 from an exponential distribution with mean 10 (rate is <span class="math inline">\(\lambda = 1/10\)</span>). What is <span class="math inline">\(\mu = E(Y)\)</span>? If we want to design an estimator for the mean, <span class="math inline">\(\widehat \mu\)</span>, what are some intuitive estimators?</p>
+<p><strong>Example:</strong> Suppose we take a random sample of size 50 from an exponential distribution with mean 10 (rate is <span class="math inline">\(\lambda = 1/10\)</span>). Consider three estimators of <span class="math inline">\(\mu\)</span>:</p>
+<p><span class="math display">\[\hat{\mu_1} =\]</span> <span class="math display">\[\hat{\mu_2} =\]</span> <span class="math display">\[\hat{\mu_3} =\]</span></p>
+<div class="callout callout-style-simple callout-note no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<p><em>Aside:</em> estimators are also random variables. <span class="math inline">\(X_1, ..., X_n \sim F_x(\theta)\)</span> and each <span class="math inline">\(\hat{\theta} = g(X_1, ..., X_n)\)</span> is a function of the data, so each <span class="math inline">\(\hat{\theta}\)</span> is itself a random variable and has: </p>
+</div>
+</div>
+</div>
+</section>
+<section id="comparing-estimators-simulation" class="level1">
+<h1>Comparing estimators: simulation</h1>
+<div>
+
+</div>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<pre><code>n &lt;- 50
+N_sims &lt;- 100000
+theta &lt;- 3
+est1 &lt;- numeric(N_sims)
+est2 &lt;- numeric(N_sims)
+est3 &lt;- numeric(N_sims)
+for(i in 1:N_sims){
+  x &lt;- rexp(n, rate = .1)
+  est1[i] &lt;- mean(x)
+  est2[i] &lt;- median(x)
+  est3[i] &lt;- (max(x) - min(x))/2
+}</code></pre>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="notes08_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="288"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="properties-of-estimators" class="level1">
+<h1>Properties of Estimators</h1>
+<p><img src="../img/target-bias-variance-transparent.png" class="img-fluid" style="width:30.0%"></p>
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Bias of an estimator
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If <span class="math inline">\(\widehat{\theta}(X)\)</span> is an estimator of <span class="math inline">\(\theta\)</span>, then the bias of the estimator is equal to</p>
+<p><em>Note:</em> the expected value is computed from the sampling distribution of <span class="math inline">\(\widehat{\theta}(X)\)</span></p>
+</div>
+</div>
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Variance of an estimator
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The variance of an estimator is</p>
+</div>
+</div>
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+MSE
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The MSE of an estimator is</p>
+</div>
+</div>
+<p><strong>Exercise:</strong> Your task is to compare the estimators</p>
+<p><span class="math display">\[\widehat{\theta}_{MLE} = X_{\max} \hspace{1in} \widehat{\theta}_{MoM} = 2\bar{X}\]</span></p>
+<ol type="a">
+<li>What is the bias of each estimator? (A helpful fact is that <span class="math inline">\(f_{X_{max}}(x) = n[F(x)]^{n-1}f_X(x)\)</span>)</li>
+<li>What is the variance of each estimator?</li>
+<li>What is the MSE of each estimator?</li>
+<li>When does <span class="math inline">\(\widehat{\theta}_{MLE}\)</span> “beat” <span class="math inline">\(\widehat{\theta}_{MoM}\)</span> in terms of MSE?</li>
+</ol>
+<div style="page-break-after: always;"></div>
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Efficiency
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>For two unbiased estimators, <span class="math inline">\(\widehat \theta_1\)</span> is more <strong>efficient</strong> than <span class="math inline">\(\widehat \theta_2\)</span> if</p>
+</div>
+</div>
+<ol start="5" type="a">
+<li><p>Since <span class="math inline">\(\hat \theta_{MLE}\)</span> beats <span class="math inline">\(\hat \theta_{MoM}\)</span> in terms of MSE but is biased, can we “unbias” the MLE? Call this third estimator <span class="math inline">\(\hat\theta_3\)</span></p></li>
+<li><p>Does <span class="math inline">\(\hat \theta_3\)</span> ever “beat” <span class="math inline">\(\hat \theta_{MLE}\)</span> in terms of MSE?</p></li>
+</ol>
+</section>
+<section id="comparing-unbiased-estimators" class="level1">
+<h1>Comparing unbiased estimators</h1>
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Cramer-Rao Lower Bound
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If <span class="math inline">\(X_1, ..., X_n\)</span> are an iid sample from a distribution with pdf <span class="math inline">\(f(x|\theta)\)</span>, then any unbiased estimator <span class="math inline">\(\hat\theta\)</span> of <span class="math inline">\(\theta\)</span> satisfies:</p>
+<p>where <span class="math inline">\(I(\theta)\)</span> is the <strong>Fisher Information</strong> of <span class="math inline">\(X_i\)</span></p>
+</div>
+</div>
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Fisher Information
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The <strong>Fisher Information</strong> of an observation <span class="math inline">\(X\)</span> is <span class="math display">\[I(\theta) = E[(\frac{d}{d\theta} \ln f(x|\theta))^2] =\]</span></p>
+</div>
+</div>
+<ol start="6" type="a">
+<li>Does <span class="math inline">\(\hat{\theta}_3\)</span> meet the CRLB?</li>
+</ol>
 
 
 </section>
@@ -213,7 +398,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp("https:\/\/aluby\.github\.io\/stat250-s25\/");
+      var filterRegex = new RegExp('/' + window.location.host + '/');
     var isInternal = (href) => {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
