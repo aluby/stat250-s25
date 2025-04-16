@@ -893,7 +893,7 @@
     "href": "slides/08/slides08.html#warm-up",
     "title": "Evaluating Estimators",
     "section": "Warm up",
-    "text": "Warm up\nSuppose we take a random sample of size 50 from an exponential distribution with mean 10 (rate is \\(\\lambda = 1/10\\)).\nWhat is \\(\\mu = E(Y)\\)?\nIf we want to design an estimator for the mean, \\(\\widehat \\mu\\), what are some intuitive estimators?"
+    "text": "Warm up\nSuppose we take a random sample of size 50 from an exponential distribution with rate \\(\\lambda = 1/10\\).\nWhat is \\(\\mu = E(Y)\\)?\nIf we want to design an estimator for the mean, \\(\\widehat \\mu\\), what are some intuitive estimators?"
   },
   {
     "objectID": "slides/08/slides08.html#estimators-for-the-mean",
@@ -935,35 +935,35 @@
     "href": "slides/08/slides08.html#estimator-properties-bias",
     "title": "Evaluating Estimators",
     "section": "Estimator properties: bias",
-    "text": "Estimator properties: bias\nHow accurate is the estimator?\n\n\n\n\n\n\n\nBias of an estimator\n\n\nIf \\(\\widehat{\\theta}(X)\\) is an estimator of \\(\\theta\\), then the bias of the estimator is equal to\n\\[\\text{Bias}(\\widehat\\theta) = E(\\widehat \\theta(X)) - \\theta\\]\nNote: the expected value is computed from the sampling distribution of \\(\\widehat{\\theta}(X)\\)"
+    "text": "Estimator properties: bias\nHow accurate is the estimator?\n\n\n\n\n\n\n\nBias of an estimator\n\n\nIf \\(\\widehat{\\theta}(X)\\) is an estimator of \\(\\theta\\), then the bias of the estimator is equal to\n\\[\\text{Bias}(\\widehat\\theta) = E[\\widehat \\theta(X)] - \\theta\\]\nNote: the expected value is computed from the sampling distribution of \\(\\widehat{\\theta}(X)\\)"
   },
   {
     "objectID": "slides/08/slides08.html#estimator-properties-variance",
     "href": "slides/08/slides08.html#estimator-properties-variance",
     "title": "Evaluating Estimators",
     "section": "Estimator properties: variance",
-    "text": "Estimator properties: variance\nHow much variability does the estimator have around its mean?\n\n\n\n\n\n\nVariance of an estimator\n\n\nThe variance of an estimator is\n\\[\\text{Var}(\\widehat{\\theta}) = E[(\\widehat{\\theta} - E(\\widehat{\\theta})^2)]\\]\nNote: the expected value is computed from the sampling distribution of \\(\\widehat{\\theta}(X)\\)"
+    "text": "Estimator properties: variance\nHow much variability does the estimator have around its mean?\n\n\n\n\n\n\nVariance of an estimator\n\n\nThe variance of an estimator is\n\\[\\text{Var}(\\widehat{\\theta}) = E[(\\widehat{\\theta} - E[\\widehat{\\theta}])^2]\\]\nNote: the expected value is computed from the sampling distribution of \\(\\widehat{\\theta}(X)\\)"
   },
   {
     "objectID": "slides/08/slides08.html#estimator-properties-mean-square-error-mse",
     "href": "slides/08/slides08.html#estimator-properties-mean-square-error-mse",
     "title": "Evaluating Estimators",
     "section": "Estimator properties: Mean Square Error (MSE)",
-    "text": "Estimator properties: Mean Square Error (MSE)\nHow much variability does the estimator have around \\(\\theta\\)?\n\n\n\n\n\n\nMSE\n\n\nThe MSE of an estimator is\n\\[MSE(\\widehat\\theta) = E[(\\widehat\\theta - \\theta)^2] = \\text{Var}(\\widehat{\\theta}) - \\text{Bias}(\\widehat\\theta)^2\\]"
+    "text": "Estimator properties: Mean Square Error (MSE)\nHow much variability does the estimator have around \\(\\theta\\)?\n\n\n\n\n\n\nMSE\n\n\nThe MSE of an estimator is\n\\[MSE(\\widehat\\theta) = E[(\\widehat\\theta - \\theta)^2] = \\text{Var}(\\widehat{\\theta}) + \\text{Bias}(\\widehat\\theta)^2\\]"
   },
   {
     "objectID": "slides/08/slides08.html#comparing-estimators-simulation-1",
     "href": "slides/08/slides08.html#comparing-estimators-simulation-1",
     "title": "Evaluating Estimators",
     "section": "Comparing Estimators: simulation",
-    "text": "Comparing Estimators: simulation\nRecall that \\(E(Y) = \\mu = 1/\\lambda = 10\\) is the true value\n\nsims |&gt;\n  group_by(estimator) |&gt;\n  summarize(\n    bias = mean(value) - 10,\n    var = var(value),\n    MSE = var + bias^2\n  ) \n\n# A tibble: 3 × 4\n  estimator     bias   var    MSE\n  &lt;chr&gt;        &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;\n1 mean       0.00413  2.01   2.01\n2 median    -2.96     1.99  10.8 \n3 midpoint  12.4     40.9  195."
+    "text": "Comparing Estimators: simulation\nRecall that \\(E(Y) = \\mu = 1/\\lambda = 10\\) is the true value\n\nsims |&gt;\n  group_by(estimator) |&gt;\n  summarize(\n    bias = mean(value) - 10,\n    var = var(value),\n    MSE = var + bias^2\n  ) \n\n# A tibble: 3 × 4\n  estimator     bias   var    MSE\n  &lt;chr&gt;        &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;\n1 mean       0.00559  2.00   2.00\n2 median    -2.96     1.97  10.7 \n3 midpoint  12.4     40.7  194."
   },
   {
     "objectID": "slides/08/slides08.html#practice-unif0-theta-distribution",
     "href": "slides/08/slides08.html#practice-unif0-theta-distribution",
     "title": "Evaluating Estimators",
-    "section": "Practice: Unif(0, \\(\\theta\\)) distribution",
-    "text": "Practice: Unif(0, \\(\\theta\\)) distribution\nYour task is to compare the estimators\n\\[\\widehat{\\theta}_{MLE} = X_\\max \\hspace{1in} \\widehat{\\theta}_{MoM} = 2\\bar{X}\\]\n\n\nWhat is the bias of each estimator?1\nWhat is the SE of each estimator?\nWhat is the MSE of each estimator?\nWhen does \\(\\widehat{\\theta}_{MLE}\\) “beat” \\(\\widehat{\\theta}_{MoM}\\) in terms of MSE?\n\n\nA helpful fact is that \\(f_{X_{max}}(x) = n[F(x)]^{n-1}f_X(x)\\)"
+    "section": "Practice: Unif(0, \\(\\theta\\)) distribution1",
+    "text": "Practice: Unif(0, \\(\\theta\\)) distribution1\nYour task is to compare the estimators\n\\[\\widehat{\\theta}_{MLE} = X_\\max \\hspace{1in} \\widehat{\\theta}_{MoM} = 2\\bar{X}\\]\n\n\nWhat is the bias of each estimator?2\nWhat is the SE of each estimator?\nWhat is the MSE of each estimator?\nWhen does \\(\\widehat{\\theta}_{MLE}\\) “beat” \\(\\widehat{\\theta}_{MoM}\\) in terms of MSE?\n\n\nSo \\(0 \\le x \\le \\theta\\), \\(f_x = \\frac{1}{\\theta}\\), \\(F_x = \\frac{x}{\\theta}\\), \\(E(X) = \\frac{\\theta}{2}\\), and \\(V(X) = \\frac{\\theta^2}{12}\\)A helpful fact is that \\(f_{X_{max}}(x) = n[F(x)]^{n-1}f_X(x)\\)"
   },
   {
     "objectID": "slides/08/slides08.html#section",
@@ -971,13 +971,6 @@
     "title": "Evaluating Estimators",
     "section": "",
     "text": "(d) When does \\(\\widehat{\\theta}_{MLE}\\) “beat” \\(\\widehat{\\theta}_{MoM}\\) in terms of MSE?\nMSE = “MSE factor” \\(\\times \\theta^2\\)"
-  },
-  {
-    "objectID": "slides/08/slides08.html#comparing-unbiased-estimators-efficiency",
-    "href": "slides/08/slides08.html#comparing-unbiased-estimators-efficiency",
-    "title": "Evaluating Estimators",
-    "section": "Comparing unbiased estimators: efficiency",
-    "text": "Comparing unbiased estimators: efficiency\n\n\n\n\n\n\nEfficiency\n\n\nFor two unbiased estimators, \\(\\widehat \\theta_1\\) is more efficient than \\(\\widehat \\theta_2\\) if\n\\[\\text{Var}(\\widehat \\theta_1) &lt; \\text{Var}(\\widehat \\theta_2) \\iff \\text{SE}(\\widehat \\theta_1) &lt; \\text{SE}(\\widehat \\theta_2)\\]"
   },
   {
     "objectID": "slides/08/slides08.html#example-uniform0theta",
@@ -994,25 +987,25 @@
     "text": "(f) Does \\(\\hat \\theta_3\\) ever “beat” \\(\\hat \\theta_{MLE}\\) in terms of MSE?\nMSE = “MSE factor” \\(\\times \\theta^2\\)"
   },
   {
+    "objectID": "slides/08/slides08.html#comparing-unbiased-estimators-efficiency",
+    "href": "slides/08/slides08.html#comparing-unbiased-estimators-efficiency",
+    "title": "Evaluating Estimators",
+    "section": "Comparing unbiased estimators: efficiency",
+    "text": "Comparing unbiased estimators: efficiency\n\n\n\n\n\n\nEfficiency\n\n\nFor two unbiased estimators, \\(\\widehat \\theta_1\\) is more efficient than \\(\\widehat \\theta_2\\) if\n\\[\\text{Var}(\\widehat \\theta_1) &lt; \\text{Var}(\\widehat \\theta_2) \\iff \\text{SE}(\\widehat \\theta_1) &lt; \\text{SE}(\\widehat \\theta_2)\\]"
+  },
+  {
     "objectID": "slides/08/slides08.html#comparing-unbiased-estimators-cramer-rao-lower-bound-crlb",
     "href": "slides/08/slides08.html#comparing-unbiased-estimators-cramer-rao-lower-bound-crlb",
     "title": "Evaluating Estimators",
     "section": "Comparing unbiased estimators: Cramer-Rao Lower Bound (CRLB)",
-    "text": "Comparing unbiased estimators: Cramer-Rao Lower Bound (CRLB)\n\n\n\n\n\n\n\nCRLB\n\n\nIf \\(X_1, ..., X_n\\) are an iid sample from a distribution with pdf \\(f(x|\\theta)\\), then any unbiased estimator \\(\\hat\\theta\\) of \\(\\theta\\) satisfies:\n\\[V(\\hat{\\theta}) \\ge \\frac{1}{n I(\\theta)}\\]\nwhere \\(I(\\theta)\\) is the Fisher Information of \\(X_i\\)\n\n\n\n\n\n\n\n\n\n\n\nFisher Information\n\n\nThe Fisher Information of an observation \\(X\\) is \\[I(\\theta) = E[(\\frac{d}{d\\theta} \\ln f(x|\\theta))^2] = -\\frac{1}{n} E(l''(\\theta))\\]"
+    "text": "Comparing unbiased estimators: Cramer-Rao Lower Bound (CRLB)\n\n\n\n\n\n\n\nCRLB\n\n\nIf \\(X_1, ..., X_n\\) are an iid sample from a distribution with pdf \\(f(x|\\theta)\\), then any unbiased estimator \\(\\hat\\theta\\) of \\(\\theta\\) satisfies:\n\\[V(\\hat{\\theta}) \\ge \\frac{1}{n I(\\theta)}\\]\nwhere \\(I(\\theta)\\) is the Fisher Information of \\(X_i\\)"
   },
   {
-    "objectID": "slides/08/slides08.html#fisher-information-1",
-    "href": "slides/08/slides08.html#fisher-information-1",
+    "objectID": "slides/08/slides08.html#fisher-information",
+    "href": "slides/08/slides08.html#fisher-information",
     "title": "Evaluating Estimators",
     "section": "Fisher Information",
-    "text": "Fisher Information\n\n\n\n\n\n\nFisher Information\n\n\nThe Fisher Information of a random variable \\(X\\) is \\[I(\\theta) = E[(\\frac{d}{d\\theta} \\ln f(x|\\theta))^2] = -\\frac{1}{n} E(l''(\\theta))\\]"
-  },
-  {
-    "objectID": "slides/08/slides08.html#example-uniform0theta-1",
-    "href": "slides/08/slides08.html#example-uniform0theta-1",
-    "title": "Evaluating Estimators",
-    "section": "Example: Uniform(\\(0,\\theta\\))",
-    "text": "Example: Uniform(\\(0,\\theta\\))\n\nDoes \\(\\hat{\\theta}_3\\) meet the CRLB?"
+    "text": "Fisher Information\n\n\n\n\n\n\nFisher Information\n\n\nThe Fisher Information of a random variable \\(X\\) is \\[I(\\theta) = E[(\\frac{d}{d\\theta} \\ln f(x|\\theta))^2] = - E(l''(\\theta))\\]\n*provided certain regularity conditions are met"
   },
   {
     "objectID": "slides/06/slides06.html#big-idea",

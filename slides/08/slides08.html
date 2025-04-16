@@ -419,7 +419,7 @@ Prof Amanda Luby
 </section>
 <section id="warm-up" class="slide level2">
 <h2>Warm up</h2>
-<p>Suppose we take a random sample of size 50 from an exponential distribution with mean 10 (rate is <span class="math inline">\(\lambda = 1/10\)</span>).</p>
+<p>Suppose we take a random sample of size 50 from an exponential distribution with rate <span class="math inline">\(\lambda = 1/10\)</span>.</p>
 <p>What is <span class="math inline">\(\mu = E(Y)\)</span>?</p>
 <p>If we want to design an estimator for the mean, <span class="math inline">\(\widehat \mu\)</span>, what are some intuitive estimators?</p>
 </section>
@@ -476,7 +476,7 @@ Prof Amanda Luby
 <section id="sampling-distribution-of-the-estimators" class="slide level2">
 <h2>Sampling Distribution of the Estimators</h2>
 
-<img data-src="slides08_files/figure-html/unnamed-chunk-2-1.png" width="1152" class="r-stretch"><p>which estimator is “best”?</p>
+<img data-src="slides08_files/figure-revealjs/unnamed-chunk-2-1.png" width="1152" class="r-stretch"><p>which estimator is “best”?</p>
 </section>
 <section id="properties-of-estimators" class="slide level2">
 <h2>Properties of Estimators</h2>
@@ -496,7 +496,7 @@ Prof Amanda Luby
 </div>
 <div class="callout-content">
 <p>If <span class="math inline">\(\widehat{\theta}(X)\)</span> is an estimator of <span class="math inline">\(\theta\)</span>, then the bias of the estimator is equal to</p>
-<p><span class="math display">\[\text{Bias}(\widehat\theta) = E(\widehat \theta(X)) - \theta\]</span></p>
+<p><span class="math display">\[\text{Bias}(\widehat\theta) = E[\widehat \theta(X)] - \theta\]</span></p>
 <p><em>Note:</em> the expected value is computed from the sampling distribution of <span class="math inline">\(\widehat{\theta}(X)\)</span></p>
 </div>
 </div>
@@ -516,7 +516,7 @@ Prof Amanda Luby
 </div>
 <div class="callout-content">
 <p>The variance of an estimator is</p>
-<p><span class="math display">\[\text{Var}(\widehat{\theta}) = E[(\widehat{\theta} - E(\widehat{\theta})^2)]\]</span></p>
+<p><span class="math display">\[\text{Var}(\widehat{\theta}) = E[(\widehat{\theta} - E[\widehat{\theta}])^2]\]</span></p>
 <p><em>Note:</em> the expected value is computed from the sampling distribution of <span class="math inline">\(\widehat{\theta}(X)\)</span></p>
 </div>
 </div>
@@ -535,7 +535,7 @@ Prof Amanda Luby
 </div>
 <div class="callout-content">
 <p>The MSE of an estimator is</p>
-<p><span class="math display">\[MSE(\widehat\theta) = E[(\widehat\theta - \theta)^2] = \text{Var}(\widehat{\theta}) - \text{Bias}(\widehat\theta)^2\]</span></p>
+<p><span class="math display">\[MSE(\widehat\theta) = E[(\widehat\theta - \theta)^2] = \text{Var}(\widehat{\theta}) + \text{Bias}(\widehat\theta)^2\]</span></p>
 </div>
 </div>
 </div>
@@ -555,31 +555,53 @@ Prof Amanda Luby
 <pre><code># A tibble: 3 × 4
   estimator     bias   var    MSE
   &lt;chr&gt;        &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
-1 mean       0.00413  2.01   2.01
-2 median    -2.96     1.99  10.8 
-3 midpoint  12.4     40.9  195.  </code></pre>
+1 mean       0.00559  2.00   2.00
+2 median    -2.96     1.97  10.7 
+3 midpoint  12.4     40.7  194.  </code></pre>
 </div>
 </div>
 </section>
 <section id="practice-unif0-theta-distribution" class="slide level2">
-<h2>Practice: Unif(0, <span class="math inline">\(\theta\)</span>) distribution</h2>
+<h2>Practice: Unif(0, <span class="math inline">\(\theta\)</span>) distribution<sup>1</sup></h2>
 <p>Your task is to compare the estimators</p>
 <p><span class="math display">\[\widehat{\theta}_{MLE} = X_\max \hspace{1in} \widehat{\theta}_{MoM} = 2\bar{X}\]</span></p>
 <div>
 <ol type="a">
-<li>What is the bias of each estimator?<sup>1</sup></li>
+<li>What is the bias of each estimator?<sup>2</sup></li>
 <li>What is the SE of each estimator?</li>
 <li>What is the MSE of each estimator?</li>
 <li>When does <span class="math inline">\(\widehat{\theta}_{MLE}\)</span> “beat” <span class="math inline">\(\widehat{\theta}_{MoM}\)</span> in terms of MSE?</li>
 </ol>
 </div>
-<aside><ol class="aside-footnotes"><li id="fn1"><p>A helpful fact is that <span class="math inline">\(f_{X_{max}}(x) = n[F(x)]^{n-1}f_X(x)\)</span></p></li></ol></aside></section>
+<aside><ol class="aside-footnotes"><li id="fn1"><p>So <span class="math inline">\(0 \le x \le \theta\)</span>, <span class="math inline">\(f_x = \frac{1}{\theta}\)</span>, <span class="math inline">\(F_x = \frac{x}{\theta}\)</span>, <span class="math inline">\(E(X) = \frac{\theta}{2}\)</span>, and <span class="math inline">\(V(X) = \frac{\theta^2}{12}\)</span></p></li><li id="fn2"><p>A helpful fact is that <span class="math inline">\(f_{X_{max}}(x) = n[F(x)]^{n-1}f_X(x)\)</span></p></li></ol></aside></section>
 <section id="section" class="slide level2">
 <h2></h2>
 <p><strong>(d) When does <span class="math inline">\(\widehat{\theta}_{MLE}\)</span> “beat” <span class="math inline">\(\widehat{\theta}_{MoM}\)</span> in terms of MSE?</strong></p>
 <p>MSE = “MSE factor” <span class="math inline">\(\times \theta^2\)</span></p>
 
-<img data-src="slides08_files/figure-html/unnamed-chunk-4-1.png" width="672" class="r-stretch"></section>
+<img data-src="slides08_files/figure-revealjs/unnamed-chunk-4-1.png" width="960" class="r-stretch"></section>
+<section id="example-uniform0theta" class="slide level2">
+<h2>Example: Uniform(<span class="math inline">\(0,\theta\)</span>)</h2>
+<div>
+<ol start="5" type="a">
+<li><p>Since <span class="math inline">\(\hat \theta_{MLE}\)</span> beats <span class="math inline">\(\hat \theta_{MoM}\)</span> in terms of MSE but is biased, can we “unbias” the MLE? Call this third estimator <span class="math inline">\(\hat\theta_3\)</span></p></li>
+<li><p>Does <span class="math inline">\(\hat \theta_3\)</span> ever “beat” <span class="math inline">\(\hat \theta_{MLE}\)</span> in terms of MSE?</p></li>
+</ol>
+</div>
+</section>
+<section id="section-1" class="slide level2">
+<h2></h2>
+<p><strong>(f) Does <span class="math inline">\(\hat \theta_3\)</span> ever “beat” <span class="math inline">\(\hat \theta_{MLE}\)</span> in terms of MSE?</strong></p>
+<p>MSE = “MSE factor” <span class="math inline">\(\times \theta^2\)</span></p>
+
+<img data-src="slides08_files/figure-revealjs/unnamed-chunk-5-1.png" width="960" class="r-stretch"></section>
+<section>
+<section id="can-we-find-a-better-estimator" class="title-slide slide level1 center">
+<h1>Can we find a “better” estimator?</h1>
+<div class="fragment">
+<p>Is there another unbiased estimator with smaller variance?</p>
+</div>
+</section>
 <section id="comparing-unbiased-estimators-efficiency" class="slide level2">
 <h2>Comparing unbiased estimators: efficiency</h2>
 <div class="callout callout-note callout-titled callout-style-default">
@@ -595,28 +617,6 @@ Prof Amanda Luby
 <p><span class="math display">\[\text{Var}(\widehat \theta_1) &lt; \text{Var}(\widehat \theta_2) \iff \text{SE}(\widehat \theta_1) &lt; \text{SE}(\widehat \theta_2)\]</span></p>
 </div>
 </div>
-</div>
-</section>
-<section id="example-uniform0theta" class="slide level2">
-<h2>Example: Uniform(<span class="math inline">\(0,\theta\)</span>)</h2>
-<div>
-<ol start="5" type="a">
-<li><p>Since <span class="math inline">\(\hat \theta_{MLE}\)</span> beats <span class="math inline">\(\hat \theta_{MoM}\)</span> in terms of MSE but is biased, can we “unbias” the MLE? Call this third estimator <span class="math inline">\(\hat\theta_3\)</span></p></li>
-<li><p>Does <span class="math inline">\(\hat \theta_3\)</span> ever “beat” <span class="math inline">\(\hat \theta_{MLE}\)</span> in terms of MSE?</p></li>
-</ol>
-</div>
-</section>
-<section id="section-1" class="slide level2">
-<h2></h2>
-<p><strong>(f) Does <span class="math inline">\(\hat \theta_3\)</span> ever “beat” <span class="math inline">\(\hat \theta_{MLE}\)</span> in terms of MSE?</strong></p>
-<p>MSE = “MSE factor” <span class="math inline">\(\times \theta^2\)</span></p>
-
-<img data-src="slides08_files/figure-html/unnamed-chunk-5-1.png" width="672" class="r-stretch"></section>
-<section>
-<section id="can-we-find-a-better-estimator" class="title-slide slide level1 center">
-<h1>Can we find a “better” estimator?</h1>
-<div class="fragment">
-<p>Is there another unbiased estimator with smaller variance?</p>
 </div>
 </section>
 <section id="comparing-unbiased-estimators-cramer-rao-lower-bound-crlb" class="slide level2">
@@ -638,23 +638,8 @@ Prof Amanda Luby
 </div>
 </div>
 </div>
-<div class="fragment">
-<div class="callout callout-note callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Fisher Information</strong></p>
-</div>
-<div class="callout-content">
-<p>The <strong>Fisher Information</strong> of an observation <span class="math inline">\(X\)</span> is <span class="math display">\[I(\theta) = E[(\frac{d}{d\theta} \ln f(x|\theta))^2] = -\frac{1}{n} E(l''(\theta))\]</span></p>
-</div>
-</div>
-</div>
-</div>
 </section>
-<section id="fisher-information-1" class="slide level2">
+<section id="fisher-information" class="slide level2">
 <h2>Fisher Information</h2>
 <div class="callout callout-note callout-titled callout-style-default">
 <div class="callout-body">
@@ -665,16 +650,11 @@ Prof Amanda Luby
 <p><strong>Fisher Information</strong></p>
 </div>
 <div class="callout-content">
-<p>The <strong>Fisher Information</strong> of a random variable <span class="math inline">\(X\)</span> is <span class="math display">\[I(\theta) = E[(\frac{d}{d\theta} \ln f(x|\theta))^2] = -\frac{1}{n} E(l''(\theta))\]</span></p>
+<p>The <strong>Fisher Information</strong> of a random variable <span class="math inline">\(X\)</span> is <span class="math display">\[I(\theta) = E[(\frac{d}{d\theta} \ln f(x|\theta))^2] = - E(l''(\theta))\]</span></p>
+<p>*provided certain regularity conditions are met</p>
 </div>
 </div>
 </div>
-</section>
-<section id="example-uniform0theta-1" class="slide level2">
-<h2>Example: Uniform(<span class="math inline">\(0,\theta\)</span>)</h2>
-<ol start="6" type="a">
-<li class="fragment">Does <span class="math inline">\(\hat{\theta}_3\)</span> meet the CRLB?</li>
-</ol>
 
 
 </section></section>
@@ -896,6 +876,44 @@ Prof Amanda Luby
         ]
       });
     </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
     <script id="quarto-html-after-body" type="application/javascript">
     window.document.addEventListener("DOMContentLoaded", function (event) {
       const toggleBodyColorMode = (bsSheetEl) => {
