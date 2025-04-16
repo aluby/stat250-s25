@@ -22,7 +22,10 @@ format:
       - right=1in
       - bottom=1in
       - heightrounded
-fontfamily: libertine
+    mainfont: "Linux Libertine"
+    sansfont: "Linux Libertine"
+    mathfont: "Libertinus Math"
+    monofont: "Monaco"
 fontsize: 11pt
 ---
 
@@ -35,127 +38,183 @@ library(mosaic)
 library(infer)
 ```
 
-We've seen two methods of estimating parameters: the MLE and the MoM. Both give reasonable criteria to identify estimators for unknown parameters, but they do not always yield the same answer. 
+# Recap
 
-For example, on your homework, you showed that the MLE estimator for $\theta$ in a (continuous) Unif($0, \theta)$ distribution is $\hat{\theta} = 2\bar{Y}$. 
+- Observe data $X_1, ..., X_n \sim F_x(x|\theta)$, where $\theta$ is unknown
 
-**Example:** Find the MLE for $Y_1, Y_2, ..., Y_n \sim \text{Unif}(0, \theta)$. (Recall $f_y(y) = \frac{1}{\theta}, 0 \le y \le \theta)$)
+- Goal: *Estimate* $\theta$ based on the values of $X_i$ by formulating an *estimator* $\widehat \theta$
 
-\vspace{2.5in} 
+- One technique is to use the *maximum likelihood estimator*, which finds the value of $\theta$ that maximizes the joint probability $\prod_{i=1}^n f_x(x_i | \theta)$
 
-Implicit in the two estimators for the same parameters is the obvious question: which one should we use? 
+- A second technique is to use the *method of moments estimator*, which finds the value of $\theta$ that make the theoretical moments equal to the sample moments
 
-There are actually an infinite number of estimators for any given parameter, and this requires that we have a principled way of evaluating the statistical properties associated with any given estimator. What qualities should a "good" estimator have? Is it possible to find a "best" $\hat{\theta}$? These are the questions we're going to begin to answer.
+- Today: if we have multiple estimators, how do we decide which is better?
 
-**Note:** Every estimator is a function of a set of random variables (ie $\hat{\theta} = g(Y_1, Y_2, ..., Y_n))$) and is itself a random variable. 
+# Example: exponential distribution
 
-\vspace{.5in} 
+**Warm up:** Suppose we take a random sample of size 50 from an exponential distribution with mean 10 (rate is $\lambda = 1/10$). What is $\mu = E(Y)$? If we want to design an estimator for the mean, $\widehat \mu$, what are some intuitive estimators? 
+
+\vspace{1in}
+
+**Example:** Suppose we take a random sample of size 50 from an exponential distribution with mean 10 (rate is $\lambda = 1/10$). Consider three estimators of $\mu$: 
+
+$$\hat{\mu_1} =$$
+$$\hat{\mu_2} =$$
+$$\hat{\mu_3} =$$
 
 ::: callout-note
-## Notation for $\hat{\theta}$
-\vspace{1in}
+*Aside:* estimators are also random variables. $X_1, ..., X_n \sim F_x(\theta)$ and each $\hat{\theta} = g(X_1, ..., X_n)$ is a function of the data, so each $\hat{\theta}$ is itself a random variable and has: 
+\vspace{.75in}
 :::
 
-# Bias
 
-*demo* w figures
+# Comparing estimators: simulation
 
-Ideally, we want the overestimates to "balance out" the underestimates: $\hat{\theta}$ should not systematically err in either direction. 
-
-```{r}
-#| fig-height: 3
-#| fig-width: 6
-p1 <- ggplot() +
-  xlim(c(-3,3)) + 
-  ylim(c(0,1)) + 
-  theme_bw() + 
-  theme(axis.text = element_blank()) 
-   
-
-p1 + p1
+:::: {layout-ncol="2"}
+::: {}
 ```
-
-\vspace{3in}
-
-When the mean of the estimator $\hat{\theta}$ is equal to the true parameter $\theta$, we say that the estimator is **unbiased**. 
-
-:::callout-note
-## Definition 
-
-Let $W_1, W_2, ..., W_n$ be a random sample from $f_w(w, \theta)$. An estimator $\hat{\theta} = g(W_1, W_2, ..., W_n)$ is said to be **unbiased for ** $\theta$ if
-
-:::
-
-**Example:** is the MoM for the Unif$(0, \theta)$ distribution, $\hat{\theta}_1 = 2\bar{X}$ unbiased? 
-
-\vspace{2in}
-
-**Example:** is the MLE $\hat{\theta}_2 = \text{max}({X_i})$ unbiased? (*Hint:* $f_{X_{max}}(x) = n[F(x)]^{n-1}f_X(x)$)
-
-\vspace{4in} 
-
-**Example:** Construct an estimator, $\hat{\theta}_3$ based on $\text{max}({X_i})$ that is unbiased. 
-
-\vspace{2in}
-
-# Efficiency
-
-We now have two estimators, $\hat{\theta}_1$ and $\hat{\theta}_3$, that are unbiased estimators for $\theta$. Does it matter which one we choose? 
-
-**Idea:** 
-
-*add bullseye image*
-
-\vspace{3in} 
-
-We could answer this rigorously by finding Var($\hat \theta_1$) and Var($\hat{\theta_3}$). Let's explore with simulation: 
-
-```{r}
-n <- 20
-N_sims <- 10000
+n <- 50
+N_sims <- 100000
 theta <- 3
 est1 <- numeric(N_sims)
 est2 <- numeric(N_sims)
 est3 <- numeric(N_sims)
 for(i in 1:N_sims){
-  x <- runif(n, min = 0, max = theta)
-  est1[i] <- max(x)
-  est2[i] <- 2*mean(x)
-  est3[i] <- ((n+1)/n)*max(x)
+  x <- rexp(n, rate = .1)
+  est1[i] <- mean(x)
+  est2[i] <- median(x)
+  est3[i] <- (max(x) - min(x))/2
 }
 ```
+:::
 
+::: {}
 ```{r}
 #| echo: false
-tibble(
-  `estimator 1` = est1,
-  `estimator 2` = est2,
-  `estimator 3` = est3
+#| fig-width: 3
+#| fig-height: 2
+
+n <- 50
+N_sims <- 100000
+theta <- 3
+est1 <- numeric(N_sims)
+est2 <- numeric(N_sims)
+est3 <- numeric(N_sims)
+for(i in 1:N_sims){
+  x <- rexp(n, rate = .1)
+  est1[i] <- mean(x)
+  est2[i] <- median(x)
+  est3[i] <- (max(x) - min(x))/2
+}
+
+sims <- tibble(
+  mean = est1,
+  median = est2,
+  midpoint = est3
 ) |>
-  pivot_longer(everything()) |>
-  ggplot(aes(x = value, col = name)) + 
-  geom_density() +
-  theme_bw()
+  pivot_longer(everything(), names_to = "estimator", values_to = "value") 
+
+sims |>
+  ggplot(aes(x = value, col = estimator, fill = estimator)) + 
+  geom_density(alpha = .3) + 
+  scale_color_viridis_d(end = .8, option = "plasma") + 
+  scale_fill_viridis_d(end = .8, option = "plasma") + 
+  labs(
+    x = "Estimator Values",
+    y = "Density",
+    col = "",
+    fill = ""
+  ) + 
+  xlim(c(0, 40)) +
+  theme_bw() +
+  theme(legend.position = "bottom")
 ```
+:::
+::::
 
-:::callout-note
-## Definition 
+# Properties of Estimators
 
-Let $\hat{\theta}_1$ and $\hat{\theta}_2$ be two unbiased estimators for a parameter $\theta$. If $\text{Var}(\hat{\theta}_1) < \text{Var}(\hat{\theta}_2)$, we say that 
+![](../img/target-bias-variance-transparent.png){width="30%"}
+
+::: callout-note
+## Bias of an estimator
+
+If $\widehat{\theta}(X)$ is an estimator of $\theta$, then the bias of the estimator is equal to
+
+\vspace{.5in}
+
+*Note:* the expected value is computed from the sampling distribution of $\widehat{\theta}(X)$
+:::
+
+::: callout-note
+## Variance of an estimator
+
+The variance of an estimator is 
+
+\vspace{.5in}
+
+:::
+
+
+::: callout-note
+## MSE
+
+The MSE of an estimator is 
+
+\vspace{.5in}
+
+:::
+
+**Exercise:** Your task is to compare the estimators 
+
+$$\widehat{\theta}_{MLE} = X_{\max} \hspace{1in} \widehat{\theta}_{MoM} = 2\bar{X}$$ 
+
+(a) What is the bias of each estimator? (A helpful fact is that $f_{X_{max}}(x) = n[F(x)]^{n-1}f_X(x)$)
+(b) What is the variance of each estimator?
+(c) What is the MSE of each estimator?
+(d) When does $\widehat{\theta}_{MLE}$ "beat"  $\widehat{\theta}_{MoM}$ in terms of MSE?
+
+\pagebreak
+
+\vspace{4in}
+
+::: callout-note
+## Efficiency
+
+For two unbiased estimators, $\widehat \theta_1$ is more **efficient** than $\widehat \theta_2$ if 
+
 \vspace{.5in}
 :::
 
-# The Bias-Variance Tradeoff
+(e) Since $\hat \theta_{MLE}$ beats $\hat \theta_{MoM}$ in terms of MSE but is biased, can we "unbias" the MLE? Call this third estimator $\hat\theta_3$
 
-:::callout-note
-## Mean Square Error (MSE) 
+(f) Does $\hat \theta_3$ ever "beat" $\hat \theta_{MLE}$ in terms of MSE?
 
-$$MSE(\hat{\theta}) = E(\hat{\theta} - \theta)^2 = V(\hat{\theta}) + \text{bias}^2$$
+\vspace{4in}
+
+# Comparing unbiased estimators 
+
+::: callout-note
+## Cramer-Rao Lower Bound
+
+If $X_1, ..., X_n$ are an iid sample from a distribution with pdf $f(x|\theta)$, then any unbiased estimator $\hat\theta$ of $\theta$ satisfies: 
+
+\vspace{1in}
+
+where $I(\theta)$ is the **Fisher Information** of $X_i$
 :::
-*Note:* We'll come back to this, and show that it is true, later in the course
 
-**Idea:** 
 
+
+::: callout-note
+## Fisher Information
+
+The **Fisher Information** of an observation $X$ is
+$$I(\theta) = E[(\frac{d}{d\theta} \ln f(x|\theta))^2] =$$
+:::
+
+
+(f) Does $\hat{\theta}_3$ meet the CRLB? 
 
 
 
