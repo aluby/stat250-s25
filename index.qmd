@@ -19,6 +19,7 @@ Day06: [slides](/slides/06/slides06.html) | [handout](/notes/06-mle-2/notes06.pd
 
 Day07: [slides](/slides/07/slides07.html) | [handout](/notes/07-mom/notes07.pdf)
 
+Day08: [slides](/slides/08/slides08.html) | [handout](/notes/08-bias-variance/notes08.pdf)
 
 # Other Resources and Readings
 
