@@ -52,7 +52,7 @@ library(infer)
 
 # Example: exponential distribution
 
-**Warm up:** Suppose we take a random sample of size 50 from an exponential distribution with mean 10 (rate is $\lambda = 1/10$). What is $\mu = E(Y)$? If we want to design an estimator for the mean, $\widehat \mu$, what are some intuitive estimators? 
+**Warm up:** Suppose we take a random sample of size 50 from an exponential distribution with rate is $\lambda = 1/10$. What is $\mu = E(Y)$? If we want to design an estimator for the mean, $\widehat \mu$, what are some intuitive estimators? 
 
 \vspace{1in}
 
@@ -176,15 +176,10 @@ $$\widehat{\theta}_{MLE} = X_{\max} \hspace{1in} \widehat{\theta}_{MoM} = 2\bar{
 
 \pagebreak
 
-\vspace{4in}
+This page left blank for work space
 
-::: callout-note
-## Efficiency
+\pagebreak 
 
-For two unbiased estimators, $\widehat \theta_1$ is more **efficient** than $\widehat \theta_2$ if 
-
-\vspace{.5in}
-:::
 
 (e) Since $\hat \theta_{MLE}$ beats $\hat \theta_{MoM}$ in terms of MSE but is biased, can we "unbias" the MLE? Call this third estimator $\hat\theta_3$
 
@@ -193,6 +188,14 @@ For two unbiased estimators, $\widehat \theta_1$ is more **efficient** than $\wi
 \vspace{4in}
 
 # Comparing unbiased estimators 
+
+::: callout-note
+## Efficiency
+
+For two unbiased estimators, $\widehat \theta_1$ is more **efficient** than $\widehat \theta_2$ if 
+
+\vspace{.5in}
+:::
 
 ::: callout-note
 ## Cramer-Rao Lower Bound
