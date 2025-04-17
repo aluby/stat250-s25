@@ -105,7 +105,6 @@ Consider three estimators of $\mu$:
 
 n <- 50
 N_sims <- 100000
-theta <- 3
 est1 <- numeric(N_sims)
 est2 <- numeric(N_sims)
 est3 <- numeric(N_sims)
@@ -317,7 +316,7 @@ where $I(\theta)$ is the **Fisher Information** of $X_i$
 ## Fisher Information
 
 The **Fisher Information** of a random variable $X$ is
-$$I(\theta) = E[(\frac{d}{d\theta} \ln f(x|\theta))^2] = - E(l''(\theta))$$
+$$I(\theta) = E[(\frac{d}{d\theta} \ln f(x|\theta))^2] = -   E(l''(\theta))$$
 
 *provided certain regularity conditions are met
 :::

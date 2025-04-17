@@ -1,0 +1,202 @@
+---
+title: "Efficiency & CRLB"
+subtitle: "Day 09"
+title-slide-attributes:
+  data-background-gradient: "linear-gradient(to right, #46337e, #440154)"
+  data-slide-number: none
+author: "Prof Amanda Luby"
+format: 
+  revealjs:
+    incremental: true
+editor: 
+  markdown: 
+    wrap: 72
+---
+
+```{r setup}
+#| include: false
+
+library(tidyverse)
+library(countdown)
+
+library(ggformula)
+library(openintro)
+library(patchwork)
+library(fivethirtyeight)
+library(dplyr)
+library(tidyr)
+library(fontawesome)
+
+library(gridExtra)
+library(tidyverse)
+library(knitr)
+library(mosaic)
+library(infer)
+library(kableExtra)
+library(latex2exp)
+
+library(plotly)
+
+# #440154
+knitr::opts_chunk$set(echo = TRUE,
+                  message = FALSE,
+                  warning = FALSE)
+
+slides_theme = theme_minimal(base_family = "serif", base_size = 24) +
+  theme(plot.background = element_rect(fill = "#f0f1eb", colour = NA))
+  
+
+theme_set(slides_theme)
+```
+
+## Recap
+
+- Observe data $X_1, ..., X_n \sim F_x(x|\theta)$, where $\theta$ is unknown
+- Goal: *Estimate* $\theta$ based on the values of $X_i$ by formulating an *estimator* $\widehat \theta$
+- One technique is to use the *maximum likelihood estimator*
+- A second technique is to use the *method of moments estimator*
+- We can compare estimators by comparing their *bias*, *variance*, and *mean squared error*.
+- Today: how do we know if we've found an "optimal" estimator?
+
+## Last time: Unif(0, $\theta$) distribution^[So $0 \le x \le \theta$, $f_x = \frac{1}{\theta}$, $F_x = \frac{x}{\theta}$, $E(X) = \frac{\theta}{2}$, and $V(X) = \frac{\theta^2}{12}$]
+
+Your task is to compare the estimators 
+
+$$\widehat{\theta}_{MLE} = X_\max \hspace{1in} \widehat{\theta}_{MoM} = 2\bar{X}$$ 
+
+::: nonincremental
+(a) What is the bias of each estimator?^[A helpful fact is that $f_{X_{max}}(x) = n[F(x)]^{n-1}f_X(x)$]
+(b) What is the SE of each estimator?
+(c) What is the MSE of each estimator?
+(d) When does $\widehat{\theta}_{MLE}$ "beat"  $\widehat{\theta}_{MoM}$ in terms of MSE?
+:::
+
+
+## 
+
+**(d) When does $\widehat{\theta}_{MLE}$ "beat"  $\widehat{\theta}_{MoM}$ in terms of MSE?**
+
+MSE = "MSE factor" $\times \theta^2$
+
+```{r}
+#| echo: false
+
+
+df <- data.frame(n = 1:10) %>%
+  mutate(mle = 2/((n+2)*(n+1)), 
+         mom = 1/(3*n)) %>%
+  pivot_longer(2:3,names_to = "estimator", values_to = "mse factor" )
+
+ggplot(df, aes(n,y = `mse factor`, color = estimator)) + 
+  geom_point(aes(shape = estimator), size = 3) + geom_line(aes(linetype = estimator)) +
+  labs(col = "",
+       shape = "",
+       linetype = "") + 
+  scale_color_viridis_d(end = .8, option = "plasma") + 
+  scale_x_continuous(breaks = 1:10)
+```
+
+## Example: Uniform($0,\theta$)
+
+From last time: $E(\widehat \theta_{MLE}) = \frac{n}{n+1} \theta$ and $V(\widehat \theta_{MLE}) = [\frac{n}{(n+2)(n+1)^2}]$
+
+::: nonincremental
+(e) Since $\hat \theta_{MLE}$ beats $\hat \theta_{MoM}$ in terms of MSE but is biased, can we "unbias" the MLE? Call this third estimator $\hat\theta_3$
+
+(f) Does $\hat \theta_3$ ever "beat" $\hat \theta_{MLE}$ in terms of MSE?
+:::
+
+## 
+
+**(f) Does $\hat \theta_3$ ever "beat" $\hat \theta_{MLE}$ in terms of MSE?**
+
+MSE = "MSE factor" $\times \theta^2$
+
+
+```{r, echo = FALSE}
+df <- data.frame(n = 1:10) %>%
+  mutate(mle = 2/((n+2)*(n+1)), 
+         mom = 1/(3*n), 
+         mle_unbiased = 1/(n*(n+2))) %>%
+  pivot_longer(2:4,names_to = "estimator", values_to = "mse factor" )
+ggplot(df, aes(n,y = `mse factor`, color = estimator)) + 
+  geom_point(aes(shape = estimator), size = 3) + geom_line(aes(linetype = estimator)) +
+  labs(col = "",
+       shape = "",
+       linetype = "") + 
+  scale_color_viridis_d(end = .8, option = "plasma") + 
+  scale_x_continuous(breaks = 1:10)
+```
+
+## Moral of the story
+
+We can "fix" bias, but it's harder to fix variance
+
+## Comparing unbiased estimators: efficiency
+
+::: callout-note
+## Efficiency
+
+For two unbiased estimators, $\widehat \theta_1$ is more **efficient** than $\widehat \theta_2$ if 
+
+$$\text{Var}(\widehat \theta_1) < \text{Var}(\widehat \theta_2) \iff \text{SE}(\widehat \theta_1) < \text{SE}(\widehat \theta_2)$$
+:::
+
+## Example: why efficiency matters
+
+We now have two unbiased estimators: 
+$$\widehat \theta_{MoM} = 2 \bar{X} \text{ and } \widehat \theta_{3} = \frac{n+1}{n} X_\max$$
+
+
+
+# Can we find a "better" estimator?
+
+. . . 
+
+Is there another unbiased estimator with smaller variance?
+
+
+## Comparing unbiased estimators: Cramer-Rao Lower Bound (CRLB)
+
+. . . 
+
+::: callout-note
+## CRLB
+
+If $X_1, ..., X_n$ are an iid sample from a distribution with pdf $f(x|\theta)$, then any unbiased estimator $\hat\theta$ of $\theta$ satisfies: 
+
+$$V(\hat{\theta}) \ge \frac{1}{n I(\theta)}$$
+
+where $I(\theta)$ is the **Fisher Information** of $X_i$
+:::
+
+. . . 
+
+If the variance of an estimator is equal to the CRLB, then there is *no other unbiased estimator with more precision*
+
+## Fisher Information
+
+::: callout-note
+## Fisher Information
+
+The **Fisher Information** of a random variable $X$ is
+$$I(\theta) = E[(\frac{d}{d\theta} \ln f(x|\theta))^2] = -   E(l''(\theta))$$
+
+*provided certain regularity conditions are met
+:::
+
+## Intuition: Fisher information
+
+
+## Practice: Fisher information
+
+Find the *fisher information* for $X$, where $X \sim Bernoulli(\theta)$
+
+## Practice: finding CRLB
+
+Let $X_1, ..., X_n$ be $n$ Bernoulli($\theta$) trials. Let $\hat\pi = \frac{\sum X_i}{n}$. How does Var($\hat\pi$) compare with the CRLB?
+
+
+## Practice: simulation
+
+
