@@ -56,7 +56,7 @@ theme_set(slides_theme)
 - One technique is to use the *maximum likelihood estimator*
 - A second technique is to use the *method of moments estimator*
 - We can compare estimators by comparing their *bias*, *variance*, and *mean squared error*.
-- Today: how do we know if we've found an "optimal" estimator?
+- Today: is there a way to know if we've found an "optimal" estimator?
 
 ## Last time: Unif(0, $\theta$) distribution^[So $0 \le x \le \theta$, $f_x = \frac{1}{\theta}$, $F_x = \frac{x}{\theta}$, $E(X) = \frac{\theta}{2}$, and $V(X) = \frac{\theta^2}{12}$]
 
@@ -145,9 +145,13 @@ $$\text{Var}(\widehat \theta_1) < \text{Var}(\widehat \theta_2) \iff \text{SE}(\
 ## Example: why efficiency matters
 
 We now have two unbiased estimators: 
-$$\widehat \theta_{MoM} = 2 \bar{X} \text{ and } \widehat \theta_{3} = \frac{n+1}{n} X_\max$$
+$$\widehat \theta_{MoM}$\widehat \theta_{3} = \frac{n+1}{n} X_\max$$
 
+(a) If $n=10$ what is the expectation and variance of each of these estimators?
 
+## Example: why efficiency matters
+
+(b) What $n$ would we need for $\widehat\theta_{MOM}$ to reach the variance of $\widehat\theta_3$?
 
 # Can we find a "better" estimator?
 
@@ -182,16 +186,16 @@ If the variance of an estimator is equal to the CRLB, then there is *no other un
 The **Fisher Information** of a random variable $X$ is
 $$I(\theta) = E[(\frac{d}{d\theta} \ln f(x|\theta))^2] = -   E(l''(\theta))$$
 
-*provided certain regularity conditions are met
+*provided the domain of $X$ does not depend on $\theta$ (and a few other regularity conditions)
 :::
 
 ## Intuition: Fisher information
 
-$$I(\theta) = E[(\frac{d}{d\theta} \ln f(x|\theta))^2] = -   E(l''(\theta))$$
+$$I(\theta) = E_X[(\frac{d}{d\theta} \ln f(x|\theta))^2] = -   E_X(l''(\theta))$$
 
 - $l(\theta)$ is the log-likelihood function
 - $l'(\theta)$ gives the slope of the log-likelihood at any point, $l''(\theta)$ gives the curvature at any given point
-- The Fisher information "averages out" $\theta$ and summarizes the overall curvature of the log-likelihood function
+- The Fisher information "averages out" over $X$ and summarizes the overall curvature of the log-likelihood function
 
 ## Intuition: Fisher information
 
@@ -230,15 +234,40 @@ ggplot() +
 :::
 :::::
 
+. . . 
+
+Distributions with a "pointier" log-likelihood have higher Fisher information than distributions with lower Fisher information
+
+. . . 
+
+Lower Fisher information $\to$ flat log-likelihood $\to$ lots of estimators "close" to the MLE
+
 ## Practice: Fisher information
 
-Find the *fisher information* for $X$, where $X \sim Bernoulli(\theta)$
+Find the *Fisher information* for $Y$, where $X \sim Exp(\lambda)$
 
 ## Practice: finding CRLB
 
-Let $X_1, ..., X_n$ be $n$ Bernoulli($\theta$) trials. Let $\widehat\pi = \frac{\sum X_i}{n}$. How does Var($\widehat\pi$) compare with the CRLB?
+Let $Y_1, ..., Y_n$ be $n$ Exp($\lambda$) random variables Let $\widehat\lambda = \frac{n}{\sum Y_i}$. How does Var($\widehat\lambda$) compare with the CRLB?
 
 
-## Practice: simulation
+## 
 
+So far, we've found the *bias*, *variance*, and *MSE* **analytically** (with formal mathematical formulas). In practice, we often can't do this. 
+
+. . . 
+
+For example: The median $m$ of an Exponential($\lambda$) distribution satisfies P(X ≤ m) = 0.5. Solving $1 - e^(-\lambda m) = 0.5$ gives $m = ln(2) / \lambda$.
+
+. . . 
+
+This suggests an estimator for $\lambda$ based on the median: $\widehat{\lambda} = \frac{ln(2)}{m}$
+
+. . . 
+
+Finding the analytical variance of $\widehat \lambda$ is complicated. Finding the sampling distribution of $m$ is complicated, and finding the non-linear transformation is also complicated.
+
+## Your turn: simulation 
+
+Use simulation to see whether $\frac{ln(2)}{m}$ (a) is unbiased and (b) achieves the CRLB
 

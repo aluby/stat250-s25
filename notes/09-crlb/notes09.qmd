@@ -1,0 +1,151 @@
+---
+title: "09: Efficiency and CRLB"
+author: "Prof Amanda Luby"
+subtitle: "Stat250 S25"
+callout-appearance: minimal
+knitr:
+    opts_chunk: 
+      dev: "ragg_png"
+      echo: false
+      warning: false
+      message: false
+format:
+  pdf:
+    include-in-header: 
+       - "../preamble.tex"
+    toc: false
+    number-sections: true
+    colorlinks: true
+    geometry:
+      - top=1in
+      - left=1in
+      - right=1in
+      - bottom=1in
+      - heightrounded
+    mainfont: "Linux Libertine"
+    sansfont: "Linux Libertine"
+    mathfont: "Libertinus Math"
+    monofont: "Monaco"
+fontsize: 11pt
+---
+
+
+```{r, echo = FALSE}
+library(tidyverse)
+library(patchwork)
+library(Sleuth3)
+library(mosaic)
+library(infer)
+```
+
+# Recap
+
+- Observe data $X_1, ..., X_n \sim F_x(x|\theta)$, where $\theta$ is unknown
+
+- Goal: *Estimate* $\theta$ based on the values of $X_i$ by formulating an *estimator* $\widehat \theta$
+
+- One technique is to use the *maximum likelihood estimator*
+
+- A second technique is to use the *method of moments estimator*
+
+- There are lots of other ways to come up with estimators.
+
+- We can compare estimators by comparing their *bias*, *variance*, and *mean squared error*
+
+- Today: is there a way to know if we've found an "optimal" estimator?
+
+# Comparing unbiased estimators 
+
+::: callout-note
+## Efficiency
+
+For two unbiased estimators, $\widehat \theta_1$ is more **efficient** than $\widehat \theta_2$ if 
+
+\vspace{.5in}
+:::
+
+**Example:** Why efficiency matters
+
+We now have two unbiased estimators for $\theta$ in a Unif($0, \theta$) distribution. $\hat{\theta}_{MoM}=$ ____________ and $\hat{\theta_3}=$ __________________. 
+
+(a) If $n=10$, what is the expectation and variance of each of these estimators?
+
+\vspace{2.5in}
+
+(b) What $n$ is needed for $\hat{\theta_{MoM}}$ to reach the variance of $\hat{\theta_3}$
+
+\vspace{2.5in}
+
+# Can we find a better estimator?
+
+Is there another unbiased estimator with smaller variance?
+
+::: callout-note
+## Cramer-Rao Lower Bound
+
+If $X_1, ..., X_n$ are an iid sample from a distribution with pdf $f(x|\theta)$, then any unbiased estimator $\hat\theta$ of $\theta$ satisfies: 
+
+$$V(\hat{\theta}) \ge \frac{1}{n I(\theta)}$$
+
+where $I(\theta)$ is the **Fisher Information** of $X_i$
+:::
+
+If the variance of an estimator is equal to the CRLB, then there is *no other unbiased estimator with more precision*
+
+::: callout-note
+## Fisher Information
+
+The **Fisher Information** of an observation $X$ is
+$$I(\theta) = E[(\frac{d}{d\theta} \ln f(x|\theta))^2] =$$
+
+*provided the domain of $X$ does not depend on $\theta$ (and a few other regularity conditions)
+:::
+
+## Intuition: Fisher information
+
+$$I(\theta) = E_X[(\frac{d}{d\theta} \ln f(x|\theta))^2] = -   E_X(l''(\theta))$$
+
+- $l(\theta)$ is the log-likelihood function
+- $l'(\theta)$ gives the slope of the log-likelihood at any point, $l''(\theta)$ gives the curvature at any given point
+- The Fisher information "averages out" over $X$ and summarizes the overall curvature of the log-likelihood function
+
+```{r}
+#| echo: false
+#| fig-width: 6
+#| fig-height: 2
+
+p1 <- ggplot() + 
+  geom_function(fun = \(x) log(dnorm(x))) + 
+  xlim(c(-3,3)) + 
+  labs(
+    x = expression(theta),
+    y = expression(ln(X,theta))
+  )
+
+p2 <- ggplot() + 
+  geom_function(fun = \(x) log(dbeta(x, shape1 = 3, shape2=3))) + 
+  xlim(c(0,1)) + 
+  labs(
+    x = expression(theta),
+    y = expression(ln(X,theta))
+  )
+
+
+p1 + p2 & theme_bw()
+```
+
+## Practice with CRLB
+
+**Example:**  Find the *Fisher information* for $Y$, where $X \sim Exp(\lambda)$
+
+\vspace{3in}
+
+**Example:** Let $Y_1, ..., Y_n$ be $n$ Exp($\lambda$) random variables Let $\widehat\lambda = \frac{n}{\sum Y_i}$. How does Var($\widehat\lambda$) compare with the CRLB?
+
+\vspace{3in}
+
+## CRLB with simulation
+
+**Example:** The median $m$ of an Exponential($\lambda$) distribution satisfies P(X ≤ m) = 0.5. Solving $1 - e^(-\lambda m) = 0.5$ gives $m = ln(2) / \lambda$. This suggests an estimator for $\lambda$ based on the median: $\widehat{\lambda} = \frac{ln(2)}{m}$. Finding the analytical variance of $\widehat \lambda$ is complicated. Finding the sampling distribution of $m$ is complicated, and finding the non-linear transformation is also complicated.
+
+Use simulation to see whether $\frac{ln(2)}{m}$ (a) is unbiased and (b) achieves the CRLB
