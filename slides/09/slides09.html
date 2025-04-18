@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.6.32">
 
   <meta name="author" content="Prof Amanda Luby">
-  <title>Stat 250 – Evaluating Estimators</title>
+  <title>Stat 250 – Efficiency &amp; CRLB</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -28,71 +28,6 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
-    /* CSS for syntax highlighting */
-    pre > code.sourceCode { white-space: pre; position: relative; }
-    pre > code.sourceCode > span { line-height: 1.25; }
-    pre > code.sourceCode > span:empty { height: 1.2em; }
-    .sourceCode { overflow: visible; }
-    code.sourceCode > span { color: inherit; text-decoration: inherit; }
-    div.sourceCode { margin: 1em 0; }
-    pre.sourceCode { margin: 0; }
-    @media screen {
-    div.sourceCode { overflow: auto; }
-    }
-    @media print {
-    pre > code.sourceCode { white-space: pre-wrap; }
-    pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
-    }
-    pre.numberSource code
-      { counter-reset: source-line 0; }
-    pre.numberSource code > span
-      { position: relative; left: -4em; counter-increment: source-line; }
-    pre.numberSource code > span > a:first-child::before
-      { content: counter(source-line);
-        position: relative; left: -1em; text-align: right; vertical-align: baseline;
-        border: none; display: inline-block;
-        -webkit-touch-callout: none; -webkit-user-select: none;
-        -khtml-user-select: none; -moz-user-select: none;
-        -ms-user-select: none; user-select: none;
-        padding: 0 4px; width: 4em;
-      }
-    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-    div.sourceCode
-      { color: #657b83; background-color: #fdf6e3; }
-    @media screen {
-    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-    }
-    code span { color: #657b83; } /* Normal */
-    code span.al { color: #d33682; font-weight: bold; } /* Alert */
-    code span.an { color: #268bd2; } /* Annotation */
-    code span.at { color: #268bd2; } /* Attribute */
-    code span.bn { color: #2aa198; } /* BaseN */
-    code span.bu { color: #cb4b16; } /* BuiltIn */
-    code span.cf { color: #859900; font-weight: bold; } /* ControlFlow */
-    code span.ch { color: #2aa198; } /* Char */
-    code span.cn { color: #2aa198; font-weight: bold; } /* Constant */
-    code span.co { color: #93a1a1; font-style: italic; } /* Comment */
-    code span.cv { color: #2aa198; } /* CommentVar */
-    code span.do { color: #dc322f; } /* Documentation */
-    code span.dt { color: #b58900; font-weight: bold; } /* DataType */
-    code span.dv { color: #2aa198; } /* DecVal */
-    code span.er { color: #dc322f; text-decoration: underline; } /* Error */
-    code span.ex { color: #268bd2; font-weight: bold; } /* Extension */
-    code span.fl { color: #2aa198; } /* Float */
-    code span.fu { color: #268bd2; } /* Function */
-    code span.im { color: #2aa198; } /* Import */
-    code span.in { color: #b58900; } /* Information */
-    code span.kw { color: #859900; font-weight: bold; } /* Keyword */
-    code span.op { color: #859900; } /* Operator */
-    code span.ot { color: #859900; } /* Other */
-    code span.pp { color: #cb4b16; } /* Preprocessor */
-    code span.re { color: #268bd2; background-color: #eee8d5; } /* RegionMarker */
-    code span.sc { color: #dc322f; } /* SpecialChar */
-    code span.ss { color: #dc322f; } /* SpecialString */
-    code span.st { color: #2aa198; } /* String */
-    code span.va { color: #268bd2; } /* Variable */
-    code span.vs { color: #2aa198; } /* VerbatimString */
-    code span.wa { color: #cb4b16; } /* Warning */
   </style>
   <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-4dea2dd7f5f3992c9ed79fb461f277c8.css">
   <link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -392,8 +327,8 @@
     <div class="slides">
 
 <section id="title-slide" data-background-gradient="linear-gradient(to right, #46337e, #440154)" data-slide-number="none" class="quarto-title-block center">
-  <h1 class="title">Evaluating Estimators</h1>
-  <p class="subtitle">Day 08</p>
+  <h1 class="title">Efficiency &amp; CRLB</h1>
+  <p class="subtitle">Day 09</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -412,156 +347,14 @@ Prof Amanda Luby
 <ul>
 <li class="fragment">Observe data <span class="math inline">\(X_1, ..., X_n \sim F_x(x|\theta)\)</span>, where <span class="math inline">\(\theta\)</span> is unknown</li>
 <li class="fragment">Goal: <em>Estimate</em> <span class="math inline">\(\theta\)</span> based on the values of <span class="math inline">\(X_i\)</span> by formulating an <em>estimator</em> <span class="math inline">\(\widehat \theta\)</span></li>
-<li class="fragment">One technique is to use the <em>maximum likelihood estimator</em>, which finds the value of <span class="math inline">\(\theta\)</span> that maximizes the joint probability <span class="math inline">\(\prod_{i=1}^n f_x(x_i | \theta)\)</span></li>
-<li class="fragment">A second technique is to use the <em>method of moments estimator</em>, which finds the value of <span class="math inline">\(\theta\)</span> that make the theoretical moments equal to the sample moments</li>
-<li class="fragment">Today: if we have multiple estimators, how do we decide which is better?</li>
+<li class="fragment">One technique is to use the <em>maximum likelihood estimator</em></li>
+<li class="fragment">A second technique is to use the <em>method of moments estimator</em></li>
+<li class="fragment">We can compare estimators by comparing their <em>bias</em>, <em>variance</em>, and <em>mean squared error</em>.</li>
+<li class="fragment">Today: is there a way to know if we’ve found an “optimal” estimator?</li>
 </ul>
 </section>
-<section id="warm-up" class="slide level2">
-<h2>Warm up</h2>
-<p>Suppose we take a random sample of size 50 from an exponential distribution with rate <span class="math inline">\(\lambda = 1/10\)</span>.</p>
-<p>What is <span class="math inline">\(\mu = E(Y)\)</span>?</p>
-<p>If we want to design an estimator for the mean, <span class="math inline">\(\widehat \mu\)</span>, what are some intuitive estimators?</p>
-</section>
-<section id="estimators-for-the-mean" class="slide level2">
-<h2>Estimators for the mean</h2>
-<p>Suppose we take a random sample of size 50 from an exponential distribution with mean 10 (rate is <span class="math inline">\(\lambda = 1/10\)</span>).</p>
-<p>Consider three estimators of <span class="math inline">\(\mu\)</span>:</p>
-<ul>
-<li class="fragment"><span class="math inline">\(\widehat{\mu_1} = \bar{X}\)</span></li>
-<li class="fragment"><span class="math inline">\(\widehat{\mu_2} = \widetilde{X}\)</span></li>
-<li class="fragment"><span class="math inline">\(\widehat{\mu_3} = \frac{X_{\max} - X_{\min}}{2}\)</span></li>
-</ul>
-</section>
-<section id="aside-estimators-are-also-random-variables" class="slide level2">
-<h2>Aside: estimators are also random variables</h2>
-<p><span class="math inline">\(X_1, ..., X_n \sim F_x(\theta)\)</span> and each <span class="math inline">\(\widehat{\theta} = g(X_1, ..., X_n)\)</span> is a function of the data</p>
-<div class="fragment">
-<p>This means that each <span class="math inline">\(\widehat\theta\)</span> is itself a random variable, and so it has:</p>
-<ul>
-<li class="fragment">a pdf <span class="math inline">\(f_\widehat{\theta}\)</span></li>
-<li class="fragment">an expectation <span class="math inline">\(E(\widehat\theta)\)</span></li>
-<li class="fragment">a variance <span class="math inline">\(\text{Var}(\widehat{\theta})\)</span></li>
-</ul>
-</div>
-</section>
-<section id="comparing-estimators-simulation" class="slide level2">
-<h2>Comparing Estimators: Simulation</h2>
-<p>Suppose we take a random sample of size 50 from an exponential distribution with mean 10 (rate is <span class="math inline">\(\lambda = 1/10\)</span>).</p>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p>Consider three estimators of <span class="math inline">\(\mu\)</span>:</p>
-<ul>
-<li><span class="math inline">\(\hat{\mu_1} = \bar{X}\)</span></li>
-<li><span class="math inline">\(\hat{\mu_2} = \tilde{X}\)</span></li>
-<li><span class="math inline">\(\hat{\mu_3} = \frac{X_{\max} - X_{\min}}{2}\)</span></li>
-</ul>
-</div><div class="column" style="width:50%;">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">50</span></span>
-<span id="cb1-2"><a aria-hidden="true" tabindex="-1"></a>N_sims <span class="ot">&lt;-</span> <span class="dv">100000</span></span>
-<span id="cb1-3"><a aria-hidden="true" tabindex="-1"></a>est1 <span class="ot">&lt;-</span> <span class="fu">numeric</span>(N_sims)</span>
-<span id="cb1-4"><a aria-hidden="true" tabindex="-1"></a>est2 <span class="ot">&lt;-</span> <span class="fu">numeric</span>(N_sims)</span>
-<span id="cb1-5"><a aria-hidden="true" tabindex="-1"></a>est3 <span class="ot">&lt;-</span> <span class="fu">numeric</span>(N_sims)</span>
-<span id="cb1-6"><a aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>N_sims){</span>
-<span id="cb1-7"><a aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">rexp</span>(n, <span class="at">rate =</span> .<span class="dv">1</span>)</span>
-<span id="cb1-8"><a aria-hidden="true" tabindex="-1"></a>  est1[i] <span class="ot">&lt;-</span> <span class="fu">mean</span>(x)</span>
-<span id="cb1-9"><a aria-hidden="true" tabindex="-1"></a>  est2[i] <span class="ot">&lt;-</span> <span class="fu">median</span>(x)</span>
-<span id="cb1-10"><a aria-hidden="true" tabindex="-1"></a>  est3[i] <span class="ot">&lt;-</span> (<span class="fu">max</span>(x) <span class="sc">-</span> <span class="fu">min</span>(x))<span class="sc">/</span><span class="dv">2</span></span>
-<span id="cb1-11"><a aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</div></div>
-</section>
-<section id="sampling-distribution-of-the-estimators" class="slide level2">
-<h2>Sampling Distribution of the Estimators</h2>
-
-<img data-src="slides08_files/figure-revealjs/unnamed-chunk-2-1.png" width="1152" class="r-stretch"><p>which estimator is “best”?</p>
-</section>
-<section id="properties-of-estimators" class="slide level2">
-<h2>Properties of Estimators</h2>
-
-<img data-src="../img/target-bias-variance-transparent.png" class="quarto-figure quarto-figure-center r-stretch"></section>
-<section id="estimator-properties-bias" class="slide level2">
-<h2>Estimator properties: bias</h2>
-<p>How <em>accurate</em> is the estimator?</p>
-<div class="fragment">
-<div class="callout callout-note callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Bias of an estimator</strong></p>
-</div>
-<div class="callout-content">
-<p>If <span class="math inline">\(\widehat{\theta}(X)\)</span> is an estimator of <span class="math inline">\(\theta\)</span>, then the bias of the estimator is equal to</p>
-<p><span class="math display">\[\text{Bias}(\widehat\theta) = E[\widehat \theta(X)] - \theta\]</span></p>
-<p><em>Note:</em> the expected value is computed from the sampling distribution of <span class="math inline">\(\widehat{\theta}(X)\)</span></p>
-</div>
-</div>
-</div>
-</div>
-</section>
-<section id="estimator-properties-variance" class="slide level2">
-<h2>Estimator properties: variance</h2>
-<p>How much <em>variability</em> does the estimator have around its mean?</p>
-<div class="callout callout-note callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Variance of an estimator</strong></p>
-</div>
-<div class="callout-content">
-<p>The variance of an estimator is</p>
-<p><span class="math display">\[\text{Var}(\widehat{\theta}) = E[(\widehat{\theta} - E[\widehat{\theta}])^2]\]</span></p>
-<p><em>Note:</em> the expected value is computed from the sampling distribution of <span class="math inline">\(\widehat{\theta}(X)\)</span></p>
-</div>
-</div>
-</div>
-</section>
-<section id="estimator-properties-mean-square-error-mse" class="slide level2">
-<h2>Estimator properties: Mean Square Error (MSE)</h2>
-<p>How much variability does the estimator have <strong>around <span class="math inline">\(\theta\)</span></strong>?</p>
-<div class="callout callout-note callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>MSE</strong></p>
-</div>
-<div class="callout-content">
-<p>The MSE of an estimator is</p>
-<p><span class="math display">\[MSE(\widehat\theta) = E[(\widehat\theta - \theta)^2] = \text{Var}(\widehat{\theta}) + \text{Bias}(\widehat\theta)^2\]</span></p>
-</div>
-</div>
-</div>
-</section>
-<section id="comparing-estimators-simulation-1" class="slide level2">
-<h2>Comparing Estimators: simulation</h2>
-<p>Recall that <span class="math inline">\(E(Y) = \mu = 1/\lambda = 10\)</span> is the true value</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a aria-hidden="true" tabindex="-1"></a>sims <span class="sc">|&gt;</span></span>
-<span id="cb2-2"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(estimator) <span class="sc">|&gt;</span></span>
-<span id="cb2-3"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(</span>
-<span id="cb2-4"><a aria-hidden="true" tabindex="-1"></a>    <span class="at">bias =</span> <span class="fu">mean</span>(value) <span class="sc">-</span> <span class="dv">10</span>,</span>
-<span id="cb2-5"><a aria-hidden="true" tabindex="-1"></a>    <span class="at">var =</span> <span class="fu">var</span>(value),</span>
-<span id="cb2-6"><a aria-hidden="true" tabindex="-1"></a>    <span class="at">MSE =</span> var <span class="sc">+</span> bias<span class="sc">^</span><span class="dv">2</span></span>
-<span id="cb2-7"><a aria-hidden="true" tabindex="-1"></a>  ) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 3 × 4
-  estimator     bias   var    MSE
-  &lt;chr&gt;        &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
-1 mean       0.00123  1.99   1.99
-2 median    -2.97     1.96  10.8 
-3 midpoint  12.4     40.7  195.  </code></pre>
-</div>
-</div>
-</section>
-<section id="practice-unif0-theta-distribution" class="slide level2">
-<h2>Practice: Unif(0, <span class="math inline">\(\theta\)</span>) distribution<sup>1</sup></h2>
+<section id="last-time-unif0-theta-distribution" class="slide level2">
+<h2>Last time: Unif(0, <span class="math inline">\(\theta\)</span>) distribution<sup>1</sup></h2>
 <p>Your task is to compare the estimators</p>
 <p><span class="math display">\[\widehat{\theta}_{MLE} = X_\max \hspace{1in} \widehat{\theta}_{MoM} = 2\bar{X}\]</span></p>
 <div>
@@ -578,9 +371,10 @@ Prof Amanda Luby
 <p><strong>(d) When does <span class="math inline">\(\widehat{\theta}_{MLE}\)</span> “beat” <span class="math inline">\(\widehat{\theta}_{MoM}\)</span> in terms of MSE?</strong></p>
 <p>MSE = “MSE factor” <span class="math inline">\(\times \theta^2\)</span></p>
 
-<img data-src="slides08_files/figure-revealjs/unnamed-chunk-4-1.png" width="960" class="r-stretch"></section>
+<img data-src="slides09_files/figure-revealjs/unnamed-chunk-1-1.png" width="960" class="r-stretch"></section>
 <section id="example-uniform0theta" class="slide level2">
 <h2>Example: Uniform(<span class="math inline">\(0,\theta\)</span>)</h2>
+<p>From last time: <span class="math inline">\(E(\widehat \theta_{MLE}) = \frac{n}{n+1} \theta\)</span> and <span class="math inline">\(V(\widehat \theta_{MLE}) = [\frac{n}{(n+2)(n+1)^2}]\)</span></p>
 <div>
 <ol start="5" type="a">
 <li><p>Since <span class="math inline">\(\hat \theta_{MLE}\)</span> beats <span class="math inline">\(\hat \theta_{MoM}\)</span> in terms of MSE but is biased, can we “unbias” the MLE? Call this third estimator <span class="math inline">\(\hat\theta_3\)</span></p></li>
@@ -593,13 +387,10 @@ Prof Amanda Luby
 <p><strong>(f) Does <span class="math inline">\(\hat \theta_3\)</span> ever “beat” <span class="math inline">\(\hat \theta_{MLE}\)</span> in terms of MSE?</strong></p>
 <p>MSE = “MSE factor” <span class="math inline">\(\times \theta^2\)</span></p>
 
-<img data-src="slides08_files/figure-revealjs/unnamed-chunk-5-1.png" width="960" class="r-stretch"></section>
-<section>
-<section id="can-we-find-a-better-estimator" class="title-slide slide level1 center">
-<h1>Can we find a “better” estimator?</h1>
-<div class="fragment">
-<p>Is there another unbiased estimator with smaller variance?</p>
-</div>
+<img data-src="slides09_files/figure-revealjs/unnamed-chunk-2-1.png" width="960" class="r-stretch"></section>
+<section id="moral-of-the-story" class="slide level2">
+<h2>Moral of the story</h2>
+<p>We can “fix” bias, but it’s harder to fix variance</p>
 </section>
 <section id="comparing-unbiased-estimators-efficiency" class="slide level2">
 <h2>Comparing unbiased estimators: efficiency</h2>
@@ -616,6 +407,26 @@ Prof Amanda Luby
 <p><span class="math display">\[\text{Var}(\widehat \theta_1) &lt; \text{Var}(\widehat \theta_2) \iff \text{SE}(\widehat \theta_1) &lt; \text{SE}(\widehat \theta_2)\]</span></p>
 </div>
 </div>
+</div>
+</section>
+<section id="example-why-efficiency-matters" class="slide level2">
+<h2>Example: why efficiency matters</h2>
+<p>We now have two unbiased estimators: <span class="math display">\[\widehat \theta_{MoM}$\widehat \theta_{3} = \frac{n+1}{n} X_\max\]</span></p>
+<ol type="a">
+<li class="fragment">If <span class="math inline">\(n=10\)</span> what is the expectation and variance of each of these estimators?</li>
+</ol>
+</section>
+<section id="example-why-efficiency-matters-1" class="slide level2">
+<h2>Example: why efficiency matters</h2>
+<ol start="2" type="a">
+<li class="fragment">What <span class="math inline">\(n\)</span> would we need for <span class="math inline">\(\widehat\theta_{MOM}\)</span> to reach the variance of <span class="math inline">\(\widehat\theta_3\)</span>?</li>
+</ol>
+</section>
+<section>
+<section id="can-we-find-a-better-estimator" class="title-slide slide level1 center">
+<h1>Can we find a “better” estimator?</h1>
+<div class="fragment">
+<p>Is there another unbiased estimator with smaller variance?</p>
 </div>
 </section>
 <section id="comparing-unbiased-estimators-cramer-rao-lower-bound-crlb" class="slide level2">
@@ -637,6 +448,9 @@ Prof Amanda Luby
 </div>
 </div>
 </div>
+<div class="fragment">
+<p>If the variance of an estimator is equal to the CRLB, then there is <em>no other unbiased estimator with more precision</em></p>
+</div>
 </section>
 <section id="fisher-information" class="slide level2">
 <h2>Fisher Information</h2>
@@ -650,10 +464,77 @@ Prof Amanda Luby
 </div>
 <div class="callout-content">
 <p>The <strong>Fisher Information</strong> of a random variable <span class="math inline">\(X\)</span> is <span class="math display">\[I(\theta) = E[(\frac{d}{d\theta} \ln f(x|\theta))^2] = -   E(l''(\theta))\]</span></p>
-<p>*provided certain regularity conditions are met</p>
+<p>*provided the domain of <span class="math inline">\(X\)</span> does not depend on <span class="math inline">\(\theta\)</span> (and a few other regularity conditions)</p>
 </div>
 </div>
 </div>
+</section>
+<section id="intuition-fisher-information" class="slide level2">
+<h2>Intuition: Fisher information</h2>
+<p><span class="math display">\[I(\theta) = E_X[(\frac{d}{d\theta} \ln f(x|\theta))^2] = -   E_X(l''(\theta))\]</span></p>
+<ul>
+<li class="fragment"><span class="math inline">\(l(\theta)\)</span> is the log-likelihood function</li>
+<li class="fragment"><span class="math inline">\(l'(\theta)\)</span> gives the slope of the log-likelihood at any point, <span class="math inline">\(l''(\theta)\)</span> gives the curvature at any given point</li>
+<li class="fragment">The Fisher information “averages out” over <span class="math inline">\(X\)</span> and summarizes the overall curvature of the log-likelihood function</li>
+</ul>
+</section>
+<section id="intuition-fisher-information-1" class="slide level2">
+<h2>Intuition: Fisher information</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Higher Fisher Information</strong></p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="slides09_files/figure-revealjs/unnamed-chunk-3-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<p><strong>Lower Fisher Information</strong></p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="slides09_files/figure-revealjs/unnamed-chunk-4-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+<div class="fragment">
+<p>Distributions with a “pointier” log-likelihood have higher Fisher information than distributions with lower Fisher information</p>
+</div>
+<div class="fragment">
+<p>Lower Fisher information <span class="math inline">\(\to\)</span> flat log-likelihood <span class="math inline">\(\to\)</span> lots of estimators “close” to the MLE</p>
+</div>
+</section>
+<section id="practice-fisher-information" class="slide level2">
+<h2>Practice: Fisher information</h2>
+<p>Find the <em>Fisher information</em> for <span class="math inline">\(Y\)</span>, where <span class="math inline">\(X \sim Exp(\lambda)\)</span></p>
+</section>
+<section id="practice-finding-crlb" class="slide level2">
+<h2>Practice: finding CRLB</h2>
+<p>Let <span class="math inline">\(Y_1, ..., Y_n\)</span> be <span class="math inline">\(n\)</span> Exp(<span class="math inline">\(\lambda\)</span>) random variables Let <span class="math inline">\(\widehat\lambda = \frac{n}{\sum Y_i}\)</span>. How does Var(<span class="math inline">\(\widehat\lambda\)</span>) compare with the CRLB?</p>
+</section>
+<section id="section-2" class="slide level2">
+<h2></h2>
+<p>So far, we’ve found the <em>bias</em>, <em>variance</em>, and <em>MSE</em> <strong>analytically</strong> (with formal mathematical formulas). In practice, we often can’t do this.</p>
+<div class="fragment">
+<p>For example: The median <span class="math inline">\(m\)</span> of an Exponential(<span class="math inline">\(\lambda\)</span>) distribution satisfies P(X ≤ m) = 0.5. Solving <span class="math inline">\(1 - e^(-\lambda m) = 0.5\)</span> gives <span class="math inline">\(m = ln(2) / \lambda\)</span>.</p>
+</div>
+<div class="fragment">
+<p>This suggests an estimator for <span class="math inline">\(\lambda\)</span> based on the median: <span class="math inline">\(\widehat{\lambda} = \frac{ln(2)}{m}\)</span></p>
+</div>
+<div class="fragment">
+<p>Finding the analytical variance of <span class="math inline">\(\widehat \lambda\)</span> is complicated. Finding the sampling distribution of <span class="math inline">\(m\)</span> is complicated, and finding the non-linear transformation is also complicated.</p>
+</div>
+</section>
+<section id="your-turn-simulation" class="slide level2">
+<h2>Your turn: simulation</h2>
+<p>Use simulation to see whether <span class="math inline">\(\frac{ln(2)}{m}\)</span> (a) is unbiased and (b) achieves the CRLB</p>
 
 
 </section></section>

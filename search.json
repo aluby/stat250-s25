@@ -147,410 +147,179 @@
     "text": "library(tidyverse)\n\nThe goal for today is to understand the concept of a sampling distribution by comparing theoretical results with simulation results using R. We will investigate the sampling distributions of the sample mean.\nYou’ve been assigned to groups of 3-4 for this activity. You should submit your rendered file on gradescope as a group assignment. If folks from your assigned group did not show up, groups of 2 can combine into groups of 4.\n\nIntroduction\nA sampling distribution is the probability distribution of a statistic (like the sample mean \\(\\bar{x}\\) or sample variance \\(s^2\\)) obtained through a large number of samples drawn from a specific population. Understanding sampling distributions is crucial for statistical inference, as it allows us to make probability statements about sample statistics. In this activity, we will generate empirical sampling distributions through simulation and compare them to theoretical results.\nAlong the way, you’ll get some practice in R and some probability review.\n\n\nPart 1: Sampling distribution of the mean (Normal population)\nAssume data points \\(X_1, X_2, ..., X_n\\) are sampled from a normally distributed population\n\nIf \\(X_1, X_2, ..., X_n \\sim N(\\mu, \\sigma^2)\\), what is the expected value \\(E[\\bar{X}]\\) and theoretical standard deviation of \\(\\bar{X}\\) (also known as the standard error)?\nWhat is the theoretical distribution of \\(\\bar{X}\\)? (Note: you do not need to prove/derive this!)\n\nLet’s simulate this. Assume our population is \\(N(50, 10^2)\\) (so \\(\\sigma=10\\)). We will draw samples of size n = 25:\n\npop_mean &lt;- 50\npop_sd &lt;- 10\nsample_size &lt;- 25\nn_simulations &lt;- 100\n\nsample_means &lt;- numeric(n_simulations)\n\nfor(i in 1:n_simulations){\n  x &lt;- rnorm(sample_size, mean = pop_mean, sd = pop_sd)\n  sample_means[i] &lt;- mean(x)\n}\n\n\nWhat is the mean of sample_means? How close is it to \\(E[\\bar{X}]\\) above?\nWhat is the sd of sample_means? How close is it to the theoretical standard error you found above?\nThe code below makes a histogram of sample_means and overlays an incorrect theoretical density curve on top. Replace pop_mean and pop_sd with the theoretical values that you found in Q1.\n\n\ndf &lt;- data.frame(\n  sample_means = sample_means\n)\n\nggplot(df, aes(x = sample_means)) + \n  geom_histogram(aes(y = stat(density)), col = \"white\", bins = 20) + \n  stat_function(fun = dnorm, args = list(mean = pop_mean, s = pop_sd), col = \"cornflowerblue\")\n\n\n\n\n\n\n\n\n\nTry different values for sample_size and n_simulations. When does the histogram match the theoretical density most closely?\n\n\n\n\n\n\n\nCentral Limit Theorem\n\n\n\nYou have (hopefully) just demonstrated the Central Limit Theorem in action. Nice work! The CLT tells us that, as our sample size approaches \\(\\infty\\),\n\\[F_\\bar{X}(\\bar{X}) \\to N(\\mu, \\frac{\\sigma}{\\sqrt{n}})\\]\n\n\n\n\nPart 2: Non-normal population\nWe often use the Exponential distribution to model the time until an event occurs in a process where events happen randomly and independently at a constant average rate (a Poisson process). A common example is the time between consecutive arrivals of customers, like a coffee shop, during a period where the arrival rate is relatively stable. The key parameter is the rate \\(\\lambda\\) (e.g., average customers per minute) or its reciprocal, the mean time \\(\\mu = 1/\\lambda\\) (e.g., average minutes between customers). Individual inter-arrival times will follow a skewed distribution (many short times, fewer long times), but the CLT tells us something interesting about the average of these times if we look at many samples.\n\nLet \\(X\\) be the time (in minutes) between consecutive customer arrivals at a small coffee shop during a specific hour. Suppose this time can be modeled by an Exponential distribution. We observe that, on average over a long period of time, a customer arrives every 5 minutes. This average time is the mean of the distribution, \\(\\mu = 5\\) minutes. What is the rate, \\(\\lambda\\)? What is \\(E[X]\\) and \\(\\sigma_X\\)? (You can use the distributions cheat sheet in the back of the book)\nThe code below plots a theoretical exponential distribution with \\(\\lambda=1\\). Change it to the appropriate value.\n\n\n\n\n\n\n\n\n\n\n\nAccording to the CLT, if we take a sample of n = 40 consecutive inter-arrival times, what should the approximate distribution of the average inter-arrival time (\\(\\bar{X}\\)) be across many such samples? What are its approximate mean and standard error?\nLet’s check our answers through simulation. Replace all _____ with appropriate values in the code chunk below, and then remove the line with #| eval: false.\n\n\npop_lambda &lt;- ____\nsample_size &lt;- ____\nn_simulations &lt;- 1000\n\nsample_means &lt;- numeric(n_simulations)\n\nfor(i in 1:n_simulations){\n  x &lt;- rexp(sample_size, rate = pop_lambda)\n  sample_means[i] &lt;- mean(x)\n}\n\ndf &lt;- data.frame(\n  sample_means = sample_means\n)\n\nggplot(df, aes(x = sample_means)) + \n  geom_histogram(aes(y = stat(density)), col = \"white\", bins = 20) + \n  stat_function(fun = dnorm, args = list(mean = ______, s = ______), col = \"cornflowerblue\")\n\n\nHow well does the normal curve approximate the distribution of the average inter-arrival times, even though the distribution of individual inter-arrival times is heavily skewed (Exponential)?\nWhat happens if the sample size n is much smaller (e.g., \\(n=5\\))?\n\n\n\nPart 3: Discrete data\nThe true magic of the CLT is that it applies to any probability distribution, even discrete ones!\nExample: According to the 2004 American Community Survey, 28% of adults over 25 years old in Utah have completed a bachelor’s degree. In a random sample of 64 adults over age 25 from Utah, what is the probability that at least 30 have a bachelor’s degree?\nLet \\(X_i\\) indicate whether a sampled person has a bachelor’s degree. Then, \\(X_1, ...., X_n \\sim Binom(n,p)\\).\n\nWhat is \\(n\\) and what is \\(p\\)?\n\nWe are interested in how many people have a bachelor’s degree, or \\(\\frac{\\sum X_i}{n}\\). This is also an \\(\\bar{X}\\)!\n\nUse the CLT to find \\(E[\\hat{p}]\\) and \\(s_{\\hat{p}}\\).\nUse the normal distribution to find \\(P(\\bar{X} &gt; .3)\\) (Hint: use pnorm)\nAlternatively, we can answer this question through simulation. Use sample_means to estimate this probability. How close are you to your answer from (3)?\n\n\npop_p &lt;- .28\nsample_size &lt;- 64\nn_simulations &lt;- 1000\n\nsample_means &lt;- numeric(n_simulations)\n\nfor(i in 1:n_simulations){\n  x &lt;- rbinom(1, size = sample_size, prob = pop_p)\n  sample_means[i] &lt;- x/sample_size\n}\n\n\n\nPart 4: Summary and Reflection\n\nWhat is the difference between a population distribution, sample distribution, and distribution of a sample?\nWhy is the CLT important?\nGive one benefit of finding sampling distributions theoretically with probability\nGive one benefit of finding sampling distributions computationally through simulation\nDoes your group have any lingering questions for me?"
   },
   {
-    "objectID": "slides/00-test/00-test.html#r-code",
-    "href": "slides/00-test/00-test.html#r-code",
-    "title": "Test slides",
-    "section": "R Code",
-    "text": "R Code\n\npalmerpenguins::penguins %&gt;%\n  ggplot(aes(x = flipper_length_mm)) +\n  geom_histogram(col = \"white\")"
+    "objectID": "slides/06/slides06.html#big-idea",
+    "href": "slides/06/slides06.html#big-idea",
+    "title": "Maximum Likelihood Estimation II",
+    "section": "Big Idea",
+    "text": "Big Idea\nWe’re interested in the proportion of Carleton students who have had some sort of research experience. We have the resources to randomly sample 10 students.\n\n\nProbability:\n\nStatistics:"
   },
   {
-    "objectID": "slides/00-test/00-test.html#plan-for-today",
-    "href": "slides/00-test/00-test.html#plan-for-today",
-    "title": "Test slides",
-    "section": "Plan for today",
-    "text": "Plan for today\n\nSyllabus\nContext for the class\nCourse expectations"
+    "objectID": "slides/06/slides06.html#example",
+    "href": "slides/06/slides06.html#example",
+    "title": "Maximum Likelihood Estimation II",
+    "section": "Example",
+    "text": "Example\nRecall that the likelihood function for \\(n\\) iid Bernoulli(\\(\\theta\\)) random variable is \\(L(\\theta) = \\theta^{\\sum x_i} (1-\\theta)^{n - \\sum x_i}\\).\n\n\n\n\n\n\n\n\n\n\n\n\nScenario 1: 0 yes responses\n\n\n\n\\(\\theta\\)\n0.0\n0.2\n0.4\n0.6\n0.8\n1.0\n\n\n\\(L(\\theta)\\)\n\n\n\n\n\n\n\n\n\nScenario 2: 6 yes responses\n\n\n\n\\(\\theta\\)\n0.0\n0.2\n0.4\n0.6\n0.8\n1.0\n\n\n\\(L(\\theta)\\)"
   },
   {
-    "objectID": "slides/00-test/00-test.html#a-bit-about-me",
-    "href": "slides/00-test/00-test.html#a-bit-about-me",
-    "title": "Test slides",
-    "section": "A bit about me",
-    "text": "A bit about me"
+    "objectID": "slides/06/slides06.html#exercise",
+    "href": "slides/06/slides06.html#exercise",
+    "title": "Maximum Likelihood Estimation II",
+    "section": "Exercise",
+    "text": "Exercise\nIs the likelihood function a probability distribution? Why or why not?"
   },
   {
-    "objectID": "slides/00-test/00-test.html#course-description",
-    "href": "slides/00-test/00-test.html#course-description",
-    "title": "Test slides",
-    "section": "Course description",
-    "text": "Course description\nThis course is an introduction to the mathematical theory of frequentist and Bayesian statistical inference. Topics include parameter estimation, confidence intervals and hypothesis testing, linear models, and Bayesian inference.\nStudents who analyze data, or who aspire to develop new methods for analyzing data, should be well-grounded in mathematical statistics."
+    "objectID": "slides/06/slides06.html#exercise-from-last-class",
+    "href": "slides/06/slides06.html#exercise-from-last-class",
+    "title": "Maximum Likelihood Estimation II",
+    "section": "Exercise: from last class",
+    "text": "Exercise: from last class\nLet \\(X_1, ..., X_n\\) be an iid random sample from a distribution with PDF\n\\[f(x|\\theta)= (\\theta + 1)x^\\theta, 0 \\le x \\le 1\\]\n\\[L(\\theta) =\\] \\[\\hat\\theta_{MLE}=\\]\nSuppose we observe a sample of size 5: {.83, .49, .72, .57, .66}. Find the maximum likelihood estimate and verify with a graph or numerical approximation"
   },
   {
-    "objectID": "slides/00-test/00-test.html#course-objectives",
-    "href": "slides/00-test/00-test.html#course-objectives",
-    "title": "Test slides",
-    "section": "Course Objectives",
-    "text": "Course Objectives\nBy the end of this course, you should be able to:\n\nDerive estimators for parameters using maximum likelihood, the method of moments, and Bayesian techniques\nEvaluate the performance of estimators and describe their strengths and weaknesses\nDemonstrate a sophisticated understanding of the mathematics behind hypothesis tests, confidence intervals, and linear models\n\nUse the statistical package R to implement basic simulations of estimation scenarios"
+    "objectID": "slides/06/slides06.html#example-uniform-disribution",
+    "href": "slides/06/slides06.html#example-uniform-disribution",
+    "title": "Maximum Likelihood Estimation II",
+    "section": "Example: Uniform disribution",
+    "text": "Example: Uniform disribution\nFind the MLE for \\(Y_1, ..., Y_n \\sim \\text{Unif}(0, \\theta)\\)"
   },
   {
-    "objectID": "slides/00-test/00-test.html#textbook",
-    "href": "slides/00-test/00-test.html#textbook",
-    "title": "Test slides",
-    "section": "Textbook:",
-    "text": "Textbook:"
+    "objectID": "slides/06/slides06.html#finding-the-mle-when-more-than-one-parameter-is-unknown",
+    "href": "slides/06/slides06.html#finding-the-mle-when-more-than-one-parameter-is-unknown",
+    "title": "Maximum Likelihood Estimation II",
+    "section": "Finding the MLE when more than one parameter is unknown",
+    "text": "Finding the MLE when more than one parameter is unknown\nIf the pdf or pmf that we’re using has two or more parameters, say \\(\\theta_1\\) and \\(\\theta_2\\), finding MLEs for the \\(\\theta_i\\)’s requires the solution of a sest of simultaneous equations\n\n\\[\\frac{\\partial}{\\partial \\theta_1} \\ln L(\\theta_1, \\theta_2) = 0\\]\n\n\n\\[\\frac{\\partial}{\\partial \\theta_2} \\ln L(\\theta_1, \\theta_2) = 0\\]"
   },
   {
-    "objectID": "slides/00-test/00-test.html#computing",
-    "href": "slides/00-test/00-test.html#computing",
-    "title": "Test slides",
-    "section": "Computing:",
-    "text": "Computing:"
+    "objectID": "slides/06/slides06.html#example-nmu-sigma2-distribution",
+    "href": "slides/06/slides06.html#example-nmu-sigma2-distribution",
+    "title": "Maximum Likelihood Estimation II",
+    "section": "Example: \\(N(\\mu, \\sigma^2)\\) distribution",
+    "text": "Example: \\(N(\\mu, \\sigma^2)\\) distribution\nSuppose a random sample of size \\(n\\) is drawn from the two parameter normal pdf:\n\\(f_y(y|\\mu, \\sigma^2) = \\frac{1}{\\sqrt{2\\pi \\sigma}} \\exp(-(\\frac{y-\\mu}{\\sigma})^2)\\)\nfind the MLEs \\(\\hat{\\mu}\\) and \\(\\hat\\sigma^2\\)"
   },
   {
-    "objectID": "slides/00-test/00-test.html#assignments",
-    "href": "slides/00-test/00-test.html#assignments",
-    "title": "Test slides",
-    "section": "Assignments",
-    "text": "Assignments"
+    "objectID": "slides/08/slides08.html#recap",
+    "href": "slides/08/slides08.html#recap",
+    "title": "Evaluating Estimators",
+    "section": "Recap",
+    "text": "Recap\n\nObserve data \\(X_1, ..., X_n \\sim F_x(x|\\theta)\\), where \\(\\theta\\) is unknown\nGoal: Estimate \\(\\theta\\) based on the values of \\(X_i\\) by formulating an estimator \\(\\widehat \\theta\\)\nOne technique is to use the maximum likelihood estimator, which finds the value of \\(\\theta\\) that maximizes the joint probability \\(\\prod_{i=1}^n f_x(x_i | \\theta)\\)\nA second technique is to use the method of moments estimator, which finds the value of \\(\\theta\\) that make the theoretical moments equal to the sample moments\nToday: if we have multiple estimators, how do we decide which is better?"
   },
   {
-    "objectID": "slides/00-test/00-test.html#regrade-request-policy",
-    "href": "slides/00-test/00-test.html#regrade-request-policy",
-    "title": "Test slides",
-    "section": "Regrade request policy",
-    "text": "Regrade request policy\nGrading is often a tedious task, and the grading team will sometimes make mistakes. I am always happy to fix these mistakes, and gradescope makes it easy to do so. However, it takes time to read through these requests and I’ve noticed an increase in unwarranted regrade requests in recent years. This semester, I am instituting an “NFL Coaches Challenge”-style regrade request rule. Every student will start the semester with 2 regrade requests available to them. If you submit a regrade request and I agree with you, you get it back. If you submit a regrade request for something that was not a grading mistake, you lose that request."
+    "objectID": "slides/08/slides08.html#warm-up",
+    "href": "slides/08/slides08.html#warm-up",
+    "title": "Evaluating Estimators",
+    "section": "Warm up",
+    "text": "Warm up\nSuppose we take a random sample of size 50 from an exponential distribution with rate \\(\\lambda = 1/10\\).\nWhat is \\(\\mu = E(Y)\\)?\nIf we want to design an estimator for the mean, \\(\\widehat \\mu\\), what are some intuitive estimators?"
   },
   {
-    "objectID": "slides/00-test/00-test.html#exams",
-    "href": "slides/00-test/00-test.html#exams",
-    "title": "Test slides",
-    "section": "Exams",
-    "text": "Exams"
+    "objectID": "slides/08/slides08.html#estimators-for-the-mean",
+    "href": "slides/08/slides08.html#estimators-for-the-mean",
+    "title": "Evaluating Estimators",
+    "section": "Estimators for the mean",
+    "text": "Estimators for the mean\nSuppose we take a random sample of size 50 from an exponential distribution with mean 10 (rate is \\(\\lambda = 1/10\\)).\nConsider three estimators of \\(\\mu\\):\n\n\\(\\widehat{\\mu_1} = \\bar{X}\\)\n\\(\\widehat{\\mu_2} = \\widetilde{X}\\)\n\\(\\widehat{\\mu_3} = \\frac{X_{\\max} - X_{\\min}}{2}\\)"
   },
   {
-    "objectID": "slides/00-test/00-test.html#final-exam",
-    "href": "slides/00-test/00-test.html#final-exam",
-    "title": "Test slides",
-    "section": "Final Exam",
-    "text": "Final Exam"
+    "objectID": "slides/08/slides08.html#aside-estimators-are-also-random-variables",
+    "href": "slides/08/slides08.html#aside-estimators-are-also-random-variables",
+    "title": "Evaluating Estimators",
+    "section": "Aside: estimators are also random variables",
+    "text": "Aside: estimators are also random variables\n\\(X_1, ..., X_n \\sim F_x(\\theta)\\) and each \\(\\widehat{\\theta} = g(X_1, ..., X_n)\\) is a function of the data\n\nThis means that each \\(\\widehat\\theta\\) is itself a random variable, and so it has:\n\na pdf \\(f_\\widehat{\\theta}\\)\nan expectation \\(E(\\widehat\\theta)\\)\na variance \\(\\text{Var}(\\widehat{\\theta})\\)"
   },
   {
-    "objectID": "slides/00-test/00-test.html#course-project",
-    "href": "slides/00-test/00-test.html#course-project",
-    "title": "Test slides",
-    "section": "Course project",
-    "text": "Course project"
+    "objectID": "slides/08/slides08.html#comparing-estimators-simulation",
+    "href": "slides/08/slides08.html#comparing-estimators-simulation",
+    "title": "Evaluating Estimators",
+    "section": "Comparing Estimators: Simulation",
+    "text": "Comparing Estimators: Simulation\nSuppose we take a random sample of size 50 from an exponential distribution with mean 10 (rate is \\(\\lambda = 1/10\\)).\n\n\nConsider three estimators of \\(\\mu\\):\n\n\\(\\hat{\\mu_1} = \\bar{X}\\)\n\\(\\hat{\\mu_2} = \\tilde{X}\\)\n\\(\\hat{\\mu_3} = \\frac{X_{\\max} - X_{\\min}}{2}\\)\n\n\n\nn &lt;- 50\nN_sims &lt;- 100000\nest1 &lt;- numeric(N_sims)\nest2 &lt;- numeric(N_sims)\nest3 &lt;- numeric(N_sims)\nfor(i in 1:N_sims){\n  x &lt;- rexp(n, rate = .1)\n  est1[i] &lt;- mean(x)\n  est2[i] &lt;- median(x)\n  est3[i] &lt;- (max(x) - min(x))/2\n}"
   },
   {
-    "objectID": "slides/00-test/00-test.html#final-grades",
-    "href": "slides/00-test/00-test.html#final-grades",
-    "title": "Test slides",
-    "section": "Final grades",
-    "text": "Final grades"
+    "objectID": "slides/08/slides08.html#sampling-distribution-of-the-estimators",
+    "href": "slides/08/slides08.html#sampling-distribution-of-the-estimators",
+    "title": "Evaluating Estimators",
+    "section": "Sampling Distribution of the Estimators",
+    "text": "Sampling Distribution of the Estimators\n\nwhich estimator is “best”?"
   },
   {
-    "objectID": "slides/00-test/00-test.html#advice-from-past-students",
-    "href": "slides/00-test/00-test.html#advice-from-past-students",
-    "title": "Test slides",
-    "section": "Advice from past students:",
-    "text": "Advice from past students:\n\nStart the problem sets early and go to office hours!\nWork with other people in the class, collaboration is key\nBe willing to ask lots of questions and don’t be afraid to ask for help!\nI would advise for them to attend office hours and the stat clinic since early on to get help and not be worrying about assignments at the last minute.\nI would advise future students to reach out and ask questions as soon if they have any confusion. Understanding statistical concepts and working with R can be frustrating at times, but people are here to help you along the way!\nDon’t let work snowball! Try to get help early and often and an imperfect problem set is better than no problem set.\nlots of R here! Organization is key, and you’ll do well as long as you start homeworks early, communicate with the professor and with your fellow classmates. There’s a good support system."
+    "objectID": "slides/08/slides08.html#properties-of-estimators",
+    "href": "slides/08/slides08.html#properties-of-estimators",
+    "title": "Evaluating Estimators",
+    "section": "Properties of Estimators",
+    "text": "Properties of Estimators"
   },
   {
-    "objectID": "slides/00-test/00-test.html#the-genius-myth",
-    "href": "slides/00-test/00-test.html#the-genius-myth",
-    "title": "Test slides",
-    "section": "The “Genius Myth”",
-    "text": "The “Genius Myth”\nIt’s sometimes easy to buy into the “genius myth” when it comes to math/stat courses: that you need to be a “math person” and have some innate mathematical ability in order to do well or become a statistics major. This could not be further from the truth! The best statisticians don’t necessarily have the “best” math or programming background, but are people that are able to formulate interesting questions and use math and programming to rigorously answer those questions. Many of the best statisticians I know became statisticians because they were initially interested in something else (biology, public health, psychology, neuroscience, physics, etc.) and realized that being able to answer important questions with data was not only valuable but fun and interesting. Being able to perform interesting statistical analyses is a skill that is learned, not an innate ability, and working hard at developing that skill is the point of this course."
+    "objectID": "slides/08/slides08.html#estimator-properties-bias",
+    "href": "slides/08/slides08.html#estimator-properties-bias",
+    "title": "Evaluating Estimators",
+    "section": "Estimator properties: bias",
+    "text": "Estimator properties: bias\nHow accurate is the estimator?\n\n\n\n\n\n\n\nBias of an estimator\n\n\nIf \\(\\widehat{\\theta}(X)\\) is an estimator of \\(\\theta\\), then the bias of the estimator is equal to\n\\[\\text{Bias}(\\widehat\\theta) = E[\\widehat \\theta(X)] - \\theta\\]\nNote: the expected value is computed from the sampling distribution of \\(\\widehat{\\theta}(X)\\)"
   },
   {
-    "objectID": "slides/00-test/00-test.html#academic-integrity",
-    "href": "slides/00-test/00-test.html#academic-integrity",
-    "title": "Test slides",
-    "section": "Academic Integrity",
-    "text": "Academic Integrity"
+    "objectID": "slides/08/slides08.html#estimator-properties-variance",
+    "href": "slides/08/slides08.html#estimator-properties-variance",
+    "title": "Evaluating Estimators",
+    "section": "Estimator properties: variance",
+    "text": "Estimator properties: variance\nHow much variability does the estimator have around its mean?\n\n\n\n\n\n\nVariance of an estimator\n\n\nThe variance of an estimator is\n\\[\\text{Var}(\\widehat{\\theta}) = E[(\\widehat{\\theta} - E[\\widehat{\\theta}])^2]\\]\nNote: the expected value is computed from the sampling distribution of \\(\\widehat{\\theta}(X)\\)"
   },
   {
-    "objectID": "slides/00-test/00-test.html#diversity-inclusion",
-    "href": "slides/00-test/00-test.html#diversity-inclusion",
-    "title": "Test slides",
-    "section": "Diversity & Inclusion",
-    "text": "Diversity & Inclusion\nWe all come to class with different backgrounds and experiences, and this diversity makes our class environment richer. We value diversity and inclusion, and are committed to a climate of mutual respect and full participation in and out of the classroom. This class strives to be a learning environment that is usable, equitable, inclusive and welcoming, regardless of race, ethnicity, religion, gender and gender identities, sexual orientation, ability, socioeconomic background, and nationality. If you anticipate or experience any barriers to learning, please discuss your concerns with me."
+    "objectID": "slides/08/slides08.html#estimator-properties-mean-square-error-mse",
+    "href": "slides/08/slides08.html#estimator-properties-mean-square-error-mse",
+    "title": "Evaluating Estimators",
+    "section": "Estimator properties: Mean Square Error (MSE)",
+    "text": "Estimator properties: Mean Square Error (MSE)\nHow much variability does the estimator have around \\(\\theta\\)?\n\n\n\n\n\n\nMSE\n\n\nThe MSE of an estimator is\n\\[MSE(\\widehat\\theta) = E[(\\widehat\\theta - \\theta)^2] = \\text{Var}(\\widehat{\\theta}) + \\text{Bias}(\\widehat\\theta)^2\\]"
   },
   {
-    "objectID": "slides/00-test/00-test.html#accomodations",
-    "href": "slides/00-test/00-test.html#accomodations",
-    "title": "Test slides",
-    "section": "Accomodations",
-    "text": "Accomodations"
+    "objectID": "slides/08/slides08.html#comparing-estimators-simulation-1",
+    "href": "slides/08/slides08.html#comparing-estimators-simulation-1",
+    "title": "Evaluating Estimators",
+    "section": "Comparing Estimators: simulation",
+    "text": "Comparing Estimators: simulation\nRecall that \\(E(Y) = \\mu = 1/\\lambda = 10\\) is the true value\n\nsims |&gt;\n  group_by(estimator) |&gt;\n  summarize(\n    bias = mean(value) - 10,\n    var = var(value),\n    MSE = var + bias^2\n  ) \n\n# A tibble: 3 × 4\n  estimator     bias   var    MSE\n  &lt;chr&gt;        &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;\n1 mean       0.00123  1.99   1.99\n2 median    -2.97     1.96  10.8 \n3 midpoint  12.4     40.7  195."
   },
   {
-    "objectID": "slides/00-test/00-test.html#stat-lab",
-    "href": "slides/00-test/00-test.html#stat-lab",
-    "title": "Test slides",
-    "section": "Stat Lab",
-    "text": "Stat Lab"
+    "objectID": "slides/08/slides08.html#practice-unif0-theta-distribution",
+    "href": "slides/08/slides08.html#practice-unif0-theta-distribution",
+    "title": "Evaluating Estimators",
+    "section": "Practice: Unif(0, \\(\\theta\\)) distribution1",
+    "text": "Practice: Unif(0, \\(\\theta\\)) distribution1\nYour task is to compare the estimators\n\\[\\widehat{\\theta}_{MLE} = X_\\max \\hspace{1in} \\widehat{\\theta}_{MoM} = 2\\bar{X}\\]\n\n\nWhat is the bias of each estimator?2\nWhat is the SE of each estimator?\nWhat is the MSE of each estimator?\nWhen does \\(\\widehat{\\theta}_{MLE}\\) “beat” \\(\\widehat{\\theta}_{MoM}\\) in terms of MSE?\n\n\nSo \\(0 \\le x \\le \\theta\\), \\(f_x = \\frac{1}{\\theta}\\), \\(F_x = \\frac{x}{\\theta}\\), \\(E(X) = \\frac{\\theta}{2}\\), and \\(V(X) = \\frac{\\theta^2}{12}\\)A helpful fact is that \\(f_{X_{max}}(x) = n[F(x)]^{n-1}f_X(x)\\)"
   },
   {
-    "objectID": "slides/00-test/00-test.html#title-ix",
-    "href": "slides/00-test/00-test.html#title-ix",
-    "title": "Test slides",
-    "section": "Title IX",
-    "text": "Title IX\nPlease be aware that all faculty are “responsible employees”, which means that if you tell me about a situation involving sexual harassment, sexual assault, dating violence, domestic violence, or stalking, I must share that information with the Title IX Coordinator. Although I have to make this notification, you will control how your case will be handled, including whether or not you wish to meet with the Title IX coordinator or pursue a formal complaint."
-  },
-  {
-    "objectID": "slides/00-test/00-test.html#take-care-of-yourself",
-    "href": "slides/00-test/00-test.html#take-care-of-yourself",
-    "title": "Test slides",
-    "section": "Take care of yourself",
-    "text": "Take care of yourself\nDo your best to maintain a healthy lifestyle this semester by wearing a mask if you don’t feel well, eating a vegetable every day, exercising, avoiding excessive drug and alcohol use, getting enough sleep, and taking some time to relax. Your mental health is more important than your grade in this course. There are many helpful resources available on campus and an important part of the college experience is learning how to ask for help. If you are experiencing mental health symptoms as a result of coursework, please speak with me so we can address the problem together."
-  },
-  {
-    "objectID": "slides/00-test/00-test.html#prerequisites",
-    "href": "slides/00-test/00-test.html#prerequisites",
-    "title": "Test slides",
-    "section": "Prerequisites",
-    "text": "Prerequisites"
-  },
-  {
-    "objectID": "slides/00-test/00-test.html#history",
-    "href": "slides/00-test/00-test.html#history",
-    "title": "Test slides",
-    "section": "History",
-    "text": "History\n\nStatistics seems to be a difficult subject for mathematicians, perhaps because its elusive and wide-ranging character mitigates against the traditional theorem-proof method of presentation. It may come as some comfort then that statistics is also a difficult subject for statisticians\n\n\nControversies in the Foundations of Statistics, Bradley Efron 1978"
-  },
-  {
-    "objectID": "slides/00-test/00-test.html#fisher-vs-neyman-pearson",
-    "href": "slides/00-test/00-test.html#fisher-vs-neyman-pearson",
-    "title": "Test slides",
-    "section": "Fisher vs Neyman-Pearson",
-    "text": "Fisher vs Neyman-Pearson"
-  },
-  {
-    "objectID": "slides/01/slides01.html#plan-for-today",
-    "href": "slides/01/slides01.html#plan-for-today",
-    "title": "Welcome to Stat250!",
-    "section": "Plan for today",
-    "text": "Plan for today\n\nIntros\nContext for the class\nSyllabus\nSetting course expectations"
-  },
-  {
-    "objectID": "slides/01/slides01.html#about-me",
-    "href": "slides/01/slides01.html#about-me",
-    "title": "Welcome to Stat250!",
-    "section": "About me",
-    "text": "About me\n\n\n\nFirst year at Carleton!\nTaught at Swarthmore for 5 years before moving here this fall\nPhD in Statistics & Data Science from Carnegie Mellon University\nGrew up in Minnesota, went to St Ben’s as an undergrad"
-  },
-  {
-    "objectID": "slides/01/slides01.html#three-prongs-of-statistics",
-    "href": "slides/01/slides01.html#three-prongs-of-statistics",
-    "title": "Welcome to Stat250!",
-    "section": "Three prongs of statistics",
-    "text": "Three prongs of statistics\n\n\nDesign  The design of surveys/experiments and collection of data to more efficiently/correctly address scientific questions \n\n\n\nExploration  Understand the major features of and detect patterns in data \n\n\n\n\nInference  Account for randomness, variability, and bias in a sample in order to draw reasonable and correct conclusions about a population"
-  },
-  {
-    "objectID": "slides/01/slides01.html#statistics-vs.-probability",
-    "href": "slides/01/slides01.html#statistics-vs.-probability",
-    "title": "Welcome to Stat250!",
-    "section": "Statistics vs. probability",
-    "text": "Statistics vs. probability\nProbability (Math 240)\nWe learned how to calculate the probability of seeing a result (data) given a specific probability model (e.g., a specific distribution)\n\n\nStatistics (Stat 250)\nWe will learn how to make statements about the underlying probability models given the data we see"
-  },
-  {
-    "objectID": "slides/01/slides01.html#example-spies-vs.-statisticians",
-    "href": "slides/01/slides01.html#example-spies-vs.-statisticians",
-    "title": "Welcome to Stat250!",
-    "section": "Example: Spies vs. Statisticians",
-    "text": "Example: Spies vs. Statisticians\nDuring WWII, the Allies wanted to determine production rates of tanks (and airplanes, missiles, etc.)\nSpies\nGathered intelligence (intercepted messages, interrogated of prisoners, etc.) and made the following estimates:\n\nJune 1940: 1000\nJune 1941: 1550\nAugust 1942: 1550"
-  },
-  {
-    "objectID": "slides/01/slides01.html#example-spies-vs.-statisticians-1",
-    "href": "slides/01/slides01.html#example-spies-vs.-statisticians-1",
-    "title": "Welcome to Stat250!",
-    "section": "Example: Spies vs. Statisticians",
-    "text": "Example: Spies vs. Statisticians\nStatisticians\n\n\nThe Allies had a sample of serial numbers (via capture, photography, etc.), \\(X_1, X_2, \\ldots, X_n\\), and there were \\(N\\) produced.\nAllied statisticians needed to devise an estimator to obtain \\(N\\)\nUltimately, they used \\(\\widehat{N} = X_{\\text{max}} + \\dfrac{X_{\\text{max}}}{n} - 1\\)\n\nJune 1940: 169\nJune 1941: 244\nAugust 1942: 327"
-  },
-  {
-    "objectID": "slides/01/slides01.html#example-spies-vs.-statisticians-2",
-    "href": "slides/01/slides01.html#example-spies-vs.-statisticians-2",
-    "title": "Welcome to Stat250!",
-    "section": "Example: Spies vs. Statisticians",
-    "text": "Example: Spies vs. Statisticians\nAfter the war, the Allies discovered documents revealing the true number of tanks produced:\n\n\n\n\nMonth\nTruth\nStatisticians\nSpies\n\n\n\n\nJune 1940\n122\n169\n1000\n\n\nJune 1941\n271\n244\n1550\n\n\nAugust 1942\n342\n327\n1550"
-  },
-  {
-    "objectID": "slides/01/slides01.html#prereqs",
-    "href": "slides/01/slides01.html#prereqs",
-    "title": "Welcome to Stat250!",
-    "section": "Prereqs",
-    "text": "Prereqs\n\nMath240 (Probability)\nStat120 or other applied intro stats course is helpful but not required\nI’ll assume some experience with R\nWe’re going to use mechanics from calculus & probability, but it’s not the focus of the course\nPart of HW1 is Calc/Prob review. refresh your memory, use resources that you need, talk to me sooner rather than later if it’s especially tough"
-  },
-  {
-    "objectID": "slides/01/slides01.html#section",
-    "href": "slides/01/slides01.html#section",
-    "title": "Welcome to Stat250!",
+    "objectID": "slides/08/slides08.html#section",
+    "href": "slides/08/slides08.html#section",
+    "title": "Evaluating Estimators",
     "section": "",
-    "text": "Statistics seems to be a difficult subject for mathematicians, perhaps because its elusive and wide-ranging character mitigates against the traditional theorem-proof method of presentation. It may come as some comfort then that statistics is also a difficult subject for statisticians\n\n\nControversies in the Foundations of Statistics, Bradley Efron 1978"
+    "text": "(d) When does \\(\\widehat{\\theta}_{MLE}\\) “beat” \\(\\widehat{\\theta}_{MoM}\\) in terms of MSE?\nMSE = “MSE factor” \\(\\times \\theta^2\\)"
   },
   {
-    "objectID": "slides/01/slides01.html#statistical-models",
-    "href": "slides/01/slides01.html#statistical-models",
-    "title": "Welcome to Stat250!",
-    "section": "Statistical models",
-    "text": "Statistical models\nA statistical model consists of\n\na collection of random variables to describe observable data,\nthe possible joint distribution(s) of the random variables,\nand the parameters, \\(\\boldsymbol \\theta\\), that define those distributions\n\n\n\nMorris and DeGroot, 377"
+    "objectID": "slides/08/slides08.html#example-uniform0theta",
+    "href": "slides/08/slides08.html#example-uniform0theta",
+    "title": "Evaluating Estimators",
+    "section": "Example: Uniform(\\(0,\\theta\\))",
+    "text": "Example: Uniform(\\(0,\\theta\\))\n\n\nSince \\(\\hat \\theta_{MLE}\\) beats \\(\\hat \\theta_{MoM}\\) in terms of MSE but is biased, can we “unbias” the MLE? Call this third estimator \\(\\hat\\theta_3\\)\nDoes \\(\\hat \\theta_3\\) ever “beat” \\(\\hat \\theta_{MLE}\\) in terms of MSE?"
   },
   {
-    "objectID": "slides/01/slides01.html#r.a.-fisher",
-    "href": "slides/01/slides01.html#r.a.-fisher",
-    "title": "Welcome to Stat250!",
-    "section": "R.A. Fisher",
-    "text": "R.A. Fisher\n1890-1962\n\n\n\n\n\nVariance\nANOVA\nNull hypothesis\nMaximum likelihood estimation\np-value\nLots of contributions in genetics\nAlso a eugenecist"
+    "objectID": "slides/08/slides08.html#section-1",
+    "href": "slides/08/slides08.html#section-1",
+    "title": "Evaluating Estimators",
+    "section": "",
+    "text": "(f) Does \\(\\hat \\theta_3\\) ever “beat” \\(\\hat \\theta_{MLE}\\) in terms of MSE?\nMSE = “MSE factor” \\(\\times \\theta^2\\)"
   },
   {
-    "objectID": "slides/01/slides01.html#neyman-pearson",
-    "href": "slides/01/slides01.html#neyman-pearson",
-    "title": "Welcome to Stat250!",
-    "section": "Neyman & Pearson",
-    "text": "Neyman & Pearson\n\n\n\n\n\nConfidence interval\nCorrelation\nRegression\nStandard deviation\nEffect size\n“Optimal” tests\n\\(\\alpha\\) and \\(\\beta\\)\nType I and II error"
+    "objectID": "slides/08/slides08.html#comparing-unbiased-estimators-efficiency",
+    "href": "slides/08/slides08.html#comparing-unbiased-estimators-efficiency",
+    "title": "Evaluating Estimators",
+    "section": "Comparing unbiased estimators: efficiency",
+    "text": "Comparing unbiased estimators: efficiency\n\n\n\n\n\n\nEfficiency\n\n\nFor two unbiased estimators, \\(\\widehat \\theta_1\\) is more efficient than \\(\\widehat \\theta_2\\) if\n\\[\\text{Var}(\\widehat \\theta_1) &lt; \\text{Var}(\\widehat \\theta_2) \\iff \\text{SE}(\\widehat \\theta_1) &lt; \\text{SE}(\\widehat \\theta_2)\\]"
   },
   {
-    "objectID": "slides/01/slides01.html#frequentist-vs-bayesian",
-    "href": "slides/01/slides01.html#frequentist-vs-bayesian",
-    "title": "Welcome to Stat250!",
-    "section": "Frequentist vs Bayesian",
-    "text": "Frequentist vs Bayesian"
+    "objectID": "slides/08/slides08.html#comparing-unbiased-estimators-cramer-rao-lower-bound-crlb",
+    "href": "slides/08/slides08.html#comparing-unbiased-estimators-cramer-rao-lower-bound-crlb",
+    "title": "Evaluating Estimators",
+    "section": "Comparing unbiased estimators: Cramer-Rao Lower Bound (CRLB)",
+    "text": "Comparing unbiased estimators: Cramer-Rao Lower Bound (CRLB)\n\n\n\n\n\n\n\nCRLB\n\n\nIf \\(X_1, ..., X_n\\) are an iid sample from a distribution with pdf \\(f(x|\\theta)\\), then any unbiased estimator \\(\\hat\\theta\\) of \\(\\theta\\) satisfies:\n\\[V(\\hat{\\theta}) \\ge \\frac{1}{n I(\\theta)}\\]\nwhere \\(I(\\theta)\\) is the Fisher Information of \\(X_i\\)"
   },
   {
-    "objectID": "slides/01/slides01.html#frequentist-vs-bayesian-1",
-    "href": "slides/01/slides01.html#frequentist-vs-bayesian-1",
-    "title": "Welcome to Stat250!",
-    "section": "Frequentist vs Bayesian",
-    "text": "Frequentist vs Bayesian\n\n\nFrequentist\n\n“Classical” statistics\nProbability is a long-run frequency\nType I and Type II errors\nConfidence intervals\n\n\nBayesian\n\nProbability is a subjective belief\nUpdate “prior” probabilities with data to obtain “posterior” probabilities\n“Credible” intervals\nComputationally intensive"
-  },
-  {
-    "objectID": "slides/01/slides01.html#parametric-vs-nonparametric",
-    "href": "slides/01/slides01.html#parametric-vs-nonparametric",
-    "title": "Welcome to Stat250!",
-    "section": "Parametric vs Nonparametric",
-    "text": "Parametric vs Nonparametric\n\nNonparametric \n\nThe basic idea of nonparametric inference is to use data to infer an unknown quantity while making as few assumptions as possible. Usually, this means using statistical models that are infinite-dimensional. (Wasserman, 2006)\n\n\nParametric\n\nA parametric inference uses models that consist of a set of distributions/densities that can be parameterized by a finite number of parameters."
-  },
-  {
-    "objectID": "slides/01/slides01.html#tentative-schedule",
-    "href": "slides/01/slides01.html#tentative-schedule",
-    "title": "Welcome to Stat250!",
-    "section": "Tentative schedule",
-    "text": "Tentative schedule\n\n\n\n\nTopic\nChapters\nApprox. Duration\n\n\n\n\nReview\n1-4\n1 week\n\n\nParametric estimation\n6\n3 weeks\n\n\nParametric & Nonparametric inference\n3-5, 7-9\n4 weeks\n\n\nModeling\n8-10\n2 weeks"
-  },
-  {
-    "objectID": "slides/01/slides01.html#course-description",
-    "href": "slides/01/slides01.html#course-description",
-    "title": "Welcome to Stat250!",
-    "section": "Course description",
-    "text": "Course description\nThis course is an introduction to the mathematical theory of frequentist and Bayesian statistical inference. Topics include parameter estimation, confidence intervals and hypothesis testing, linear models, and Bayesian inference.\nStudents who analyze data, or who aspire to develop new methods for analyzing data, should be well-grounded in mathematical statistics."
-  },
-  {
-    "objectID": "slides/01/slides01.html#course-objectives",
-    "href": "slides/01/slides01.html#course-objectives",
-    "title": "Welcome to Stat250!",
-    "section": "Course Objectives",
-    "text": "Course Objectives\nBy the end of this course, you should be able to:\n\nDerive estimators for parameters using maximum likelihood, the method of moments, and Bayesian techniques\nEvaluate the performance of estimators and describe their strengths and weaknesses\nDemonstrate a sophisticated understanding of the mathematics behind hypothesis tests, confidence intervals, and linear models\n\nUse the statistical package R to implement basic simulations of estimation scenarios"
-  },
-  {
-    "objectID": "slides/01/slides01.html#textbook",
-    "href": "slides/01/slides01.html#textbook",
-    "title": "Welcome to Stat250!",
-    "section": "Textbook:",
-    "text": "Textbook:\nMathematical Statistics with Resampling and R (3rd edition) by Chihara and Hesterberg\n\nSometimes, it can help to see a second way of topics being explained. I recommend Mathematical Statistics with applications by Larsen & Marx."
-  },
-  {
-    "objectID": "slides/01/slides01.html#computing",
-    "href": "slides/01/slides01.html#computing",
-    "title": "Welcome to Stat250!",
-    "section": "Computing:",
-    "text": "Computing:\nWe’ll be using R and RStudio throughout the course. If you’ve downloaded R to your own computer from a different class, great! If not, you can access anything you need through the maize server:\nhttps://maize.mathcs.carleton.edu/"
-  },
-  {
-    "objectID": "slides/01/slides01.html#what-will-you-do-in-this-course",
-    "href": "slides/01/slides01.html#what-will-you-do-in-this-course",
-    "title": "Welcome to Stat250!",
-    "section": "What will you do in this course?",
-    "text": "What will you do in this course?\nEach of the following components are important for your learning and therefore part of your final grade calculation:\n\nDaily Prep (5%)\nHomework (15%)\n\nDue once per week, typically Wednesdays but sometimes Fridays\n\nGroup work and attendance (5%)\n\nmore than 5 absences \\(\\to\\) 0\n\nMidterm exams (2 x 17.5%)\nCourse Project (10%)\nFinal Exam (30%)"
-  },
-  {
-    "objectID": "slides/01/slides01.html#what-will-a-typical-dayweek-look-like",
-    "href": "slides/01/slides01.html#what-will-a-typical-dayweek-look-like",
-    "title": "Welcome to Stat250!",
-    "section": "What will a typical day/week look like?",
-    "text": "What will a typical day/week look like?\n\n\nBefore class:\n\nRead a chapter\nCome with questions\nBe prepared to try what was covered\n\n\nIn class:\n\nMini lecture\n\nSometimes review\nSometimes new\n\nHands-on work or coding in R\n\n\nAfter class:\n\nFinish in-class exercises\nWork on homework"
-  },
-  {
-    "objectID": "slides/01/slides01.html#office-hours-tentative",
-    "href": "slides/01/slides01.html#office-hours-tentative",
-    "title": "Welcome to Stat250!",
-    "section": "Office hours (tentative)",
-    "text": "Office hours (tentative)\n\n\n\nDay\nTime\nType\nLocation\n\n\n\n\nMonday\n4:15-5:15\nDrop-in\nCMC 307\n\n\nTuesday\n10:30-11:30\nDrop-in\nCMC 307\n\n\nWednesday\n2:15-3:15\nDrop-in\nCMC 307\n\n\nFriday\n11-12\nDrop-in\nCMC 307"
-  },
-  {
-    "objectID": "slides/01/slides01.html#where-is-amanda-this-term",
-    "href": "slides/01/slides01.html#where-is-amanda-this-term",
-    "title": "Welcome to Stat250!",
-    "section": "Where is Amanda this term?",
-    "text": "Where is Amanda this term?"
-  },
-  {
-    "objectID": "slides/01/slides01.html#communication",
-    "href": "slides/01/slides01.html#communication",
-    "title": "Welcome to Stat250!",
-    "section": "Communication",
-    "text": "Communication\n\n\nMoodle: assignments, note sets, and grades\nSlack: homework questions, announcements, discussion\nEmail: personal matters, time-sensitive annoucements\n\n\n\nSlack is the fastest way to reach me. I typically will respond to messages 3x per weekday. I try to respond to emails within 48 hours. I’m online sporadically on evenings and weekends to devote time to family and rest – I hope you also use this time to reset and recharge!"
-  },
-  {
-    "objectID": "slides/01/slides01.html#advice-from-past-students",
-    "href": "slides/01/slides01.html#advice-from-past-students",
-    "title": "Welcome to Stat250!",
-    "section": "Advice from past students:",
-    "text": "Advice from past students:\n\nStart the problem sets early and go to office hours!\nWork with other people in the class, collaboration is key\nBe willing to ask lots of questions and don’t be afraid to ask for help!\nI would advise for them to attend office hours and the stat clinic since early on to get help and not be worrying about assignments at the last minute.\nI would advise future students to reach out and ask questions as soon if they have any confusion. Understanding statistical concepts and working with R can be frustrating at times, but people are here to help you along the way!\nDon’t let work snowball! Try to get help early and often and an imperfect problem set is better than no problem set.\nStart the homework early! Give yourself time to get things done, to understand, and to pause. Don’t feel afraid to ask questions; she’s so accessible.\nSpend some time reviewing handouts before doing homework."
-  },
-  {
-    "objectID": "slides/01/slides01.html#the-genius-myth",
-    "href": "slides/01/slides01.html#the-genius-myth",
-    "title": "Welcome to Stat250!",
-    "section": "The “Genius Myth”",
-    "text": "The “Genius Myth”\nIt’s sometimes easy to buy into the “genius myth” when it comes to math/stat courses: that you need to be a “math person” and have some innate mathematical ability in order to do well or become a statistics major. This could not be further from the truth! The best statisticians don’t necessarily have the “best” math or programming background, but are people that are able to formulate interesting questions and use math and programming to rigorously answer those questions. Many of the best statisticians I know became statisticians because they were initially interested in something else (biology, public health, psychology, neuroscience, physics, etc.) and realized that being able to answer important questions with data was not only valuable but fun and interesting. Being able to perform interesting statistical analyses is a skill that is learned, not an innate ability, and working hard at developing that skill is the point of this course."
-  },
-  {
-    "objectID": "slides/01/slides01.html#academic-integrity",
-    "href": "slides/01/slides01.html#academic-integrity",
-    "title": "Welcome to Stat250!",
-    "section": "Academic Integrity",
-    "text": "Academic Integrity\nYou are expected to follow Carleton’s policies regarding academic integrity. I encourage you to discuss the homework problems with others and use the resources available to you to try to figure out tough problems. You should code and write up your solutions on your own. Exams must be done by yourself without communicating with others; all work must be your own. The use of textbook solution manuals (physical or online), course materials from other students, or materials from previous versions of this course are not allowed. Copying, paraphrasing, summarizing, or submitting work generated by anyone but yourself without proper attribution is considered academic dishonesty (this includes output from LLMs).\nPlease ask if you are unsure of whether or not your actions are complying with the assignment/exam/project instructions. Always default to acknowledging any help received. Cases of suspected academic dishonesty are handled by the Provost’s Office and I am obligated to report any suspected violations of this policy."
-  },
-  {
-    "objectID": "slides/01/slides01.html#more-on-ai",
-    "href": "slides/01/slides01.html#more-on-ai",
-    "title": "Welcome to Stat250!",
-    "section": "More on “AI”",
-    "text": "More on “AI”\nLarge-language models (e.g. ChatGPT, Gemini, etc.) should only be used for help interpreting R’s error messages. You should not copy and paste course material into or out of an AI text generator.\nI also have a few rules in place to protect my intellectual property. You may not record my lectures using tools such as Otter.ai or upload any video or audio recordings to generate transcripts or study notes. You may not upload my course materials (slides, assignment prompts, note sets, etc.) into AI tools or homework help sites (such as chegg).\n“AI” tools are new for all of us and it’s OK to have questions about what is and isn’t appropriate!"
-  },
-  {
-    "objectID": "slides/01/slides01.html#diversity-inclusion",
-    "href": "slides/01/slides01.html#diversity-inclusion",
-    "title": "Welcome to Stat250!",
-    "section": "Diversity & Inclusion",
-    "text": "Diversity & Inclusion\nWe all come to class with different backgrounds and experiences, and this diversity makes our class environment richer. We value diversity and inclusion, and are committed to a climate of mutual respect and full participation in and out of the classroom. This class strives to be a learning environment that is usable, equitable, inclusive and welcoming, regardless of race, ethnicity, religion, gender and gender identities, sexual orientation, ability, socioeconomic background, and nationality. If you anticipate or experience any barriers to learning, please discuss your concerns with me."
-  },
-  {
-    "objectID": "slides/01/slides01.html#accomodations",
-    "href": "slides/01/slides01.html#accomodations",
-    "title": "Welcome to Stat250!",
-    "section": "Accomodations",
-    "text": "Accomodations\nCarleton College is committed to providing equitable access to learning opportunities for all students. The Office of Accessibility Resources (Henry House, 107 Union Street) is the campus office that collaborates with students who have disabilities to provide and/or arrange reasonable accommodations. If you have, or think you may have, a disability, please contact OAR@carleton.edu to arrange a confidential discussion regarding equitable access and reasonable accommodations. You are also welcome to contact me privately to discuss your academic needs. However, all disability-related accommodations must be arranged, in advance, through OAR."
-  },
-  {
-    "objectID": "slides/01/slides01.html#stat-lab",
-    "href": "slides/01/slides01.html#stat-lab",
-    "title": "Welcome to Stat250!",
-    "section": "Stat Lab",
-    "text": "Stat Lab\nThe Stats Lab (CMC 304) offers drop-in help R/RStudio help sessions run by friendly and knowledgeable lab assistants on most weekday evenings and some weekend times. The Stat Lab is primarily meant to serve Stat120 students, but many of the lab assistants can also help with Stat250."
-  },
-  {
-    "objectID": "slides/01/slides01.html#title-ix",
-    "href": "slides/01/slides01.html#title-ix",
-    "title": "Welcome to Stat250!",
-    "section": "Title IX",
-    "text": "Title IX\nPlease be aware that all faculty are “responsible employees”, which means that if you tell me about a situation involving sexual harassment, sexual assault, dating violence, domestic violence, or stalking, I must share that information with the Title IX Coordinator. Although I have to make this notification, you will control how your case will be handled, including whether or not you wish to meet with the Title IX coordinator or pursue a formal complaint."
-  },
-  {
-    "objectID": "slides/01/slides01.html#take-care-of-yourself",
-    "href": "slides/01/slides01.html#take-care-of-yourself",
-    "title": "Welcome to Stat250!",
-    "section": "Take care of yourself",
-    "text": "Take care of yourself\nDo your best to maintain a healthy lifestyle this semester by wearing a mask if you don’t feel well, eating a vegetable every day, exercising, avoiding excessive drug and alcohol use, getting enough sleep, and taking some time to relax. Your mental health is more important than your grade in this course. There are many helpful resources available on campus and an important part of the college experience is learning how to ask for help. If you are experiencing mental health symptoms as a result of coursework, please speak with me so we can address the problem together."
+    "objectID": "slides/08/slides08.html#fisher-information",
+    "href": "slides/08/slides08.html#fisher-information",
+    "title": "Evaluating Estimators",
+    "section": "Fisher Information",
+    "text": "Fisher Information\n\n\n\n\n\n\nFisher Information\n\n\nThe Fisher Information of a random variable \\(X\\) is \\[I(\\theta) = E[(\\frac{d}{d\\theta} \\ln f(x|\\theta))^2] = -   E(l''(\\theta))\\]\n*provided certain regularity conditions are met"
   },
   {
     "objectID": "slides/07/slides07.html#recap",
@@ -882,179 +651,529 @@
     "text": "Where we’re going\nInstead of a permutation test, we can also use facts about the sampling distribution from probability to compute p-values with math."
   },
   {
-    "objectID": "slides/08/slides08.html#recap",
-    "href": "slides/08/slides08.html#recap",
-    "title": "Evaluating Estimators",
+    "objectID": "slides/09/slides09.html#recap",
+    "href": "slides/09/slides09.html#recap",
+    "title": "Efficiency & CRLB",
     "section": "Recap",
-    "text": "Recap\n\nObserve data \\(X_1, ..., X_n \\sim F_x(x|\\theta)\\), where \\(\\theta\\) is unknown\nGoal: Estimate \\(\\theta\\) based on the values of \\(X_i\\) by formulating an estimator \\(\\widehat \\theta\\)\nOne technique is to use the maximum likelihood estimator, which finds the value of \\(\\theta\\) that maximizes the joint probability \\(\\prod_{i=1}^n f_x(x_i | \\theta)\\)\nA second technique is to use the method of moments estimator, which finds the value of \\(\\theta\\) that make the theoretical moments equal to the sample moments\nToday: if we have multiple estimators, how do we decide which is better?"
+    "text": "Recap\n\nObserve data \\(X_1, ..., X_n \\sim F_x(x|\\theta)\\), where \\(\\theta\\) is unknown\nGoal: Estimate \\(\\theta\\) based on the values of \\(X_i\\) by formulating an estimator \\(\\widehat \\theta\\)\nOne technique is to use the maximum likelihood estimator\nA second technique is to use the method of moments estimator\nWe can compare estimators by comparing their bias, variance, and mean squared error.\nToday: is there a way to know if we’ve found an “optimal” estimator?"
   },
   {
-    "objectID": "slides/08/slides08.html#warm-up",
-    "href": "slides/08/slides08.html#warm-up",
-    "title": "Evaluating Estimators",
-    "section": "Warm up",
-    "text": "Warm up\nSuppose we take a random sample of size 50 from an exponential distribution with rate \\(\\lambda = 1/10\\).\nWhat is \\(\\mu = E(Y)\\)?\nIf we want to design an estimator for the mean, \\(\\widehat \\mu\\), what are some intuitive estimators?"
+    "objectID": "slides/09/slides09.html#last-time-unif0-theta-distribution",
+    "href": "slides/09/slides09.html#last-time-unif0-theta-distribution",
+    "title": "Efficiency & CRLB",
+    "section": "Last time: Unif(0, \\(\\theta\\)) distribution1",
+    "text": "Last time: Unif(0, \\(\\theta\\)) distribution1\nYour task is to compare the estimators\n\\[\\widehat{\\theta}_{MLE} = X_\\max \\hspace{1in} \\widehat{\\theta}_{MoM} = 2\\bar{X}\\]\n\n\nWhat is the bias of each estimator?2\nWhat is the SE of each estimator?\nWhat is the MSE of each estimator?\nWhen does \\(\\widehat{\\theta}_{MLE}\\) “beat” \\(\\widehat{\\theta}_{MoM}\\) in terms of MSE?\n\n\nSo \\(0 \\le x \\le \\theta\\), \\(f_x = \\frac{1}{\\theta}\\), \\(F_x = \\frac{x}{\\theta}\\), \\(E(X) = \\frac{\\theta}{2}\\), and \\(V(X) = \\frac{\\theta^2}{12}\\)A helpful fact is that \\(f_{X_{max}}(x) = n[F(x)]^{n-1}f_X(x)\\)"
   },
   {
-    "objectID": "slides/08/slides08.html#estimators-for-the-mean",
-    "href": "slides/08/slides08.html#estimators-for-the-mean",
-    "title": "Evaluating Estimators",
-    "section": "Estimators for the mean",
-    "text": "Estimators for the mean\nSuppose we take a random sample of size 50 from an exponential distribution with mean 10 (rate is \\(\\lambda = 1/10\\)).\nConsider three estimators of \\(\\mu\\):\n\n\\(\\widehat{\\mu_1} = \\bar{X}\\)\n\\(\\widehat{\\mu_2} = \\widetilde{X}\\)\n\\(\\widehat{\\mu_3} = \\frac{X_{\\max} - X_{\\min}}{2}\\)"
-  },
-  {
-    "objectID": "slides/08/slides08.html#aside-estimators-are-also-random-variables",
-    "href": "slides/08/slides08.html#aside-estimators-are-also-random-variables",
-    "title": "Evaluating Estimators",
-    "section": "Aside: estimators are also random variables",
-    "text": "Aside: estimators are also random variables\n\\(X_1, ..., X_n \\sim F_x(\\theta)\\) and each \\(\\widehat{\\theta} = g(X_1, ..., X_n)\\) is a function of the data\n\nThis means that each \\(\\widehat\\theta\\) is itself a random variable, and so it has:\n\na pdf \\(f_\\widehat{\\theta}\\)\nan expectation \\(E(\\widehat\\theta)\\)\na variance \\(\\text{Var}(\\widehat{\\theta})\\)"
-  },
-  {
-    "objectID": "slides/08/slides08.html#comparing-estimators-simulation",
-    "href": "slides/08/slides08.html#comparing-estimators-simulation",
-    "title": "Evaluating Estimators",
-    "section": "Comparing Estimators: Simulation",
-    "text": "Comparing Estimators: Simulation\nSuppose we take a random sample of size 50 from an exponential distribution with mean 10 (rate is \\(\\lambda = 1/10\\)).\n\n\nConsider three estimators of \\(\\mu\\):\n\n\\(\\hat{\\mu_1} = \\bar{X}\\)\n\\(\\hat{\\mu_2} = \\tilde{X}\\)\n\\(\\hat{\\mu_3} = \\frac{X_{\\max} - X_{\\min}}{2}\\)\n\n\n\nn &lt;- 50\nN_sims &lt;- 100000\ntheta &lt;- 3\nest1 &lt;- numeric(N_sims)\nest2 &lt;- numeric(N_sims)\nest3 &lt;- numeric(N_sims)\nfor(i in 1:N_sims){\n  x &lt;- rexp(n, rate = .1)\n  est1[i] &lt;- mean(x)\n  est2[i] &lt;- median(x)\n  est3[i] &lt;- (max(x) - min(x))/2\n}"
-  },
-  {
-    "objectID": "slides/08/slides08.html#sampling-distribution-of-the-estimators",
-    "href": "slides/08/slides08.html#sampling-distribution-of-the-estimators",
-    "title": "Evaluating Estimators",
-    "section": "Sampling Distribution of the Estimators",
-    "text": "Sampling Distribution of the Estimators\n\nwhich estimator is “best”?"
-  },
-  {
-    "objectID": "slides/08/slides08.html#properties-of-estimators",
-    "href": "slides/08/slides08.html#properties-of-estimators",
-    "title": "Evaluating Estimators",
-    "section": "Properties of Estimators",
-    "text": "Properties of Estimators"
-  },
-  {
-    "objectID": "slides/08/slides08.html#estimator-properties-bias",
-    "href": "slides/08/slides08.html#estimator-properties-bias",
-    "title": "Evaluating Estimators",
-    "section": "Estimator properties: bias",
-    "text": "Estimator properties: bias\nHow accurate is the estimator?\n\n\n\n\n\n\n\nBias of an estimator\n\n\nIf \\(\\widehat{\\theta}(X)\\) is an estimator of \\(\\theta\\), then the bias of the estimator is equal to\n\\[\\text{Bias}(\\widehat\\theta) = E[\\widehat \\theta(X)] - \\theta\\]\nNote: the expected value is computed from the sampling distribution of \\(\\widehat{\\theta}(X)\\)"
-  },
-  {
-    "objectID": "slides/08/slides08.html#estimator-properties-variance",
-    "href": "slides/08/slides08.html#estimator-properties-variance",
-    "title": "Evaluating Estimators",
-    "section": "Estimator properties: variance",
-    "text": "Estimator properties: variance\nHow much variability does the estimator have around its mean?\n\n\n\n\n\n\nVariance of an estimator\n\n\nThe variance of an estimator is\n\\[\\text{Var}(\\widehat{\\theta}) = E[(\\widehat{\\theta} - E[\\widehat{\\theta}])^2]\\]\nNote: the expected value is computed from the sampling distribution of \\(\\widehat{\\theta}(X)\\)"
-  },
-  {
-    "objectID": "slides/08/slides08.html#estimator-properties-mean-square-error-mse",
-    "href": "slides/08/slides08.html#estimator-properties-mean-square-error-mse",
-    "title": "Evaluating Estimators",
-    "section": "Estimator properties: Mean Square Error (MSE)",
-    "text": "Estimator properties: Mean Square Error (MSE)\nHow much variability does the estimator have around \\(\\theta\\)?\n\n\n\n\n\n\nMSE\n\n\nThe MSE of an estimator is\n\\[MSE(\\widehat\\theta) = E[(\\widehat\\theta - \\theta)^2] = \\text{Var}(\\widehat{\\theta}) + \\text{Bias}(\\widehat\\theta)^2\\]"
-  },
-  {
-    "objectID": "slides/08/slides08.html#comparing-estimators-simulation-1",
-    "href": "slides/08/slides08.html#comparing-estimators-simulation-1",
-    "title": "Evaluating Estimators",
-    "section": "Comparing Estimators: simulation",
-    "text": "Comparing Estimators: simulation\nRecall that \\(E(Y) = \\mu = 1/\\lambda = 10\\) is the true value\n\nsims |&gt;\n  group_by(estimator) |&gt;\n  summarize(\n    bias = mean(value) - 10,\n    var = var(value),\n    MSE = var + bias^2\n  ) \n\n# A tibble: 3 × 4\n  estimator     bias   var    MSE\n  &lt;chr&gt;        &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;\n1 mean       0.00559  2.00   2.00\n2 median    -2.96     1.97  10.7 \n3 midpoint  12.4     40.7  194."
-  },
-  {
-    "objectID": "slides/08/slides08.html#practice-unif0-theta-distribution",
-    "href": "slides/08/slides08.html#practice-unif0-theta-distribution",
-    "title": "Evaluating Estimators",
-    "section": "Practice: Unif(0, \\(\\theta\\)) distribution1",
-    "text": "Practice: Unif(0, \\(\\theta\\)) distribution1\nYour task is to compare the estimators\n\\[\\widehat{\\theta}_{MLE} = X_\\max \\hspace{1in} \\widehat{\\theta}_{MoM} = 2\\bar{X}\\]\n\n\nWhat is the bias of each estimator?2\nWhat is the SE of each estimator?\nWhat is the MSE of each estimator?\nWhen does \\(\\widehat{\\theta}_{MLE}\\) “beat” \\(\\widehat{\\theta}_{MoM}\\) in terms of MSE?\n\n\nSo \\(0 \\le x \\le \\theta\\), \\(f_x = \\frac{1}{\\theta}\\), \\(F_x = \\frac{x}{\\theta}\\), \\(E(X) = \\frac{\\theta}{2}\\), and \\(V(X) = \\frac{\\theta^2}{12}\\)A helpful fact is that \\(f_{X_{max}}(x) = n[F(x)]^{n-1}f_X(x)\\)"
-  },
-  {
-    "objectID": "slides/08/slides08.html#section",
-    "href": "slides/08/slides08.html#section",
-    "title": "Evaluating Estimators",
+    "objectID": "slides/09/slides09.html#section",
+    "href": "slides/09/slides09.html#section",
+    "title": "Efficiency & CRLB",
     "section": "",
     "text": "(d) When does \\(\\widehat{\\theta}_{MLE}\\) “beat” \\(\\widehat{\\theta}_{MoM}\\) in terms of MSE?\nMSE = “MSE factor” \\(\\times \\theta^2\\)"
   },
   {
-    "objectID": "slides/08/slides08.html#example-uniform0theta",
-    "href": "slides/08/slides08.html#example-uniform0theta",
-    "title": "Evaluating Estimators",
+    "objectID": "slides/09/slides09.html#example-uniform0theta",
+    "href": "slides/09/slides09.html#example-uniform0theta",
+    "title": "Efficiency & CRLB",
     "section": "Example: Uniform(\\(0,\\theta\\))",
-    "text": "Example: Uniform(\\(0,\\theta\\))\n\n\nSince \\(\\hat \\theta_{MLE}\\) beats \\(\\hat \\theta_{MoM}\\) in terms of MSE but is biased, can we “unbias” the MLE? Call this third estimator \\(\\hat\\theta_3\\)\nDoes \\(\\hat \\theta_3\\) ever “beat” \\(\\hat \\theta_{MLE}\\) in terms of MSE?"
+    "text": "Example: Uniform(\\(0,\\theta\\))\nFrom last time: \\(E(\\widehat \\theta_{MLE}) = \\frac{n}{n+1} \\theta\\) and \\(V(\\widehat \\theta_{MLE}) = [\\frac{n}{(n+2)(n+1)^2}]\\)\n\n\nSince \\(\\hat \\theta_{MLE}\\) beats \\(\\hat \\theta_{MoM}\\) in terms of MSE but is biased, can we “unbias” the MLE? Call this third estimator \\(\\hat\\theta_3\\)\nDoes \\(\\hat \\theta_3\\) ever “beat” \\(\\hat \\theta_{MLE}\\) in terms of MSE?"
   },
   {
-    "objectID": "slides/08/slides08.html#section-1",
-    "href": "slides/08/slides08.html#section-1",
-    "title": "Evaluating Estimators",
+    "objectID": "slides/09/slides09.html#section-1",
+    "href": "slides/09/slides09.html#section-1",
+    "title": "Efficiency & CRLB",
     "section": "",
     "text": "(f) Does \\(\\hat \\theta_3\\) ever “beat” \\(\\hat \\theta_{MLE}\\) in terms of MSE?\nMSE = “MSE factor” \\(\\times \\theta^2\\)"
   },
   {
-    "objectID": "slides/08/slides08.html#comparing-unbiased-estimators-efficiency",
-    "href": "slides/08/slides08.html#comparing-unbiased-estimators-efficiency",
-    "title": "Evaluating Estimators",
+    "objectID": "slides/09/slides09.html#moral-of-the-story",
+    "href": "slides/09/slides09.html#moral-of-the-story",
+    "title": "Efficiency & CRLB",
+    "section": "Moral of the story",
+    "text": "Moral of the story\nWe can “fix” bias, but it’s harder to fix variance"
+  },
+  {
+    "objectID": "slides/09/slides09.html#comparing-unbiased-estimators-efficiency",
+    "href": "slides/09/slides09.html#comparing-unbiased-estimators-efficiency",
+    "title": "Efficiency & CRLB",
     "section": "Comparing unbiased estimators: efficiency",
     "text": "Comparing unbiased estimators: efficiency\n\n\n\n\n\n\nEfficiency\n\n\nFor two unbiased estimators, \\(\\widehat \\theta_1\\) is more efficient than \\(\\widehat \\theta_2\\) if\n\\[\\text{Var}(\\widehat \\theta_1) &lt; \\text{Var}(\\widehat \\theta_2) \\iff \\text{SE}(\\widehat \\theta_1) &lt; \\text{SE}(\\widehat \\theta_2)\\]"
   },
   {
-    "objectID": "slides/08/slides08.html#comparing-unbiased-estimators-cramer-rao-lower-bound-crlb",
-    "href": "slides/08/slides08.html#comparing-unbiased-estimators-cramer-rao-lower-bound-crlb",
-    "title": "Evaluating Estimators",
+    "objectID": "slides/09/slides09.html#example-why-efficiency-matters",
+    "href": "slides/09/slides09.html#example-why-efficiency-matters",
+    "title": "Efficiency & CRLB",
+    "section": "Example: why efficiency matters",
+    "text": "Example: why efficiency matters\nWe now have two unbiased estimators: \\[\\widehat \\theta_{MoM}$\\widehat \\theta_{3} = \\frac{n+1}{n} X_\\max\\]\n\nIf \\(n=10\\) what is the expectation and variance of each of these estimators?"
+  },
+  {
+    "objectID": "slides/09/slides09.html#example-why-efficiency-matters-1",
+    "href": "slides/09/slides09.html#example-why-efficiency-matters-1",
+    "title": "Efficiency & CRLB",
+    "section": "Example: why efficiency matters",
+    "text": "Example: why efficiency matters\n\nWhat \\(n\\) would we need for \\(\\widehat\\theta_{MOM}\\) to reach the variance of \\(\\widehat\\theta_3\\)?"
+  },
+  {
+    "objectID": "slides/09/slides09.html#comparing-unbiased-estimators-cramer-rao-lower-bound-crlb",
+    "href": "slides/09/slides09.html#comparing-unbiased-estimators-cramer-rao-lower-bound-crlb",
+    "title": "Efficiency & CRLB",
     "section": "Comparing unbiased estimators: Cramer-Rao Lower Bound (CRLB)",
-    "text": "Comparing unbiased estimators: Cramer-Rao Lower Bound (CRLB)\n\n\n\n\n\n\n\nCRLB\n\n\nIf \\(X_1, ..., X_n\\) are an iid sample from a distribution with pdf \\(f(x|\\theta)\\), then any unbiased estimator \\(\\hat\\theta\\) of \\(\\theta\\) satisfies:\n\\[V(\\hat{\\theta}) \\ge \\frac{1}{n I(\\theta)}\\]\nwhere \\(I(\\theta)\\) is the Fisher Information of \\(X_i\\)"
+    "text": "Comparing unbiased estimators: Cramer-Rao Lower Bound (CRLB)\n\n\n\n\n\n\n\nCRLB\n\n\nIf \\(X_1, ..., X_n\\) are an iid sample from a distribution with pdf \\(f(x|\\theta)\\), then any unbiased estimator \\(\\hat\\theta\\) of \\(\\theta\\) satisfies:\n\\[V(\\hat{\\theta}) \\ge \\frac{1}{n I(\\theta)}\\]\nwhere \\(I(\\theta)\\) is the Fisher Information of \\(X_i\\)\n\n\n\n\n\nIf the variance of an estimator is equal to the CRLB, then there is no other unbiased estimator with more precision"
   },
   {
-    "objectID": "slides/08/slides08.html#fisher-information",
-    "href": "slides/08/slides08.html#fisher-information",
-    "title": "Evaluating Estimators",
+    "objectID": "slides/09/slides09.html#fisher-information",
+    "href": "slides/09/slides09.html#fisher-information",
+    "title": "Efficiency & CRLB",
     "section": "Fisher Information",
-    "text": "Fisher Information\n\n\n\n\n\n\nFisher Information\n\n\nThe Fisher Information of a random variable \\(X\\) is \\[I(\\theta) = E[(\\frac{d}{d\\theta} \\ln f(x|\\theta))^2] = - E(l''(\\theta))\\]\n*provided certain regularity conditions are met"
+    "text": "Fisher Information\n\n\n\n\n\n\nFisher Information\n\n\nThe Fisher Information of a random variable \\(X\\) is \\[I(\\theta) = E[(\\frac{d}{d\\theta} \\ln f(x|\\theta))^2] = -   E(l''(\\theta))\\]\n*provided the domain of \\(X\\) does not depend on \\(\\theta\\) (and a few other regularity conditions)"
   },
   {
-    "objectID": "slides/06/slides06.html#big-idea",
-    "href": "slides/06/slides06.html#big-idea",
-    "title": "Maximum Likelihood Estimation II",
-    "section": "Big Idea",
-    "text": "Big Idea\nWe’re interested in the proportion of Carleton students who have had some sort of research experience. We have the resources to randomly sample 10 students.\n\n\nProbability:\n\nStatistics:"
+    "objectID": "slides/09/slides09.html#intuition-fisher-information",
+    "href": "slides/09/slides09.html#intuition-fisher-information",
+    "title": "Efficiency & CRLB",
+    "section": "Intuition: Fisher information",
+    "text": "Intuition: Fisher information\n\\[I(\\theta) = E_X[(\\frac{d}{d\\theta} \\ln f(x|\\theta))^2] = -   E_X(l''(\\theta))\\]\n\n\\(l(\\theta)\\) is the log-likelihood function\n\\(l'(\\theta)\\) gives the slope of the log-likelihood at any point, \\(l''(\\theta)\\) gives the curvature at any given point\nThe Fisher information “averages out” over \\(X\\) and summarizes the overall curvature of the log-likelihood function"
   },
   {
-    "objectID": "slides/06/slides06.html#example",
-    "href": "slides/06/slides06.html#example",
-    "title": "Maximum Likelihood Estimation II",
-    "section": "Example",
-    "text": "Example\nRecall that the likelihood function for \\(n\\) iid Bernoulli(\\(\\theta\\)) random variable is \\(L(\\theta) = \\theta^{\\sum x_i} (1-\\theta)^{n - \\sum x_i}\\).\n\n\n\n\n\n\n\n\n\n\n\n\nScenario 1: 0 yes responses\n\n\n\n\\(\\theta\\)\n0.0\n0.2\n0.4\n0.6\n0.8\n1.0\n\n\n\\(L(\\theta)\\)\n\n\n\n\n\n\n\n\n\nScenario 2: 6 yes responses\n\n\n\n\\(\\theta\\)\n0.0\n0.2\n0.4\n0.6\n0.8\n1.0\n\n\n\\(L(\\theta)\\)"
+    "objectID": "slides/09/slides09.html#intuition-fisher-information-1",
+    "href": "slides/09/slides09.html#intuition-fisher-information-1",
+    "title": "Efficiency & CRLB",
+    "section": "Intuition: Fisher information",
+    "text": "Intuition: Fisher information\n\n\nHigher Fisher Information\n\n\n\n\n\n\n\n\n\n\nLower Fisher Information\n\n\n\n\n\n\n\n\n\n\n\nDistributions with a “pointier” log-likelihood have higher Fisher information than distributions with lower Fisher information\n\n\nLower Fisher information \\(\\to\\) flat log-likelihood \\(\\to\\) lots of estimators “close” to the MLE"
   },
   {
-    "objectID": "slides/06/slides06.html#exercise",
-    "href": "slides/06/slides06.html#exercise",
-    "title": "Maximum Likelihood Estimation II",
-    "section": "Exercise",
-    "text": "Exercise\nIs the likelihood function a probability distribution? Why or why not?"
+    "objectID": "slides/09/slides09.html#practice-fisher-information",
+    "href": "slides/09/slides09.html#practice-fisher-information",
+    "title": "Efficiency & CRLB",
+    "section": "Practice: Fisher information",
+    "text": "Practice: Fisher information\nFind the Fisher information for \\(Y\\), where \\(X \\sim Exp(\\lambda)\\)"
   },
   {
-    "objectID": "slides/06/slides06.html#exercise-from-last-class",
-    "href": "slides/06/slides06.html#exercise-from-last-class",
-    "title": "Maximum Likelihood Estimation II",
-    "section": "Exercise: from last class",
-    "text": "Exercise: from last class\nLet \\(X_1, ..., X_n\\) be an iid random sample from a distribution with PDF\n\\[f(x|\\theta)= (\\theta + 1)x^\\theta, 0 \\le x \\le 1\\]\n\\[L(\\theta) =\\] \\[\\hat\\theta_{MLE}=\\]\nSuppose we observe a sample of size 5: {.83, .49, .72, .57, .66}. Find the maximum likelihood estimate and verify with a graph or numerical approximation"
+    "objectID": "slides/09/slides09.html#practice-finding-crlb",
+    "href": "slides/09/slides09.html#practice-finding-crlb",
+    "title": "Efficiency & CRLB",
+    "section": "Practice: finding CRLB",
+    "text": "Practice: finding CRLB\nLet \\(Y_1, ..., Y_n\\) be \\(n\\) Exp(\\(\\lambda\\)) random variables Let \\(\\widehat\\lambda = \\frac{n}{\\sum Y_i}\\). How does Var(\\(\\widehat\\lambda\\)) compare with the CRLB?"
   },
   {
-    "objectID": "slides/06/slides06.html#example-uniform-disribution",
-    "href": "slides/06/slides06.html#example-uniform-disribution",
-    "title": "Maximum Likelihood Estimation II",
-    "section": "Example: Uniform disribution",
-    "text": "Example: Uniform disribution\nFind the MLE for \\(Y_1, ..., Y_n \\sim \\text{Unif}(0, \\theta)\\)"
+    "objectID": "slides/09/slides09.html#section-2",
+    "href": "slides/09/slides09.html#section-2",
+    "title": "Efficiency & CRLB",
+    "section": "",
+    "text": "So far, we’ve found the bias, variance, and MSE analytically (with formal mathematical formulas). In practice, we often can’t do this.\n\nFor example: The median \\(m\\) of an Exponential(\\(\\lambda\\)) distribution satisfies P(X ≤ m) = 0.5. Solving \\(1 - e^(-\\lambda m) = 0.5\\) gives \\(m = ln(2) / \\lambda\\).\n\n\nThis suggests an estimator for \\(\\lambda\\) based on the median: \\(\\widehat{\\lambda} = \\frac{ln(2)}{m}\\)\n\n\nFinding the analytical variance of \\(\\widehat \\lambda\\) is complicated. Finding the sampling distribution of \\(m\\) is complicated, and finding the non-linear transformation is also complicated."
   },
   {
-    "objectID": "slides/06/slides06.html#finding-the-mle-when-more-than-one-parameter-is-unknown",
-    "href": "slides/06/slides06.html#finding-the-mle-when-more-than-one-parameter-is-unknown",
-    "title": "Maximum Likelihood Estimation II",
-    "section": "Finding the MLE when more than one parameter is unknown",
-    "text": "Finding the MLE when more than one parameter is unknown\nIf the pdf or pmf that we’re using has two or more parameters, say \\(\\theta_1\\) and \\(\\theta_2\\), finding MLEs for the \\(\\theta_i\\)’s requires the solution of a sest of simultaneous equations\n\n\\[\\frac{\\partial}{\\partial \\theta_1} \\ln L(\\theta_1, \\theta_2) = 0\\]\n\n\n\\[\\frac{\\partial}{\\partial \\theta_2} \\ln L(\\theta_1, \\theta_2) = 0\\]"
+    "objectID": "slides/09/slides09.html#your-turn-simulation",
+    "href": "slides/09/slides09.html#your-turn-simulation",
+    "title": "Efficiency & CRLB",
+    "section": "Your turn: simulation",
+    "text": "Your turn: simulation\nUse simulation to see whether \\(\\frac{ln(2)}{m}\\) (a) is unbiased and (b) achieves the CRLB"
   },
   {
-    "objectID": "slides/06/slides06.html#example-nmu-sigma2-distribution",
-    "href": "slides/06/slides06.html#example-nmu-sigma2-distribution",
-    "title": "Maximum Likelihood Estimation II",
-    "section": "Example: \\(N(\\mu, \\sigma^2)\\) distribution",
-    "text": "Example: \\(N(\\mu, \\sigma^2)\\) distribution\nSuppose a random sample of size \\(n\\) is drawn from the two parameter normal pdf:\n\\(f_y(y|\\mu, \\sigma^2) = \\frac{1}{\\sqrt{2\\pi \\sigma}} \\exp(-(\\frac{y-\\mu}{\\sigma})^2)\\)\nfind the MLEs \\(\\hat{\\mu}\\) and \\(\\hat\\sigma^2\\)"
+    "objectID": "slides/01/slides01.html#plan-for-today",
+    "href": "slides/01/slides01.html#plan-for-today",
+    "title": "Welcome to Stat250!",
+    "section": "Plan for today",
+    "text": "Plan for today\n\nIntros\nContext for the class\nSyllabus\nSetting course expectations"
+  },
+  {
+    "objectID": "slides/01/slides01.html#about-me",
+    "href": "slides/01/slides01.html#about-me",
+    "title": "Welcome to Stat250!",
+    "section": "About me",
+    "text": "About me\n\n\n\nFirst year at Carleton!\nTaught at Swarthmore for 5 years before moving here this fall\nPhD in Statistics & Data Science from Carnegie Mellon University\nGrew up in Minnesota, went to St Ben’s as an undergrad"
+  },
+  {
+    "objectID": "slides/01/slides01.html#three-prongs-of-statistics",
+    "href": "slides/01/slides01.html#three-prongs-of-statistics",
+    "title": "Welcome to Stat250!",
+    "section": "Three prongs of statistics",
+    "text": "Three prongs of statistics\n\n\nDesign  The design of surveys/experiments and collection of data to more efficiently/correctly address scientific questions \n\n\n\nExploration  Understand the major features of and detect patterns in data \n\n\n\n\nInference  Account for randomness, variability, and bias in a sample in order to draw reasonable and correct conclusions about a population"
+  },
+  {
+    "objectID": "slides/01/slides01.html#statistics-vs.-probability",
+    "href": "slides/01/slides01.html#statistics-vs.-probability",
+    "title": "Welcome to Stat250!",
+    "section": "Statistics vs. probability",
+    "text": "Statistics vs. probability\nProbability (Math 240)\nWe learned how to calculate the probability of seeing a result (data) given a specific probability model (e.g., a specific distribution)\n\n\nStatistics (Stat 250)\nWe will learn how to make statements about the underlying probability models given the data we see"
+  },
+  {
+    "objectID": "slides/01/slides01.html#example-spies-vs.-statisticians",
+    "href": "slides/01/slides01.html#example-spies-vs.-statisticians",
+    "title": "Welcome to Stat250!",
+    "section": "Example: Spies vs. Statisticians",
+    "text": "Example: Spies vs. Statisticians\nDuring WWII, the Allies wanted to determine production rates of tanks (and airplanes, missiles, etc.)\nSpies\nGathered intelligence (intercepted messages, interrogated of prisoners, etc.) and made the following estimates:\n\nJune 1940: 1000\nJune 1941: 1550\nAugust 1942: 1550"
+  },
+  {
+    "objectID": "slides/01/slides01.html#example-spies-vs.-statisticians-1",
+    "href": "slides/01/slides01.html#example-spies-vs.-statisticians-1",
+    "title": "Welcome to Stat250!",
+    "section": "Example: Spies vs. Statisticians",
+    "text": "Example: Spies vs. Statisticians\nStatisticians\n\n\nThe Allies had a sample of serial numbers (via capture, photography, etc.), \\(X_1, X_2, \\ldots, X_n\\), and there were \\(N\\) produced.\nAllied statisticians needed to devise an estimator to obtain \\(N\\)\nUltimately, they used \\(\\widehat{N} = X_{\\text{max}} + \\dfrac{X_{\\text{max}}}{n} - 1\\)\n\nJune 1940: 169\nJune 1941: 244\nAugust 1942: 327"
+  },
+  {
+    "objectID": "slides/01/slides01.html#example-spies-vs.-statisticians-2",
+    "href": "slides/01/slides01.html#example-spies-vs.-statisticians-2",
+    "title": "Welcome to Stat250!",
+    "section": "Example: Spies vs. Statisticians",
+    "text": "Example: Spies vs. Statisticians\nAfter the war, the Allies discovered documents revealing the true number of tanks produced:\n\n\n\n\nMonth\nTruth\nStatisticians\nSpies\n\n\n\n\nJune 1940\n122\n169\n1000\n\n\nJune 1941\n271\n244\n1550\n\n\nAugust 1942\n342\n327\n1550"
+  },
+  {
+    "objectID": "slides/01/slides01.html#prereqs",
+    "href": "slides/01/slides01.html#prereqs",
+    "title": "Welcome to Stat250!",
+    "section": "Prereqs",
+    "text": "Prereqs\n\nMath240 (Probability)\nStat120 or other applied intro stats course is helpful but not required\nI’ll assume some experience with R\nWe’re going to use mechanics from calculus & probability, but it’s not the focus of the course\nPart of HW1 is Calc/Prob review. refresh your memory, use resources that you need, talk to me sooner rather than later if it’s especially tough"
+  },
+  {
+    "objectID": "slides/01/slides01.html#section",
+    "href": "slides/01/slides01.html#section",
+    "title": "Welcome to Stat250!",
+    "section": "",
+    "text": "Statistics seems to be a difficult subject for mathematicians, perhaps because its elusive and wide-ranging character mitigates against the traditional theorem-proof method of presentation. It may come as some comfort then that statistics is also a difficult subject for statisticians\n\n\nControversies in the Foundations of Statistics, Bradley Efron 1978"
+  },
+  {
+    "objectID": "slides/01/slides01.html#statistical-models",
+    "href": "slides/01/slides01.html#statistical-models",
+    "title": "Welcome to Stat250!",
+    "section": "Statistical models",
+    "text": "Statistical models\nA statistical model consists of\n\na collection of random variables to describe observable data,\nthe possible joint distribution(s) of the random variables,\nand the parameters, \\(\\boldsymbol \\theta\\), that define those distributions\n\n\n\nMorris and DeGroot, 377"
+  },
+  {
+    "objectID": "slides/01/slides01.html#r.a.-fisher",
+    "href": "slides/01/slides01.html#r.a.-fisher",
+    "title": "Welcome to Stat250!",
+    "section": "R.A. Fisher",
+    "text": "R.A. Fisher\n1890-1962\n\n\n\n\n\nVariance\nANOVA\nNull hypothesis\nMaximum likelihood estimation\np-value\nLots of contributions in genetics\nAlso a eugenecist"
+  },
+  {
+    "objectID": "slides/01/slides01.html#neyman-pearson",
+    "href": "slides/01/slides01.html#neyman-pearson",
+    "title": "Welcome to Stat250!",
+    "section": "Neyman & Pearson",
+    "text": "Neyman & Pearson\n\n\n\n\n\nConfidence interval\nCorrelation\nRegression\nStandard deviation\nEffect size\n“Optimal” tests\n\\(\\alpha\\) and \\(\\beta\\)\nType I and II error"
+  },
+  {
+    "objectID": "slides/01/slides01.html#frequentist-vs-bayesian",
+    "href": "slides/01/slides01.html#frequentist-vs-bayesian",
+    "title": "Welcome to Stat250!",
+    "section": "Frequentist vs Bayesian",
+    "text": "Frequentist vs Bayesian"
+  },
+  {
+    "objectID": "slides/01/slides01.html#frequentist-vs-bayesian-1",
+    "href": "slides/01/slides01.html#frequentist-vs-bayesian-1",
+    "title": "Welcome to Stat250!",
+    "section": "Frequentist vs Bayesian",
+    "text": "Frequentist vs Bayesian\n\n\nFrequentist\n\n“Classical” statistics\nProbability is a long-run frequency\nType I and Type II errors\nConfidence intervals\n\n\nBayesian\n\nProbability is a subjective belief\nUpdate “prior” probabilities with data to obtain “posterior” probabilities\n“Credible” intervals\nComputationally intensive"
+  },
+  {
+    "objectID": "slides/01/slides01.html#parametric-vs-nonparametric",
+    "href": "slides/01/slides01.html#parametric-vs-nonparametric",
+    "title": "Welcome to Stat250!",
+    "section": "Parametric vs Nonparametric",
+    "text": "Parametric vs Nonparametric\n\nNonparametric \n\nThe basic idea of nonparametric inference is to use data to infer an unknown quantity while making as few assumptions as possible. Usually, this means using statistical models that are infinite-dimensional. (Wasserman, 2006)\n\n\nParametric\n\nA parametric inference uses models that consist of a set of distributions/densities that can be parameterized by a finite number of parameters."
+  },
+  {
+    "objectID": "slides/01/slides01.html#tentative-schedule",
+    "href": "slides/01/slides01.html#tentative-schedule",
+    "title": "Welcome to Stat250!",
+    "section": "Tentative schedule",
+    "text": "Tentative schedule\n\n\n\n\nTopic\nChapters\nApprox. Duration\n\n\n\n\nReview\n1-4\n1 week\n\n\nParametric estimation\n6\n3 weeks\n\n\nParametric & Nonparametric inference\n3-5, 7-9\n4 weeks\n\n\nModeling\n8-10\n2 weeks"
+  },
+  {
+    "objectID": "slides/01/slides01.html#course-description",
+    "href": "slides/01/slides01.html#course-description",
+    "title": "Welcome to Stat250!",
+    "section": "Course description",
+    "text": "Course description\nThis course is an introduction to the mathematical theory of frequentist and Bayesian statistical inference. Topics include parameter estimation, confidence intervals and hypothesis testing, linear models, and Bayesian inference.\nStudents who analyze data, or who aspire to develop new methods for analyzing data, should be well-grounded in mathematical statistics."
+  },
+  {
+    "objectID": "slides/01/slides01.html#course-objectives",
+    "href": "slides/01/slides01.html#course-objectives",
+    "title": "Welcome to Stat250!",
+    "section": "Course Objectives",
+    "text": "Course Objectives\nBy the end of this course, you should be able to:\n\nDerive estimators for parameters using maximum likelihood, the method of moments, and Bayesian techniques\nEvaluate the performance of estimators and describe their strengths and weaknesses\nDemonstrate a sophisticated understanding of the mathematics behind hypothesis tests, confidence intervals, and linear models\n\nUse the statistical package R to implement basic simulations of estimation scenarios"
+  },
+  {
+    "objectID": "slides/01/slides01.html#textbook",
+    "href": "slides/01/slides01.html#textbook",
+    "title": "Welcome to Stat250!",
+    "section": "Textbook:",
+    "text": "Textbook:\nMathematical Statistics with Resampling and R (3rd edition) by Chihara and Hesterberg\n\nSometimes, it can help to see a second way of topics being explained. I recommend Mathematical Statistics with applications by Larsen & Marx."
+  },
+  {
+    "objectID": "slides/01/slides01.html#computing",
+    "href": "slides/01/slides01.html#computing",
+    "title": "Welcome to Stat250!",
+    "section": "Computing:",
+    "text": "Computing:\nWe’ll be using R and RStudio throughout the course. If you’ve downloaded R to your own computer from a different class, great! If not, you can access anything you need through the maize server:\nhttps://maize.mathcs.carleton.edu/"
+  },
+  {
+    "objectID": "slides/01/slides01.html#what-will-you-do-in-this-course",
+    "href": "slides/01/slides01.html#what-will-you-do-in-this-course",
+    "title": "Welcome to Stat250!",
+    "section": "What will you do in this course?",
+    "text": "What will you do in this course?\nEach of the following components are important for your learning and therefore part of your final grade calculation:\n\nDaily Prep (5%)\nHomework (15%)\n\nDue once per week, typically Wednesdays but sometimes Fridays\n\nGroup work and attendance (5%)\n\nmore than 5 absences \\(\\to\\) 0\n\nMidterm exams (2 x 17.5%)\nCourse Project (10%)\nFinal Exam (30%)"
+  },
+  {
+    "objectID": "slides/01/slides01.html#what-will-a-typical-dayweek-look-like",
+    "href": "slides/01/slides01.html#what-will-a-typical-dayweek-look-like",
+    "title": "Welcome to Stat250!",
+    "section": "What will a typical day/week look like?",
+    "text": "What will a typical day/week look like?\n\n\nBefore class:\n\nRead a chapter\nCome with questions\nBe prepared to try what was covered\n\n\nIn class:\n\nMini lecture\n\nSometimes review\nSometimes new\n\nHands-on work or coding in R\n\n\nAfter class:\n\nFinish in-class exercises\nWork on homework"
+  },
+  {
+    "objectID": "slides/01/slides01.html#office-hours-tentative",
+    "href": "slides/01/slides01.html#office-hours-tentative",
+    "title": "Welcome to Stat250!",
+    "section": "Office hours (tentative)",
+    "text": "Office hours (tentative)\n\n\n\nDay\nTime\nType\nLocation\n\n\n\n\nMonday\n4:15-5:15\nDrop-in\nCMC 307\n\n\nTuesday\n10:30-11:30\nDrop-in\nCMC 307\n\n\nWednesday\n2:15-3:15\nDrop-in\nCMC 307\n\n\nFriday\n11-12\nDrop-in\nCMC 307"
+  },
+  {
+    "objectID": "slides/01/slides01.html#where-is-amanda-this-term",
+    "href": "slides/01/slides01.html#where-is-amanda-this-term",
+    "title": "Welcome to Stat250!",
+    "section": "Where is Amanda this term?",
+    "text": "Where is Amanda this term?"
+  },
+  {
+    "objectID": "slides/01/slides01.html#communication",
+    "href": "slides/01/slides01.html#communication",
+    "title": "Welcome to Stat250!",
+    "section": "Communication",
+    "text": "Communication\n\n\nMoodle: assignments, note sets, and grades\nSlack: homework questions, announcements, discussion\nEmail: personal matters, time-sensitive annoucements\n\n\n\nSlack is the fastest way to reach me. I typically will respond to messages 3x per weekday. I try to respond to emails within 48 hours. I’m online sporadically on evenings and weekends to devote time to family and rest – I hope you also use this time to reset and recharge!"
+  },
+  {
+    "objectID": "slides/01/slides01.html#advice-from-past-students",
+    "href": "slides/01/slides01.html#advice-from-past-students",
+    "title": "Welcome to Stat250!",
+    "section": "Advice from past students:",
+    "text": "Advice from past students:\n\nStart the problem sets early and go to office hours!\nWork with other people in the class, collaboration is key\nBe willing to ask lots of questions and don’t be afraid to ask for help!\nI would advise for them to attend office hours and the stat clinic since early on to get help and not be worrying about assignments at the last minute.\nI would advise future students to reach out and ask questions as soon if they have any confusion. Understanding statistical concepts and working with R can be frustrating at times, but people are here to help you along the way!\nDon’t let work snowball! Try to get help early and often and an imperfect problem set is better than no problem set.\nStart the homework early! Give yourself time to get things done, to understand, and to pause. Don’t feel afraid to ask questions; she’s so accessible.\nSpend some time reviewing handouts before doing homework."
+  },
+  {
+    "objectID": "slides/01/slides01.html#the-genius-myth",
+    "href": "slides/01/slides01.html#the-genius-myth",
+    "title": "Welcome to Stat250!",
+    "section": "The “Genius Myth”",
+    "text": "The “Genius Myth”\nIt’s sometimes easy to buy into the “genius myth” when it comes to math/stat courses: that you need to be a “math person” and have some innate mathematical ability in order to do well or become a statistics major. This could not be further from the truth! The best statisticians don’t necessarily have the “best” math or programming background, but are people that are able to formulate interesting questions and use math and programming to rigorously answer those questions. Many of the best statisticians I know became statisticians because they were initially interested in something else (biology, public health, psychology, neuroscience, physics, etc.) and realized that being able to answer important questions with data was not only valuable but fun and interesting. Being able to perform interesting statistical analyses is a skill that is learned, not an innate ability, and working hard at developing that skill is the point of this course."
+  },
+  {
+    "objectID": "slides/01/slides01.html#academic-integrity",
+    "href": "slides/01/slides01.html#academic-integrity",
+    "title": "Welcome to Stat250!",
+    "section": "Academic Integrity",
+    "text": "Academic Integrity\nYou are expected to follow Carleton’s policies regarding academic integrity. I encourage you to discuss the homework problems with others and use the resources available to you to try to figure out tough problems. You should code and write up your solutions on your own. Exams must be done by yourself without communicating with others; all work must be your own. The use of textbook solution manuals (physical or online), course materials from other students, or materials from previous versions of this course are not allowed. Copying, paraphrasing, summarizing, or submitting work generated by anyone but yourself without proper attribution is considered academic dishonesty (this includes output from LLMs).\nPlease ask if you are unsure of whether or not your actions are complying with the assignment/exam/project instructions. Always default to acknowledging any help received. Cases of suspected academic dishonesty are handled by the Provost’s Office and I am obligated to report any suspected violations of this policy."
+  },
+  {
+    "objectID": "slides/01/slides01.html#more-on-ai",
+    "href": "slides/01/slides01.html#more-on-ai",
+    "title": "Welcome to Stat250!",
+    "section": "More on “AI”",
+    "text": "More on “AI”\nLarge-language models (e.g. ChatGPT, Gemini, etc.) should only be used for help interpreting R’s error messages. You should not copy and paste course material into or out of an AI text generator.\nI also have a few rules in place to protect my intellectual property. You may not record my lectures using tools such as Otter.ai or upload any video or audio recordings to generate transcripts or study notes. You may not upload my course materials (slides, assignment prompts, note sets, etc.) into AI tools or homework help sites (such as chegg).\n“AI” tools are new for all of us and it’s OK to have questions about what is and isn’t appropriate!"
+  },
+  {
+    "objectID": "slides/01/slides01.html#diversity-inclusion",
+    "href": "slides/01/slides01.html#diversity-inclusion",
+    "title": "Welcome to Stat250!",
+    "section": "Diversity & Inclusion",
+    "text": "Diversity & Inclusion\nWe all come to class with different backgrounds and experiences, and this diversity makes our class environment richer. We value diversity and inclusion, and are committed to a climate of mutual respect and full participation in and out of the classroom. This class strives to be a learning environment that is usable, equitable, inclusive and welcoming, regardless of race, ethnicity, religion, gender and gender identities, sexual orientation, ability, socioeconomic background, and nationality. If you anticipate or experience any barriers to learning, please discuss your concerns with me."
+  },
+  {
+    "objectID": "slides/01/slides01.html#accomodations",
+    "href": "slides/01/slides01.html#accomodations",
+    "title": "Welcome to Stat250!",
+    "section": "Accomodations",
+    "text": "Accomodations\nCarleton College is committed to providing equitable access to learning opportunities for all students. The Office of Accessibility Resources (Henry House, 107 Union Street) is the campus office that collaborates with students who have disabilities to provide and/or arrange reasonable accommodations. If you have, or think you may have, a disability, please contact OAR@carleton.edu to arrange a confidential discussion regarding equitable access and reasonable accommodations. You are also welcome to contact me privately to discuss your academic needs. However, all disability-related accommodations must be arranged, in advance, through OAR."
+  },
+  {
+    "objectID": "slides/01/slides01.html#stat-lab",
+    "href": "slides/01/slides01.html#stat-lab",
+    "title": "Welcome to Stat250!",
+    "section": "Stat Lab",
+    "text": "Stat Lab\nThe Stats Lab (CMC 304) offers drop-in help R/RStudio help sessions run by friendly and knowledgeable lab assistants on most weekday evenings and some weekend times. The Stat Lab is primarily meant to serve Stat120 students, but many of the lab assistants can also help with Stat250."
+  },
+  {
+    "objectID": "slides/01/slides01.html#title-ix",
+    "href": "slides/01/slides01.html#title-ix",
+    "title": "Welcome to Stat250!",
+    "section": "Title IX",
+    "text": "Title IX\nPlease be aware that all faculty are “responsible employees”, which means that if you tell me about a situation involving sexual harassment, sexual assault, dating violence, domestic violence, or stalking, I must share that information with the Title IX Coordinator. Although I have to make this notification, you will control how your case will be handled, including whether or not you wish to meet with the Title IX coordinator or pursue a formal complaint."
+  },
+  {
+    "objectID": "slides/01/slides01.html#take-care-of-yourself",
+    "href": "slides/01/slides01.html#take-care-of-yourself",
+    "title": "Welcome to Stat250!",
+    "section": "Take care of yourself",
+    "text": "Take care of yourself\nDo your best to maintain a healthy lifestyle this semester by wearing a mask if you don’t feel well, eating a vegetable every day, exercising, avoiding excessive drug and alcohol use, getting enough sleep, and taking some time to relax. Your mental health is more important than your grade in this course. There are many helpful resources available on campus and an important part of the college experience is learning how to ask for help. If you are experiencing mental health symptoms as a result of coursework, please speak with me so we can address the problem together."
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#r-code",
+    "href": "slides/00-test/00-test.html#r-code",
+    "title": "Test slides",
+    "section": "R Code",
+    "text": "R Code\n\npalmerpenguins::penguins %&gt;%\n  ggplot(aes(x = flipper_length_mm)) +\n  geom_histogram(col = \"white\")"
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#plan-for-today",
+    "href": "slides/00-test/00-test.html#plan-for-today",
+    "title": "Test slides",
+    "section": "Plan for today",
+    "text": "Plan for today\n\nSyllabus\nContext for the class\nCourse expectations"
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#a-bit-about-me",
+    "href": "slides/00-test/00-test.html#a-bit-about-me",
+    "title": "Test slides",
+    "section": "A bit about me",
+    "text": "A bit about me"
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#course-description",
+    "href": "slides/00-test/00-test.html#course-description",
+    "title": "Test slides",
+    "section": "Course description",
+    "text": "Course description\nThis course is an introduction to the mathematical theory of frequentist and Bayesian statistical inference. Topics include parameter estimation, confidence intervals and hypothesis testing, linear models, and Bayesian inference.\nStudents who analyze data, or who aspire to develop new methods for analyzing data, should be well-grounded in mathematical statistics."
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#course-objectives",
+    "href": "slides/00-test/00-test.html#course-objectives",
+    "title": "Test slides",
+    "section": "Course Objectives",
+    "text": "Course Objectives\nBy the end of this course, you should be able to:\n\nDerive estimators for parameters using maximum likelihood, the method of moments, and Bayesian techniques\nEvaluate the performance of estimators and describe their strengths and weaknesses\nDemonstrate a sophisticated understanding of the mathematics behind hypothesis tests, confidence intervals, and linear models\n\nUse the statistical package R to implement basic simulations of estimation scenarios"
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#textbook",
+    "href": "slides/00-test/00-test.html#textbook",
+    "title": "Test slides",
+    "section": "Textbook:",
+    "text": "Textbook:"
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#computing",
+    "href": "slides/00-test/00-test.html#computing",
+    "title": "Test slides",
+    "section": "Computing:",
+    "text": "Computing:"
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#assignments",
+    "href": "slides/00-test/00-test.html#assignments",
+    "title": "Test slides",
+    "section": "Assignments",
+    "text": "Assignments"
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#regrade-request-policy",
+    "href": "slides/00-test/00-test.html#regrade-request-policy",
+    "title": "Test slides",
+    "section": "Regrade request policy",
+    "text": "Regrade request policy\nGrading is often a tedious task, and the grading team will sometimes make mistakes. I am always happy to fix these mistakes, and gradescope makes it easy to do so. However, it takes time to read through these requests and I’ve noticed an increase in unwarranted regrade requests in recent years. This semester, I am instituting an “NFL Coaches Challenge”-style regrade request rule. Every student will start the semester with 2 regrade requests available to them. If you submit a regrade request and I agree with you, you get it back. If you submit a regrade request for something that was not a grading mistake, you lose that request."
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#exams",
+    "href": "slides/00-test/00-test.html#exams",
+    "title": "Test slides",
+    "section": "Exams",
+    "text": "Exams"
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#final-exam",
+    "href": "slides/00-test/00-test.html#final-exam",
+    "title": "Test slides",
+    "section": "Final Exam",
+    "text": "Final Exam"
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#course-project",
+    "href": "slides/00-test/00-test.html#course-project",
+    "title": "Test slides",
+    "section": "Course project",
+    "text": "Course project"
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#final-grades",
+    "href": "slides/00-test/00-test.html#final-grades",
+    "title": "Test slides",
+    "section": "Final grades",
+    "text": "Final grades"
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#advice-from-past-students",
+    "href": "slides/00-test/00-test.html#advice-from-past-students",
+    "title": "Test slides",
+    "section": "Advice from past students:",
+    "text": "Advice from past students:\n\nStart the problem sets early and go to office hours!\nWork with other people in the class, collaboration is key\nBe willing to ask lots of questions and don’t be afraid to ask for help!\nI would advise for them to attend office hours and the stat clinic since early on to get help and not be worrying about assignments at the last minute.\nI would advise future students to reach out and ask questions as soon if they have any confusion. Understanding statistical concepts and working with R can be frustrating at times, but people are here to help you along the way!\nDon’t let work snowball! Try to get help early and often and an imperfect problem set is better than no problem set.\nlots of R here! Organization is key, and you’ll do well as long as you start homeworks early, communicate with the professor and with your fellow classmates. There’s a good support system."
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#the-genius-myth",
+    "href": "slides/00-test/00-test.html#the-genius-myth",
+    "title": "Test slides",
+    "section": "The “Genius Myth”",
+    "text": "The “Genius Myth”\nIt’s sometimes easy to buy into the “genius myth” when it comes to math/stat courses: that you need to be a “math person” and have some innate mathematical ability in order to do well or become a statistics major. This could not be further from the truth! The best statisticians don’t necessarily have the “best” math or programming background, but are people that are able to formulate interesting questions and use math and programming to rigorously answer those questions. Many of the best statisticians I know became statisticians because they were initially interested in something else (biology, public health, psychology, neuroscience, physics, etc.) and realized that being able to answer important questions with data was not only valuable but fun and interesting. Being able to perform interesting statistical analyses is a skill that is learned, not an innate ability, and working hard at developing that skill is the point of this course."
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#academic-integrity",
+    "href": "slides/00-test/00-test.html#academic-integrity",
+    "title": "Test slides",
+    "section": "Academic Integrity",
+    "text": "Academic Integrity"
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#diversity-inclusion",
+    "href": "slides/00-test/00-test.html#diversity-inclusion",
+    "title": "Test slides",
+    "section": "Diversity & Inclusion",
+    "text": "Diversity & Inclusion\nWe all come to class with different backgrounds and experiences, and this diversity makes our class environment richer. We value diversity and inclusion, and are committed to a climate of mutual respect and full participation in and out of the classroom. This class strives to be a learning environment that is usable, equitable, inclusive and welcoming, regardless of race, ethnicity, religion, gender and gender identities, sexual orientation, ability, socioeconomic background, and nationality. If you anticipate or experience any barriers to learning, please discuss your concerns with me."
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#accomodations",
+    "href": "slides/00-test/00-test.html#accomodations",
+    "title": "Test slides",
+    "section": "Accomodations",
+    "text": "Accomodations"
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#stat-lab",
+    "href": "slides/00-test/00-test.html#stat-lab",
+    "title": "Test slides",
+    "section": "Stat Lab",
+    "text": "Stat Lab"
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#title-ix",
+    "href": "slides/00-test/00-test.html#title-ix",
+    "title": "Test slides",
+    "section": "Title IX",
+    "text": "Title IX\nPlease be aware that all faculty are “responsible employees”, which means that if you tell me about a situation involving sexual harassment, sexual assault, dating violence, domestic violence, or stalking, I must share that information with the Title IX Coordinator. Although I have to make this notification, you will control how your case will be handled, including whether or not you wish to meet with the Title IX coordinator or pursue a formal complaint."
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#take-care-of-yourself",
+    "href": "slides/00-test/00-test.html#take-care-of-yourself",
+    "title": "Test slides",
+    "section": "Take care of yourself",
+    "text": "Take care of yourself\nDo your best to maintain a healthy lifestyle this semester by wearing a mask if you don’t feel well, eating a vegetable every day, exercising, avoiding excessive drug and alcohol use, getting enough sleep, and taking some time to relax. Your mental health is more important than your grade in this course. There are many helpful resources available on campus and an important part of the college experience is learning how to ask for help. If you are experiencing mental health symptoms as a result of coursework, please speak with me so we can address the problem together."
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#prerequisites",
+    "href": "slides/00-test/00-test.html#prerequisites",
+    "title": "Test slides",
+    "section": "Prerequisites",
+    "text": "Prerequisites"
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#history",
+    "href": "slides/00-test/00-test.html#history",
+    "title": "Test slides",
+    "section": "History",
+    "text": "History\n\nStatistics seems to be a difficult subject for mathematicians, perhaps because its elusive and wide-ranging character mitigates against the traditional theorem-proof method of presentation. It may come as some comfort then that statistics is also a difficult subject for statisticians\n\n\nControversies in the Foundations of Statistics, Bradley Efron 1978"
+  },
+  {
+    "objectID": "slides/00-test/00-test.html#fisher-vs-neyman-pearson",
+    "href": "slides/00-test/00-test.html#fisher-vs-neyman-pearson",
+    "title": "Test slides",
+    "section": "Fisher vs Neyman-Pearson",
+    "text": "Fisher vs Neyman-Pearson"
   },
   {
     "objectID": "readings/r-homework-stat250.html",
