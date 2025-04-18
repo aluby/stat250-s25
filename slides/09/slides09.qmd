@@ -187,6 +187,48 @@ $$I(\theta) = E[(\frac{d}{d\theta} \ln f(x|\theta))^2] = -   E(l''(\theta))$$
 
 ## Intuition: Fisher information
 
+$$I(\theta) = E[(\frac{d}{d\theta} \ln f(x|\theta))^2] = -   E(l''(\theta))$$
+
+- $l(\theta)$ is the log-likelihood function
+- $l'(\theta)$ gives the slope of the log-likelihood at any point, $l''(\theta)$ gives the curvature at any given point
+- The Fisher information "averages out" $\theta$ and summarizes the overall curvature of the log-likelihood function
+
+## Intuition: Fisher information
+
+::::: columns
+::: {.column width="50%"}
+**Higher Fisher Information**
+```{r}
+#| echo: false
+
+
+ggplot() + 
+  geom_function(fun = \(x) log(dnorm(x))) + 
+  xlim(c(-3,3)) + 
+  labs(
+    x = expression(theta),
+    y = expression(ln(X,theta))
+  )
+```
+:::
+
+::: {.column width="50%"}
+**Lower Fisher Information**
+
+```{r}
+#| echo: false
+
+
+ggplot() + 
+  geom_function(fun = \(x) log(dbeta(x, shape1 = 3, shape2=3))) + 
+  xlim(c(0,1)) + 
+  labs(
+    x = expression(theta),
+    y = expression(ln(X,theta))
+  )
+```
+:::
+:::::
 
 ## Practice: Fisher information
 
@@ -194,7 +236,7 @@ Find the *fisher information* for $X$, where $X \sim Bernoulli(\theta)$
 
 ## Practice: finding CRLB
 
-Let $X_1, ..., X_n$ be $n$ Bernoulli($\theta$) trials. Let $\hat\pi = \frac{\sum X_i}{n}$. How does Var($\hat\pi$) compare with the CRLB?
+Let $X_1, ..., X_n$ be $n$ Bernoulli($\theta$) trials. Let $\widehat\pi = \frac{\sum X_i}{n}$. How does Var($\widehat\pi$) compare with the CRLB?
 
 
 ## Practice: simulation
