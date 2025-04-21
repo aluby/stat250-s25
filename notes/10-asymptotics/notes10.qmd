@@ -200,7 +200,7 @@ An estimation procedure is *transformation invariant* if it yields equivalent re
 
 # Asymptotic Properties of the MLE {-}
 
-Under smoothness conditions of $f_x$, the sampling distribution of the MLE is *approximately normal* 
+I've mentioned a couple of times in class that the MLE is nice/optimal in some ways. Here's one of the major reasons: under smoothness conditions of $f_x$, the sampling distribution of the MLE is *approximately normal* 
 
 ::: callout-note
 ## Sampling distribution of the MLE

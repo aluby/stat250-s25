@@ -1,0 +1,118 @@
+---
+title: "10: Asymptotic Properties"
+format: 
+  html:
+    code-tools: true
+---
+
+```{r setup}
+#| include: false
+
+knitr::opts_chunk$set(echo = TRUE,
+                  message = FALSE,
+                  warning = FALSE)
+```
+
+```{r}
+library(tidyverse)
+library(patchwork)
+```
+
+# Example from Notes09: Exponential distribution
+
+## Example 1:
+
+Let $Y_1, ..., Y_n$ be $n$ Exp($\lambda$) random variables Let $\widehat\lambda = \frac{n}{\sum Y_i}$. How does Var($\widehat\lambda$) compare with the CRLB?
+
+```{r}
+lambda <- .5
+n <- 20
+n_sims <- 10000
+lambda_hat <- numeric(n_sims)
+
+for(i in 1:n_sims){
+  sample <- rexp(n, rate = lambda)
+  lambda_hat[i] <- n/sum(sample)
+}
+
+var(lambda_hat)
+lambda^2/n
+```
+
+## Example 1:
+
+**Example:** The median $m$ of an Exponential($\lambda$) distribution satisfies P(X ≤ m) = 0.5. Solving $1 - e^{-\lambda m} = 0.5$ gives $m = ln(2) / \lambda$. This suggests an estimator for $\lambda$ based on the median: $\widehat{\lambda} = \frac{ln(2)}{m}$. Finding the analytical variance of $\widehat \lambda$ is complicated. Finding the sampling distribution of $m$ is complicated, and finding the non-linear transformation is also complicated.
+
+Use simulation to see whether $\frac{ln(2)}{m}$ (a) is unbiased and (b) achieves the CRLB
+
+```{r}
+lambda <- .5
+n <- 200
+n_sims <- 10000
+lambda_hat <- numeric(n_sims)
+
+for(i in 1:n_sims){
+  sample <- rexp(n, rate = lambda)
+  lambda_hat[i] <- log(2)/median(sample)
+}
+
+mean(lambda_hat)
+lambda
+var(lambda_hat)
+lambda^2/n
+```
+
+# Example from Notes10: Cauchy vs Normal
+
+## Running Means
+
+The code below creates the "running mean" graph from the textbook for the Cauchy distribution. In your groups, talk through the steps and ask if you have questions. (It's a little different than other simulations that we've seen!) Run the code chunk a couple of times to get a sense of the behavior of the mean of a Cauchy distribution.
+
+```{r}
+n <- 10000
+running_mean <- numeric(n)
+sample <- rcauchy(n)
+
+for(i in 1:n){
+  running_mean[i] <- mean(sample[1:i])
+}
+
+ggplot() + 
+  geom_line(aes(x = 1:n, y = running_mean)) 
+```
+
+Now, use the code chunk below to do the same "running mean" example for a Normal(0,1) distribution. What do you notice? How is it the same/different from the Cauchy example above? 
+
+```{r}
+n <- 10000
+running_mean <- numeric(n)
+sample <- rnorm(n)
+
+for(i in 1:n){
+  running_mean[i] <- mean(sample[1:i])
+}
+
+ggplot() + 
+  geom_line(aes(x = 1:n, y = running_mean)) 
+```
+
+## Variance of sample means
+
+The code chunk below runs a simulation comparing the variance of the sample mean of a Normal(0,1) distribution to the variance of the sample mean for a Cauchy distribution. Run it a few times to get a sense of the behavior, then try larger values of n. What do you notice? What does this mean about the *consistency* of the estimators?
+
+```{r}
+n <- 20
+n_sims <- 1000
+sample_mean_norm <- numeric(n)
+sample_mean_cauchy <- numeric(n)
+
+for(i in 1:n_sims){
+  samp1 <- rnorm(n)
+  samp2 <- rcauchy(n)
+  sample_mean_norm[i] = mean(samp1)
+  sample_mean_cauchy[i] = mean(samp2)
+}
+
+var(sample_mean_norm)
+var(sample_mean_cauchy)
+```
