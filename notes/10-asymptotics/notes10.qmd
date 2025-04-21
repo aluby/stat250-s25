@@ -1,0 +1,220 @@
+---
+title: "10: Asymptotic Properties"
+author: "Prof Amanda Luby"
+subtitle: "Stat250 S25"
+callout-appearance: minimal
+knitr:
+    opts_chunk: 
+      dev: "ragg_png"
+      echo: false
+      warning: false
+      message: false
+format:
+  pdf:
+    include-in-header: 
+       - "../preamble.tex"
+    toc: false
+    number-sections: true
+    colorlinks: true
+    geometry:
+      - top=1in
+      - left=1in
+      - right=1in
+      - bottom=1in
+      - heightrounded
+    mainfont: "Linux Libertine"
+    sansfont: "Linux Libertine"
+    mathfont: "Libertinus Math"
+    monofont: "Monaco"
+fontsize: 11pt
+---
+
+
+```{r, echo = FALSE}
+library(tidyverse)
+library(patchwork)
+library(Sleuth3)
+library(mosaic)
+library(infer)
+```
+
+\vspace{-.25in}
+
+When we've considered bias and variance of estimators, we've assumed that our data has a fixed sample size. This makes sense in the context of historical statistics: data was time-consuming and expensive to gather, and so experiments were very rigorously designed with a lot of consideration for sample sizes. As data has become easier and cheaper to gather, the *asymptotic* behavior of estimators has also become an important consideration. We may find, for example, that an estimator has a desired behavior *in the limit* that it fails to have for any fixed sample size. 
+
+\vspace{-.25in}
+
+## Asymptotic bias {-}
+
+\vspace{-.1in}
+
+**Example:** Recall that for $X_i \sim \text{Unif}(0, \theta)$, $\hat\theta_{MLE} = X_{\max}$. We also showed that the MLE is *biased*: $E(\hat \theta_{MLE}) = \frac{n}{n+1} \theta$. Does this bias matter?
+
+```{r}
+#| fig-width: 3
+#| fig-height: 2
+tibble(
+  n = 1:500,
+  bias_factor = n/(n+1)
+) |>
+  ggplot(aes(x = n, y = bias_factor)) + 
+  geom_line() + 
+  geom_hline(yintercept = 1, linetype = "dashed", col = "red") + 
+  ylim(c(.5, 1.1))
+```
+
+::: callout-note
+## Asymptotically unbiased
+
+Let $Y_1, ..., Y_n \sim f_y(y | \theta)$. If $E(\hat \theta_n) \to \theta$ as $n \to \infty$, then $\hat \theta_n$ is *asymptotically unbiased*
+:::
+
+\vspace{-.15in}
+
+## Consistency {-}
+
+\vspace{-.15in}
+
+**Example:** Which estimator do you prefer?
+
+```{r}
+#| fig-height: 2.5
+#| fig-width: 6
+p1 <- ggplot() + 
+  geom_function(fun = dnorm, args = list(mean = 0, sd = 1)) +
+  xlim(c(-6,6)) +
+  labs(
+    title = "Estimator A, n = 10"
+  ) + 
+  geom_vline(xintercept = 0, linetype = "dashed", col = "red")
+
+p2 <- ggplot() + 
+  geom_function(fun = dnorm, args = list(mean = 0, sd = 2)) +
+  xlim(c(-6,6)) +
+  labs(
+    title = "Estimator B, n = 10"
+  ) + 
+  geom_vline(xintercept = 0, linetype = "dashed", col = "red")
+
+p3 <- ggplot() + 
+  geom_function(fun = dnorm, args = list(mean = 0, sd = 1)) +
+  xlim(c(-6,6)) + 
+  labs(
+    title = "Estimator A, n = 100"
+  ) + 
+  geom_vline(xintercept = 0, linetype = "dashed", col = "red")
+
+p4 <- ggplot() + 
+  geom_function(fun = dnorm, args = list(mean = 0, sd = .25)) +
+  xlim(c(-6,6)) + 
+  labs(
+    title = "Estimator B, n = 100"
+  ) + 
+  geom_vline(xintercept = 0, linetype = "dashed", col = "red")
+
+(p1 + p2)/(p3 + p4) & theme_bw() & theme(axis.text.x = element_blank(),
+                                         axis.text.y = element_blank()) 
+```
+
+
+::: callout-note
+## Consistent estimator
+
+An estimator $\hat \theta_n$ is *consistent* if it converges in probability to $\theta$:
+
+\vspace{.5in}
+
+:::
+
+**Example:** If an estimator is asymptotically unbiased, does that mean it is also consistent? 
+
+\vspace{2in}
+
+
+**Code Example:** Cauchy vs Normal
+
+
+
+
+## A detour into tail probability inequalities {-}
+
+::: callout-note
+## Markov's Inequality
+
+For any random variable $W$ and any constant $a$, 
+
+\vspace{.5in}
+:::
+
+::: callout-note
+## Chebyshev's inequality
+
+Let $W$ be any random variable with mean $\mu$ and variance $\sigma^2$. For any $a > 0$, 
+
+\vspace{.5in}
+:::
+
+::: callout-note
+## Chernoff's inequality
+
+Let $W$ be any random variable and constants $a$ and $t$, 
+
+\vspace{.5in}
+:::
+
+**Example:** Let $X_1, ..., X_n$ an iid sample of discrete variables from $p_x(x|\theta)$ where $E(X_i) = \mu$ and $\text{Var}(X_i) = \sigma^2 < \infty$. Let $\hat \mu_n = \frac{1}{n} \sum X_i$. Is $\hat \mu$ a consistent estimator for $\mu$? 
+
+\vspace{2in}
+
+*Note:*
+
+\vspace{.5in}
+
+::: callout-note
+## An alternative method to check for consistency
+
+Let $\{\hat \theta_n\}$ be a sequence of estimators for $\theta$. If 
+
+$$\lim_{n \to \infty} E[\hat \theta_n] \to \theta \text{ and } \lim_{n \to \infty} \text{Var}[\hat \theta_n] \to 0$$ 
+
+\vspace{.25in}
+:::
+
+**Exercise:** Let $X_1, ..., X_n \sim \text{Unif}(0,\theta)$. Recall that $\hat \theta_{MoM} = 2 \bar{X}$ and $E(\hat\theta_{MoM}) = \theta$ and $\text{Var}(\hat\theta_{MoM}) = \frac{\theta^2}{3n}$. Is $\hat\theta_{MoM}$ consistent for $\theta$? Check using both definitions of consistency.
+
+\vspace{1.5in}
+
+# Invariance {-}
+
+::: callout-note
+## Transformation invariance
+
+An estimation procedure is *transformation invariant* if it yields equivalent results for transformations of parameters. That is, if $\zeta = h(\theta)$ then $\hat \zeta = h(\hat \zeta)$
+:::
+
+**Example:** In class, we showed that the MLEs for $\mu$ and $\sigma^2$ in a $N(\mu, \sigma^2)$ distribution were $\hat \mu = \bar{X}$ and $\hat \sigma^2 = \frac{1}{n} \sum (X_i - \bar{X})^2$. If I changed my mind and instead want the MLE for the standard error $\sigma$, do I have to re-derive the MLE solution? 
+
+\vspace{2in}
+
+*Note:*
+
+# Asymptotic Properties of the MLE {-}
+
+Under smoothness conditions of $f_x$, the sampling distribution of the MLE is *approximately normal* 
+
+::: callout-note
+## Sampling distribution of the MLE
+
+Let $\hat \theta_{MLE} = h(Y)$ be the MLE for $\theta$, where $Y \sim f_y(y|\theta)$. Then 
+
+$$\hat \theta \approx N(\theta, \frac{1}{nI(\theta)})$$
+
+:::
+
+
+**Example:** Use the sampling distribution of the MLE to show that: 
+
+1. MLE Estimators are *asymptotically unbiased*
+2. Under appropriate smoothness conditions of $f_x$, the MLE is *consistent*
+3. MLE estimators are *asymptotically efficient*: for large $n$, other estimators do not have smaller variance
+

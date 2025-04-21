@@ -146,6 +146,6 @@ p1 + p2 & theme_bw()
 
 ## CRLB with simulation
 
-**Example:** The median $m$ of an Exponential($\lambda$) distribution satisfies P(X ≤ m) = 0.5. Solving $1 - e^(-\lambda m) = 0.5$ gives $m = ln(2) / \lambda$. This suggests an estimator for $\lambda$ based on the median: $\widehat{\lambda} = \frac{ln(2)}{m}$. Finding the analytical variance of $\widehat \lambda$ is complicated. Finding the sampling distribution of $m$ is complicated, and finding the non-linear transformation is also complicated.
+**Example:** The median $m$ of an Exponential($\lambda$) distribution satisfies P(X ≤ m) = 0.5. Solving $1 - e^{-\lambda m} = 0.5$ gives $m = ln(2) / \lambda$. This suggests an estimator for $\lambda$ based on the median: $\widehat{\lambda} = \frac{ln(2)}{m}$. Finding the analytical variance of $\widehat \lambda$ is complicated. Finding the sampling distribution of $m$ is complicated, and finding the non-linear transformation is also complicated.
 
 Use simulation to see whether $\frac{ln(2)}{m}$ (a) is unbiased and (b) achieves the CRLB
