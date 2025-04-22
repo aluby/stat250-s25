@@ -1,0 +1,50 @@
+---
+title: "Stat250 Exam I Topics"
+format: html
+---
+
+# General Topics
+
+## Terminology 
+
+- Parameter vs Estimator
+- Estimator vs Estimate
+- pdf vs likelihood
+- sample vs population
+
+## Sampling distributions
+
+
+## Estimation
+
+- Finding the MLE
+- Finding the MoM
+
+## Evaluating estimators
+
+- Given a pdf, find the expected value and variance
+- Recognize named distributions
+- Use properties of expected value and variance
+- Comment on bias and efficiency using the theoretical expected value and variance or using results from a simulation
+- Determine the Cramer-Rao lower bound
+- Compare two estimators' efficiency in terms of sample size
+- Determine if an estimator is consistent 
+- Use large-sample properties of the MLE
+
+## Math skills
+
+- Integration: polynomials, $e^x$, $\ln x$, and less-involved composite functions (ie $\int \ln 2x$)
+- Derivatives: same as integration
+
+## R skills
+
+- Given simulation code and output, draw conclusions
+- Given a graph and a description, draw conclusions
+
+# Example problems
+
+*Note:* this is not an exhaustive problem list, nor is it representative of the length of the exam. Make sure to review daily prep questions, in-class examples and exercises, and homework problems.
+
+
+
+
