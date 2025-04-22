@@ -45,6 +45,26 @@ format: html
 
 *Note:* this is not an exhaustive problem list, nor is it representative of the length of the exam. Make sure to review daily prep questions, in-class examples and exercises, and homework problems.
 
+Let $X_1, ..., X_n$ be an iid sample from a distribution with pdf $f(x|\theta) = \theta x^{\theta-1}$ for $0 < x < 1$ and $\theta >0$. 
+
+1. Show that the likelihood function is $\theta^n \prod X_i^{\theta-1}$
+2. Show that the maximum likelihood estimator is $\hat{\theta} = \frac{-n}{\sum \ln X_i}$
+3. It can be shown that $E[\hat\theta_{MLE}] = \frac{n}{n-1} \theta$. Use this information to construct an unbiased estimator for $\theta$, $\hat\theta_2$, that is based on $\hat \theta_{MLE}$
+4. Find the method of moments estimator for $\theta$
+5. Find $I(\theta)$
+6. Find the Cramer-Rao Lower Bound
 
 
+T/F questions
 
+1. The variance of an estimator quantifies how close the estimator is expected to be to the true parameter value on average.
+
+2. The Cramér-Rao Lower Bound provides an upper limit on the variance that any unbiased estimator can achieve.
+
+3. For a given statistical model, the Method of Moments estimator is generally more statistically efficient than the Maximum Likelihood Estimator, especially for large sample sizes.
+
+4. If an estimator is biased, it cannot be a consistent estimator.
+
+5. Efficiency is primarily concerned with minimizing the bias of an estimator.
+
+6. A biased estimator can sometimes have a smaller Mean Squared Error (MSE) than an unbiased estimator.
