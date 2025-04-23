@@ -1,45 +1,94 @@
 ---
-title: "Stat250 Exam I Topics"
-format: html
+title: "11: Exam 1 Review"
+author: "Prof Amanda Luby"
+subtitle: "Stat250 S25"
+callout-appearance: minimal
+knitr:
+    opts_chunk: 
+      dev: "ragg_png"
+      echo: false
+      warning: false
+      message: false
+format:
+  pdf:
+    include-in-header: 
+       - "../preamble.tex"
+    toc: false
+    number-sections: true
+    colorlinks: true
+    geometry:
+      - top=1in
+      - left=1in
+      - right=1in
+      - bottom=1in
+      - heightrounded
+    mainfont: "Linux Libertine"
+    sansfont: "Linux Libertine"
+    mathfont: "Libertinus Math"
+    monofont: "Monaco"
+fontsize: 11pt
 ---
-
+\vspace{-.5in}
 # General Topics
 
-## Terminology 
+### Terminology {-}
+
+\vspace{-.25in}
 
 - Parameter vs Estimator
 - Estimator vs Estimate
 - pdf vs likelihood
 - sample vs population
 
-## Sampling distributions
 
 
-## Estimation
+### Sampling distributions {-}
+
+\vspace{-.25in}
+
+- Conceptual understanding of what they are
+- Central Limit Theorem for sample means
+- Relationship to estimator
+
+
+
+### Estimation {-}
+
+\vspace{-.25in}
 
 - Finding the MLE
 - Finding the MoM
 
-## Evaluating estimators
+
+
+### Evaluating estimators {-}
+
+\vspace{-.25in}
 
 - Given a pdf, find the expected value and variance
-- Recognize named distributions
+- Recognize named distributions and use expected value and variance from cheat sheet
 - Use properties of expected value and variance
-- Comment on bias and efficiency using the theoretical expected value and variance or using results from a simulation
-- Determine the Cramer-Rao lower bound
+- Comment on bias and efficiency of an estimator: 
+    - using the theoretical expected value and variance
+    - using results from a simulation
+- Determine the Cramer-Rao lower bound for a probability distribution
 - Compare two estimators' efficiency in terms of sample size
 - Determine if an estimator is consistent 
 - Use large-sample properties of the MLE
 
-## Math skills
+### Math techniques {-}
 
+\vspace{-.25in}
 - Integration: polynomials, $e^x$, $\ln x$, and less-involved composite functions (ie $\int \ln 2x$)
 - Derivatives: same as integration
+\vspace{-.25in}
 
-## R skills
+### R techniques {-}
+\vspace{-.25in}
 
 - Given simulation code and output, draw conclusions
 - Given a graph and a description, draw conclusions
+
 
 # Example problems
 
@@ -53,9 +102,30 @@ Let $X_1, ..., X_n$ be an iid sample from a distribution with pdf $f(x|\theta) =
 4. Find the method of moments estimator for $\theta$
 5. Find $I(\theta)$
 6. Find the Cramer-Rao Lower Bound
+7. What does the Cramer-Rao Lower Bound in (6) tell you about $Var(\hat\theta_{MLE})$? What about  $Var(\hat\theta_{2})$? 
+8. Below is a simulation comparing the performance of $\hat{\theta_{MLE}}$ to $\hat{\theta_{MoM}}$. Which output corresponds to the bias of each estimator? Which corresponds to the efficiency? 
 
+```{r}
+#| echo: true
+theta <- 2
+n <- 20
+n_sims <- 10000
+theta_mle <- numeric(n_sims)
+theta_mom <- numeric(n_sims)
 
-T/F questions
+for(i in 1:n_sims){
+  sample <- rbeta(n, theta, 1)
+  theta_mle[i] <- -n/sum(log(sample))
+  theta_mom[i] <- mean(sample)/(1-mean(sample))
+}
+
+mean(theta_mle)
+var(theta_mle)
+mean(theta_mom)
+var(theta_mom)
+```
+
+Are the following statements true? If not, can you correct them?
 
 1. The variance of an estimator quantifies how close the estimator is expected to be to the true parameter value on average.
 
@@ -68,3 +138,55 @@ T/F questions
 5. Efficiency is primarily concerned with minimizing the bias of an estimator.
 
 6. A biased estimator can sometimes have a smaller Mean Squared Error (MSE) than an unbiased estimator.
+
+Use the graphs below for the next few questions: 
+
+(A) Sketch a sampling distribution for an estimator that is **unbiased**
+(B) Sketch a sampling distribution for an estimator that is **more efficient** than the one that I sketched
+(C) Sketch a sampling distribution for an estimator with **lower MSE** than the one that I sketched
+
+```{r}
+#| fig-width: 6
+#| fig-height: 2
+library(tidyverse)
+library(patchwork)
+p1 <- ggplot() +
+  ylim(c(0,1)) + 
+  geom_vline(xintercept = .5) + 
+  annotate("text", x = .65, y = 0, label = expression(theta)) +
+  labs(
+    x = "",
+    y = ""
+  ) +
+  coord_cartesian(clip = "off", xlim = c(-2,2)) + 
+  theme_bw() +
+  theme(axis.text = element_text(color = "white"))
+
+p2 <- ggplot() +
+  ylim(c(0,1)) + 
+  geom_vline(xintercept = .5) + 
+  annotate("text", x = .65, y = 0, label = expression(theta)) +
+  labs(
+    x = "",
+    y = ""
+  ) +
+  coord_cartesian(clip = "off", xlim = c(-2,2)) + 
+  theme_bw() +
+  theme(axis.text = element_text(color = "white"))
+
+p3 <- ggplot() +
+  ylim(c(0,1)) + 
+  geom_vline(xintercept = .5) + 
+  annotate("text", x = .65, y = 0, label = expression(theta)) +
+  labs(
+    x = "",
+    y = ""
+  ) +
+  coord_cartesian(clip = "off", xlim = c(-2,2)) + 
+  theme_bw() +
+  theme(axis.text = element_text(color = "white"))
+
+p1 + p2 + p3 + plot_annotation(tag_levels = "A")
+```
+
+

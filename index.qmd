@@ -25,6 +25,8 @@ Day09: [slides](/slides/09/slides09.html) | [handout](/notes/09-crlb/notes09.pdf
 
 Day10: [handout](/notes/10-asymptotics/notes10.pdf) | [R activity](/notes/10-asymptotics/activity10.html)
 
+Day11: [handout](/notes/11-review/notes11.pdf) 
+
 # Other Resources and Readings
 
 - [R Basics](readings/r-basics.html)
