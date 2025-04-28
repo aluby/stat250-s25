@@ -42,6 +42,12 @@ theme_set(theme_minimal())
 
 # Roadmap
 
+Observe $X_1, ..., X_n \sim F(\theta)$ with $\theta$ unknown. Estimate $\hat\theta = g(X_i)$. 
+
+Do we expect $\hat\theta$ to be **exactly equal** to $\theta$?
+
+What are **plausible values** for $\theta$ given an observed $\hat\theta$?
+
 We want to develop an interval estimate of a population parameter: 
 
 1. *Exact method:* Find the sampling distribution in closed form (Ch 4). REquires knowledge of the distribution of the data
@@ -113,9 +119,98 @@ p1 + p2 + p4 + p3
 | Sampling distribution |  |  |  |
 | Bootstrap distribution | | ||
 
-\vspace{-.25in}
+# Why does the bootstrap work?
+
+First, recall the definition of the CDF: 
+
+$$F_x(x_0) = P(X \le x_0)$$
+
+
+In other words, $F_x$ is the probability of the event $\{X \le x_0\}$. If we observe a sample of $X_1, ..., X_n \sim F_x$, a natural estimator for this probability is the observed proportion of observations where $\{X_i \le x_0\}$. 
+
+
+$$\widehat F_n = \frac{\sum \mathbb{I}(X_i \le x_0)}{n}$$
+
+so __________ is an estimator for _________
+
+Each bootstrap sample is drawn from $\widehat F$: 
+
+\pagebreak 
+
+$X_1^{*(1)}, X_2^{*(1)}, ... X_n^{*(1)} \sim \widehat F_n$
+
+
+
+As n increases, $\widehat{F}_n$ gets closer to true $F$
+
+```{r}
+#| fig-height: 2
+#| fig-width: 6
+#| echo: false
+
+ecdf_10 = ecdf(rnorm(10))
+ecdf_100 = ecdf(rnorm(100))
+ecdf_1000 = ecdf(rnorm(1000))
+
+p1 =   tibble(
+    x = seq(-3, 3, by = .1),
+    y = ecdf_10(x)
+  ) %>%
+  ggplot(aes(x = x, y = y)) + 
+  geom_line() + 
+  stat_function(
+    fun = pnorm, 
+    col = 'darkorange'
+  ) + 
+  labs(
+    x = "x",
+    y = expression(F[x]),
+    title = "n = 10"
+  )
+
+p2 =   tibble(
+    x = seq(-3, 3, by = .1),
+    y = ecdf_100(x)
+  ) %>%
+  ggplot(aes(x = x, y = y)) + 
+  geom_line() + 
+  stat_function(
+    fun = pnorm, 
+    col = 'darkorange'
+  ) + 
+  labs(
+    x = "x",
+    y = expression(F[x]),
+    title = "n = 100"
+  )
+  
+p3 =   tibble(
+    x = seq(-3, 3, by = .1),
+    y = ecdf_1000(x)
+  ) %>%
+  ggplot(aes(x = x, y = y)) + 
+  geom_line() + 
+  stat_function(
+    fun = pnorm, 
+    col = 'darkorange'
+  ) + 
+  labs(
+    x = "x",
+    y = expression(F[x]),
+    title = "n = 1000"
+  )
+
+p1 + p2 + p3
+```
+
+It turns out that $\widehat{F}_n$ is an _____________________ and  _____________________ estimator for $F$! 
+
+- When $n$ is large, $\widehat{F}_n$ is very close to $F$
+- So any statistic that is based on $\widehat{F}_n$ is very similar to the same statistic based on $F$
+- Re-sampling from our original sample results in a sampling distribution that is very similar to the theoretical sampling distribution 
+- This is true even if we don't know what the theoretical sampling distribution is! 
+
 # R Implementation
-\vspace{-.25in}
 
 ```{r}
 gentoo <- dplyr::filter(penguins, species == "Gentoo")
