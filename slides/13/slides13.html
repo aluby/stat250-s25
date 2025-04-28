@@ -428,9 +428,15 @@ Prof Amanda Luby
 </ul>
 </div></div>
 </section>
-<section id="roadmap-1" class="slide level2">
+<section id="roadmap-1" class="slide level2 center">
 <h2>Roadmap</h2>
-<p>why a point estimator isn’t enough</p>
+<p>Observe <span class="math inline">\(X_1, ..., X_n \sim F(\theta)\)</span> with <span class="math inline">\(\theta\)</span> unknown. Estimate <span class="math inline">\(\hat\theta = g(X_i)\)</span>.</p>
+<div class="fragment">
+<p>Do we expect <span class="math inline">\(\hat\theta\)</span> to be <strong>exactly equal</strong> to <span class="math inline">\(\theta\)</span>?</p>
+</div>
+<div class="fragment">
+<p>What are <strong>plausible values</strong> for <span class="math inline">\(\theta\)</span> given an observed <span class="math inline">\(\hat\theta\)</span>?</p>
+</div>
 </section>
 <section id="roadmap-2" class="slide level2">
 <h2>Roadmap</h2>
@@ -457,13 +463,13 @@ Prof Amanda Luby
 <p><img data-src="https://allisonhorst.github.io/palmerpenguins/reference/figures/culmen_depth.png" class="my-img-border"></p>
 </div></div>
 <div class="footer">
-<p>Horst AM, Hill AP, Gorman KB (2020). palmerpenguins: Palmer Archipelago (Antarctica) penguin data. R package version 0.1.0. https://allisonhorst.github.io/palmerpenguins/. doi: 10.5281/zenodo.3960218.</p>
+<p>Horst AM, Hill AP, Gorman KB (2020). palmerpenguins: Palmer Archipelago (Antarctica) penguin data. R package: https://allisonhorst.github.io/palmerpenguins/</p>
 </div>
 </section>
 <section id="bill-length" class="slide level2">
 <h2>Bill length</h2>
 
-<img data-src="slides13_files/figure-html/unnamed-chunk-2-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:55.0%"><div class="cell">
+<img data-src="slides13_files/figure-revealjs/unnamed-chunk-2-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:55.0%"><div class="cell">
 <div class="cell-output-display">
 <table class="caption-top">
 <thead>
@@ -508,13 +514,13 @@ Prof Amanda Luby
 <section id="bootstrap-distribution" class="slide level2">
 <h2>Bootstrap distribution</h2>
 
-<img data-src="slides13_files/figure-html/unnamed-chunk-5-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:80.0%"></section>
+<img data-src="slides13_files/figure-revealjs/unnamed-chunk-5-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:80.0%"></section>
 <section id="bootstrap-percentile-interval" class="slide level2">
 <h2>Bootstrap percentile interval</h2>
 <p>A 95% confidence interval can be constructed from the 2.5 and 97.5th percentiles of the bootstrap distribution</p>
 <p>&nbsp;</p>
 
-<img data-src="slides13_files/figure-html/unnamed-chunk-6-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:55.0%"></section>
+<img data-src="slides13_files/figure-revealjs/unnamed-chunk-6-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:55.0%"></section>
 <section id="the-one-sample-bootstrap-algorithm" class="slide level2">
 <h2>The one-sample bootstrap algorithm</h2>
 <p>Given a sample of size <em>n</em> from a population,</p>
@@ -545,13 +551,13 @@ Prof Amanda Luby
 <h2>Population</h2>
 <p>Consider a Gamma(2, 2) population distribution</p>
 
-<img data-src="slides13_files/figure-html/unnamed-chunk-8-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:80.0%"><p><span class="math display">\[E(X) = 1 \qquad SD(X) = 1/2\]</span></p>
+<img data-src="slides13_files/figure-revealjs/unnamed-chunk-8-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:80.0%"><p><span class="math display">\[E(X) = 1 \qquad SD(X) = 1/2\]</span></p>
 </section>
 <section id="sample" class="slide level2">
 <h2>Sample</h2>
 <p>Suppose we draw a random sample of size <span class="math inline">\(n=50\)</span></p>
 
-<img data-src="slides13_files/figure-html/unnamed-chunk-9-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:80.0%"><div class="cell">
+<img data-src="slides13_files/figure-revealjs/unnamed-chunk-9-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:80.0%"><div class="cell">
 <div class="cell-output-display">
 <div id="fiksyvnhqm" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>#fiksyvnhqm table {
@@ -1038,7 +1044,7 @@ Prof Amanda Luby
 <h2>Bootstrap distribution</h2>
 <p>We can bootstrap our sample and obtain the bootstrap distribution</p>
 
-<img data-src="slides13_files/figure-html/unnamed-chunk-12-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:80.0%"><div class="cell">
+<img data-src="slides13_files/figure-revealjs/unnamed-chunk-12-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:80.0%"><div class="cell">
 <div class="cell-output-display">
 <div id="ksrizbiuwf" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>#ksrizbiuwf table {
@@ -1525,7 +1531,7 @@ Prof Amanda Luby
 <h2>Sampling distribution</h2>
 <p>We could also draw many different samples and obtain the sampling distribution</p>
 
-<img data-src="slides13_files/figure-html/unnamed-chunk-14-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:80.0%"><div class="cell">
+<img data-src="slides13_files/figure-revealjs/unnamed-chunk-14-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:80.0%"><div class="cell">
 <div class="cell-output-display">
 <div id="qscbumkyum" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>#qscbumkyum table {
@@ -2075,6 +2081,56 @@ Prof Amanda Luby
 <span id="cb2-16"><a></a><span class="fu">quantile</span>(boot_means, <span class="at">probs =</span> <span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
+</section></section>
+<section>
+<section id="why-does-the-bootstrap-work" class="title-slide slide level1 center">
+<h1>Why does the bootstrap work?</h1>
+
+</section>
+<section id="section" class="slide level2">
+<h2></h2>
+<p>First, recall the definition of the CDF:</p>
+<p><span class="math display">\[F_x(x_0) = P(X \le x_0)\]</span></p>
+<div class="fragment">
+<p>In other words, <span class="math inline">\(F_x\)</span> is the probability of the event <span class="math inline">\(\{X \le x_0\}\)</span>. If we observe a sample of <span class="math inline">\(X_1, ..., X_n \sim F_x\)</span>, a natural estimator for this probability is the observed proportion of observations where <span class="math inline">\(\{X_i \le x_0\}\)</span>.</p>
+</div>
+<div class="fragment">
+<p><span class="math display">\[\widehat F_n = \frac{\sum \mathbb{I}(X_i \le x_0)}{n}\]</span> so <span class="math inline">\(\widehat{F}_n\)</span> is an estimator for <span class="math inline">\(F\)</span>.</p>
+</div>
+</section>
+<section id="how-does-widehat-f-relate-to-the-bootstrap" class="slide level2">
+<h2>How does <span class="math inline">\(\widehat F\)</span> relate to the bootstrap?</h2>
+</section>
+<section id="how-does-widehat-f-relate-to-the-bootstrap-1" class="slide level2">
+<h2>How does <span class="math inline">\(\widehat F\)</span> relate to the bootstrap?</h2>
+<p>Each bootstrap sample is drawn from <span class="math inline">\(\widehat F\)</span>:</p>
+<p><span class="math display">\[
+X_1^{*(1)}, X_2^{*(1)}, ... X_n^{*(1)} \sim \widehat F_n
+\]</span></p>
+<p><span class="math display">\[
+X_1^{*(2)}, X_2^{*(2)}, ... X_n^{*(2)} \sim \widehat F_n
+\]</span></p>
+<p><span class="math display">\[
+X_1^{*(3)}, X_2^{*(3)}, ... X_n^{*(3)} \sim \widehat F_n
+\]</span></p>
+<p><span class="math display">\[\vdots\]</span></p>
+<p><span class="math display">\[
+X_1^{*(B)}, X_2^{*(B)}, ... X_n^{*(B} \sim \widehat F_n
+\]</span></p>
+</section>
+<section id="as-n-increases-widehatf_n-gets-closer-to-true-f" class="slide level2">
+<h2>As n increases, <span class="math inline">\(\widehat{F}_n\)</span> gets closer to true <span class="math inline">\(F\)</span></h2>
+
+<img data-src="slides13_files/figure-revealjs/unnamed-chunk-16-1.png" width="960" class="r-stretch"></section>
+<section id="section-1" class="slide level2">
+<h2></h2>
+<p>It turns out that <span class="math inline">\(\widehat{F}_n\)</span> is an <strong>unbiased</strong> and <strong>consistent</strong> estimator for <span class="math inline">\(F\)</span>!</p>
+<ul>
+<li class="fragment">When <span class="math inline">\(n\)</span> is large, <span class="math inline">\(\widehat{F}_n\)</span> is very close to <span class="math inline">\(F\)</span></li>
+<li class="fragment">So any statistic that is based on <span class="math inline">\(\widehat{F}_n\)</span> is very similar to the same statistic based on <span class="math inline">\(F\)</span></li>
+<li class="fragment">Re-sampling from our original sample results in a sampling distribution that is very similar to the theoretical sampling distribution</li>
+<li class="fragment">This is true even if we don’t know what the theoretical sampling distribution is!</li>
+</ul>
 </section>
 <section id="your-turn-theoretical-example" class="slide level2 scrollable">
 <h2>Your turn: theoretical example</h2>
@@ -2087,7 +2143,7 @@ Prof Amanda Luby
 <li>Compare the bootstrap distribution to the approximate theoretical sampling distribution by creating a table like slide 17</li>
 </ol>
 </div>
-<p>Repeat (a)–(e) for sample sizes of n = 50 and n = 10. Describe carefully your observations about the effects of sample size on the bootstrap distribution.</p>
+<p>Repeat (a)–(d) for sample sizes of n = 50 and n = 10. Describe carefully your observations about the effects of sample size on the bootstrap distribution.</p>
 </section>
 <section id="your-turn-data-example" class="slide level2 scrollable">
 <h2>Your turn: data example</h2>
@@ -2324,6 +2380,44 @@ Prof Amanda Luby
         ]
       });
     </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
     <script id="quarto-html-after-body" type="application/javascript">
     window.document.addEventListener("DOMContentLoaded", function (event) {
       const toggleBodyColorMode = (bsSheetEl) => {
