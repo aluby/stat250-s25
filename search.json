@@ -4,14 +4,14 @@
     "href": "readings/r-basics.html",
     "title": "R Basics",
     "section": "",
-    "text": "For example, the data used in our textbook problems is included in the {resampledata3} R package. It is already installed on maize, but if you’re using a local version of R, you’ll need to install it by going to tools –&gt; install packages and then typing the name of the package in.\n\nlibrary(resampledata3)\n\n\nAttaching package: 'resampledata3'\n\n\nThe following object is masked from 'package:datasets':\n\n    Titanic\n\n\nIn this course, we’ll use a lot of tools found in the tidyverse of R packages. To load many of these packages at once, you can use the library(&lt;package_name&gt;) command. So to load the tidyverse we run:\n\nlibrary(tidyverse)\n\n── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──\n✔ dplyr     1.1.4     ✔ readr     2.1.5\n✔ forcats   1.0.0     ✔ stringr   1.5.1\n✔ ggplot2   3.5.1     ✔ tibble    3.2.1\n✔ lubridate 1.9.3     ✔ tidyr     1.3.1\n✔ purrr     1.0.2     \n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ dplyr::filter() masks stats::filter()\n✖ dplyr::lag()    masks stats::lag()\nℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors\n\n\n\n\n\n\n\n\nNote\n\n\n\nAbove we see a lot of extra info printed when we load the tidyverse. These messages are just telling you what packages are now available to you and warning you that a few functions (e.g., filter) has been replaced by the tidyverse version. We’ll see how to suppress these messages later."
+    "text": "For example, the data used in our textbook problems is included in the {resampledata3} R package. It is already installed on maize, but if you’re using a local version of R, you’ll need to install it by going to tools –&gt; install packages and then typing the name of the package in.\n\nlibrary(resampledata3)\n\nIn this course, we’ll use a lot of tools found in the tidyverse of R packages. To load many of these packages at once, you can use the library(&lt;package_name&gt;) command. So to load the tidyverse we run:\n\nlibrary(tidyverse)\n\n\n\n\n\n\n\nNote\n\n\n\nAbove we see a lot of extra info printed when we load the tidyverse. These messages are just telling you what packages are now available to you and warning you that a few functions (e.g., filter) has been replaced by the tidyverse version. We’ll see how to suppress these messages later."
   },
   {
     "objectID": "readings/r-basics.html#loading-r-packages",
     "href": "readings/r-basics.html#loading-r-packages",
     "title": "R Basics",
     "section": "",
-    "text": "For example, the data used in our textbook problems is included in the {resampledata3} R package. It is already installed on maize, but if you’re using a local version of R, you’ll need to install it by going to tools –&gt; install packages and then typing the name of the package in.\n\nlibrary(resampledata3)\n\n\nAttaching package: 'resampledata3'\n\n\nThe following object is masked from 'package:datasets':\n\n    Titanic\n\n\nIn this course, we’ll use a lot of tools found in the tidyverse of R packages. To load many of these packages at once, you can use the library(&lt;package_name&gt;) command. So to load the tidyverse we run:\n\nlibrary(tidyverse)\n\n── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──\n✔ dplyr     1.1.4     ✔ readr     2.1.5\n✔ forcats   1.0.0     ✔ stringr   1.5.1\n✔ ggplot2   3.5.1     ✔ tibble    3.2.1\n✔ lubridate 1.9.3     ✔ tidyr     1.3.1\n✔ purrr     1.0.2     \n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ dplyr::filter() masks stats::filter()\n✖ dplyr::lag()    masks stats::lag()\nℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors\n\n\n\n\n\n\n\n\nNote\n\n\n\nAbove we see a lot of extra info printed when we load the tidyverse. These messages are just telling you what packages are now available to you and warning you that a few functions (e.g., filter) has been replaced by the tidyverse version. We’ll see how to suppress these messages later."
+    "text": "For example, the data used in our textbook problems is included in the {resampledata3} R package. It is already installed on maize, but if you’re using a local version of R, you’ll need to install it by going to tools –&gt; install packages and then typing the name of the package in.\n\nlibrary(resampledata3)\n\nIn this course, we’ll use a lot of tools found in the tidyverse of R packages. To load many of these packages at once, you can use the library(&lt;package_name&gt;) command. So to load the tidyverse we run:\n\nlibrary(tidyverse)\n\n\n\n\n\n\n\nNote\n\n\n\nAbove we see a lot of extra info printed when we load the tidyverse. These messages are just telling you what packages are now available to you and warning you that a few functions (e.g., filter) has been replaced by the tidyverse version. We’ll see how to suppress these messages later."
   },
   {
     "objectID": "readings/r-basics.html#creating-and-naming-objects",
@@ -53,7 +53,7 @@
     "href": "notes/02-permutation/activity02.html",
     "title": "02: Permutation Tests",
     "section": "",
-    "text": "The data for this example lives in the {Sleuth3} R package. This chunk of code loads in the data package, and the {tidyverse} package, which provides data wrangling and visualization code.\n\nlibrary(Sleuth3)\nlibrary(tidyverse)\n\nThe dataset is called case0101. We can print the first 10 rows of the dataset with the following:\n\ncase0101 |&gt;\n  slice_head(n = 10)\n\n   Score Treatment\n1    5.0 Extrinsic\n2    5.4 Extrinsic\n3    6.1 Extrinsic\n4   10.9 Extrinsic\n5   11.8 Extrinsic\n6   12.0 Extrinsic\n7   12.3 Extrinsic\n8   14.8 Extrinsic\n9   15.0 Extrinsic\n10  16.8 Extrinsic\n\n\nThe |&gt; is called a “pipe”, and tells R to take the output of the first line of code and “pipe” it into the second.\n\n\n\nThe next thing we should do is Eploratory Data Analysis, or EDA. In this class, that typically means (1) create a visualization and (2) compute summary statistics.\nWe’ll make the side-by-side boxplots from the slides:\n\ncase0101 |&gt;\n  ggplot(aes(x = Score, y = Treatment, fill = Treatment)) + \n  geom_boxplot()\n\n\n\n\n\n\n\n\nYou can also use the {esquisse} package for this class.\nTo compute summary statistics, we can either use summary():\n\nsummary(case0101)\n\n     Score           Treatment \n Min.   : 5.00   Extrinsic:23  \n 1st Qu.:14.90   Intrinsic:24  \n Median :18.70                 \n Mean   :17.86                 \n 3rd Qu.:21.25                 \n Max.   :29.70                 \n\n\nor the favstats() function from the {mosaic} package. This function uses formula syntax, which says to group “Score” based on the “Treatment” variable.\n\nlibrary(mosaic) \nfavstats(Score ~ Treatment, data = case0101)\n\n  Treatment min     Q1 median    Q3  max     mean       sd  n missing\n1 Extrinsic   5 12.150   17.2 18.95 24.0 15.73913 5.252596 23       0\n2 Intrinsic  12 17.425   20.4 22.30 29.7 19.88333 4.439513 24       0\n\n\n\n\n\nWe’ll follow the code in the book to create two vectors, one for the “Extrinsic” group and one for the “Intrinsic” group. We can check that we’ve done this correctly using summary() and comparing it to the results from favstats()\n\nScore &lt;- case0101 |&gt;\n  pull(Score)\n\nScore_Extrinsic &lt;- case0101 |&gt;\n  filter(Treatment == \"Extrinsic\") |&gt;\n  pull(Score)\n\nsummary(Score_Extrinsic)\n\n   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. \n   5.00   12.15   17.20   15.74   18.95   24.00 \n\n\n\nScore_Intrinsic &lt;- case0101 |&gt;\n  filter(Treatment == \"Intrinsic\") |&gt;\n  pull(Score)\n\nsummary(Score_Intrinsic)\n\n   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. \n  12.00   17.43   20.40   19.88   22.30   29.70 \n\n\nSince our test statistic is the difference between the two means, we will compute the difference in means between Score_Extrinsic and Score_Intrinsic and save it to a vector called observed\n\nobserved &lt;- mean(Score_Intrinsic) - mean(Score_Extrinsic)\nobserved\n\n[1] 4.144203\n\n\n\n\n\nTo conduct the permutation test, we want to do a large number of permutations (called N in the code chunk below). The code in the for loop is run N times. Each time, we randomly sample observations in our dataset and assign them to the “Intrinsic” group. The observations that were not sampled are assigned to the “Extrinsic” group. In each simulation, we compute the difference in the means between the two groups and save it to our result vector.\n\nN &lt;- 10^4 - 1 # Number of permutations to do\nsample_size &lt;- nrow(case0101) # Sample size for each permutation (same as data)\n\nresult &lt;- numeric(N) # Create an empty vector to store results\nfor (i in 1:N){\n  index &lt;- sample(sample_size, 24, replace = FALSE) # Sample indices for group 1\n  result[i] &lt;- mean(Score[index]) - mean(Score[-index]) # Compute differences between groups\n}\n\n\n\n\nWe can visualize the results of the permutation distribution using {ggplot2}. I’ve also overlayed a red line that shows what our observed test statistic was.\n\nggplot() + \n  geom_histogram(aes(x = result), col = \"white\") + \n  geom_vline(xintercept = observed, linetype = \"dashed\", col = \"darkred\")\n\n\n\n\n\n\n\n\n\n\n\nThe following code chunk computes the fraction of simulations which resulted in a test statistic that was larger than the observed difference:\n\n(sum(result &gt;= observed) + 1)/(N+1)\n\n[1] 0.003"
+    "text": "The data for this example lives in the {Sleuth3} R package. This chunk of code loads in the data package, and the {tidyverse} package, which provides data wrangling and visualization code.\n\nlibrary(Sleuth3)\nlibrary(tidyverse)\n\nThe dataset is called case0101. We can print the first 10 rows of the dataset with the following:\n\ncase0101 |&gt;\n  slice_head(n = 10)\n\n   Score Treatment\n1    5.0 Extrinsic\n2    5.4 Extrinsic\n3    6.1 Extrinsic\n4   10.9 Extrinsic\n5   11.8 Extrinsic\n6   12.0 Extrinsic\n7   12.3 Extrinsic\n8   14.8 Extrinsic\n9   15.0 Extrinsic\n10  16.8 Extrinsic\n\n\nThe |&gt; is called a “pipe”, and tells R to take the output of the first line of code and “pipe” it into the second.\n\n\n\nThe next thing we should do is Eploratory Data Analysis, or EDA. In this class, that typically means (1) create a visualization and (2) compute summary statistics.\nWe’ll make the side-by-side boxplots from the slides:\n\ncase0101 |&gt;\n  ggplot(aes(x = Score, y = Treatment, fill = Treatment)) + \n  geom_boxplot()\n\n\n\n\n\n\n\n\nYou can also use the {esquisse} package for this class.\nTo compute summary statistics, we can either use summary():\n\nsummary(case0101)\n\n     Score           Treatment \n Min.   : 5.00   Extrinsic:23  \n 1st Qu.:14.90   Intrinsic:24  \n Median :18.70                 \n Mean   :17.86                 \n 3rd Qu.:21.25                 \n Max.   :29.70                 \n\n\nor the favstats() function from the {mosaic} package. This function uses formula syntax, which says to group “Score” based on the “Treatment” variable.\n\nlibrary(mosaic) \nfavstats(Score ~ Treatment, data = case0101)\n\n  Treatment min     Q1 median    Q3  max     mean       sd  n missing\n1 Extrinsic   5 12.150   17.2 18.95 24.0 15.73913 5.252596 23       0\n2 Intrinsic  12 17.425   20.4 22.30 29.7 19.88333 4.439513 24       0\n\n\n\n\n\nWe’ll follow the code in the book to create two vectors, one for the “Extrinsic” group and one for the “Intrinsic” group. We can check that we’ve done this correctly using summary() and comparing it to the results from favstats()\n\nScore &lt;- case0101 |&gt;\n  pull(Score)\n\nScore_Extrinsic &lt;- case0101 |&gt;\n  filter(Treatment == \"Extrinsic\") |&gt;\n  pull(Score)\n\nsummary(Score_Extrinsic)\n\n   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. \n   5.00   12.15   17.20   15.74   18.95   24.00 \n\n\n\nScore_Intrinsic &lt;- case0101 |&gt;\n  filter(Treatment == \"Intrinsic\") |&gt;\n  pull(Score)\n\nsummary(Score_Intrinsic)\n\n   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. \n  12.00   17.43   20.40   19.88   22.30   29.70 \n\n\nSince our test statistic is the difference between the two means, we will compute the difference in means between Score_Extrinsic and Score_Intrinsic and save it to a vector called observed\n\nobserved &lt;- mean(Score_Intrinsic) - mean(Score_Extrinsic)\nobserved\n\n[1] 4.144203\n\n\n\n\n\nTo conduct the permutation test, we want to do a large number of permutations (called N in the code chunk below). The code in the for loop is run N times. Each time, we randomly sample observations in our dataset and assign them to the “Intrinsic” group. The observations that were not sampled are assigned to the “Extrinsic” group. In each simulation, we compute the difference in the means between the two groups and save it to our result vector.\n\nN &lt;- 10^4 - 1 # Number of permutations to do\nsample_size &lt;- nrow(case0101) # Sample size for each permutation (same as data)\n\nresult &lt;- numeric(N) # Create an empty vector to store results\nfor (i in 1:N){\n  index &lt;- sample(sample_size, 24, replace = FALSE) # Sample indices for group 1\n  result[i] &lt;- mean(Score[index]) - mean(Score[-index]) # Compute differences between groups\n}\n\n\n\n\nWe can visualize the results of the permutation distribution using {ggplot2}. I’ve also overlayed a red line that shows what our observed test statistic was.\n\nggplot() + \n  geom_histogram(aes(x = result), col = \"white\") + \n  geom_vline(xintercept = observed, linetype = \"dashed\", col = \"darkred\")\n\n\n\n\n\n\n\n\n\n\n\nThe following code chunk computes the fraction of simulations which resulted in a test statistic that was larger than the observed difference:\n\n(sum(result &gt;= observed) + 1)/(N+1)\n\n[1] 0.0024"
   },
   {
     "objectID": "notes/02-permutation/activity02.html#load-data",
@@ -95,7 +95,7 @@
     "href": "notes/02-permutation/activity02.html#compute-p-value",
     "title": "02: Permutation Tests",
     "section": "",
-    "text": "The following code chunk computes the fraction of simulations which resulted in a test statistic that was larger than the observed difference:\n\n(sum(result &gt;= observed) + 1)/(N+1)\n\n[1] 0.003"
+    "text": "The following code chunk computes the fraction of simulations which resulted in a test statistic that was larger than the observed difference:\n\n(sum(result &gt;= observed) + 1)/(N+1)\n\n[1] 0.0024"
   },
   {
     "objectID": "notes/02-permutation/activity02.html#eda-1",
@@ -140,627 +140,172 @@
     "text": "What do you conclude?"
   },
   {
-    "objectID": "slides/06/slides06.html#big-idea",
-    "href": "slides/06/slides06.html#big-idea",
-    "title": "Maximum Likelihood Estimation II",
-    "section": "Big Idea",
-    "text": "Big Idea\nWe’re interested in the proportion of Carleton students who have had some sort of research experience. We have the resources to randomly sample 10 students.\n\n\nProbability:\n\nStatistics:"
+    "objectID": "slides/00-test/00-test.html#r-code",
+    "href": "slides/00-test/00-test.html#r-code",
+    "title": "Test slides",
+    "section": "R Code",
+    "text": "R Code\n\npalmerpenguins::penguins %&gt;%\n  ggplot(aes(x = flipper_length_mm)) +\n  geom_histogram(col = \"white\")"
   },
   {
-    "objectID": "slides/06/slides06.html#example",
-    "href": "slides/06/slides06.html#example",
-    "title": "Maximum Likelihood Estimation II",
-    "section": "Example",
-    "text": "Example\nRecall that the likelihood function for \\(n\\) iid Bernoulli(\\(\\theta\\)) random variable is \\(L(\\theta) = \\theta^{\\sum x_i} (1-\\theta)^{n - \\sum x_i}\\).\n\n\n\n\n\n\n\n\n\n\n\n\nScenario 1: 0 yes responses\n\n\n\n\\(\\theta\\)\n0.0\n0.2\n0.4\n0.6\n0.8\n1.0\n\n\n\\(L(\\theta)\\)\n\n\n\n\n\n\n\n\n\nScenario 2: 6 yes responses\n\n\n\n\\(\\theta\\)\n0.0\n0.2\n0.4\n0.6\n0.8\n1.0\n\n\n\\(L(\\theta)\\)"
+    "objectID": "slides/00-test/00-test.html#plan-for-today",
+    "href": "slides/00-test/00-test.html#plan-for-today",
+    "title": "Test slides",
+    "section": "Plan for today",
+    "text": "Plan for today\n\nSyllabus\nContext for the class\nCourse expectations"
   },
   {
-    "objectID": "slides/06/slides06.html#exercise",
-    "href": "slides/06/slides06.html#exercise",
-    "title": "Maximum Likelihood Estimation II",
-    "section": "Exercise",
-    "text": "Exercise\nIs the likelihood function a probability distribution? Why or why not?"
+    "objectID": "slides/00-test/00-test.html#a-bit-about-me",
+    "href": "slides/00-test/00-test.html#a-bit-about-me",
+    "title": "Test slides",
+    "section": "A bit about me",
+    "text": "A bit about me"
   },
   {
-    "objectID": "slides/06/slides06.html#exercise-from-last-class",
-    "href": "slides/06/slides06.html#exercise-from-last-class",
-    "title": "Maximum Likelihood Estimation II",
-    "section": "Exercise: from last class",
-    "text": "Exercise: from last class\nLet \\(X_1, ..., X_n\\) be an iid random sample from a distribution with PDF\n\\[f(x|\\theta)= (\\theta + 1)x^\\theta, 0 \\le x \\le 1\\]\n\\[L(\\theta) =\\] \\[\\hat\\theta_{MLE}=\\]\nSuppose we observe a sample of size 5: {.83, .49, .72, .57, .66}. Find the maximum likelihood estimate and verify with a graph or numerical approximation"
+    "objectID": "slides/00-test/00-test.html#course-description",
+    "href": "slides/00-test/00-test.html#course-description",
+    "title": "Test slides",
+    "section": "Course description",
+    "text": "Course description\nThis course is an introduction to the mathematical theory of frequentist and Bayesian statistical inference. Topics include parameter estimation, confidence intervals and hypothesis testing, linear models, and Bayesian inference.\nStudents who analyze data, or who aspire to develop new methods for analyzing data, should be well-grounded in mathematical statistics."
   },
   {
-    "objectID": "slides/06/slides06.html#example-uniform-disribution",
-    "href": "slides/06/slides06.html#example-uniform-disribution",
-    "title": "Maximum Likelihood Estimation II",
-    "section": "Example: Uniform disribution",
-    "text": "Example: Uniform disribution\nFind the MLE for \\(Y_1, ..., Y_n \\sim \\text{Unif}(0, \\theta)\\)"
+    "objectID": "slides/00-test/00-test.html#course-objectives",
+    "href": "slides/00-test/00-test.html#course-objectives",
+    "title": "Test slides",
+    "section": "Course Objectives",
+    "text": "Course Objectives\nBy the end of this course, you should be able to:\n\nDerive estimators for parameters using maximum likelihood, the method of moments, and Bayesian techniques\nEvaluate the performance of estimators and describe their strengths and weaknesses\nDemonstrate a sophisticated understanding of the mathematics behind hypothesis tests, confidence intervals, and linear models\n\nUse the statistical package R to implement basic simulations of estimation scenarios"
   },
   {
-    "objectID": "slides/06/slides06.html#finding-the-mle-when-more-than-one-parameter-is-unknown",
-    "href": "slides/06/slides06.html#finding-the-mle-when-more-than-one-parameter-is-unknown",
-    "title": "Maximum Likelihood Estimation II",
-    "section": "Finding the MLE when more than one parameter is unknown",
-    "text": "Finding the MLE when more than one parameter is unknown\nIf the pdf or pmf that we’re using has two or more parameters, say \\(\\theta_1\\) and \\(\\theta_2\\), finding MLEs for the \\(\\theta_i\\)’s requires the solution of a sest of simultaneous equations\n\n\\[\\frac{\\partial}{\\partial \\theta_1} \\ln L(\\theta_1, \\theta_2) = 0\\]\n\n\n\\[\\frac{\\partial}{\\partial \\theta_2} \\ln L(\\theta_1, \\theta_2) = 0\\]"
+    "objectID": "slides/00-test/00-test.html#textbook",
+    "href": "slides/00-test/00-test.html#textbook",
+    "title": "Test slides",
+    "section": "Textbook:",
+    "text": "Textbook:"
   },
   {
-    "objectID": "slides/06/slides06.html#example-nmu-sigma2-distribution",
-    "href": "slides/06/slides06.html#example-nmu-sigma2-distribution",
-    "title": "Maximum Likelihood Estimation II",
-    "section": "Example: \\(N(\\mu, \\sigma^2)\\) distribution",
-    "text": "Example: \\(N(\\mu, \\sigma^2)\\) distribution\nSuppose a random sample of size \\(n\\) is drawn from the two parameter normal pdf:\n\\(f_y(y|\\mu, \\sigma^2) = \\frac{1}{\\sqrt{2\\pi \\sigma}} \\exp(-(\\frac{y-\\mu}{\\sigma})^2)\\)\nfind the MLEs \\(\\hat{\\mu}\\) and \\(\\hat\\sigma^2\\)"
+    "objectID": "slides/00-test/00-test.html#computing",
+    "href": "slides/00-test/00-test.html#computing",
+    "title": "Test slides",
+    "section": "Computing:",
+    "text": "Computing:"
   },
   {
-    "objectID": "slides/08/slides08.html#recap",
-    "href": "slides/08/slides08.html#recap",
-    "title": "Evaluating Estimators",
-    "section": "Recap",
-    "text": "Recap\n\nObserve data \\(X_1, ..., X_n \\sim F_x(x|\\theta)\\), where \\(\\theta\\) is unknown\nGoal: Estimate \\(\\theta\\) based on the values of \\(X_i\\) by formulating an estimator \\(\\widehat \\theta\\)\nOne technique is to use the maximum likelihood estimator, which finds the value of \\(\\theta\\) that maximizes the joint probability \\(\\prod_{i=1}^n f_x(x_i | \\theta)\\)\nA second technique is to use the method of moments estimator, which finds the value of \\(\\theta\\) that make the theoretical moments equal to the sample moments\nToday: if we have multiple estimators, how do we decide which is better?"
+    "objectID": "slides/00-test/00-test.html#assignments",
+    "href": "slides/00-test/00-test.html#assignments",
+    "title": "Test slides",
+    "section": "Assignments",
+    "text": "Assignments"
   },
   {
-    "objectID": "slides/08/slides08.html#warm-up",
-    "href": "slides/08/slides08.html#warm-up",
-    "title": "Evaluating Estimators",
-    "section": "Warm up",
-    "text": "Warm up\nSuppose we take a random sample of size 50 from an exponential distribution with rate \\(\\lambda = 1/10\\).\nWhat is \\(\\mu = E(Y)\\)?\nIf we want to design an estimator for the mean, \\(\\widehat \\mu\\), what are some intuitive estimators?"
+    "objectID": "slides/00-test/00-test.html#regrade-request-policy",
+    "href": "slides/00-test/00-test.html#regrade-request-policy",
+    "title": "Test slides",
+    "section": "Regrade request policy",
+    "text": "Regrade request policy\nGrading is often a tedious task, and the grading team will sometimes make mistakes. I am always happy to fix these mistakes, and gradescope makes it easy to do so. However, it takes time to read through these requests and I’ve noticed an increase in unwarranted regrade requests in recent years. This semester, I am instituting an “NFL Coaches Challenge”-style regrade request rule. Every student will start the semester with 2 regrade requests available to them. If you submit a regrade request and I agree with you, you get it back. If you submit a regrade request for something that was not a grading mistake, you lose that request."
   },
   {
-    "objectID": "slides/08/slides08.html#estimators-for-the-mean",
-    "href": "slides/08/slides08.html#estimators-for-the-mean",
-    "title": "Evaluating Estimators",
-    "section": "Estimators for the mean",
-    "text": "Estimators for the mean\nSuppose we take a random sample of size 50 from an exponential distribution with mean 10 (rate is \\(\\lambda = 1/10\\)).\nConsider three estimators of \\(\\mu\\):\n\n\\(\\widehat{\\mu_1} = \\bar{X}\\)\n\\(\\widehat{\\mu_2} = \\widetilde{X}\\)\n\\(\\widehat{\\mu_3} = \\frac{X_{\\max} - X_{\\min}}{2}\\)"
+    "objectID": "slides/00-test/00-test.html#exams",
+    "href": "slides/00-test/00-test.html#exams",
+    "title": "Test slides",
+    "section": "Exams",
+    "text": "Exams"
   },
   {
-    "objectID": "slides/08/slides08.html#aside-estimators-are-also-random-variables",
-    "href": "slides/08/slides08.html#aside-estimators-are-also-random-variables",
-    "title": "Evaluating Estimators",
-    "section": "Aside: estimators are also random variables",
-    "text": "Aside: estimators are also random variables\n\\(X_1, ..., X_n \\sim F_x(\\theta)\\) and each \\(\\widehat{\\theta} = g(X_1, ..., X_n)\\) is a function of the data\n\nThis means that each \\(\\widehat\\theta\\) is itself a random variable, and so it has:\n\na pdf \\(f_\\widehat{\\theta}\\)\nan expectation \\(E(\\widehat\\theta)\\)\na variance \\(\\text{Var}(\\widehat{\\theta})\\)"
+    "objectID": "slides/00-test/00-test.html#final-exam",
+    "href": "slides/00-test/00-test.html#final-exam",
+    "title": "Test slides",
+    "section": "Final Exam",
+    "text": "Final Exam"
   },
   {
-    "objectID": "slides/08/slides08.html#comparing-estimators-simulation",
-    "href": "slides/08/slides08.html#comparing-estimators-simulation",
-    "title": "Evaluating Estimators",
-    "section": "Comparing Estimators: Simulation",
-    "text": "Comparing Estimators: Simulation\nSuppose we take a random sample of size 50 from an exponential distribution with mean 10 (rate is \\(\\lambda = 1/10\\)).\n\n\nConsider three estimators of \\(\\mu\\):\n\n\\(\\hat{\\mu_1} = \\bar{X}\\)\n\\(\\hat{\\mu_2} = \\tilde{X}\\)\n\\(\\hat{\\mu_3} = \\frac{X_{\\max} - X_{\\min}}{2}\\)\n\n\n\nn &lt;- 50\nN_sims &lt;- 100000\nest1 &lt;- numeric(N_sims)\nest2 &lt;- numeric(N_sims)\nest3 &lt;- numeric(N_sims)\nfor(i in 1:N_sims){\n  x &lt;- rexp(n, rate = .1)\n  est1[i] &lt;- mean(x)\n  est2[i] &lt;- median(x)\n  est3[i] &lt;- (max(x) - min(x))/2\n}"
+    "objectID": "slides/00-test/00-test.html#course-project",
+    "href": "slides/00-test/00-test.html#course-project",
+    "title": "Test slides",
+    "section": "Course project",
+    "text": "Course project"
   },
   {
-    "objectID": "slides/08/slides08.html#sampling-distribution-of-the-estimators",
-    "href": "slides/08/slides08.html#sampling-distribution-of-the-estimators",
-    "title": "Evaluating Estimators",
-    "section": "Sampling Distribution of the Estimators",
-    "text": "Sampling Distribution of the Estimators\n\nwhich estimator is “best”?"
+    "objectID": "slides/00-test/00-test.html#final-grades",
+    "href": "slides/00-test/00-test.html#final-grades",
+    "title": "Test slides",
+    "section": "Final grades",
+    "text": "Final grades"
   },
   {
-    "objectID": "slides/08/slides08.html#properties-of-estimators",
-    "href": "slides/08/slides08.html#properties-of-estimators",
-    "title": "Evaluating Estimators",
-    "section": "Properties of Estimators",
-    "text": "Properties of Estimators"
+    "objectID": "slides/00-test/00-test.html#advice-from-past-students",
+    "href": "slides/00-test/00-test.html#advice-from-past-students",
+    "title": "Test slides",
+    "section": "Advice from past students:",
+    "text": "Advice from past students:\n\nStart the problem sets early and go to office hours!\nWork with other people in the class, collaboration is key\nBe willing to ask lots of questions and don’t be afraid to ask for help!\nI would advise for them to attend office hours and the stat clinic since early on to get help and not be worrying about assignments at the last minute.\nI would advise future students to reach out and ask questions as soon if they have any confusion. Understanding statistical concepts and working with R can be frustrating at times, but people are here to help you along the way!\nDon’t let work snowball! Try to get help early and often and an imperfect problem set is better than no problem set.\nlots of R here! Organization is key, and you’ll do well as long as you start homeworks early, communicate with the professor and with your fellow classmates. There’s a good support system."
   },
   {
-    "objectID": "slides/08/slides08.html#estimator-properties-bias",
-    "href": "slides/08/slides08.html#estimator-properties-bias",
-    "title": "Evaluating Estimators",
-    "section": "Estimator properties: bias",
-    "text": "Estimator properties: bias\nHow accurate is the estimator?\n\n\n\n\n\n\n\nBias of an estimator\n\n\nIf \\(\\widehat{\\theta}(X)\\) is an estimator of \\(\\theta\\), then the bias of the estimator is equal to\n\\[\\text{Bias}(\\widehat\\theta) = E[\\widehat \\theta(X)] - \\theta\\]\nNote: the expected value is computed from the sampling distribution of \\(\\widehat{\\theta}(X)\\)"
+    "objectID": "slides/00-test/00-test.html#the-genius-myth",
+    "href": "slides/00-test/00-test.html#the-genius-myth",
+    "title": "Test slides",
+    "section": "The “Genius Myth”",
+    "text": "The “Genius Myth”\nIt’s sometimes easy to buy into the “genius myth” when it comes to math/stat courses: that you need to be a “math person” and have some innate mathematical ability in order to do well or become a statistics major. This could not be further from the truth! The best statisticians don’t necessarily have the “best” math or programming background, but are people that are able to formulate interesting questions and use math and programming to rigorously answer those questions. Many of the best statisticians I know became statisticians because they were initially interested in something else (biology, public health, psychology, neuroscience, physics, etc.) and realized that being able to answer important questions with data was not only valuable but fun and interesting. Being able to perform interesting statistical analyses is a skill that is learned, not an innate ability, and working hard at developing that skill is the point of this course."
   },
   {
-    "objectID": "slides/08/slides08.html#estimator-properties-variance",
-    "href": "slides/08/slides08.html#estimator-properties-variance",
-    "title": "Evaluating Estimators",
-    "section": "Estimator properties: variance",
-    "text": "Estimator properties: variance\nHow much variability does the estimator have around its mean?\n\n\n\n\n\n\nVariance of an estimator\n\n\nThe variance of an estimator is\n\\[\\text{Var}(\\widehat{\\theta}) = E[(\\widehat{\\theta} - E[\\widehat{\\theta}])^2]\\]\nNote: the expected value is computed from the sampling distribution of \\(\\widehat{\\theta}(X)\\)"
+    "objectID": "slides/00-test/00-test.html#academic-integrity",
+    "href": "slides/00-test/00-test.html#academic-integrity",
+    "title": "Test slides",
+    "section": "Academic Integrity",
+    "text": "Academic Integrity"
   },
   {
-    "objectID": "slides/08/slides08.html#estimator-properties-mean-square-error-mse",
-    "href": "slides/08/slides08.html#estimator-properties-mean-square-error-mse",
-    "title": "Evaluating Estimators",
-    "section": "Estimator properties: Mean Square Error (MSE)",
-    "text": "Estimator properties: Mean Square Error (MSE)\nHow much variability does the estimator have around \\(\\theta\\)?\n\n\n\n\n\n\nMSE\n\n\nThe MSE of an estimator is\n\\[MSE(\\widehat\\theta) = E[(\\widehat\\theta - \\theta)^2] = \\text{Var}(\\widehat{\\theta}) + \\text{Bias}(\\widehat\\theta)^2\\]"
+    "objectID": "slides/00-test/00-test.html#diversity-inclusion",
+    "href": "slides/00-test/00-test.html#diversity-inclusion",
+    "title": "Test slides",
+    "section": "Diversity & Inclusion",
+    "text": "Diversity & Inclusion\nWe all come to class with different backgrounds and experiences, and this diversity makes our class environment richer. We value diversity and inclusion, and are committed to a climate of mutual respect and full participation in and out of the classroom. This class strives to be a learning environment that is usable, equitable, inclusive and welcoming, regardless of race, ethnicity, religion, gender and gender identities, sexual orientation, ability, socioeconomic background, and nationality. If you anticipate or experience any barriers to learning, please discuss your concerns with me."
   },
   {
-    "objectID": "slides/08/slides08.html#comparing-estimators-simulation-1",
-    "href": "slides/08/slides08.html#comparing-estimators-simulation-1",
-    "title": "Evaluating Estimators",
-    "section": "Comparing Estimators: simulation",
-    "text": "Comparing Estimators: simulation\nRecall that \\(E(Y) = \\mu = 1/\\lambda = 10\\) is the true value\n\nsims |&gt;\n  group_by(estimator) |&gt;\n  summarize(\n    bias = mean(value) - 10,\n    var = var(value),\n    MSE = var + bias^2\n  ) \n\n# A tibble: 3 × 4\n  estimator     bias   var    MSE\n  &lt;chr&gt;        &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;\n1 mean       0.00123  1.99   1.99\n2 median    -2.97     1.96  10.8 \n3 midpoint  12.4     40.7  195."
+    "objectID": "slides/00-test/00-test.html#accomodations",
+    "href": "slides/00-test/00-test.html#accomodations",
+    "title": "Test slides",
+    "section": "Accomodations",
+    "text": "Accomodations"
   },
   {
-    "objectID": "slides/08/slides08.html#practice-unif0-theta-distribution",
-    "href": "slides/08/slides08.html#practice-unif0-theta-distribution",
-    "title": "Evaluating Estimators",
-    "section": "Practice: Unif(0, \\(\\theta\\)) distribution1",
-    "text": "Practice: Unif(0, \\(\\theta\\)) distribution1\nYour task is to compare the estimators\n\\[\\widehat{\\theta}_{MLE} = X_\\max \\hspace{1in} \\widehat{\\theta}_{MoM} = 2\\bar{X}\\]\n\n\nWhat is the bias of each estimator?2\nWhat is the SE of each estimator?\nWhat is the MSE of each estimator?\nWhen does \\(\\widehat{\\theta}_{MLE}\\) “beat” \\(\\widehat{\\theta}_{MoM}\\) in terms of MSE?\n\n\nSo \\(0 \\le x \\le \\theta\\), \\(f_x = \\frac{1}{\\theta}\\), \\(F_x = \\frac{x}{\\theta}\\), \\(E(X) = \\frac{\\theta}{2}\\), and \\(V(X) = \\frac{\\theta^2}{12}\\)A helpful fact is that \\(f_{X_{max}}(x) = n[F(x)]^{n-1}f_X(x)\\)"
+    "objectID": "slides/00-test/00-test.html#stat-lab",
+    "href": "slides/00-test/00-test.html#stat-lab",
+    "title": "Test slides",
+    "section": "Stat Lab",
+    "text": "Stat Lab"
   },
   {
-    "objectID": "slides/08/slides08.html#section",
-    "href": "slides/08/slides08.html#section",
-    "title": "Evaluating Estimators",
-    "section": "",
-    "text": "(d) When does \\(\\widehat{\\theta}_{MLE}\\) “beat” \\(\\widehat{\\theta}_{MoM}\\) in terms of MSE?\nMSE = “MSE factor” \\(\\times \\theta^2\\)"
+    "objectID": "slides/00-test/00-test.html#title-ix",
+    "href": "slides/00-test/00-test.html#title-ix",
+    "title": "Test slides",
+    "section": "Title IX",
+    "text": "Title IX\nPlease be aware that all faculty are “responsible employees”, which means that if you tell me about a situation involving sexual harassment, sexual assault, dating violence, domestic violence, or stalking, I must share that information with the Title IX Coordinator. Although I have to make this notification, you will control how your case will be handled, including whether or not you wish to meet with the Title IX coordinator or pursue a formal complaint."
   },
   {
-    "objectID": "slides/08/slides08.html#example-uniform0theta",
-    "href": "slides/08/slides08.html#example-uniform0theta",
-    "title": "Evaluating Estimators",
-    "section": "Example: Uniform(\\(0,\\theta\\))",
-    "text": "Example: Uniform(\\(0,\\theta\\))\n\n\nSince \\(\\hat \\theta_{MLE}\\) beats \\(\\hat \\theta_{MoM}\\) in terms of MSE but is biased, can we “unbias” the MLE? Call this third estimator \\(\\hat\\theta_3\\)\nDoes \\(\\hat \\theta_3\\) ever “beat” \\(\\hat \\theta_{MLE}\\) in terms of MSE?"
+    "objectID": "slides/00-test/00-test.html#take-care-of-yourself",
+    "href": "slides/00-test/00-test.html#take-care-of-yourself",
+    "title": "Test slides",
+    "section": "Take care of yourself",
+    "text": "Take care of yourself\nDo your best to maintain a healthy lifestyle this semester by wearing a mask if you don’t feel well, eating a vegetable every day, exercising, avoiding excessive drug and alcohol use, getting enough sleep, and taking some time to relax. Your mental health is more important than your grade in this course. There are many helpful resources available on campus and an important part of the college experience is learning how to ask for help. If you are experiencing mental health symptoms as a result of coursework, please speak with me so we can address the problem together."
   },
   {
-    "objectID": "slides/08/slides08.html#section-1",
-    "href": "slides/08/slides08.html#section-1",
-    "title": "Evaluating Estimators",
-    "section": "",
-    "text": "(f) Does \\(\\hat \\theta_3\\) ever “beat” \\(\\hat \\theta_{MLE}\\) in terms of MSE?\nMSE = “MSE factor” \\(\\times \\theta^2\\)"
+    "objectID": "slides/00-test/00-test.html#prerequisites",
+    "href": "slides/00-test/00-test.html#prerequisites",
+    "title": "Test slides",
+    "section": "Prerequisites",
+    "text": "Prerequisites"
   },
   {
-    "objectID": "slides/08/slides08.html#comparing-unbiased-estimators-efficiency",
-    "href": "slides/08/slides08.html#comparing-unbiased-estimators-efficiency",
-    "title": "Evaluating Estimators",
-    "section": "Comparing unbiased estimators: efficiency",
-    "text": "Comparing unbiased estimators: efficiency\n\n\n\n\n\n\nEfficiency\n\n\nFor two unbiased estimators, \\(\\widehat \\theta_1\\) is more efficient than \\(\\widehat \\theta_2\\) if\n\\[\\text{Var}(\\widehat \\theta_1) &lt; \\text{Var}(\\widehat \\theta_2) \\iff \\text{SE}(\\widehat \\theta_1) &lt; \\text{SE}(\\widehat \\theta_2)\\]"
+    "objectID": "slides/00-test/00-test.html#history",
+    "href": "slides/00-test/00-test.html#history",
+    "title": "Test slides",
+    "section": "History",
+    "text": "History\n\nStatistics seems to be a difficult subject for mathematicians, perhaps because its elusive and wide-ranging character mitigates against the traditional theorem-proof method of presentation. It may come as some comfort then that statistics is also a difficult subject for statisticians\n\n\nControversies in the Foundations of Statistics, Bradley Efron 1978"
   },
   {
-    "objectID": "slides/08/slides08.html#comparing-unbiased-estimators-cramer-rao-lower-bound-crlb",
-    "href": "slides/08/slides08.html#comparing-unbiased-estimators-cramer-rao-lower-bound-crlb",
-    "title": "Evaluating Estimators",
-    "section": "Comparing unbiased estimators: Cramer-Rao Lower Bound (CRLB)",
-    "text": "Comparing unbiased estimators: Cramer-Rao Lower Bound (CRLB)\n\n\n\n\n\n\n\nCRLB\n\n\nIf \\(X_1, ..., X_n\\) are an iid sample from a distribution with pdf \\(f(x|\\theta)\\), then any unbiased estimator \\(\\hat\\theta\\) of \\(\\theta\\) satisfies:\n\\[V(\\hat{\\theta}) \\ge \\frac{1}{n I(\\theta)}\\]\nwhere \\(I(\\theta)\\) is the Fisher Information of \\(X_i\\)"
-  },
-  {
-    "objectID": "slides/08/slides08.html#fisher-information",
-    "href": "slides/08/slides08.html#fisher-information",
-    "title": "Evaluating Estimators",
-    "section": "Fisher Information",
-    "text": "Fisher Information\n\n\n\n\n\n\nFisher Information\n\n\nThe Fisher Information of a random variable \\(X\\) is \\[I(\\theta) = E[(\\frac{d}{d\\theta} \\ln f(x|\\theta))^2] = -   E(l''(\\theta))\\]\n*provided certain regularity conditions are met"
-  },
-  {
-    "objectID": "slides/07/slides07.html#recap",
-    "href": "slides/07/slides07.html#recap",
-    "title": "Method of Moments",
-    "section": "Recap",
-    "text": "Recap\n\nObserve data \\(X_1, ..., X_n \\sim F_x(x|\\theta)\\), where \\(\\theta\\) is unknown\nGoal: Estimate \\(\\theta\\) based on the values of \\(X_i\\) by formulating an estimator \\(\\hat \\theta\\)\nOne technique is to use the maximum likelihood estimator, which finds the value of \\(\\theta\\) that maximizes the joint probability \\(\\prod_{i=1}^n f_x(x_i | \\theta)\\)\nToday, we’ll talk about another technique for estimating \\(\\theta\\)"
-  },
-  {
-    "objectID": "slides/07/slides07.html#which-population-is-more-likely",
-    "href": "slides/07/slides07.html#which-population-is-more-likely",
-    "title": "Method of Moments",
-    "section": "Which population is more likely?",
-    "text": "Which population is more likely?\n\n\n\nSample\n\n\n\n\n\n\n\n\n\n\n\n# A tibble: 1 × 2\n   mean   var\n  &lt;dbl&gt; &lt;dbl&gt;\n1  20.7  16.5\n\n\n\n\n\n\n\n\\(N(10, 5)\\)\\(N(20, 5)\\)"
-  },
-  {
-    "objectID": "slides/07/slides07.html#which-population-is-more-likely-1",
-    "href": "slides/07/slides07.html#which-population-is-more-likely-1",
-    "title": "Method of Moments",
-    "section": "Which population is more likely?",
-    "text": "Which population is more likely?\n\n\n\nSample\n\n\n\n\n\n\n\n\n\n\n\n# A tibble: 1 × 2\n   mean   var\n  &lt;dbl&gt; &lt;dbl&gt;\n1  20.7  16.5\n\n\n\n\n\n\n\n\\(N(20, 1.5^2)\\)\\(N(20, 4^2)\\)"
-  },
-  {
-    "objectID": "slides/07/slides07.html#method-of-moments-mom",
-    "href": "slides/07/slides07.html#method-of-moments-mom",
-    "title": "Method of Moments",
-    "section": "Method of Moments (MoM)",
-    "text": "Method of Moments (MoM)\n\nMean of sample data should match mean of theoretical distribution\nVariance of sample data should match variance of theoretical distribution\nSkewness of sample data should match skewness of theoretical distribution\n\\(\\vdots\\)\n(for as many unknown parameters as we have)"
-  },
-  {
-    "objectID": "slides/05/slides05.html#section",
-    "href": "slides/05/slides05.html#section",
-    "title": "Maximum Likelihood Estimation",
-    "section": "",
-    "text": "You are testing seeds from a new plant variety. You plant 10 seeds (n=10) and observe that 3 of them successfully germinate (k=3). Consider two hypotheses about the true germination probability (p) for this variety:\n\nHypothesis A: \\(p = 0.1\\) (10% germination rate)\nHypothesis B: \\(p = 0.4\\) (40% germination rate)\n\n\nGiven that you observed 3 germinations out of 10 seeds, which hypothesis (A or B) is more supported by the data?\n\n\n\n−+\n02:00"
-  },
-  {
-    "objectID": "slides/05/slides05.html#evaluating-intuitively",
-    "href": "slides/05/slides05.html#evaluating-intuitively",
-    "title": "Maximum Likelihood Estimation",
-    "section": "Evaluating Intuitively",
-    "text": "Evaluating Intuitively"
-  },
-  {
-    "objectID": "slides/05/slides05.html#evaluating-formally-problem-set-up",
-    "href": "slides/05/slides05.html#evaluating-formally-problem-set-up",
-    "title": "Maximum Likelihood Estimation",
-    "section": "Evaluating Formally: Problem Set Up",
-    "text": "Evaluating Formally: Problem Set Up\n\nLet \\(X\\) be the number of plants that successfully germinate\n\\(X \\sim \\text{Binom}(10, p)\\) and we observed \\(X=3\\)\n\n\n\n\n\\(P(X=3)\\) if \\(p=.1\\)\n\n\\(P(X=3)\\) if \\(p=.4\\)"
-  },
-  {
-    "objectID": "slides/05/slides05.html#section-1",
-    "href": "slides/05/slides05.html#section-1",
-    "title": "Maximum Likelihood Estimation",
-    "section": "",
-    "text": "In general, the likelihood of seeing \\(X=3\\) given \\(p\\) is:\n\\[{10 \\choose 3} p^3 (1-p)^7\\]\n\nWhat value of \\(p\\) maximizes this likelihood?"
-  },
-  {
-    "objectID": "slides/05/slides05.html#methods-of-maximizing",
-    "href": "slides/05/slides05.html#methods-of-maximizing",
-    "title": "Maximum Likelihood Estimation",
-    "section": "Methods of maximizing",
-    "text": "Methods of maximizing\n\nApproximate the solution graphically\nFind a numerical approximation\nUse calculus"
-  },
-  {
-    "objectID": "slides/05/slides05.html#approximating-with-a-graph",
-    "href": "slides/05/slides05.html#approximating-with-a-graph",
-    "title": "Maximum Likelihood Estimation",
-    "section": "Approximating with a graph",
-    "text": "Approximating with a graph"
-  },
-  {
-    "objectID": "slides/05/slides05.html#approximating-with-a-graph-code",
-    "href": "slides/05/slides05.html#approximating-with-a-graph-code",
-    "title": "Maximum Likelihood Estimation",
-    "section": "Approximating with a graph: code",
-    "text": "Approximating with a graph: code\n\ngerm_function &lt;- function(p) {choose(10,3) * p^3 * (1-p)^7} # define function\nggplot() + \n  geom_function(fun = germ_function) +\n  xlim(c(0,1))"
-  },
-  {
-    "objectID": "slides/05/slides05.html#approximating-numerically",
-    "href": "slides/05/slides05.html#approximating-numerically",
-    "title": "Maximum Likelihood Estimation",
-    "section": "Approximating numerically",
-    "text": "Approximating numerically\n\noptimize(germ_function, interval = c(0,1), maximum = TRUE)\n\n\n\n$maximum\n[1] 0.3000157\n\n$objective\n[1] 0.2668279"
-  },
-  {
-    "objectID": "slides/05/slides05.html#with-calculus",
-    "href": "slides/05/slides05.html#with-calculus",
-    "title": "Maximum Likelihood Estimation",
-    "section": "With calculus",
-    "text": "With calculus"
-  },
-  {
-    "objectID": "slides/05/slides05.html#a-trick",
-    "href": "slides/05/slides05.html#a-trick",
-    "title": "Maximum Likelihood Estimation",
-    "section": "A “trick”",
-    "text": "A “trick”\nProbability functions often are tricky to differentiate because of the product rule. Lucky for us, we can maximize the log instead."
-  },
-  {
-    "objectID": "slides/05/slides05.html#can-we-generalize-to-any-data",
-    "href": "slides/05/slides05.html#can-we-generalize-to-any-data",
-    "title": "Maximum Likelihood Estimation",
-    "section": "Can we generalize to any data?",
-    "text": "Can we generalize to any data?"
-  },
-  {
-    "objectID": "slides/05/slides05.html#section-2",
-    "href": "slides/05/slides05.html#section-2",
-    "title": "Maximum Likelihood Estimation",
-    "section": "",
-    "text": "Likelihood function\n\n\nLet \\(f(x; \\theta)\\) denote the probability mass function for a discrete distribution with associated parameter \\(\\theta\\). Suppose \\(X_1, X_2, ... , X_n\\) are a random sample from this distribution and \\(x_1, x_2, ... , x_n\\) are the actual observed values. Then, the likelihood function of \\(\\theta\\) is:\n  \n\n\n\n\n\n\n\n\n\n\nMaximum likelihood estimate\n\n\nA maximum likelihood estimate (MLE), \\(\\hat{\\theta}_{MLE}\\) is the value of \\(\\theta\\) that maximizes the likelihood function, or equivalently, that maximizes the log-likelihood \\(\\ln L(\\theta)\\)"
-  },
-  {
-    "objectID": "slides/05/slides05.html#bernoulli-data",
-    "href": "slides/05/slides05.html#bernoulli-data",
-    "title": "Maximum Likelihood Estimation",
-    "section": "Bernoulli data",
-    "text": "Bernoulli data\nAn alternative way to express this example is \\(X_1, ..., X_n \\sim \\text{Bernoulli}(\\theta)\\)"
-  },
-  {
-    "objectID": "slides/05/slides05.html#is-the-likelihood-also-a-pdf",
-    "href": "slides/05/slides05.html#is-the-likelihood-also-a-pdf",
-    "title": "Maximum Likelihood Estimation",
-    "section": "Is the likelihood also a PDF?",
-    "text": "Is the likelihood also a PDF?\n\n\n\n−+\n02:00"
-  },
-  {
-    "objectID": "slides/05/slides05.html#aside-notation",
-    "href": "slides/05/slides05.html#aside-notation",
-    "title": "Maximum Likelihood Estimation",
-    "section": "Aside: notation",
-    "text": "Aside: notation\n\n\n\n\n\n\nEstimator\n\n\n  \n\n\n\n\n\n\n\n\n\nEstimate"
-  },
-  {
-    "objectID": "slides/05/slides05.html#section-3",
-    "href": "slides/05/slides05.html#section-3",
-    "title": "Maximum Likelihood Estimation",
-    "section": "",
-    "text": "Let \\(X_1, ..., X_n\\) be an iid random sample from a distribution with PDF\n\\[f(x|\\theta)= (\\theta + 1)x^\\theta, 0 \\le x \\le 1\\]\n\n\nFind the maximum likelihood estimator for a random sample of size \\(n\\) using calculus.\nSuppose we observe a sample of size 5: {.83, .49, .72, .57, .66}. Find the maximum likelihood estimate and verify with a graph or numerical approximation"
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Stat250-S25",
-    "section": "",
-    "text": "Landing page for Stat250 course materials in Spring 2025\n\nIn-Class Materials\nDay02: slides handout r code\nDay03: handout activity qmd\nDay04: slides | handout\nDay05: slides | handout\nDay06: slides | handout\nDay07: slides | handout\nDay08: slides | handout\nDay09: slides | handout\nDay10: handout | R activity\nDay11: handout\n\n\nOther Resources and Readings\n\nR Basics\nHow to do homework in R in Stat250"
-  },
-  {
-    "objectID": "slides/04/slides04.html#plan-for-today",
-    "href": "slides/04/slides04.html#plan-for-today",
-    "title": "Sampling Distributions + Probability Review",
-    "section": "Plan for today:",
-    "text": "Plan for today:\n\nHW00 probability review\nMore on sampling distributions\nIntro to Estimation"
-  },
-  {
-    "objectID": "slides/04/slides04.html#overview-of-hw00-topics",
-    "href": "slides/04/slides04.html#overview-of-hw00-topics",
-    "title": "Sampling Distributions + Probability Review",
-    "section": "Overview of HW00 Topics",
-    "text": "Overview of HW00 Topics\n\n\nWorking with a PDF\nWorking with a CDF\nCalculating Moments\nMoments from PDF\nDeriving and Using MGFs\nRecognizing distribution from MGF\nTransformation of a Random Variable\nJoint PDF Calculations"
-  },
-  {
-    "objectID": "slides/04/slides04.html#generally-went-ok",
-    "href": "slides/04/slides04.html#generally-went-ok",
-    "title": "Sampling Distributions + Probability Review",
-    "section": "Generally went OK",
-    "text": "Generally went OK\n\n\nWorking with a PDF\nWorking with a CDF\nCalculating Moments\nMoments from PDF\nDeriving and Using MGFs\nRecognizing distribution from MGF\nTransformation of a Random Variable\nJoint PDF Calculations"
-  },
-  {
-    "objectID": "slides/04/slides04.html#big-mechanics-to-know-1-variable",
-    "href": "slides/04/slides04.html#big-mechanics-to-know-1-variable",
-    "title": "Sampling Distributions + Probability Review",
-    "section": "Big mechanics to know (1 variable)",
-    "text": "Big mechanics to know (1 variable)\n\nPDF \\(f_X(x)\\) gives probabilities by integrating\nCDF \\(F_X(x)\\) gives probabilities directly\nFind \\(E[X]\\) with pdf by \\(\\int_\\infty x f_X(x) dx\\)\nLoTUS: \\(E[g(X)] = \\int_\\infty g(x) f_X(x) dx\\)\n\\(V[X] = E[(X-E[X])^2] = E[X^2] - E[X]^2\\)"
-  },
-  {
-    "objectID": "slides/04/slides04.html#big-mechanics-to-know-2-variable",
-    "href": "slides/04/slides04.html#big-mechanics-to-know-2-variable",
-    "title": "Sampling Distributions + Probability Review",
-    "section": "Big mechanics to know (2 variable)",
-    "text": "Big mechanics to know (2 variable)\n\nPDF \\(f_{X,Y}(x,y)\\) gives probabilities by integrating\nCDF \\(F_{X, Y}(x,y)\\) gives probabilities directly\nMarginal pdf: \\(f_X(x) = \\int_\\infty y f_{X,Y} dy\\)\nConditional pdf \\(f_{X|Y}(x,y) = \\frac{f_{X,Y}(x,y)}{f_Y(y)}\\)\nTwo variables are independent if \\(f_{X,Y} = f_{X} f_{Y}\\) or \\(f_X = f_{X|Y}\\)"
-  },
-  {
-    "objectID": "slides/04/slides04.html#working-with-moments",
-    "href": "slides/04/slides04.html#working-with-moments",
-    "title": "Sampling Distributions + Probability Review",
-    "section": "Working with moments",
-    "text": "Working with moments\nFor any two variables X and Y:\n\n\\(E[aX + b] = a E[X] + b\\)\n\\(V[aX + b] = a^2 V[X]\\)\n\\(E[X + Y] = E[X] + E[Y]\\)\n\\(E[aX + bY + c] = a E[X] + b E[Y] + c\\)\n\\(V[X + Y] = V[X] + V[Y] + 2 Cov(X,Y)\\)\n\\(Cov(X,Y) = E[(X - E[X])(Y-E[Y])] = E[XY] - E[X]E[Y]\\)\n\n\nIf X and Y are independent:\n\n\\(Cov(X,Y) = 0\\)\n\\(V[X + Y] = V[X] + V[Y]\\)\n\\(V[aX + bY + c] = a^2 V[X] + b^2 V[Y]\\)"
-  },
-  {
-    "objectID": "slides/04/slides04.html#some-issues",
-    "href": "slides/04/slides04.html#some-issues",
-    "title": "Sampling Distributions + Probability Review",
-    "section": "Some issues",
-    "text": "Some issues\n\n\nWorking with a PDF\nWorking with a CDF\nCalculating Moments\nMoments from PDF\nDeriving and Using MGFs\nRecognizing distribution from MGF\nTransformation of a Random Variable\nJoint PDF Calculations"
-  },
-  {
-    "objectID": "slides/04/slides04.html#recap-from-friday",
-    "href": "slides/04/slides04.html#recap-from-friday",
-    "title": "Sampling Distributions + Probability Review",
-    "section": "Recap from Friday",
-    "text": "Recap from Friday\n\n\n\n\n\n\nCentral Limit Theorem\n\n\nSuppose we have an iid sample \\(X_1, ..., X_n \\sim F_x\\). The CLT tells us that, as our sample size approaches \\(\\infty\\),\n\\[F_\\bar{X}(\\bar{X}) \\to N(\\mu, \\frac{\\sigma}{\\sqrt{n}})\\]\n\n\n\n\nSampling distribution is centered at population mean\nAs \\(n \\to \\infty\\), \\(\\sigma_\\bar{X} \\to 0\\)\nIt doesn’t matter what shape \\(X_i\\) is!"
-  },
-  {
-    "objectID": "slides/04/slides04.html#example-binomial-data",
-    "href": "slides/04/slides04.html#example-binomial-data",
-    "title": "Sampling Distributions + Probability Review",
-    "section": "Example: Binomial data",
-    "text": "Example: Binomial data\nAccording to the 2004 American Community Survey, 28% of adults over 25 years old in Utah have completed a bachelor’s degree. In a random sample of 64 adults over age 25 from Utah, what is the probability that at least 30 have a bachelor’s degree?\nLet \\(X_i\\) indicate whether a sampled person has a bachelor’s degree. Then, \\(X_1, ...., X_{64} \\sim \\text{Binom}(n=1,p=.28)\\).\n\nOr, \\(X = \\sum X_i \\sim \\text{Binom}(64, p = .28)\\)\n\n\nUsing the CLT, \\(\\bar{X} \\sim N(p, SE_\\bar{X}) \\sim N(0.28, \\sqrt{\\frac{.28(1-.28)}{64}} = .056)\\)"
-  },
-  {
-    "objectID": "slides/04/slides04.html#example-binomial-data-1",
-    "href": "slides/04/slides04.html#example-binomial-data-1",
-    "title": "Sampling Distributions + Probability Review",
-    "section": "Example: Binomial data",
-    "text": "Example: Binomial data\n\\(\\bar{X} \\sim N(0.28, .056)\\). To find the probability that at least 30% of people in the sample have a bachelor’s degree,\n\\[P(\\hat{p} \\ge 0.30) = P(\\bar{X} \\ge 0.30)\\]\n\n\npnorm(0.30, mean = 0.28, sd = .056, lower.tail = FALSE)\n\n[1] 0.3604924\n\n\n\n\n\nNote: It’s really important to be careful about when you’re working with variance and when you’re working with standard error"
-  },
-  {
-    "objectID": "slides/04/slides04.html#issue",
-    "href": "slides/04/slides04.html#issue",
-    "title": "Sampling Distributions + Probability Review",
-    "section": "Issue",
-    "text": "Issue\nIn this case, the CLT uses a continuous density to approximate a discrete random variable. 30% of 64 people is 19.2 – we can’t actually have 19.2 answer “yes”!\n\n\\[P(X \\ge 19.2) = P(X \\ge 20)\\]\n\n\n\\[\\sum_{k=20}^{64} \\binom{64}{k} .28^k .72^{64-k}\\]\n\n\n\n1 - pbinom(19, 64, .28)\n\n[1] 0.3242167\n\n\n\n\nThe CLT overestimates this probability by .04!"
-  },
-  {
-    "objectID": "slides/04/slides04.html#continuity-correction",
-    "href": "slides/04/slides04.html#continuity-correction",
-    "title": "Sampling Distributions + Probability Review",
-    "section": "Continuity Correction",
-    "text": "Continuity Correction\nWhen using the CLT with discrete data, split the difference between 19 and 20:\n\\[P(X \\ge 19.2) \\approx P(X \\ge 19.5)\\]"
-  },
-  {
-    "objectID": "slides/02/slides02.html#goals-for-today",
-    "href": "slides/02/slides02.html#goals-for-today",
-    "title": "Intro to Permutation Tests",
-    "section": "Goals for today:",
-    "text": "Goals for today:\n\nReview (or introduce!) hypothesis testing\nPractice with notation\nAsk questions and talk to each other\nGet comfier in R"
-  },
-  {
-    "objectID": "slides/02/slides02.html#example",
-    "href": "slides/02/slides02.html#example",
-    "title": "Intro to Permutation Tests",
-    "section": "Example",
-    "text": "Example\nEvidence suggests that reward systems may operate in the opposite way from what is intended:\n\nRanking systems may decrease productivity;\nRewards may not stimulate learning"
-  },
-  {
-    "objectID": "slides/02/slides02.html#experiment",
-    "href": "slides/02/slides02.html#experiment",
-    "title": "Intro to Permutation Tests",
-    "section": "Experiment",
-    "text": "Experiment\n\n47 subjects with considerable experience in creativity were recruited\nRandomly assigned to either intrinsic- or extrinsic-motivation group\nSubjects completed a questionnaire related to either intrinsic or extrinsic reasons for writing\nAll subjects were asked to write a Haiku about laughter\nPoems were scored by a panel of 12 poets, evaluated on 40-point creativity scale\n\n\n\nSource: Amabile, T. M. (1985). Motivation and creativity: Effects of motivational orientation on creative writers. Journal of Personality and Social Psychology, 48(2), 393."
-  },
-  {
-    "objectID": "slides/02/slides02.html#results",
-    "href": "slides/02/slides02.html#results",
-    "title": "Intro to Permutation Tests",
-    "section": "Results",
-    "text": "Results\n\n\n\n\nTreatment\nmin\nQ1\nmedian\nQ3\nmax\nmean\nsd\nn\nmissing\n\n\n\n\nExtrinsic\n5\n12.2\n17.2\n19.0\n24.0\n15.7\n5.3\n23\n0\n\n\nIntrinsic\n12\n17.4\n20.4\n22.3\n29.7\n19.9\n4.4\n24\n0"
-  },
-  {
-    "objectID": "slides/02/slides02.html#the-logic-of-hypothesis-testing",
-    "href": "slides/02/slides02.html#the-logic-of-hypothesis-testing",
-    "title": "Intro to Permutation Tests",
-    "section": "The logic of hypothesis testing",
-    "text": "The logic of hypothesis testing\n\nFormulate two competing hypotheses about the population\nCalculate a test statistic summarizing the relevant information to the claims\nLook at the behavior of the test statistic assuming that the initial claim is true\nCompare the observed test statistic to the expected behavior (the distribution created in step 3).\nHow likely is it that the observed test statistic occurred by chance alone?"
-  },
-  {
-    "objectID": "slides/02/slides02.html#permutation-resampling",
-    "href": "slides/02/slides02.html#permutation-resampling",
-    "title": "Intro to Permutation Tests",
-    "section": "Permutation resampling",
-    "text": "Permutation resampling\n\n\n\n\nIntrinsic\n\n\n12\n16.6\n19.1\n20.5\n22.1\n24\n\n\n12\n17.2\n19.3\n20.6\n22.2\n24.3\n\n\n12.9\n17.5\n19.8\n21.3\n22.6\n26.7\n\n\n13.6\n18.2\n20.3\n21.6\n23.1\n29.7\n\n\n\n\n\n\n\nExtrinsic\n\n\n5\n11.8\n15\n17.4\n18.7\n21.2\n\n\n5.4\n12\n16.8\n17.5\n19.2\n22.1\n\n\n6.1\n12.3\n17.2\n18.5\n19.5\n24\n\n\n10.9\n14.8\n17.2\n18.7\n20.7"
-  },
-  {
-    "objectID": "slides/02/slides02.html#permutation-resampling-1",
-    "href": "slides/02/slides02.html#permutation-resampling-1",
-    "title": "Intro to Permutation Tests",
-    "section": "Permutation resampling",
-    "text": "Permutation resampling\n\n\n\n\nIntrinsic\n\n\n5\n12.9\n17.2\n18.2\n20.3\n21.3\n\n\n10.9\n13.6\n17.2\n18.7\n20.6\n22.2\n\n\n12\n14.8\n17.2\n19.2\n20.7\n23.1\n\n\n12.3\n16.8\n17.5\n19.5\n21.2\n26.7\n\n\n\n\n\n\n\nExtrinsic\n\n\n5.4\n12\n17.5\n19.3\n22.1\n24\n\n\n6.1\n15\n18.5\n19.8\n22.1\n24.3\n\n\n11.8\n16.6\n18.7\n20.5\n22.6\n29.7\n\n\n12\n17.4\n19.1\n21.6\n24"
-  },
-  {
-    "objectID": "slides/02/slides02.html#permutation-resampling-2",
-    "href": "slides/02/slides02.html#permutation-resampling-2",
-    "title": "Intro to Permutation Tests",
-    "section": "Permutation resampling",
-    "text": "Permutation resampling\n\n\n\n\nIntrinsic\n\n\n5\n12\n17.2\n19.2\n21.3\n22.6\n\n\n6.1\n12.9\n17.5\n19.8\n21.6\n23.1\n\n\n10.9\n14.8\n17.5\n20.7\n22.1\n26.7\n\n\n12\n15\n18.7\n21.2\n22.2\n29.7\n\n\n\n\n\n\n\nExtrinsic\n\n\n5.4\n13.6\n17.2\n18.7\n20.3\n24\n\n\n11.8\n16.6\n17.4\n19.1\n20.5\n24\n\n\n12\n16.8\n18.2\n19.3\n20.6\n24.3\n\n\n12.3\n17.2\n18.5\n19.5\n22.1"
-  },
-  {
-    "objectID": "slides/02/slides02.html#your-turn-1",
-    "href": "slides/02/slides02.html#your-turn-1",
-    "title": "Intro to Permutation Tests",
-    "section": "Your turn",
-    "text": "Your turn\nHow likely is it that the observed results occurred by chance alone?\nWhat does this say about the null hypothesis?"
-  },
-  {
-    "objectID": "slides/02/slides02.html#your-turn-2",
-    "href": "slides/02/slides02.html#your-turn-2",
-    "title": "Intro to Permutation Tests",
-    "section": "Your turn",
-    "text": "Your turn\nHow likely is it that the observed test statistic occurred by chance alone?\nWhat does this say about the null hypothesis?"
-  },
-  {
-    "objectID": "slides/02/slides02.html#p-value",
-    "href": "slides/02/slides02.html#p-value",
-    "title": "Intro to Permutation Tests",
-    "section": "p-value",
-    "text": "p-value\nDefinition: fraction of times the random test statistic exceeds the original test statistic\n\n\n\n\n\n\n\n\n\n\n\n\nObserved test statistic:  \\(\\overline{x}_{int} - \\overline{x}_{ext} \\approx 4.2\\)\n10 of the random test statistics exceed 4.2"
-  },
-  {
-    "objectID": "slides/02/slides02.html#strength-of-evidence",
-    "href": "slides/02/slides02.html#strength-of-evidence",
-    "title": "Intro to Permutation Tests",
-    "section": "Strength of evidence",
-    "text": "Strength of evidence\np-values provide a continuous measurement of the strength of evidence against the null hypothesis"
-  },
-  {
-    "objectID": "slides/02/slides02.html#permutation-test-algorithm",
-    "href": "slides/02/slides02.html#permutation-test-algorithm",
-    "title": "Intro to Permutation Tests",
-    "section": "Permutation test algorithm",
-    "text": "Permutation test algorithm\n\n\nPool the \\(m+n\\) data values\nDraw a resample of size \\(m\\) without replacement, assign these values to group 1. Assign the remaining \\(n\\) values to group 2.\nCalculate the test statistic comparing the samples from the resampled groups.\nRepeat steps 2 and 3 until we have enough samples.\nEstimate the p-value as the proportion of times the observed test statistic exceeds the original (observed) test statistic\n\\(p\\text{-value}=\\frac{\\text{# statistics that exceed the original} + 1}{\\text{# of statistics in the distribution} + 1}\\)"
-  },
-  {
-    "objectID": "slides/02/slides02.html#where-were-going",
-    "href": "slides/02/slides02.html#where-were-going",
-    "title": "Intro to Permutation Tests",
-    "section": "Where we’re going",
-    "text": "Where we’re going\nInstead of a permutation test, we can also use facts about the sampling distribution from probability to compute p-values with math."
-  },
-  {
-    "objectID": "slides/09/slides09.html#recap",
-    "href": "slides/09/slides09.html#recap",
-    "title": "Efficiency & CRLB",
-    "section": "Recap",
-    "text": "Recap\n\nObserve data \\(X_1, ..., X_n \\sim F_x(x|\\theta)\\), where \\(\\theta\\) is unknown\nGoal: Estimate \\(\\theta\\) based on the values of \\(X_i\\) by formulating an estimator \\(\\widehat \\theta\\)\nOne technique is to use the maximum likelihood estimator\nA second technique is to use the method of moments estimator\nWe can compare estimators by comparing their bias, variance, and mean squared error.\nToday: is there a way to know if we’ve found an “optimal” estimator?"
-  },
-  {
-    "objectID": "slides/09/slides09.html#last-time-unif0-theta-distribution",
-    "href": "slides/09/slides09.html#last-time-unif0-theta-distribution",
-    "title": "Efficiency & CRLB",
-    "section": "Last time: Unif(0, \\(\\theta\\)) distribution1",
-    "text": "Last time: Unif(0, \\(\\theta\\)) distribution1\nYour task is to compare the estimators\n\\[\\widehat{\\theta}_{MLE} = X_\\max \\hspace{1in} \\widehat{\\theta}_{MoM} = 2\\bar{X}\\]\n\n\nWhat is the bias of each estimator?2\nWhat is the SE of each estimator?\nWhat is the MSE of each estimator?\nWhen does \\(\\widehat{\\theta}_{MLE}\\) “beat” \\(\\widehat{\\theta}_{MoM}\\) in terms of MSE?\n\n\nSo \\(0 \\le x \\le \\theta\\), \\(f_x = \\frac{1}{\\theta}\\), \\(F_x = \\frac{x}{\\theta}\\), \\(E(X) = \\frac{\\theta}{2}\\), and \\(V(X) = \\frac{\\theta^2}{12}\\)A helpful fact is that \\(f_{X_{max}}(x) = n[F(x)]^{n-1}f_X(x)\\)"
-  },
-  {
-    "objectID": "slides/09/slides09.html#section",
-    "href": "slides/09/slides09.html#section",
-    "title": "Efficiency & CRLB",
-    "section": "",
-    "text": "(d) When does \\(\\widehat{\\theta}_{MLE}\\) “beat” \\(\\widehat{\\theta}_{MoM}\\) in terms of MSE?\nMSE = “MSE factor” \\(\\times \\theta^2\\)"
-  },
-  {
-    "objectID": "slides/09/slides09.html#example-uniform0theta",
-    "href": "slides/09/slides09.html#example-uniform0theta",
-    "title": "Efficiency & CRLB",
-    "section": "Example: Uniform(\\(0,\\theta\\))",
-    "text": "Example: Uniform(\\(0,\\theta\\))\nFrom last time: \\(E(\\widehat \\theta_{MLE}) = \\frac{n}{n+1} \\theta\\) and \\(V(\\widehat \\theta_{MLE}) = [\\frac{n}{(n+2)(n+1)^2}]\\)\n\n\nSince \\(\\hat \\theta_{MLE}\\) beats \\(\\hat \\theta_{MoM}\\) in terms of MSE but is biased, can we “unbias” the MLE? Call this third estimator \\(\\hat\\theta_3\\)\nDoes \\(\\hat \\theta_3\\) ever “beat” \\(\\hat \\theta_{MLE}\\) in terms of MSE?"
-  },
-  {
-    "objectID": "slides/09/slides09.html#section-1",
-    "href": "slides/09/slides09.html#section-1",
-    "title": "Efficiency & CRLB",
-    "section": "",
-    "text": "(f) Does \\(\\hat \\theta_3\\) ever “beat” \\(\\hat \\theta_{MLE}\\) in terms of MSE?\nMSE = “MSE factor” \\(\\times \\theta^2\\)"
-  },
-  {
-    "objectID": "slides/09/slides09.html#moral-of-the-story",
-    "href": "slides/09/slides09.html#moral-of-the-story",
-    "title": "Efficiency & CRLB",
-    "section": "Moral of the story",
-    "text": "Moral of the story\nWe can “fix” bias, but it’s harder to fix variance"
-  },
-  {
-    "objectID": "slides/09/slides09.html#comparing-unbiased-estimators-efficiency",
-    "href": "slides/09/slides09.html#comparing-unbiased-estimators-efficiency",
-    "title": "Efficiency & CRLB",
-    "section": "Comparing unbiased estimators: efficiency",
-    "text": "Comparing unbiased estimators: efficiency\n\n\n\n\n\n\nEfficiency\n\n\nFor two unbiased estimators, \\(\\widehat \\theta_1\\) is more efficient than \\(\\widehat \\theta_2\\) if\n\\[\\text{Var}(\\widehat \\theta_1) &lt; \\text{Var}(\\widehat \\theta_2) \\iff \\text{SE}(\\widehat \\theta_1) &lt; \\text{SE}(\\widehat \\theta_2)\\]"
-  },
-  {
-    "objectID": "slides/09/slides09.html#example-why-efficiency-matters",
-    "href": "slides/09/slides09.html#example-why-efficiency-matters",
-    "title": "Efficiency & CRLB",
-    "section": "Example: why efficiency matters",
-    "text": "Example: why efficiency matters\nWe now have two unbiased estimators: \\[\\widehat \\theta_{MoM}$\\widehat \\theta_{3} = \\frac{n+1}{n} X_\\max\\]\n\nIf \\(n=10\\) what is the expectation and variance of each of these estimators?"
-  },
-  {
-    "objectID": "slides/09/slides09.html#example-why-efficiency-matters-1",
-    "href": "slides/09/slides09.html#example-why-efficiency-matters-1",
-    "title": "Efficiency & CRLB",
-    "section": "Example: why efficiency matters",
-    "text": "Example: why efficiency matters\n\nWhat \\(n\\) would we need for \\(\\widehat\\theta_{MOM}\\) to reach the variance of \\(\\widehat\\theta_3\\)?"
-  },
-  {
-    "objectID": "slides/09/slides09.html#comparing-unbiased-estimators-cramer-rao-lower-bound-crlb",
-    "href": "slides/09/slides09.html#comparing-unbiased-estimators-cramer-rao-lower-bound-crlb",
-    "title": "Efficiency & CRLB",
-    "section": "Comparing unbiased estimators: Cramer-Rao Lower Bound (CRLB)",
-    "text": "Comparing unbiased estimators: Cramer-Rao Lower Bound (CRLB)\n\n\n\n\n\n\n\nCRLB\n\n\nIf \\(X_1, ..., X_n\\) are an iid sample from a distribution with pdf \\(f(x|\\theta)\\), then any unbiased estimator \\(\\hat\\theta\\) of \\(\\theta\\) satisfies:\n\\[V(\\hat{\\theta}) \\ge \\frac{1}{n I(\\theta)}\\]\nwhere \\(I(\\theta)\\) is the Fisher Information of \\(X_i\\)\n\n\n\n\n\nIf the variance of an estimator is equal to the CRLB, then there is no other unbiased estimator with more precision"
-  },
-  {
-    "objectID": "slides/09/slides09.html#fisher-information",
-    "href": "slides/09/slides09.html#fisher-information",
-    "title": "Efficiency & CRLB",
-    "section": "Fisher Information",
-    "text": "Fisher Information\n\n\n\n\n\n\nFisher Information\n\n\nThe Fisher Information of a random variable \\(X\\) is \\[I(\\theta) = E[(\\frac{d}{d\\theta} \\ln f(x|\\theta))^2] = -   E(l''(\\theta))\\]\n*provided the domain of \\(X\\) does not depend on \\(\\theta\\) (and a few other regularity conditions)"
-  },
-  {
-    "objectID": "slides/09/slides09.html#intuition-fisher-information",
-    "href": "slides/09/slides09.html#intuition-fisher-information",
-    "title": "Efficiency & CRLB",
-    "section": "Intuition: Fisher information",
-    "text": "Intuition: Fisher information\n\\[I(\\theta) = E_X[(\\frac{d}{d\\theta} \\ln f(x|\\theta))^2] = -   E_X(l''(\\theta))\\]\n\n\\(l(\\theta)\\) is the log-likelihood function\n\\(l'(\\theta)\\) gives the slope of the log-likelihood at any point, \\(l''(\\theta)\\) gives the curvature at any given point\nThe Fisher information “averages out” over \\(X\\) and summarizes the overall curvature of the log-likelihood function"
-  },
-  {
-    "objectID": "slides/09/slides09.html#intuition-fisher-information-1",
-    "href": "slides/09/slides09.html#intuition-fisher-information-1",
-    "title": "Efficiency & CRLB",
-    "section": "Intuition: Fisher information",
-    "text": "Intuition: Fisher information\n\n\nHigher Fisher Information\n\n\n\n\n\n\n\n\n\n\nLower Fisher Information\n\n\n\n\n\n\n\n\n\n\n\nDistributions with a “pointier” log-likelihood have higher Fisher information than distributions with lower Fisher information\n\n\nLower Fisher information \\(\\to\\) flat log-likelihood \\(\\to\\) lots of estimators “close” to the MLE"
-  },
-  {
-    "objectID": "slides/09/slides09.html#practice-fisher-information",
-    "href": "slides/09/slides09.html#practice-fisher-information",
-    "title": "Efficiency & CRLB",
-    "section": "Practice: Fisher information",
-    "text": "Practice: Fisher information\nFind the Fisher information for \\(Y\\), where \\(X \\sim Exp(\\lambda)\\)"
-  },
-  {
-    "objectID": "slides/09/slides09.html#practice-finding-crlb",
-    "href": "slides/09/slides09.html#practice-finding-crlb",
-    "title": "Efficiency & CRLB",
-    "section": "Practice: finding CRLB",
-    "text": "Practice: finding CRLB\nLet \\(Y_1, ..., Y_n\\) be \\(n\\) Exp(\\(\\lambda\\)) random variables Let \\(\\widehat\\lambda = \\frac{n}{\\sum Y_i}\\). How does Var(\\(\\widehat\\lambda\\)) compare with the CRLB?"
-  },
-  {
-    "objectID": "slides/09/slides09.html#section-2",
-    "href": "slides/09/slides09.html#section-2",
-    "title": "Efficiency & CRLB",
-    "section": "",
-    "text": "So far, we’ve found the bias, variance, and MSE analytically (with formal mathematical formulas). In practice, we often can’t do this.\n\nFor example: The median \\(m\\) of an Exponential(\\(\\lambda\\)) distribution satisfies P(X ≤ m) = 0.5. Solving \\(1 - e^(-\\lambda m) = 0.5\\) gives \\(m = ln(2) / \\lambda\\).\n\n\nThis suggests an estimator for \\(\\lambda\\) based on the median: \\(\\widehat{\\lambda} = \\frac{ln(2)}{m}\\)\n\n\nFinding the analytical variance of \\(\\widehat \\lambda\\) is complicated. Finding the sampling distribution of \\(m\\) is complicated, and finding the non-linear transformation is also complicated."
-  },
-  {
-    "objectID": "slides/09/slides09.html#your-turn-simulation",
-    "href": "slides/09/slides09.html#your-turn-simulation",
-    "title": "Efficiency & CRLB",
-    "section": "Your turn: simulation",
-    "text": "Your turn: simulation\nUse simulation to see whether \\(\\frac{ln(2)}{m}\\) (a) is unbiased and (b) achieves the CRLB"
+    "objectID": "slides/00-test/00-test.html#fisher-vs-neyman-pearson",
+    "href": "slides/00-test/00-test.html#fisher-vs-neyman-pearson",
+    "title": "Test slides",
+    "section": "Fisher vs Neyman-Pearson",
+    "text": "Fisher vs Neyman-Pearson"
   },
   {
     "objectID": "slides/01/slides01.html#plan-for-today",
@@ -1001,172 +546,753 @@
     "text": "Take care of yourself\nDo your best to maintain a healthy lifestyle this semester by wearing a mask if you don’t feel well, eating a vegetable every day, exercising, avoiding excessive drug and alcohol use, getting enough sleep, and taking some time to relax. Your mental health is more important than your grade in this course. There are many helpful resources available on campus and an important part of the college experience is learning how to ask for help. If you are experiencing mental health symptoms as a result of coursework, please speak with me so we can address the problem together."
   },
   {
-    "objectID": "slides/00-test/00-test.html#r-code",
-    "href": "slides/00-test/00-test.html#r-code",
-    "title": "Test slides",
-    "section": "R Code",
-    "text": "R Code\n\npalmerpenguins::penguins %&gt;%\n  ggplot(aes(x = flipper_length_mm)) +\n  geom_histogram(col = \"white\")"
+    "objectID": "slides/09/slides09.html#recap",
+    "href": "slides/09/slides09.html#recap",
+    "title": "Efficiency & CRLB",
+    "section": "Recap",
+    "text": "Recap\n\nObserve data \\(X_1, ..., X_n \\sim F_x(x|\\theta)\\), where \\(\\theta\\) is unknown\nGoal: Estimate \\(\\theta\\) based on the values of \\(X_i\\) by formulating an estimator \\(\\widehat \\theta\\)\nOne technique is to use the maximum likelihood estimator\nA second technique is to use the method of moments estimator\nWe can compare estimators by comparing their bias, variance, and mean squared error.\nToday: is there a way to know if we’ve found an “optimal” estimator?"
   },
   {
-    "objectID": "slides/00-test/00-test.html#plan-for-today",
-    "href": "slides/00-test/00-test.html#plan-for-today",
-    "title": "Test slides",
-    "section": "Plan for today",
-    "text": "Plan for today\n\nSyllabus\nContext for the class\nCourse expectations"
+    "objectID": "slides/09/slides09.html#last-time-unif0-theta-distribution",
+    "href": "slides/09/slides09.html#last-time-unif0-theta-distribution",
+    "title": "Efficiency & CRLB",
+    "section": "Last time: Unif(0, \\(\\theta\\)) distribution1",
+    "text": "Last time: Unif(0, \\(\\theta\\)) distribution1\nYour task is to compare the estimators\n\\[\\widehat{\\theta}_{MLE} = X_\\max \\hspace{1in} \\widehat{\\theta}_{MoM} = 2\\bar{X}\\]\n\n\nWhat is the bias of each estimator?2\nWhat is the SE of each estimator?\nWhat is the MSE of each estimator?\nWhen does \\(\\widehat{\\theta}_{MLE}\\) “beat” \\(\\widehat{\\theta}_{MoM}\\) in terms of MSE?\n\n\nSo \\(0 \\le x \\le \\theta\\), \\(f_x = \\frac{1}{\\theta}\\), \\(F_x = \\frac{x}{\\theta}\\), \\(E(X) = \\frac{\\theta}{2}\\), and \\(V(X) = \\frac{\\theta^2}{12}\\)A helpful fact is that \\(f_{X_{max}}(x) = n[F(x)]^{n-1}f_X(x)\\)"
   },
   {
-    "objectID": "slides/00-test/00-test.html#a-bit-about-me",
-    "href": "slides/00-test/00-test.html#a-bit-about-me",
-    "title": "Test slides",
-    "section": "A bit about me",
-    "text": "A bit about me"
+    "objectID": "slides/09/slides09.html#section",
+    "href": "slides/09/slides09.html#section",
+    "title": "Efficiency & CRLB",
+    "section": "",
+    "text": "(d) When does \\(\\widehat{\\theta}_{MLE}\\) “beat” \\(\\widehat{\\theta}_{MoM}\\) in terms of MSE?\nMSE = “MSE factor” \\(\\times \\theta^2\\)"
   },
   {
-    "objectID": "slides/00-test/00-test.html#course-description",
-    "href": "slides/00-test/00-test.html#course-description",
-    "title": "Test slides",
-    "section": "Course description",
-    "text": "Course description\nThis course is an introduction to the mathematical theory of frequentist and Bayesian statistical inference. Topics include parameter estimation, confidence intervals and hypothesis testing, linear models, and Bayesian inference.\nStudents who analyze data, or who aspire to develop new methods for analyzing data, should be well-grounded in mathematical statistics."
+    "objectID": "slides/09/slides09.html#example-uniform0theta",
+    "href": "slides/09/slides09.html#example-uniform0theta",
+    "title": "Efficiency & CRLB",
+    "section": "Example: Uniform(\\(0,\\theta\\))",
+    "text": "Example: Uniform(\\(0,\\theta\\))\nFrom last time: \\(E(\\widehat \\theta_{MLE}) = \\frac{n}{n+1} \\theta\\) and \\(V(\\widehat \\theta_{MLE}) = [\\frac{n}{(n+2)(n+1)^2}]\\)\n\n\nSince \\(\\hat \\theta_{MLE}\\) beats \\(\\hat \\theta_{MoM}\\) in terms of MSE but is biased, can we “unbias” the MLE? Call this third estimator \\(\\hat\\theta_3\\)\nDoes \\(\\hat \\theta_3\\) ever “beat” \\(\\hat \\theta_{MLE}\\) in terms of MSE?"
   },
   {
-    "objectID": "slides/00-test/00-test.html#course-objectives",
-    "href": "slides/00-test/00-test.html#course-objectives",
-    "title": "Test slides",
-    "section": "Course Objectives",
-    "text": "Course Objectives\nBy the end of this course, you should be able to:\n\nDerive estimators for parameters using maximum likelihood, the method of moments, and Bayesian techniques\nEvaluate the performance of estimators and describe their strengths and weaknesses\nDemonstrate a sophisticated understanding of the mathematics behind hypothesis tests, confidence intervals, and linear models\n\nUse the statistical package R to implement basic simulations of estimation scenarios"
+    "objectID": "slides/09/slides09.html#section-1",
+    "href": "slides/09/slides09.html#section-1",
+    "title": "Efficiency & CRLB",
+    "section": "",
+    "text": "(f) Does \\(\\hat \\theta_3\\) ever “beat” \\(\\hat \\theta_{MLE}\\) in terms of MSE?\nMSE = “MSE factor” \\(\\times \\theta^2\\)"
   },
   {
-    "objectID": "slides/00-test/00-test.html#textbook",
-    "href": "slides/00-test/00-test.html#textbook",
-    "title": "Test slides",
-    "section": "Textbook:",
-    "text": "Textbook:"
+    "objectID": "slides/09/slides09.html#moral-of-the-story",
+    "href": "slides/09/slides09.html#moral-of-the-story",
+    "title": "Efficiency & CRLB",
+    "section": "Moral of the story",
+    "text": "Moral of the story\nWe can “fix” bias, but it’s harder to fix variance"
   },
   {
-    "objectID": "slides/00-test/00-test.html#computing",
-    "href": "slides/00-test/00-test.html#computing",
-    "title": "Test slides",
-    "section": "Computing:",
-    "text": "Computing:"
+    "objectID": "slides/09/slides09.html#comparing-unbiased-estimators-efficiency",
+    "href": "slides/09/slides09.html#comparing-unbiased-estimators-efficiency",
+    "title": "Efficiency & CRLB",
+    "section": "Comparing unbiased estimators: efficiency",
+    "text": "Comparing unbiased estimators: efficiency\n\n\n\n\n\n\nEfficiency\n\n\nFor two unbiased estimators, \\(\\widehat \\theta_1\\) is more efficient than \\(\\widehat \\theta_2\\) if\n\\[\\text{Var}(\\widehat \\theta_1) &lt; \\text{Var}(\\widehat \\theta_2) \\iff \\text{SE}(\\widehat \\theta_1) &lt; \\text{SE}(\\widehat \\theta_2)\\]"
   },
   {
-    "objectID": "slides/00-test/00-test.html#assignments",
-    "href": "slides/00-test/00-test.html#assignments",
-    "title": "Test slides",
-    "section": "Assignments",
-    "text": "Assignments"
+    "objectID": "slides/09/slides09.html#example-why-efficiency-matters",
+    "href": "slides/09/slides09.html#example-why-efficiency-matters",
+    "title": "Efficiency & CRLB",
+    "section": "Example: why efficiency matters",
+    "text": "Example: why efficiency matters\nWe now have two unbiased estimators: \\[\\widehat \\theta_{MoM}$\\widehat \\theta_{3} = \\frac{n+1}{n} X_\\max\\]\n\nIf \\(n=10\\) what is the expectation and variance of each of these estimators?"
   },
   {
-    "objectID": "slides/00-test/00-test.html#regrade-request-policy",
-    "href": "slides/00-test/00-test.html#regrade-request-policy",
-    "title": "Test slides",
-    "section": "Regrade request policy",
-    "text": "Regrade request policy\nGrading is often a tedious task, and the grading team will sometimes make mistakes. I am always happy to fix these mistakes, and gradescope makes it easy to do so. However, it takes time to read through these requests and I’ve noticed an increase in unwarranted regrade requests in recent years. This semester, I am instituting an “NFL Coaches Challenge”-style regrade request rule. Every student will start the semester with 2 regrade requests available to them. If you submit a regrade request and I agree with you, you get it back. If you submit a regrade request for something that was not a grading mistake, you lose that request."
+    "objectID": "slides/09/slides09.html#example-why-efficiency-matters-1",
+    "href": "slides/09/slides09.html#example-why-efficiency-matters-1",
+    "title": "Efficiency & CRLB",
+    "section": "Example: why efficiency matters",
+    "text": "Example: why efficiency matters\n\nWhat \\(n\\) would we need for \\(\\widehat\\theta_{MOM}\\) to reach the variance of \\(\\widehat\\theta_3\\)?"
   },
   {
-    "objectID": "slides/00-test/00-test.html#exams",
-    "href": "slides/00-test/00-test.html#exams",
-    "title": "Test slides",
-    "section": "Exams",
-    "text": "Exams"
+    "objectID": "slides/09/slides09.html#comparing-unbiased-estimators-cramer-rao-lower-bound-crlb",
+    "href": "slides/09/slides09.html#comparing-unbiased-estimators-cramer-rao-lower-bound-crlb",
+    "title": "Efficiency & CRLB",
+    "section": "Comparing unbiased estimators: Cramer-Rao Lower Bound (CRLB)",
+    "text": "Comparing unbiased estimators: Cramer-Rao Lower Bound (CRLB)\n\n\n\n\n\n\n\nCRLB\n\n\nIf \\(X_1, ..., X_n\\) are an iid sample from a distribution with pdf \\(f(x|\\theta)\\), then any unbiased estimator \\(\\hat\\theta\\) of \\(\\theta\\) satisfies:\n\\[V(\\hat{\\theta}) \\ge \\frac{1}{n I(\\theta)}\\]\nwhere \\(I(\\theta)\\) is the Fisher Information of \\(X_i\\)\n\n\n\n\n\nIf the variance of an estimator is equal to the CRLB, then there is no other unbiased estimator with more precision"
   },
   {
-    "objectID": "slides/00-test/00-test.html#final-exam",
-    "href": "slides/00-test/00-test.html#final-exam",
-    "title": "Test slides",
-    "section": "Final Exam",
-    "text": "Final Exam"
+    "objectID": "slides/09/slides09.html#fisher-information",
+    "href": "slides/09/slides09.html#fisher-information",
+    "title": "Efficiency & CRLB",
+    "section": "Fisher Information",
+    "text": "Fisher Information\n\n\n\n\n\n\nFisher Information\n\n\nThe Fisher Information of a random variable \\(X\\) is \\[I(\\theta) = E[(\\frac{d}{d\\theta} \\ln f(x|\\theta))^2] = -   E(l''(\\theta))\\]\n*provided the domain of \\(X\\) does not depend on \\(\\theta\\) (and a few other regularity conditions)"
   },
   {
-    "objectID": "slides/00-test/00-test.html#course-project",
-    "href": "slides/00-test/00-test.html#course-project",
-    "title": "Test slides",
-    "section": "Course project",
-    "text": "Course project"
+    "objectID": "slides/09/slides09.html#intuition-fisher-information",
+    "href": "slides/09/slides09.html#intuition-fisher-information",
+    "title": "Efficiency & CRLB",
+    "section": "Intuition: Fisher information",
+    "text": "Intuition: Fisher information\n\\[I(\\theta) = E_X[(\\frac{d}{d\\theta} \\ln f(x|\\theta))^2] = -   E_X(l''(\\theta))\\]\n\n\\(l(\\theta)\\) is the log-likelihood function\n\\(l'(\\theta)\\) gives the slope of the log-likelihood at any point, \\(l''(\\theta)\\) gives the curvature at any given point\nThe Fisher information “averages out” over \\(X\\) and summarizes the overall curvature of the log-likelihood function"
   },
   {
-    "objectID": "slides/00-test/00-test.html#final-grades",
-    "href": "slides/00-test/00-test.html#final-grades",
-    "title": "Test slides",
-    "section": "Final grades",
-    "text": "Final grades"
+    "objectID": "slides/09/slides09.html#intuition-fisher-information-1",
+    "href": "slides/09/slides09.html#intuition-fisher-information-1",
+    "title": "Efficiency & CRLB",
+    "section": "Intuition: Fisher information",
+    "text": "Intuition: Fisher information\n\n\nHigher Fisher Information\n\n\n\n\n\n\n\n\n\n\nLower Fisher Information\n\n\n\n\n\n\n\n\n\n\n\nDistributions with a “pointier” log-likelihood have higher Fisher information than distributions with lower Fisher information\n\n\nLower Fisher information \\(\\to\\) flat log-likelihood \\(\\to\\) lots of estimators “close” to the MLE"
   },
   {
-    "objectID": "slides/00-test/00-test.html#advice-from-past-students",
-    "href": "slides/00-test/00-test.html#advice-from-past-students",
-    "title": "Test slides",
-    "section": "Advice from past students:",
-    "text": "Advice from past students:\n\nStart the problem sets early and go to office hours!\nWork with other people in the class, collaboration is key\nBe willing to ask lots of questions and don’t be afraid to ask for help!\nI would advise for them to attend office hours and the stat clinic since early on to get help and not be worrying about assignments at the last minute.\nI would advise future students to reach out and ask questions as soon if they have any confusion. Understanding statistical concepts and working with R can be frustrating at times, but people are here to help you along the way!\nDon’t let work snowball! Try to get help early and often and an imperfect problem set is better than no problem set.\nlots of R here! Organization is key, and you’ll do well as long as you start homeworks early, communicate with the professor and with your fellow classmates. There’s a good support system."
+    "objectID": "slides/09/slides09.html#practice-fisher-information",
+    "href": "slides/09/slides09.html#practice-fisher-information",
+    "title": "Efficiency & CRLB",
+    "section": "Practice: Fisher information",
+    "text": "Practice: Fisher information\nFind the Fisher information for \\(Y\\), where \\(X \\sim Exp(\\lambda)\\)"
   },
   {
-    "objectID": "slides/00-test/00-test.html#the-genius-myth",
-    "href": "slides/00-test/00-test.html#the-genius-myth",
-    "title": "Test slides",
-    "section": "The “Genius Myth”",
-    "text": "The “Genius Myth”\nIt’s sometimes easy to buy into the “genius myth” when it comes to math/stat courses: that you need to be a “math person” and have some innate mathematical ability in order to do well or become a statistics major. This could not be further from the truth! The best statisticians don’t necessarily have the “best” math or programming background, but are people that are able to formulate interesting questions and use math and programming to rigorously answer those questions. Many of the best statisticians I know became statisticians because they were initially interested in something else (biology, public health, psychology, neuroscience, physics, etc.) and realized that being able to answer important questions with data was not only valuable but fun and interesting. Being able to perform interesting statistical analyses is a skill that is learned, not an innate ability, and working hard at developing that skill is the point of this course."
+    "objectID": "slides/09/slides09.html#practice-finding-crlb",
+    "href": "slides/09/slides09.html#practice-finding-crlb",
+    "title": "Efficiency & CRLB",
+    "section": "Practice: finding CRLB",
+    "text": "Practice: finding CRLB\nLet \\(Y_1, ..., Y_n\\) be \\(n\\) Exp(\\(\\lambda\\)) random variables Let \\(\\widehat\\lambda = \\frac{n}{\\sum Y_i}\\). How does Var(\\(\\widehat\\lambda\\)) compare with the CRLB?"
   },
   {
-    "objectID": "slides/00-test/00-test.html#academic-integrity",
-    "href": "slides/00-test/00-test.html#academic-integrity",
-    "title": "Test slides",
-    "section": "Academic Integrity",
-    "text": "Academic Integrity"
+    "objectID": "slides/09/slides09.html#section-2",
+    "href": "slides/09/slides09.html#section-2",
+    "title": "Efficiency & CRLB",
+    "section": "",
+    "text": "So far, we’ve found the bias, variance, and MSE analytically (with formal mathematical formulas). In practice, we often can’t do this.\n\nFor example: The median \\(m\\) of an Exponential(\\(\\lambda\\)) distribution satisfies P(X ≤ m) = 0.5. Solving \\(1 - e^(-\\lambda m) = 0.5\\) gives \\(m = ln(2) / \\lambda\\).\n\n\nThis suggests an estimator for \\(\\lambda\\) based on the median: \\(\\widehat{\\lambda} = \\frac{ln(2)}{m}\\)\n\n\nFinding the analytical variance of \\(\\widehat \\lambda\\) is complicated. Finding the sampling distribution of \\(m\\) is complicated, and finding the non-linear transformation is also complicated."
   },
   {
-    "objectID": "slides/00-test/00-test.html#diversity-inclusion",
-    "href": "slides/00-test/00-test.html#diversity-inclusion",
-    "title": "Test slides",
-    "section": "Diversity & Inclusion",
-    "text": "Diversity & Inclusion\nWe all come to class with different backgrounds and experiences, and this diversity makes our class environment richer. We value diversity and inclusion, and are committed to a climate of mutual respect and full participation in and out of the classroom. This class strives to be a learning environment that is usable, equitable, inclusive and welcoming, regardless of race, ethnicity, religion, gender and gender identities, sexual orientation, ability, socioeconomic background, and nationality. If you anticipate or experience any barriers to learning, please discuss your concerns with me."
+    "objectID": "slides/09/slides09.html#your-turn-simulation",
+    "href": "slides/09/slides09.html#your-turn-simulation",
+    "title": "Efficiency & CRLB",
+    "section": "Your turn: simulation",
+    "text": "Your turn: simulation\nUse simulation to see whether \\(\\frac{ln(2)}{m}\\) (a) is unbiased and (b) achieves the CRLB"
   },
   {
-    "objectID": "slides/00-test/00-test.html#accomodations",
-    "href": "slides/00-test/00-test.html#accomodations",
-    "title": "Test slides",
-    "section": "Accomodations",
-    "text": "Accomodations"
+    "objectID": "slides/02/slides02.html#goals-for-today",
+    "href": "slides/02/slides02.html#goals-for-today",
+    "title": "Intro to Permutation Tests",
+    "section": "Goals for today:",
+    "text": "Goals for today:\n\nReview (or introduce!) hypothesis testing\nPractice with notation\nAsk questions and talk to each other\nGet comfier in R"
   },
   {
-    "objectID": "slides/00-test/00-test.html#stat-lab",
-    "href": "slides/00-test/00-test.html#stat-lab",
-    "title": "Test slides",
-    "section": "Stat Lab",
-    "text": "Stat Lab"
+    "objectID": "slides/02/slides02.html#example",
+    "href": "slides/02/slides02.html#example",
+    "title": "Intro to Permutation Tests",
+    "section": "Example",
+    "text": "Example\nEvidence suggests that reward systems may operate in the opposite way from what is intended:\n\nRanking systems may decrease productivity;\nRewards may not stimulate learning"
   },
   {
-    "objectID": "slides/00-test/00-test.html#title-ix",
-    "href": "slides/00-test/00-test.html#title-ix",
-    "title": "Test slides",
-    "section": "Title IX",
-    "text": "Title IX\nPlease be aware that all faculty are “responsible employees”, which means that if you tell me about a situation involving sexual harassment, sexual assault, dating violence, domestic violence, or stalking, I must share that information with the Title IX Coordinator. Although I have to make this notification, you will control how your case will be handled, including whether or not you wish to meet with the Title IX coordinator or pursue a formal complaint."
+    "objectID": "slides/02/slides02.html#experiment",
+    "href": "slides/02/slides02.html#experiment",
+    "title": "Intro to Permutation Tests",
+    "section": "Experiment",
+    "text": "Experiment\n\n47 subjects with considerable experience in creativity were recruited\nRandomly assigned to either intrinsic- or extrinsic-motivation group\nSubjects completed a questionnaire related to either intrinsic or extrinsic reasons for writing\nAll subjects were asked to write a Haiku about laughter\nPoems were scored by a panel of 12 poets, evaluated on 40-point creativity scale\n\n\n\nSource: Amabile, T. M. (1985). Motivation and creativity: Effects of motivational orientation on creative writers. Journal of Personality and Social Psychology, 48(2), 393."
   },
   {
-    "objectID": "slides/00-test/00-test.html#take-care-of-yourself",
-    "href": "slides/00-test/00-test.html#take-care-of-yourself",
-    "title": "Test slides",
-    "section": "Take care of yourself",
-    "text": "Take care of yourself\nDo your best to maintain a healthy lifestyle this semester by wearing a mask if you don’t feel well, eating a vegetable every day, exercising, avoiding excessive drug and alcohol use, getting enough sleep, and taking some time to relax. Your mental health is more important than your grade in this course. There are many helpful resources available on campus and an important part of the college experience is learning how to ask for help. If you are experiencing mental health symptoms as a result of coursework, please speak with me so we can address the problem together."
+    "objectID": "slides/02/slides02.html#results",
+    "href": "slides/02/slides02.html#results",
+    "title": "Intro to Permutation Tests",
+    "section": "Results",
+    "text": "Results\n\n\n\n\nTreatment\nmin\nQ1\nmedian\nQ3\nmax\nmean\nsd\nn\nmissing\n\n\n\n\nExtrinsic\n5\n12.2\n17.2\n19.0\n24.0\n15.7\n5.3\n23\n0\n\n\nIntrinsic\n12\n17.4\n20.4\n22.3\n29.7\n19.9\n4.4\n24\n0"
   },
   {
-    "objectID": "slides/00-test/00-test.html#prerequisites",
-    "href": "slides/00-test/00-test.html#prerequisites",
-    "title": "Test slides",
-    "section": "Prerequisites",
-    "text": "Prerequisites"
+    "objectID": "slides/02/slides02.html#the-logic-of-hypothesis-testing",
+    "href": "slides/02/slides02.html#the-logic-of-hypothesis-testing",
+    "title": "Intro to Permutation Tests",
+    "section": "The logic of hypothesis testing",
+    "text": "The logic of hypothesis testing\n\nFormulate two competing hypotheses about the population\nCalculate a test statistic summarizing the relevant information to the claims\nLook at the behavior of the test statistic assuming that the initial claim is true\nCompare the observed test statistic to the expected behavior (the distribution created in step 3).\nHow likely is it that the observed test statistic occurred by chance alone?"
   },
   {
-    "objectID": "slides/00-test/00-test.html#history",
-    "href": "slides/00-test/00-test.html#history",
-    "title": "Test slides",
-    "section": "History",
-    "text": "History\n\nStatistics seems to be a difficult subject for mathematicians, perhaps because its elusive and wide-ranging character mitigates against the traditional theorem-proof method of presentation. It may come as some comfort then that statistics is also a difficult subject for statisticians\n\n\nControversies in the Foundations of Statistics, Bradley Efron 1978"
+    "objectID": "slides/02/slides02.html#permutation-resampling",
+    "href": "slides/02/slides02.html#permutation-resampling",
+    "title": "Intro to Permutation Tests",
+    "section": "Permutation resampling",
+    "text": "Permutation resampling\n\n\n\n\nIntrinsic\n\n\n12\n16.6\n19.1\n20.5\n22.1\n24\n\n\n12\n17.2\n19.3\n20.6\n22.2\n24.3\n\n\n12.9\n17.5\n19.8\n21.3\n22.6\n26.7\n\n\n13.6\n18.2\n20.3\n21.6\n23.1\n29.7\n\n\n\n\n\n\n\nExtrinsic\n\n\n5\n11.8\n15\n17.4\n18.7\n21.2\n\n\n5.4\n12\n16.8\n17.5\n19.2\n22.1\n\n\n6.1\n12.3\n17.2\n18.5\n19.5\n24\n\n\n10.9\n14.8\n17.2\n18.7\n20.7"
   },
   {
-    "objectID": "slides/00-test/00-test.html#fisher-vs-neyman-pearson",
-    "href": "slides/00-test/00-test.html#fisher-vs-neyman-pearson",
-    "title": "Test slides",
-    "section": "Fisher vs Neyman-Pearson",
-    "text": "Fisher vs Neyman-Pearson"
+    "objectID": "slides/02/slides02.html#permutation-resampling-1",
+    "href": "slides/02/slides02.html#permutation-resampling-1",
+    "title": "Intro to Permutation Tests",
+    "section": "Permutation resampling",
+    "text": "Permutation resampling\n\n\n\n\nIntrinsic\n\n\n5\n12.9\n17.2\n18.2\n20.3\n21.3\n\n\n10.9\n13.6\n17.2\n18.7\n20.6\n22.2\n\n\n12\n14.8\n17.2\n19.2\n20.7\n23.1\n\n\n12.3\n16.8\n17.5\n19.5\n21.2\n26.7\n\n\n\n\n\n\n\nExtrinsic\n\n\n5.4\n12\n17.5\n19.3\n22.1\n24\n\n\n6.1\n15\n18.5\n19.8\n22.1\n24.3\n\n\n11.8\n16.6\n18.7\n20.5\n22.6\n29.7\n\n\n12\n17.4\n19.1\n21.6\n24"
+  },
+  {
+    "objectID": "slides/02/slides02.html#permutation-resampling-2",
+    "href": "slides/02/slides02.html#permutation-resampling-2",
+    "title": "Intro to Permutation Tests",
+    "section": "Permutation resampling",
+    "text": "Permutation resampling\n\n\n\n\nIntrinsic\n\n\n5\n12\n17.2\n19.2\n21.3\n22.6\n\n\n6.1\n12.9\n17.5\n19.8\n21.6\n23.1\n\n\n10.9\n14.8\n17.5\n20.7\n22.1\n26.7\n\n\n12\n15\n18.7\n21.2\n22.2\n29.7\n\n\n\n\n\n\n\nExtrinsic\n\n\n5.4\n13.6\n17.2\n18.7\n20.3\n24\n\n\n11.8\n16.6\n17.4\n19.1\n20.5\n24\n\n\n12\n16.8\n18.2\n19.3\n20.6\n24.3\n\n\n12.3\n17.2\n18.5\n19.5\n22.1"
+  },
+  {
+    "objectID": "slides/02/slides02.html#your-turn-1",
+    "href": "slides/02/slides02.html#your-turn-1",
+    "title": "Intro to Permutation Tests",
+    "section": "Your turn",
+    "text": "Your turn\nHow likely is it that the observed results occurred by chance alone?\nWhat does this say about the null hypothesis?"
+  },
+  {
+    "objectID": "slides/02/slides02.html#your-turn-2",
+    "href": "slides/02/slides02.html#your-turn-2",
+    "title": "Intro to Permutation Tests",
+    "section": "Your turn",
+    "text": "Your turn\nHow likely is it that the observed test statistic occurred by chance alone?\nWhat does this say about the null hypothesis?"
+  },
+  {
+    "objectID": "slides/02/slides02.html#p-value",
+    "href": "slides/02/slides02.html#p-value",
+    "title": "Intro to Permutation Tests",
+    "section": "p-value",
+    "text": "p-value\nDefinition: fraction of times the random test statistic exceeds the original test statistic\n\n\n\n\n\n\n\n\n\n\n\n\nObserved test statistic:  \\(\\overline{x}_{int} - \\overline{x}_{ext} \\approx 4.2\\)\n10 of the random test statistics exceed 4.2"
+  },
+  {
+    "objectID": "slides/02/slides02.html#strength-of-evidence",
+    "href": "slides/02/slides02.html#strength-of-evidence",
+    "title": "Intro to Permutation Tests",
+    "section": "Strength of evidence",
+    "text": "Strength of evidence\np-values provide a continuous measurement of the strength of evidence against the null hypothesis"
+  },
+  {
+    "objectID": "slides/02/slides02.html#permutation-test-algorithm",
+    "href": "slides/02/slides02.html#permutation-test-algorithm",
+    "title": "Intro to Permutation Tests",
+    "section": "Permutation test algorithm",
+    "text": "Permutation test algorithm\n\n\nPool the \\(m+n\\) data values\nDraw a resample of size \\(m\\) without replacement, assign these values to group 1. Assign the remaining \\(n\\) values to group 2.\nCalculate the test statistic comparing the samples from the resampled groups.\nRepeat steps 2 and 3 until we have enough samples.\nEstimate the p-value as the proportion of times the observed test statistic exceeds the original (observed) test statistic\n\\(p\\text{-value}=\\frac{\\text{# statistics that exceed the original} + 1}{\\text{# of statistics in the distribution} + 1}\\)"
+  },
+  {
+    "objectID": "slides/02/slides02.html#where-were-going",
+    "href": "slides/02/slides02.html#where-were-going",
+    "title": "Intro to Permutation Tests",
+    "section": "Where we’re going",
+    "text": "Where we’re going\nInstead of a permutation test, we can also use facts about the sampling distribution from probability to compute p-values with math."
+  },
+  {
+    "objectID": "slides/04/slides04.html#plan-for-today",
+    "href": "slides/04/slides04.html#plan-for-today",
+    "title": "Sampling Distributions + Probability Review",
+    "section": "Plan for today:",
+    "text": "Plan for today:\n\nHW00 probability review\nMore on sampling distributions\nIntro to Estimation"
+  },
+  {
+    "objectID": "slides/04/slides04.html#overview-of-hw00-topics",
+    "href": "slides/04/slides04.html#overview-of-hw00-topics",
+    "title": "Sampling Distributions + Probability Review",
+    "section": "Overview of HW00 Topics",
+    "text": "Overview of HW00 Topics\n\n\nWorking with a PDF\nWorking with a CDF\nCalculating Moments\nMoments from PDF\nDeriving and Using MGFs\nRecognizing distribution from MGF\nTransformation of a Random Variable\nJoint PDF Calculations"
+  },
+  {
+    "objectID": "slides/04/slides04.html#generally-went-ok",
+    "href": "slides/04/slides04.html#generally-went-ok",
+    "title": "Sampling Distributions + Probability Review",
+    "section": "Generally went OK",
+    "text": "Generally went OK\n\n\nWorking with a PDF\nWorking with a CDF\nCalculating Moments\nMoments from PDF\nDeriving and Using MGFs\nRecognizing distribution from MGF\nTransformation of a Random Variable\nJoint PDF Calculations"
+  },
+  {
+    "objectID": "slides/04/slides04.html#big-mechanics-to-know-1-variable",
+    "href": "slides/04/slides04.html#big-mechanics-to-know-1-variable",
+    "title": "Sampling Distributions + Probability Review",
+    "section": "Big mechanics to know (1 variable)",
+    "text": "Big mechanics to know (1 variable)\n\nPDF \\(f_X(x)\\) gives probabilities by integrating\nCDF \\(F_X(x)\\) gives probabilities directly\nFind \\(E[X]\\) with pdf by \\(\\int_\\infty x f_X(x) dx\\)\nLoTUS: \\(E[g(X)] = \\int_\\infty g(x) f_X(x) dx\\)\n\\(V[X] = E[(X-E[X])^2] = E[X^2] - E[X]^2\\)"
+  },
+  {
+    "objectID": "slides/04/slides04.html#big-mechanics-to-know-2-variable",
+    "href": "slides/04/slides04.html#big-mechanics-to-know-2-variable",
+    "title": "Sampling Distributions + Probability Review",
+    "section": "Big mechanics to know (2 variable)",
+    "text": "Big mechanics to know (2 variable)\n\nPDF \\(f_{X,Y}(x,y)\\) gives probabilities by integrating\nCDF \\(F_{X, Y}(x,y)\\) gives probabilities directly\nMarginal pdf: \\(f_X(x) = \\int_\\infty y f_{X,Y} dy\\)\nConditional pdf \\(f_{X|Y}(x,y) = \\frac{f_{X,Y}(x,y)}{f_Y(y)}\\)\nTwo variables are independent if \\(f_{X,Y} = f_{X} f_{Y}\\) or \\(f_X = f_{X|Y}\\)"
+  },
+  {
+    "objectID": "slides/04/slides04.html#working-with-moments",
+    "href": "slides/04/slides04.html#working-with-moments",
+    "title": "Sampling Distributions + Probability Review",
+    "section": "Working with moments",
+    "text": "Working with moments\nFor any two variables X and Y:\n\n\\(E[aX + b] = a E[X] + b\\)\n\\(V[aX + b] = a^2 V[X]\\)\n\\(E[X + Y] = E[X] + E[Y]\\)\n\\(E[aX + bY + c] = a E[X] + b E[Y] + c\\)\n\\(V[X + Y] = V[X] + V[Y] + 2 Cov(X,Y)\\)\n\\(Cov(X,Y) = E[(X - E[X])(Y-E[Y])] = E[XY] - E[X]E[Y]\\)\n\n\nIf X and Y are independent:\n\n\\(Cov(X,Y) = 0\\)\n\\(V[X + Y] = V[X] + V[Y]\\)\n\\(V[aX + bY + c] = a^2 V[X] + b^2 V[Y]\\)"
+  },
+  {
+    "objectID": "slides/04/slides04.html#some-issues",
+    "href": "slides/04/slides04.html#some-issues",
+    "title": "Sampling Distributions + Probability Review",
+    "section": "Some issues",
+    "text": "Some issues\n\n\nWorking with a PDF\nWorking with a CDF\nCalculating Moments\nMoments from PDF\nDeriving and Using MGFs\nRecognizing distribution from MGF\nTransformation of a Random Variable\nJoint PDF Calculations"
+  },
+  {
+    "objectID": "slides/04/slides04.html#recap-from-friday",
+    "href": "slides/04/slides04.html#recap-from-friday",
+    "title": "Sampling Distributions + Probability Review",
+    "section": "Recap from Friday",
+    "text": "Recap from Friday\n\n\n\n\n\n\nCentral Limit Theorem\n\n\nSuppose we have an iid sample \\(X_1, ..., X_n \\sim F_x\\). The CLT tells us that, as our sample size approaches \\(\\infty\\),\n\\[F_\\bar{X}(\\bar{X}) \\to N(\\mu, \\frac{\\sigma}{\\sqrt{n}})\\]\n\n\n\n\nSampling distribution is centered at population mean\nAs \\(n \\to \\infty\\), \\(\\sigma_\\bar{X} \\to 0\\)\nIt doesn’t matter what shape \\(X_i\\) is!"
+  },
+  {
+    "objectID": "slides/04/slides04.html#example-binomial-data",
+    "href": "slides/04/slides04.html#example-binomial-data",
+    "title": "Sampling Distributions + Probability Review",
+    "section": "Example: Binomial data",
+    "text": "Example: Binomial data\nAccording to the 2004 American Community Survey, 28% of adults over 25 years old in Utah have completed a bachelor’s degree. In a random sample of 64 adults over age 25 from Utah, what is the probability that at least 30 have a bachelor’s degree?\nLet \\(X_i\\) indicate whether a sampled person has a bachelor’s degree. Then, \\(X_1, ...., X_{64} \\sim \\text{Binom}(n=1,p=.28)\\).\n\nOr, \\(X = \\sum X_i \\sim \\text{Binom}(64, p = .28)\\)\n\n\nUsing the CLT, \\(\\bar{X} \\sim N(p, SE_\\bar{X}) \\sim N(0.28, \\sqrt{\\frac{.28(1-.28)}{64}} = .056)\\)"
+  },
+  {
+    "objectID": "slides/04/slides04.html#example-binomial-data-1",
+    "href": "slides/04/slides04.html#example-binomial-data-1",
+    "title": "Sampling Distributions + Probability Review",
+    "section": "Example: Binomial data",
+    "text": "Example: Binomial data\n\\(\\bar{X} \\sim N(0.28, .056)\\). To find the probability that at least 30% of people in the sample have a bachelor’s degree,\n\\[P(\\hat{p} \\ge 0.30) = P(\\bar{X} \\ge 0.30)\\]\n\n\npnorm(0.30, mean = 0.28, sd = .056, lower.tail = FALSE)\n\n[1] 0.3604924\n\n\n\n\n\nNote: It’s really important to be careful about when you’re working with variance and when you’re working with standard error"
+  },
+  {
+    "objectID": "slides/04/slides04.html#issue",
+    "href": "slides/04/slides04.html#issue",
+    "title": "Sampling Distributions + Probability Review",
+    "section": "Issue",
+    "text": "Issue\nIn this case, the CLT uses a continuous density to approximate a discrete random variable. 30% of 64 people is 19.2 – we can’t actually have 19.2 answer “yes”!\n\n\\[P(X \\ge 19.2) = P(X \\ge 20)\\]\n\n\n\\[\\sum_{k=20}^{64} \\binom{64}{k} .28^k .72^{64-k}\\]\n\n\n\n1 - pbinom(19, 64, .28)\n\n[1] 0.3242167\n\n\n\n\nThe CLT overestimates this probability by .04!"
+  },
+  {
+    "objectID": "slides/04/slides04.html#continuity-correction",
+    "href": "slides/04/slides04.html#continuity-correction",
+    "title": "Sampling Distributions + Probability Review",
+    "section": "Continuity Correction",
+    "text": "Continuity Correction\nWhen using the CLT with discrete data, split the difference between 19 and 20:\n\\[P(X \\ge 19.2) \\approx P(X \\ge 19.5)\\]"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Stat250-S25",
+    "section": "",
+    "text": "Landing page for Stat250 course materials in Spring 2025\n\nIn-Class Materials\nDay02: slides handout r code\nDay03: handout activity qmd\nDay04: slides | handout\nDay05: slides | handout\nDay06: slides | handout\nDay07: slides | handout\nDay08: slides | handout\nDay09: slides | handout\nDay10: handout | R activity\nDay11: handout\nDay12: Exam I\nDay13: slides | handout | R activity\n\n\nOther Resources and Readings\n\nR Basics\nHow to do homework in R in Stat250"
+  },
+  {
+    "objectID": "slides/05/slides05.html#section",
+    "href": "slides/05/slides05.html#section",
+    "title": "Maximum Likelihood Estimation",
+    "section": "",
+    "text": "You are testing seeds from a new plant variety. You plant 10 seeds (n=10) and observe that 3 of them successfully germinate (k=3). Consider two hypotheses about the true germination probability (p) for this variety:\n\nHypothesis A: \\(p = 0.1\\) (10% germination rate)\nHypothesis B: \\(p = 0.4\\) (40% germination rate)\n\n\nGiven that you observed 3 germinations out of 10 seeds, which hypothesis (A or B) is more supported by the data?\n\n\n\n−+\n02:00"
+  },
+  {
+    "objectID": "slides/05/slides05.html#evaluating-intuitively",
+    "href": "slides/05/slides05.html#evaluating-intuitively",
+    "title": "Maximum Likelihood Estimation",
+    "section": "Evaluating Intuitively",
+    "text": "Evaluating Intuitively"
+  },
+  {
+    "objectID": "slides/05/slides05.html#evaluating-formally-problem-set-up",
+    "href": "slides/05/slides05.html#evaluating-formally-problem-set-up",
+    "title": "Maximum Likelihood Estimation",
+    "section": "Evaluating Formally: Problem Set Up",
+    "text": "Evaluating Formally: Problem Set Up\n\nLet \\(X\\) be the number of plants that successfully germinate\n\\(X \\sim \\text{Binom}(10, p)\\) and we observed \\(X=3\\)\n\n\n\n\n\\(P(X=3)\\) if \\(p=.1\\)\n\n\\(P(X=3)\\) if \\(p=.4\\)"
+  },
+  {
+    "objectID": "slides/05/slides05.html#section-1",
+    "href": "slides/05/slides05.html#section-1",
+    "title": "Maximum Likelihood Estimation",
+    "section": "",
+    "text": "In general, the likelihood of seeing \\(X=3\\) given \\(p\\) is:\n\\[{10 \\choose 3} p^3 (1-p)^7\\]\n\nWhat value of \\(p\\) maximizes this likelihood?"
+  },
+  {
+    "objectID": "slides/05/slides05.html#methods-of-maximizing",
+    "href": "slides/05/slides05.html#methods-of-maximizing",
+    "title": "Maximum Likelihood Estimation",
+    "section": "Methods of maximizing",
+    "text": "Methods of maximizing\n\nApproximate the solution graphically\nFind a numerical approximation\nUse calculus"
+  },
+  {
+    "objectID": "slides/05/slides05.html#approximating-with-a-graph",
+    "href": "slides/05/slides05.html#approximating-with-a-graph",
+    "title": "Maximum Likelihood Estimation",
+    "section": "Approximating with a graph",
+    "text": "Approximating with a graph"
+  },
+  {
+    "objectID": "slides/05/slides05.html#approximating-with-a-graph-code",
+    "href": "slides/05/slides05.html#approximating-with-a-graph-code",
+    "title": "Maximum Likelihood Estimation",
+    "section": "Approximating with a graph: code",
+    "text": "Approximating with a graph: code\n\ngerm_function &lt;- function(p) {choose(10,3) * p^3 * (1-p)^7} # define function\nggplot() + \n  geom_function(fun = germ_function) +\n  xlim(c(0,1))"
+  },
+  {
+    "objectID": "slides/05/slides05.html#approximating-numerically",
+    "href": "slides/05/slides05.html#approximating-numerically",
+    "title": "Maximum Likelihood Estimation",
+    "section": "Approximating numerically",
+    "text": "Approximating numerically\n\noptimize(germ_function, interval = c(0,1), maximum = TRUE)\n\n\n\n$maximum\n[1] 0.3000157\n\n$objective\n[1] 0.2668279"
+  },
+  {
+    "objectID": "slides/05/slides05.html#with-calculus",
+    "href": "slides/05/slides05.html#with-calculus",
+    "title": "Maximum Likelihood Estimation",
+    "section": "With calculus",
+    "text": "With calculus"
+  },
+  {
+    "objectID": "slides/05/slides05.html#a-trick",
+    "href": "slides/05/slides05.html#a-trick",
+    "title": "Maximum Likelihood Estimation",
+    "section": "A “trick”",
+    "text": "A “trick”\nProbability functions often are tricky to differentiate because of the product rule. Lucky for us, we can maximize the log instead."
+  },
+  {
+    "objectID": "slides/05/slides05.html#can-we-generalize-to-any-data",
+    "href": "slides/05/slides05.html#can-we-generalize-to-any-data",
+    "title": "Maximum Likelihood Estimation",
+    "section": "Can we generalize to any data?",
+    "text": "Can we generalize to any data?"
+  },
+  {
+    "objectID": "slides/05/slides05.html#section-2",
+    "href": "slides/05/slides05.html#section-2",
+    "title": "Maximum Likelihood Estimation",
+    "section": "",
+    "text": "Likelihood function\n\n\nLet \\(f(x; \\theta)\\) denote the probability mass function for a discrete distribution with associated parameter \\(\\theta\\). Suppose \\(X_1, X_2, ... , X_n\\) are a random sample from this distribution and \\(x_1, x_2, ... , x_n\\) are the actual observed values. Then, the likelihood function of \\(\\theta\\) is:\n  \n\n\n\n\n\n\n\n\n\n\nMaximum likelihood estimate\n\n\nA maximum likelihood estimate (MLE), \\(\\hat{\\theta}_{MLE}\\) is the value of \\(\\theta\\) that maximizes the likelihood function, or equivalently, that maximizes the log-likelihood \\(\\ln L(\\theta)\\)"
+  },
+  {
+    "objectID": "slides/05/slides05.html#bernoulli-data",
+    "href": "slides/05/slides05.html#bernoulli-data",
+    "title": "Maximum Likelihood Estimation",
+    "section": "Bernoulli data",
+    "text": "Bernoulli data\nAn alternative way to express this example is \\(X_1, ..., X_n \\sim \\text{Bernoulli}(\\theta)\\)"
+  },
+  {
+    "objectID": "slides/05/slides05.html#is-the-likelihood-also-a-pdf",
+    "href": "slides/05/slides05.html#is-the-likelihood-also-a-pdf",
+    "title": "Maximum Likelihood Estimation",
+    "section": "Is the likelihood also a PDF?",
+    "text": "Is the likelihood also a PDF?\n\n\n\n−+\n02:00"
+  },
+  {
+    "objectID": "slides/05/slides05.html#aside-notation",
+    "href": "slides/05/slides05.html#aside-notation",
+    "title": "Maximum Likelihood Estimation",
+    "section": "Aside: notation",
+    "text": "Aside: notation\n\n\n\n\n\n\nEstimator\n\n\n  \n\n\n\n\n\n\n\n\n\nEstimate"
+  },
+  {
+    "objectID": "slides/05/slides05.html#section-3",
+    "href": "slides/05/slides05.html#section-3",
+    "title": "Maximum Likelihood Estimation",
+    "section": "",
+    "text": "Let \\(X_1, ..., X_n\\) be an iid random sample from a distribution with PDF\n\\[f(x|\\theta)= (\\theta + 1)x^\\theta, 0 \\le x \\le 1\\]\n\n\nFind the maximum likelihood estimator for a random sample of size \\(n\\) using calculus.\nSuppose we observe a sample of size 5: {.83, .49, .72, .57, .66}. Find the maximum likelihood estimate and verify with a graph or numerical approximation"
+  },
+  {
+    "objectID": "slides/07/slides07.html#recap",
+    "href": "slides/07/slides07.html#recap",
+    "title": "Method of Moments",
+    "section": "Recap",
+    "text": "Recap\n\nObserve data \\(X_1, ..., X_n \\sim F_x(x|\\theta)\\), where \\(\\theta\\) is unknown\nGoal: Estimate \\(\\theta\\) based on the values of \\(X_i\\) by formulating an estimator \\(\\hat \\theta\\)\nOne technique is to use the maximum likelihood estimator, which finds the value of \\(\\theta\\) that maximizes the joint probability \\(\\prod_{i=1}^n f_x(x_i | \\theta)\\)\nToday, we’ll talk about another technique for estimating \\(\\theta\\)"
+  },
+  {
+    "objectID": "slides/07/slides07.html#which-population-is-more-likely",
+    "href": "slides/07/slides07.html#which-population-is-more-likely",
+    "title": "Method of Moments",
+    "section": "Which population is more likely?",
+    "text": "Which population is more likely?\n\n\n\nSample\n\n\n\n\n\n\n\n\n\n\n\n# A tibble: 1 × 2\n   mean   var\n  &lt;dbl&gt; &lt;dbl&gt;\n1  20.7  16.5\n\n\n\n\n\n\n\n\\(N(10, 5)\\)\\(N(20, 5)\\)"
+  },
+  {
+    "objectID": "slides/07/slides07.html#which-population-is-more-likely-1",
+    "href": "slides/07/slides07.html#which-population-is-more-likely-1",
+    "title": "Method of Moments",
+    "section": "Which population is more likely?",
+    "text": "Which population is more likely?\n\n\n\nSample\n\n\n\n\n\n\n\n\n\n\n\n# A tibble: 1 × 2\n   mean   var\n  &lt;dbl&gt; &lt;dbl&gt;\n1  20.7  16.5\n\n\n\n\n\n\n\n\\(N(20, 1.5^2)\\)\\(N(20, 4^2)\\)"
+  },
+  {
+    "objectID": "slides/07/slides07.html#method-of-moments-mom",
+    "href": "slides/07/slides07.html#method-of-moments-mom",
+    "title": "Method of Moments",
+    "section": "Method of Moments (MoM)",
+    "text": "Method of Moments (MoM)\n\nMean of sample data should match mean of theoretical distribution\nVariance of sample data should match variance of theoretical distribution\nSkewness of sample data should match skewness of theoretical distribution\n\\(\\vdots\\)\n(for as many unknown parameters as we have)"
+  },
+  {
+    "objectID": "slides/08/slides08.html#recap",
+    "href": "slides/08/slides08.html#recap",
+    "title": "Evaluating Estimators",
+    "section": "Recap",
+    "text": "Recap\n\nObserve data \\(X_1, ..., X_n \\sim F_x(x|\\theta)\\), where \\(\\theta\\) is unknown\nGoal: Estimate \\(\\theta\\) based on the values of \\(X_i\\) by formulating an estimator \\(\\widehat \\theta\\)\nOne technique is to use the maximum likelihood estimator, which finds the value of \\(\\theta\\) that maximizes the joint probability \\(\\prod_{i=1}^n f_x(x_i | \\theta)\\)\nA second technique is to use the method of moments estimator, which finds the value of \\(\\theta\\) that make the theoretical moments equal to the sample moments\nToday: if we have multiple estimators, how do we decide which is better?"
+  },
+  {
+    "objectID": "slides/08/slides08.html#warm-up",
+    "href": "slides/08/slides08.html#warm-up",
+    "title": "Evaluating Estimators",
+    "section": "Warm up",
+    "text": "Warm up\nSuppose we take a random sample of size 50 from an exponential distribution with rate \\(\\lambda = 1/10\\).\nWhat is \\(\\mu = E(Y)\\)?\nIf we want to design an estimator for the mean, \\(\\widehat \\mu\\), what are some intuitive estimators?"
+  },
+  {
+    "objectID": "slides/08/slides08.html#estimators-for-the-mean",
+    "href": "slides/08/slides08.html#estimators-for-the-mean",
+    "title": "Evaluating Estimators",
+    "section": "Estimators for the mean",
+    "text": "Estimators for the mean\nSuppose we take a random sample of size 50 from an exponential distribution with mean 10 (rate is \\(\\lambda = 1/10\\)).\nConsider three estimators of \\(\\mu\\):\n\n\\(\\widehat{\\mu_1} = \\bar{X}\\)\n\\(\\widehat{\\mu_2} = \\widetilde{X}\\)\n\\(\\widehat{\\mu_3} = \\frac{X_{\\max} - X_{\\min}}{2}\\)"
+  },
+  {
+    "objectID": "slides/08/slides08.html#aside-estimators-are-also-random-variables",
+    "href": "slides/08/slides08.html#aside-estimators-are-also-random-variables",
+    "title": "Evaluating Estimators",
+    "section": "Aside: estimators are also random variables",
+    "text": "Aside: estimators are also random variables\n\\(X_1, ..., X_n \\sim F_x(\\theta)\\) and each \\(\\widehat{\\theta} = g(X_1, ..., X_n)\\) is a function of the data\n\nThis means that each \\(\\widehat\\theta\\) is itself a random variable, and so it has:\n\na pdf \\(f_\\widehat{\\theta}\\)\nan expectation \\(E(\\widehat\\theta)\\)\na variance \\(\\text{Var}(\\widehat{\\theta})\\)"
+  },
+  {
+    "objectID": "slides/08/slides08.html#comparing-estimators-simulation",
+    "href": "slides/08/slides08.html#comparing-estimators-simulation",
+    "title": "Evaluating Estimators",
+    "section": "Comparing Estimators: Simulation",
+    "text": "Comparing Estimators: Simulation\nSuppose we take a random sample of size 50 from an exponential distribution with mean 10 (rate is \\(\\lambda = 1/10\\)).\n\n\nConsider three estimators of \\(\\mu\\):\n\n\\(\\hat{\\mu_1} = \\bar{X}\\)\n\\(\\hat{\\mu_2} = \\tilde{X}\\)\n\\(\\hat{\\mu_3} = \\frac{X_{\\max} - X_{\\min}}{2}\\)\n\n\n\nn &lt;- 50\nN_sims &lt;- 100000\nest1 &lt;- numeric(N_sims)\nest2 &lt;- numeric(N_sims)\nest3 &lt;- numeric(N_sims)\nfor(i in 1:N_sims){\n  x &lt;- rexp(n, rate = .1)\n  est1[i] &lt;- mean(x)\n  est2[i] &lt;- median(x)\n  est3[i] &lt;- (max(x) - min(x))/2\n}"
+  },
+  {
+    "objectID": "slides/08/slides08.html#sampling-distribution-of-the-estimators",
+    "href": "slides/08/slides08.html#sampling-distribution-of-the-estimators",
+    "title": "Evaluating Estimators",
+    "section": "Sampling Distribution of the Estimators",
+    "text": "Sampling Distribution of the Estimators\n\nwhich estimator is “best”?"
+  },
+  {
+    "objectID": "slides/08/slides08.html#properties-of-estimators",
+    "href": "slides/08/slides08.html#properties-of-estimators",
+    "title": "Evaluating Estimators",
+    "section": "Properties of Estimators",
+    "text": "Properties of Estimators"
+  },
+  {
+    "objectID": "slides/08/slides08.html#estimator-properties-bias",
+    "href": "slides/08/slides08.html#estimator-properties-bias",
+    "title": "Evaluating Estimators",
+    "section": "Estimator properties: bias",
+    "text": "Estimator properties: bias\nHow accurate is the estimator?\n\n\n\n\n\n\n\nBias of an estimator\n\n\nIf \\(\\widehat{\\theta}(X)\\) is an estimator of \\(\\theta\\), then the bias of the estimator is equal to\n\\[\\text{Bias}(\\widehat\\theta) = E[\\widehat \\theta(X)] - \\theta\\]\nNote: the expected value is computed from the sampling distribution of \\(\\widehat{\\theta}(X)\\)"
+  },
+  {
+    "objectID": "slides/08/slides08.html#estimator-properties-variance",
+    "href": "slides/08/slides08.html#estimator-properties-variance",
+    "title": "Evaluating Estimators",
+    "section": "Estimator properties: variance",
+    "text": "Estimator properties: variance\nHow much variability does the estimator have around its mean?\n\n\n\n\n\n\nVariance of an estimator\n\n\nThe variance of an estimator is\n\\[\\text{Var}(\\widehat{\\theta}) = E[(\\widehat{\\theta} - E[\\widehat{\\theta}])^2]\\]\nNote: the expected value is computed from the sampling distribution of \\(\\widehat{\\theta}(X)\\)"
+  },
+  {
+    "objectID": "slides/08/slides08.html#estimator-properties-mean-square-error-mse",
+    "href": "slides/08/slides08.html#estimator-properties-mean-square-error-mse",
+    "title": "Evaluating Estimators",
+    "section": "Estimator properties: Mean Square Error (MSE)",
+    "text": "Estimator properties: Mean Square Error (MSE)\nHow much variability does the estimator have around \\(\\theta\\)?\n\n\n\n\n\n\nMSE\n\n\nThe MSE of an estimator is\n\\[MSE(\\widehat\\theta) = E[(\\widehat\\theta - \\theta)^2] = \\text{Var}(\\widehat{\\theta}) + \\text{Bias}(\\widehat\\theta)^2\\]"
+  },
+  {
+    "objectID": "slides/08/slides08.html#comparing-estimators-simulation-1",
+    "href": "slides/08/slides08.html#comparing-estimators-simulation-1",
+    "title": "Evaluating Estimators",
+    "section": "Comparing Estimators: simulation",
+    "text": "Comparing Estimators: simulation\nRecall that \\(E(Y) = \\mu = 1/\\lambda = 10\\) is the true value\n\nsims |&gt;\n  group_by(estimator) |&gt;\n  summarize(\n    bias = mean(value) - 10,\n    var = var(value),\n    MSE = var + bias^2\n  ) \n\n# A tibble: 3 × 4\n  estimator     bias   var    MSE\n  &lt;chr&gt;        &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;\n1 mean      -0.00331  2.01   2.01\n2 median    -2.97     1.98  10.8 \n3 midpoint  12.4     40.4  194."
+  },
+  {
+    "objectID": "slides/08/slides08.html#practice-unif0-theta-distribution",
+    "href": "slides/08/slides08.html#practice-unif0-theta-distribution",
+    "title": "Evaluating Estimators",
+    "section": "Practice: Unif(0, \\(\\theta\\)) distribution1",
+    "text": "Practice: Unif(0, \\(\\theta\\)) distribution1\nYour task is to compare the estimators\n\\[\\widehat{\\theta}_{MLE} = X_\\max \\hspace{1in} \\widehat{\\theta}_{MoM} = 2\\bar{X}\\]\n\n\nWhat is the bias of each estimator?2\nWhat is the SE of each estimator?\nWhat is the MSE of each estimator?\nWhen does \\(\\widehat{\\theta}_{MLE}\\) “beat” \\(\\widehat{\\theta}_{MoM}\\) in terms of MSE?\n\n\nSo \\(0 \\le x \\le \\theta\\), \\(f_x = \\frac{1}{\\theta}\\), \\(F_x = \\frac{x}{\\theta}\\), \\(E(X) = \\frac{\\theta}{2}\\), and \\(V(X) = \\frac{\\theta^2}{12}\\)A helpful fact is that \\(f_{X_{max}}(x) = n[F(x)]^{n-1}f_X(x)\\)"
+  },
+  {
+    "objectID": "slides/08/slides08.html#section",
+    "href": "slides/08/slides08.html#section",
+    "title": "Evaluating Estimators",
+    "section": "",
+    "text": "(d) When does \\(\\widehat{\\theta}_{MLE}\\) “beat” \\(\\widehat{\\theta}_{MoM}\\) in terms of MSE?\nMSE = “MSE factor” \\(\\times \\theta^2\\)"
+  },
+  {
+    "objectID": "slides/08/slides08.html#example-uniform0theta",
+    "href": "slides/08/slides08.html#example-uniform0theta",
+    "title": "Evaluating Estimators",
+    "section": "Example: Uniform(\\(0,\\theta\\))",
+    "text": "Example: Uniform(\\(0,\\theta\\))\n\n\nSince \\(\\hat \\theta_{MLE}\\) beats \\(\\hat \\theta_{MoM}\\) in terms of MSE but is biased, can we “unbias” the MLE? Call this third estimator \\(\\hat\\theta_3\\)\nDoes \\(\\hat \\theta_3\\) ever “beat” \\(\\hat \\theta_{MLE}\\) in terms of MSE?"
+  },
+  {
+    "objectID": "slides/08/slides08.html#section-1",
+    "href": "slides/08/slides08.html#section-1",
+    "title": "Evaluating Estimators",
+    "section": "",
+    "text": "(f) Does \\(\\hat \\theta_3\\) ever “beat” \\(\\hat \\theta_{MLE}\\) in terms of MSE?\nMSE = “MSE factor” \\(\\times \\theta^2\\)"
+  },
+  {
+    "objectID": "slides/08/slides08.html#comparing-unbiased-estimators-efficiency",
+    "href": "slides/08/slides08.html#comparing-unbiased-estimators-efficiency",
+    "title": "Evaluating Estimators",
+    "section": "Comparing unbiased estimators: efficiency",
+    "text": "Comparing unbiased estimators: efficiency\n\n\n\n\n\n\nEfficiency\n\n\nFor two unbiased estimators, \\(\\widehat \\theta_1\\) is more efficient than \\(\\widehat \\theta_2\\) if\n\\[\\text{Var}(\\widehat \\theta_1) &lt; \\text{Var}(\\widehat \\theta_2) \\iff \\text{SE}(\\widehat \\theta_1) &lt; \\text{SE}(\\widehat \\theta_2)\\]"
+  },
+  {
+    "objectID": "slides/08/slides08.html#comparing-unbiased-estimators-cramer-rao-lower-bound-crlb",
+    "href": "slides/08/slides08.html#comparing-unbiased-estimators-cramer-rao-lower-bound-crlb",
+    "title": "Evaluating Estimators",
+    "section": "Comparing unbiased estimators: Cramer-Rao Lower Bound (CRLB)",
+    "text": "Comparing unbiased estimators: Cramer-Rao Lower Bound (CRLB)\n\n\n\n\n\n\n\nCRLB\n\n\nIf \\(X_1, ..., X_n\\) are an iid sample from a distribution with pdf \\(f(x|\\theta)\\), then any unbiased estimator \\(\\hat\\theta\\) of \\(\\theta\\) satisfies:\n\\[V(\\hat{\\theta}) \\ge \\frac{1}{n I(\\theta)}\\]\nwhere \\(I(\\theta)\\) is the Fisher Information of \\(X_i\\)"
+  },
+  {
+    "objectID": "slides/08/slides08.html#fisher-information",
+    "href": "slides/08/slides08.html#fisher-information",
+    "title": "Evaluating Estimators",
+    "section": "Fisher Information",
+    "text": "Fisher Information\n\n\n\n\n\n\nFisher Information\n\n\nThe Fisher Information of a random variable \\(X\\) is \\[I(\\theta) = E[(\\frac{d}{d\\theta} \\ln f(x|\\theta))^2] = -   E(l''(\\theta))\\]\n*provided certain regularity conditions are met"
+  },
+  {
+    "objectID": "slides/06/slides06.html#big-idea",
+    "href": "slides/06/slides06.html#big-idea",
+    "title": "Maximum Likelihood Estimation II",
+    "section": "Big Idea",
+    "text": "Big Idea\nWe’re interested in the proportion of Carleton students who have had some sort of research experience. We have the resources to randomly sample 10 students.\n\n\nProbability:\n\nStatistics:"
+  },
+  {
+    "objectID": "slides/06/slides06.html#example",
+    "href": "slides/06/slides06.html#example",
+    "title": "Maximum Likelihood Estimation II",
+    "section": "Example",
+    "text": "Example\nRecall that the likelihood function for \\(n\\) iid Bernoulli(\\(\\theta\\)) random variable is \\(L(\\theta) = \\theta^{\\sum x_i} (1-\\theta)^{n - \\sum x_i}\\).\n\n\n\n\n\n\n\n\n\n\n\n\nScenario 1: 0 yes responses\n\n\n\n\\(\\theta\\)\n0.0\n0.2\n0.4\n0.6\n0.8\n1.0\n\n\n\\(L(\\theta)\\)\n\n\n\n\n\n\n\n\n\nScenario 2: 6 yes responses\n\n\n\n\\(\\theta\\)\n0.0\n0.2\n0.4\n0.6\n0.8\n1.0\n\n\n\\(L(\\theta)\\)"
+  },
+  {
+    "objectID": "slides/06/slides06.html#exercise",
+    "href": "slides/06/slides06.html#exercise",
+    "title": "Maximum Likelihood Estimation II",
+    "section": "Exercise",
+    "text": "Exercise\nIs the likelihood function a probability distribution? Why or why not?"
+  },
+  {
+    "objectID": "slides/06/slides06.html#exercise-from-last-class",
+    "href": "slides/06/slides06.html#exercise-from-last-class",
+    "title": "Maximum Likelihood Estimation II",
+    "section": "Exercise: from last class",
+    "text": "Exercise: from last class\nLet \\(X_1, ..., X_n\\) be an iid random sample from a distribution with PDF\n\\[f(x|\\theta)= (\\theta + 1)x^\\theta, 0 \\le x \\le 1\\]\n\\[L(\\theta) =\\] \\[\\hat\\theta_{MLE}=\\]\nSuppose we observe a sample of size 5: {.83, .49, .72, .57, .66}. Find the maximum likelihood estimate and verify with a graph or numerical approximation"
+  },
+  {
+    "objectID": "slides/06/slides06.html#example-uniform-disribution",
+    "href": "slides/06/slides06.html#example-uniform-disribution",
+    "title": "Maximum Likelihood Estimation II",
+    "section": "Example: Uniform disribution",
+    "text": "Example: Uniform disribution\nFind the MLE for \\(Y_1, ..., Y_n \\sim \\text{Unif}(0, \\theta)\\)"
+  },
+  {
+    "objectID": "slides/06/slides06.html#finding-the-mle-when-more-than-one-parameter-is-unknown",
+    "href": "slides/06/slides06.html#finding-the-mle-when-more-than-one-parameter-is-unknown",
+    "title": "Maximum Likelihood Estimation II",
+    "section": "Finding the MLE when more than one parameter is unknown",
+    "text": "Finding the MLE when more than one parameter is unknown\nIf the pdf or pmf that we’re using has two or more parameters, say \\(\\theta_1\\) and \\(\\theta_2\\), finding MLEs for the \\(\\theta_i\\)’s requires the solution of a sest of simultaneous equations\n\n\\[\\frac{\\partial}{\\partial \\theta_1} \\ln L(\\theta_1, \\theta_2) = 0\\]\n\n\n\\[\\frac{\\partial}{\\partial \\theta_2} \\ln L(\\theta_1, \\theta_2) = 0\\]"
+  },
+  {
+    "objectID": "slides/06/slides06.html#example-nmu-sigma2-distribution",
+    "href": "slides/06/slides06.html#example-nmu-sigma2-distribution",
+    "title": "Maximum Likelihood Estimation II",
+    "section": "Example: \\(N(\\mu, \\sigma^2)\\) distribution",
+    "text": "Example: \\(N(\\mu, \\sigma^2)\\) distribution\nSuppose a random sample of size \\(n\\) is drawn from the two parameter normal pdf:\n\\(f_y(y|\\mu, \\sigma^2) = \\frac{1}{\\sqrt{2\\pi \\sigma}} \\exp(-(\\frac{y-\\mu}{\\sigma})^2)\\)\nfind the MLEs \\(\\hat{\\mu}\\) and \\(\\hat\\sigma^2\\)"
+  },
+  {
+    "objectID": "slides/13/slides13.html#roadmap",
+    "href": "slides/13/slides13.html#roadmap",
+    "title": "Intro to Confidence Intervals & the bootstrap",
+    "section": "Roadmap",
+    "text": "Roadmap\n\n\nUnit 1: Estimation\n\nStatistics vs Parameters\nDeveloping an estimator\nEvaluating the estimator’s behavior:\n\nsampling distribution\nbias, variance, consistency\n\n\n\nUnit 2: Inference\n\nOnce we have an estimator, what does it say about the population parameter?"
+  },
+  {
+    "objectID": "slides/13/slides13.html#roadmap-1",
+    "href": "slides/13/slides13.html#roadmap-1",
+    "title": "Intro to Confidence Intervals & the bootstrap",
+    "section": "Roadmap",
+    "text": "Roadmap\nwhy a point estimator isn’t enough"
+  },
+  {
+    "objectID": "slides/13/slides13.html#roadmap-2",
+    "href": "slides/13/slides13.html#roadmap-2",
+    "title": "Intro to Confidence Intervals & the bootstrap",
+    "section": "Roadmap",
+    "text": "Roadmap\nWe want to develop an interval estimate of a population parameter\n\nExact method: Find the sampling distribution in closed form (Chapter 4). Requires knowledge of the distribution of the data!\nBootstrap method: Use the sample to approximate the population and simulate a sampling distribution (Chapter 5).\nAsymptotic method: Use large-sample theory to approximate the sampling distribution (e.g., appeal to CLT; Chapter 7)"
+  },
+  {
+    "objectID": "slides/13/slides13.html#example",
+    "href": "slides/13/slides13.html#example",
+    "title": "Intro to Confidence Intervals & the bootstrap",
+    "section": "Example",
+    "text": "Example\n\n\n\nDr. Kristen Gorman and the Palmer Station, Antarctica LTER, are studying the bill dimensions of a certain species of penguin\nThey want to estimate the average bill depth and bill length (in mm)\n\n\ndata(\"penguins\", package = \"palmerpenguins\")\ngentoo &lt;- filter(penguins, species == \"Gentoo\")\n\n\n\n\n\nHorst AM, Hill AP, Gorman KB (2020). palmerpenguins: Palmer Archipelago (Antarctica) penguin data. R package version 0.1.0. https://allisonhorst.github.io/palmerpenguins/. doi: 10.5281/zenodo.3960218."
+  },
+  {
+    "objectID": "slides/13/slides13.html#bill-length",
+    "href": "slides/13/slides13.html#bill-length",
+    "title": "Intro to Confidence Intervals & the bootstrap",
+    "section": "Bill length",
+    "text": "Bill length\n\n\n\n\n\n\n\nmin\nQ1\nmedian\nQ3\nmax\nmean\nsd\nn\nmissing\n\n\n\n\n\n40.9\n45.3\n47.3\n49.55\n59.6\n47.5\n3.08\n123\n1"
+  },
+  {
+    "objectID": "slides/13/slides13.html#how-can-we-use-our-one-sample-to-estimate-the-population-mean-bill-length-for-all-gentoo-penguins",
+    "href": "slides/13/slides13.html#how-can-we-use-our-one-sample-to-estimate-the-population-mean-bill-length-for-all-gentoo-penguins",
+    "title": "Intro to Confidence Intervals & the bootstrap",
+    "section": "How can we use our one sample to estimate the population mean bill length for all Gentoo penguins?",
+    "text": "How can we use our one sample to estimate the population mean bill length for all Gentoo penguins?\n\n(Theoretical) sampling distribution\nBootstrap distribution"
+  },
+  {
+    "objectID": "slides/13/slides13.html#bootstrap-distribution",
+    "href": "slides/13/slides13.html#bootstrap-distribution",
+    "title": "Intro to Confidence Intervals & the bootstrap",
+    "section": "Bootstrap distribution",
+    "text": "Bootstrap distribution"
+  },
+  {
+    "objectID": "slides/13/slides13.html#bootstrap-percentile-interval",
+    "href": "slides/13/slides13.html#bootstrap-percentile-interval",
+    "title": "Intro to Confidence Intervals & the bootstrap",
+    "section": "Bootstrap percentile interval",
+    "text": "Bootstrap percentile interval\nA 95% confidence interval can be constructed from the 2.5 and 97.5th percentiles of the bootstrap distribution"
+  },
+  {
+    "objectID": "slides/13/slides13.html#the-one-sample-bootstrap-algorithm",
+    "href": "slides/13/slides13.html#the-one-sample-bootstrap-algorithm",
+    "title": "Intro to Confidence Intervals & the bootstrap",
+    "section": "The one-sample bootstrap algorithm",
+    "text": "The one-sample bootstrap algorithm\nGiven a sample of size n from a population,\n\nDraw a resample of size n, with replacement, from the sample.\nCompute the statistic of interest.\nRepeat this resampling process (steps 1-2) many times, say 10,000.\nConstruct the bootstrap distribution of the statistic."
+  },
+  {
+    "objectID": "slides/13/slides13.html#your-turn",
+    "href": "slides/13/slides13.html#your-turn",
+    "title": "Intro to Confidence Intervals & the bootstrap",
+    "section": "Your turn",
+    "text": "Your turn\nA sample consists of the following values: 8, 4, 11, 3, 7.\nWhich of the following are possible bootstrap samples from this sample? Why?\n\n8, 3, 7, 11\n4, 11, 4, 3, 3\n3, 4, 5, 7, 8\n7, 8, 8, 3, 4"
+  },
+  {
+    "objectID": "slides/13/slides13.html#population",
+    "href": "slides/13/slides13.html#population",
+    "title": "Intro to Confidence Intervals & the bootstrap",
+    "section": "Population",
+    "text": "Population\nConsider a Gamma(2, 2) population distribution\n\n\\[E(X) = 1 \\qquad SD(X) = 1/2\\]"
+  },
+  {
+    "objectID": "slides/13/slides13.html#sample",
+    "href": "slides/13/slides13.html#sample",
+    "title": "Intro to Confidence Intervals & the bootstrap",
+    "section": "Sample",
+    "text": "Sample\nSuppose we draw a random sample of size \\(n=50\\)\n\n\n\n\n\n\n\n\n\nmin\nQ1\nmedian\nQ3\nmax\nmean\nsd\nn\n\n\n\n\n0.061\n0.445\n0.757\n1.065\n5.088\n0.925\n0.824\n50.000"
+  },
+  {
+    "objectID": "slides/13/slides13.html#bootstrap-distribution-1",
+    "href": "slides/13/slides13.html#bootstrap-distribution-1",
+    "title": "Intro to Confidence Intervals & the bootstrap",
+    "section": "Bootstrap distribution",
+    "text": "Bootstrap distribution\nWe can bootstrap our sample and obtain the bootstrap distribution\n\n\n\n\n\n\n\n\n\nmin\nQ1\nmedian\nQ3\nmax\nmean\nsd\nn\n\n\n\n\n0.590\n0.845\n0.918\n0.998\n1.481\n0.926\n0.115\n10,000.000"
+  },
+  {
+    "objectID": "slides/13/slides13.html#sampling-distribution",
+    "href": "slides/13/slides13.html#sampling-distribution",
+    "title": "Intro to Confidence Intervals & the bootstrap",
+    "section": "Sampling distribution",
+    "text": "Sampling distribution\nWe could also draw many different samples and obtain the sampling distribution\n\n\n\n\n\n\n\n\n\nmin\nQ1\nmedian\nQ3\nmax\nmean\nsd\nn\n\n\n\n\n0.632\n0.933\n0.997\n1.065\n1.443\n1.001\n0.100\n10,000.000"
+  },
+  {
+    "objectID": "slides/13/slides13.html#key-comparisons",
+    "href": "slides/13/slides13.html#key-comparisons",
+    "title": "Intro to Confidence Intervals & the bootstrap",
+    "section": "Key comparisons",
+    "text": "Key comparisons\n\n\n\n\n\n\n\n\n\n\nMean\nSD\nBias\n\n\n\n\nPopulation\n1\n0.5\n\n\n\nSample\n0.925\n0.925\n\n\n\nSampling distribution\n1.001\n0.1\n0.001\n\n\nBootstrap distribution\n0.926\n0.115\n0.001"
+  },
+  {
+    "objectID": "slides/13/slides13.html#implementation",
+    "href": "slides/13/slides13.html#implementation",
+    "title": "Intro to Confidence Intervals & the bootstrap",
+    "section": " implementation",
+    "text": "implementation\n\n\n# Subsetting to get only one species\ngentoo &lt;- dplyr::filter(penguins, species == \"Gentoo\")\n\n# Bookkeeping\ny &lt;- gentoo$bill_length_mm\nn &lt;- nrow(gentoo)        # sample size\nN &lt;- 10^4                # desired no. resamples\nboot_means &lt;- numeric(N) # a place to store the bootstrap stats\n\n# Resampling from the sample\nfor (i in 1:N) {\n  x &lt;- sample(y, size = n, replace = TRUE)\n  boot_means[i] &lt;- mean(x, na.rm = TRUE)  # you can choose other statistics\n}\n# Calculate a 95% percentile interval\nquantile(boot_means, probs = c(0.025, 0.975))"
+  },
+  {
+    "objectID": "slides/13/slides13.html#your-turn-theoretical-example",
+    "href": "slides/13/slides13.html#your-turn-theoretical-example",
+    "title": "Intro to Confidence Intervals & the bootstrap",
+    "section": "Your turn: theoretical example",
+    "text": "Your turn: theoretical example\nConsider a population that has a gamma distribution with parameters r=5, 𝜆=1∕4.\n\n\nUse simulation (with n = 200) to generate an approximate sampling distribution of the mean; plot and describe the distribution.\nNow, draw one random sample of size 200 from this population. Create a histogram of your sample and find the mean and standard deviation.\nCompute the bootstrap distribution of the mean for your sample, plot it, and note the bootstrap mean and standard error.\nCompare the bootstrap distribution to the approximate theoretical sampling distribution by creating a table like slide 17\n\n\nRepeat (a)–(e) for sample sizes of n = 50 and n = 10. Describe carefully your observations about the effects of sample size on the bootstrap distribution."
+  },
+  {
+    "objectID": "slides/13/slides13.html#your-turn-data-example",
+    "href": "slides/13/slides13.html#your-turn-data-example",
+    "title": "Intro to Confidence Intervals & the bootstrap",
+    "section": "Your turn: data example",
+    "text": "Your turn: data example\nThe Bangladesh data set contains information about arsenic, cobalt, and chlorine concentrations from a sample of 271 water wells in Bangladesh.\n\nlibrary(resampledata3)\nlibrary(tidyverse)\n\n\n\nConduct EDA on the chlorine concentrations and describe the salient features.\nFind the bootstrap distribution of the mean.\nFind and interpret the 95% bootstrap percentile confidence interval.\nWhat is the bootstrap estimate of the bias? What fraction of the bootstrap standard error does it represent?"
   },
   {
     "objectID": "notes/10-asymptotics/activity10-sols.html",
@@ -1180,14 +1306,14 @@
     "href": "notes/10-asymptotics/activity10-sols.html#example-1",
     "title": "10: Asymptotic Properties",
     "section": "Example 1:",
-    "text": "Example 1:\nLet \\(Y_1, ..., Y_n\\) be \\(n\\) Exp(\\(\\lambda\\)) random variables Let \\(\\widehat\\lambda = \\frac{n}{\\sum Y_i}\\). How does Var(\\(\\widehat\\lambda\\)) compare with the CRLB?\n\nlambda &lt;- .5\nn &lt;- 20\nn_sims &lt;- 10000\nlambda_hat &lt;- numeric(n_sims)\n\nfor(i in 1:n_sims){\n  sample &lt;- rexp(n, rate = lambda)\n  lambda_hat[i] &lt;- n/sum(sample)\n}\n\nvar(lambda_hat)\n\n[1] 0.0154848\n\nlambda^2/n\n\n[1] 0.0125"
+    "text": "Example 1:\nLet \\(Y_1, ..., Y_n\\) be \\(n\\) Exp(\\(\\lambda\\)) random variables Let \\(\\widehat\\lambda = \\frac{n}{\\sum Y_i}\\). How does Var(\\(\\widehat\\lambda\\)) compare with the CRLB?\n\nlambda &lt;- .5\nn &lt;- 20\nn_sims &lt;- 10000\nlambda_hat &lt;- numeric(n_sims)\n\nfor(i in 1:n_sims){\n  sample &lt;- rexp(n, rate = lambda)\n  lambda_hat[i] &lt;- n/sum(sample)\n}\n\nvar(lambda_hat)\n\n[1] 0.01518709\n\nlambda^2/n\n\n[1] 0.0125"
   },
   {
     "objectID": "notes/10-asymptotics/activity10-sols.html#example-1-1",
     "href": "notes/10-asymptotics/activity10-sols.html#example-1-1",
     "title": "10: Asymptotic Properties",
     "section": "Example 1:",
-    "text": "Example 1:\nExample: The median \\(m\\) of an Exponential(\\(\\lambda\\)) distribution satisfies P(X ≤ m) = 0.5. Solving \\(1 - e^{-\\lambda m} = 0.5\\) gives \\(m = ln(2) / \\lambda\\). This suggests an estimator for \\(\\lambda\\) based on the median: \\(\\widehat{\\lambda} = \\frac{ln(2)}{m}\\). Finding the analytical variance of \\(\\widehat \\lambda\\) is complicated. Finding the sampling distribution of \\(m\\) is complicated, and finding the non-linear transformation is also complicated.\nUse simulation to see whether \\(\\frac{ln(2)}{m}\\) (a) is unbiased and (b) achieves the CRLB\n\nlambda &lt;- .5\nn &lt;- 200\nn_sims &lt;- 10000\nlambda_hat &lt;- numeric(n_sims)\n\nfor(i in 1:n_sims){\n  sample &lt;- rexp(n, rate = lambda)\n  lambda_hat[i] &lt;- log(2)/median(sample)\n}\n\nmean(lambda_hat)\n\n[1] 0.5023425\n\nlambda\n\n[1] 0.5\n\nvar(lambda_hat)\n\n[1] 0.002668319\n\nlambda^2/n\n\n[1] 0.00125"
+    "text": "Example 1:\nExample: The median \\(m\\) of an Exponential(\\(\\lambda\\)) distribution satisfies P(X ≤ m) = 0.5. Solving \\(1 - e^{-\\lambda m} = 0.5\\) gives \\(m = ln(2) / \\lambda\\). This suggests an estimator for \\(\\lambda\\) based on the median: \\(\\widehat{\\lambda} = \\frac{ln(2)}{m}\\). Finding the analytical variance of \\(\\widehat \\lambda\\) is complicated. Finding the sampling distribution of \\(m\\) is complicated, and finding the non-linear transformation is also complicated.\nUse simulation to see whether \\(\\frac{ln(2)}{m}\\) (a) is unbiased and (b) achieves the CRLB\n\nlambda &lt;- .5\nn &lt;- 200\nn_sims &lt;- 10000\nlambda_hat &lt;- numeric(n_sims)\n\nfor(i in 1:n_sims){\n  sample &lt;- rexp(n, rate = lambda)\n  lambda_hat[i] &lt;- log(2)/median(sample)\n}\n\nmean(lambda_hat)\n\n[1] 0.5040041\n\nlambda\n\n[1] 0.5\n\nvar(lambda_hat)\n\n[1] 0.002694498\n\nlambda^2/n\n\n[1] 0.00125"
   },
   {
     "objectID": "notes/10-asymptotics/activity10-sols.html#running-means",
@@ -1201,7 +1327,7 @@
     "href": "notes/10-asymptotics/activity10-sols.html#variance-of-sample-means",
     "title": "10: Asymptotic Properties",
     "section": "Variance of sample means",
-    "text": "Variance of sample means\nThe code chunk below runs a simulation comparing the variance of the sample mean of a Normal(0,1) distribution to the variance of the sample mean for a Cauchy distribution. Run it a few times to get a sense of the behavior, then try larger values of n. What do you notice? What does this mean about the consistency of the estimators?\n\nn &lt;- 20\nn_sims &lt;- 1000\nsample_mean_norm &lt;- numeric(n)\nsample_mean_cauchy &lt;- numeric(n)\n\nfor(i in 1:n_sims){\n  samp1 &lt;- rnorm(n)\n  samp2 &lt;- rcauchy(n)\n  sample_mean_norm[i] = mean(samp1)\n  sample_mean_cauchy[i] = mean(samp2)\n}\n\nvar(sample_mean_norm)\n\n[1] 0.05207371\n\nvar(sample_mean_cauchy)\n\n[1] 297.7243"
+    "text": "Variance of sample means\nThe code chunk below runs a simulation comparing the variance of the sample mean of a Normal(0,1) distribution to the variance of the sample mean for a Cauchy distribution. Run it a few times to get a sense of the behavior, then try larger values of n. What do you notice? What does this mean about the consistency of the estimators?\n\nn &lt;- 20\nn_sims &lt;- 1000\nsample_mean_norm &lt;- numeric(n)\nsample_mean_cauchy &lt;- numeric(n)\n\nfor(i in 1:n_sims){\n  samp1 &lt;- rnorm(n)\n  samp2 &lt;- rcauchy(n)\n  sample_mean_norm[i] = mean(samp1)\n  sample_mean_cauchy[i] = mean(samp2)\n}\n\nvar(sample_mean_norm)\n\n[1] 0.05127251\n\nvar(sample_mean_cauchy)\n\n[1] 1974.798"
   },
   {
     "objectID": "notes/10-asymptotics/activity10.html",
@@ -1215,7 +1341,7 @@
     "href": "notes/10-asymptotics/activity10.html#example-1",
     "title": "10: Asymptotic Properties",
     "section": "Example 1:",
-    "text": "Example 1:\nLet \\(Y_1, ..., Y_n\\) be \\(n\\) Exp(\\(\\lambda\\)) random variables Let \\(\\widehat\\lambda = \\frac{n}{\\sum Y_i}\\). How does Var(\\(\\widehat\\lambda\\)) compare with the CRLB?\n\nlambda &lt;- .5\nn &lt;- 20\nn_sims &lt;- 10000\nlambda_hat &lt;- numeric(n_sims)\n\nfor(i in 1:n_sims){\n  sample &lt;- rexp(n, rate = lambda)\n  lambda_hat[i] &lt;- n/sum(sample)\n}\n\nvar(lambda_hat)\n\n[1] 0.01488985\n\nlambda^2/n\n\n[1] 0.0125"
+    "text": "Example 1:\nLet \\(Y_1, ..., Y_n\\) be \\(n\\) Exp(\\(\\lambda\\)) random variables Let \\(\\widehat\\lambda = \\frac{n}{\\sum Y_i}\\). How does Var(\\(\\widehat\\lambda\\)) compare with the CRLB?\n\nlambda &lt;- .5\nn &lt;- 20\nn_sims &lt;- 10000\nlambda_hat &lt;- numeric(n_sims)\n\nfor(i in 1:n_sims){\n  sample &lt;- rexp(n, rate = lambda)\n  lambda_hat[i] &lt;- n/sum(sample)\n}\n\nvar(lambda_hat)\n\n[1] 0.01513269\n\nlambda^2/n\n\n[1] 0.0125"
   },
   {
     "objectID": "notes/10-asymptotics/activity10.html#example-1-1",
@@ -1236,7 +1362,42 @@
     "href": "notes/10-asymptotics/activity10.html#variance-of-sample-means",
     "title": "10: Asymptotic Properties",
     "section": "Variance of sample means",
-    "text": "Variance of sample means\nThe code chunk below runs a simulation comparing the variance of the sample mean of a Normal(0,1) distribution to the variance of the sample mean for a Cauchy distribution. Run it a few times to get a sense of the behavior, then try larger values of n. What do you notice? What does this mean about the consistency of the estimators?\n\nn &lt;- 20\nn_sims &lt;- 1000\nsample_mean_norm &lt;- numeric(n)\nsample_mean_cauchy &lt;- numeric(n)\n\nfor(i in 1:n_sims){\n  samp1 &lt;- rnorm(n)\n  samp2 &lt;- rcauchy(n)\n  sample_mean_norm[i] = mean(samp1)\n  sample_mean_cauchy[i] = mean(samp2)\n}\n\nvar(sample_mean_norm)\n\n[1] 0.05104321\n\nvar(sample_mean_cauchy)\n\n[1] 939.2958"
+    "text": "Variance of sample means\nThe code chunk below runs a simulation comparing the variance of the sample mean of a Normal(0,1) distribution to the variance of the sample mean for a Cauchy distribution. Run it a few times to get a sense of the behavior, then try larger values of n. What do you notice? What does this mean about the consistency of the estimators?\n\nn &lt;- 20\nn_sims &lt;- 1000\nsample_mean_norm &lt;- numeric(n)\nsample_mean_cauchy &lt;- numeric(n)\n\nfor(i in 1:n_sims){\n  samp1 &lt;- rnorm(n)\n  samp2 &lt;- rcauchy(n)\n  sample_mean_norm[i] = mean(samp1)\n  sample_mean_cauchy[i] = mean(samp2)\n}\n\nvar(sample_mean_norm)\n\n[1] 0.04764194\n\nvar(sample_mean_cauchy)\n\n[1] 308.5894"
+  },
+  {
+    "objectID": "notes/13-intro-ci/activity13.html",
+    "href": "notes/13-intro-ci/activity13.html",
+    "title": "13: Bootstrap",
+    "section": "",
+    "text": "library(tidyverse)\nlibrary(patchwork)"
+  },
+  {
+    "objectID": "notes/13-intro-ci/activity13.html#theoretical-example",
+    "href": "notes/13-intro-ci/activity13.html#theoretical-example",
+    "title": "13: Bootstrap",
+    "section": "Theoretical example",
+    "text": "Theoretical example\n\nset.seed(1234)\nsample_data &lt;- rgamma(50, 2, 2)\nmean(sample_data)\n\n[1] 0.9245653\n\nsd(sample_data)\n\n[1] 0.8237878\n\n\n\nBootstrap distribution\n\nn_sims &lt;- 10^5\nboot_dsn &lt;- numeric(n_sims)\nfor(i in 1:n_sims){\n  boot_dsn[i] &lt;- mean(sample(sample_data, length(sample_data), replace = TRUE))\n}\n\nmean(boot_dsn)\n\n[1] 0.924705\n\nsd(boot_dsn)\n\n[1] 0.1157962\n\n\n\n\nSampling distribution\n\nn_sims &lt;- 10^5\nsampling_dsn &lt;- numeric(n_sims)\nfor(i in 1:n_sims){\n  sampling_dsn[i] &lt;- mean(rgamma(50, 2, 2))\n}\n\nmean(sampling_dsn)\n\n[1] 0.9998301\n\nsd(sampling_dsn)\n\n[1] 0.09989004"
+  },
+  {
+    "objectID": "notes/13-intro-ci/activity13.html#data-example",
+    "href": "notes/13-intro-ci/activity13.html#data-example",
+    "title": "13: Bootstrap",
+    "section": "Data example",
+    "text": "Data example\n\ndata(\"penguins\", package = \"palmerpenguins\")\n\n# Subsetting to get only one species\ngentoo &lt;- dplyr::filter(penguins, species == \"Gentoo\")\n\n# Bookkeeping\ny &lt;- gentoo$bill_length_mm\nn &lt;- nrow(gentoo)        # sample size\nN &lt;- 10^4                # desired no. resamples\nboot_means &lt;- numeric(N) # a place to store the bootstrap stats\n\n# Resampling from the sample\nfor (i in 1:N) {\n  x &lt;- sample(y, size = n, replace = TRUE)\n  boot_means[i] &lt;- mean(x, na.rm = TRUE)  # you can choose other statistics\n}\n# Calculate a 95% percentile interval\nquantile(boot_means, probs = c(0.025, 0.975))"
+  },
+  {
+    "objectID": "notes/13-intro-ci/activity13.html#your-turn-theoretical-example",
+    "href": "notes/13-intro-ci/activity13.html#your-turn-theoretical-example",
+    "title": "13: Bootstrap",
+    "section": "Your turn: theoretical example",
+    "text": "Your turn: theoretical example\nConsider a population that has a gamma distribution with parameters r=5, 𝜆=1∕4.\n\nUse simulation (with n = 200) to generate an approximate sampling distribution of the mean; plot and describe the distribution.\nNow, draw one random sample of size 200 from this population. Create a histogram of your sample and find the mean and standard deviation.\nCompute the bootstrap distribution of the mean for your sample, plot it, and note the bootstrap mean and standard error.\nCompare the bootstrap distribution to the approximate theoretical sampling distribution by creating a table like slide 17\n\nRepeat (a)–(e) for sample sizes of n = 50 and n = 10. Describe carefully your observations about the effects of sample size on the bootstrap distribution."
+  },
+  {
+    "objectID": "notes/13-intro-ci/activity13.html#your-turn-data-example",
+    "href": "notes/13-intro-ci/activity13.html#your-turn-data-example",
+    "title": "13: Bootstrap",
+    "section": "Your turn: data example",
+    "text": "Your turn: data example\nThe Bangladesh data set contains information about arsenic, cobalt, and chlorine concentrations from a sample of 271 water wells in Bangladesh.\n\nlibrary(resampledata3)\nlibrary(tidyverse)\n\n\nConduct EDA on the chlorine concentrations and describe the salient features.\nFind the bootstrap distribution of the mean.\nFind and interpret the 95% bootstrap percentile confidence interval.\nWhat is the bootstrap estimate of the bias? What fraction of the bootstrap standard error does it represent?"
   },
   {
     "objectID": "notes/03-sampling-dists/activity03.html",
