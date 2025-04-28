@@ -1,0 +1,343 @@
+---
+title: "Intro to Confidence Intervals & the bootstrap"
+subtitle: "Day 13"
+title-slide-attributes:
+  data-background-gradient: "linear-gradient(to right, #46337e, #440154)"
+  data-slide-number: none
+author: "Prof Amanda Luby"
+format: 
+  revealjs:
+    incremental: true
+editor: 
+  markdown: 
+    wrap: 72
+---
+
+```{r setup}
+#| include: false
+
+library(tidyverse)
+library(countdown)
+
+library(ggformula)
+library(openintro)
+library(patchwork)
+library(fivethirtyeight)
+library(dplyr)
+library(tidyr)
+library(fontawesome)
+library(gt)
+
+library(gridExtra)
+library(tidyverse)
+library(knitr)
+library(mosaic)
+library(infer)
+library(kableExtra)
+library(latex2exp)
+
+library(plotly)
+
+# #440154
+knitr::opts_chunk$set(echo = TRUE,
+                  message = FALSE,
+                  warning = FALSE)
+
+slides_theme = theme_minimal(base_family = "serif", base_size = 16) +
+  theme(plot.background = element_rect(fill = "#f0f1eb", colour = NA))
+  
+
+theme_set(slides_theme)
+```
+
+## Roadmap
+
+::::: columns
+::: {.column width="50%"}
+Unit 1: Estimation
+
+-   Statistics vs Parameters
+-   Developing an estimator
+-   Evaluating the estimator's behavior:
+    -   sampling distribution
+    -   bias, variance, consistency
+:::
+
+::: {.column width="50%"}
+Unit 2: Inference
+
+-   Once we have an estimator, what does it say about the **population
+    parameter**?
+:::
+:::::
+
+## Roadmap
+
+why a point estimator isn't enough
+
+## Roadmap
+
+We want to develop an **interval estimate** of a population parameter
+
+1.  *Exact method:* Find the sampling distribution in closed form
+    (Chapter 4). Requires knowledge of the distribution of the data!
+
+2.  **Bootstrap method:** Use the sample to approximate the population
+    and simulate a sampling distribution (Chapter 5).
+
+3.  *Asymptotic method:* Use large-sample theory to approximate the
+    sampling distribution (e.g., appeal to CLT; Chapter 7)
+
+## Example
+
+::::: columns
+::: {.column .nonincremental width="50%"}
+-   Dr. Kristen Gorman and the Palmer Station, Antarctica LTER, are
+    studying the bill dimensions of a certain species of penguin
+
+-   They want to estimate the average bill depth and bill length (in mm)
+
+```{r}
+data("penguins", package = "palmerpenguins")
+gentoo <- filter(penguins, species == "Gentoo")
+```
+:::
+
+::: {.column width="50%"}
+![](https://allisonhorst.github.io/palmerpenguins/reference/figures/culmen_depth.png){.my-img-border}
+:::
+:::::
+
+::: footer
+Horst AM, Hill AP, Gorman KB (2020). palmerpenguins: Palmer Archipelago
+(Antarctica) penguin data. R package version 0.1.0.
+https://allisonhorst.github.io/palmerpenguins/. doi:
+10.5281/zenodo.3960218.
+:::
+
+## Bill length
+
+```{r fig.height = 2.5, fig.width = 4, echo=FALSE, warning=FALSE, out.width="55%", fig.align='center'}
+gf_histogram(~bill_length_mm, data = gentoo, xlab = "Bill length (mm)") 
+```
+
+```{r echo=FALSE, warning=FALSE}
+favstats(~bill_length_mm, data = gentoo) %>% kable(digits = 2)
+```
+
+## How can we use our one sample to estimate the population mean bill length for all Gentoo penguins? {.center .nonincremental}
+
+1. (Theoretical) sampling distribution
+2. Bootstrap distribution
+
+
+## Bootstrap distribution
+
+```{r include=FALSE}
+set.seed(1234)
+# Bookkeeping
+n <- nrow(gentoo)        # sample size
+N <- 10^4                # desired no. resamples
+
+boot_means <- numeric(N) # a place to store the bootstrap stats
+
+# Resampling from the sample
+for (i in 1:N) {
+  x <- sample(gentoo$bill_length_mm, size = n, replace = TRUE)
+  boot_means[i] <- mean(x, na.rm = TRUE)  # you can choose other statistics
+}
+```
+
+```{r fig.height = 4, warning=FALSE, echo=FALSE, out.width = "80%", fig.align='center'}
+gf_histogram(~boot_means, bins = 30, title = "Bootstrap distribution", xlab = "Bootstrap means") 
+```
+
+## Bootstrap percentile interval
+
+A 95% confidence interval can be constructed from the 2.5 and 97.5th
+percentiles of the bootstrap distribution
+
+ 
+
+```{r fig.height = 4, warning=FALSE, echo=FALSE, out.width = "55%", fig.align='center'}
+quant_df <- data.frame(quants = quantile(boot_means, probs = c(0.025, 0.975)),
+                       y = 750)
+
+gf_histogram(~boot_means, bins = 30, title = "Bootstrap distribution", xlab = "Bootstrap means") %>%
+  gf_vline(xintercept = ~quantile(boot_means, probs = c(0.025, 0.975)), color = "blue") %>%
+  gf_label(y ~ quants,  data = quant_df[1,], label = ~round(quants, 2), hjust = 1.2, size = 6) %>%
+  gf_label(y ~ quants,  data = quant_df[2,], label = ~round(quants, 2), hjust = -0.5, size = 6) 
+```
+
+## The one-sample bootstrap algorithm
+
+Given a sample of size *n* from a population,
+
+1.  Draw a resample of size *n*, **with replacement**, from the sample.
+
+2.  Compute the statistic of interest.
+
+3.  Repeat this resampling process (steps 1-2) many times, say 10,000.
+
+4.  Construct the bootstrap distribution of the statistic.
+
+
+## Your turn {.nonincremental}
+
+A sample consists of the following values: 8, 4, 11, 3, 7.
+
+Which of the following are possible bootstrap samples from this sample?
+Why?
+
+(a) 8, 3, 7, 11
+
+(b) 4, 11, 4, 3, 3
+
+(c) 3, 4, 5, 7, 8
+
+(d) 7, 8, 8, 3, 4
+
+# How does the bootstrap work?
+
+## Population
+
+```{r include=FALSE}
+set.seed(1234)
+sample_data <- rgamma(50, 2, 2)
+```
+
+Consider a Gamma(2, 2) population distribution
+
+```{r  fig.height = 3.5, fig.width = 5.5, echo=FALSE, out.width = "80%", fig.align='center'}
+gf_function(fun = dgamma, args = list(shape = 2, rate = 2), xlim = c(0, 5)) +
+  labs(y = "f(x)") 
+```
+
+$$E(X) = 1 \qquad SD(X) = 1/2$$
+
+## Sample
+
+Suppose we draw a random sample of size $n=50$
+
+```{r  fig.height = 3.5, fig.width = 5.5, echo=FALSE, out.width = "80%", fig.align='center'}
+gf_histogram(~sample_data, binwidth = 0.5, color = "gray30", xlab = "x") +
+  scale_x_continuous(breaks = seq(0, 5, 1))
+```
+
+```{r echo=FALSE}
+favstats(~sample_data)[,-9] %>% 
+  gt() |>
+  fmt_number(decimals = 3) |>
+  tab_options(table.font.size = 24)
+```
+
+## Bootstrap distribution
+
+```{r include = FALSE}
+pop_sim <- replicate(10000, rgamma(50, 2, 2))
+sampling_dsn <- apply(pop_sim, 2, mean)
+
+boot_sim <- replicate(10000, sample(sample_data, replace = TRUE))
+boot_dsn <- apply(boot_sim, 2, mean)
+```
+
+We can bootstrap our sample and obtain the bootstrap distribution
+
+```{r  fig.height = 3.5, fig.width = 5.5, echo=FALSE, out.width = "80%", fig.align='center'}
+gf_histogram(~boot_dsn, bins = 30, xlim = range(boot_dsn), 
+             xlab = "bootstrap means", color = "gray30") %>%
+  gf_vline(xintercept = ~mean(~boot_dsn), color = "yellow", size = 2) 
+```
+
+```{r echo=FALSE}
+favstats(~boot_dsn)[,-9] %>% 
+  gt() |>
+  fmt_number(decimals = 3) |>
+  tab_options(table.font.size = 24)
+```
+
+## Sampling distribution
+
+We could also draw many different samples and obtain the sampling
+distribution
+
+```{r  fig.height = 3.5, fig.width = 5.5, echo=FALSE, out.width = "80%", fig.align='center'}
+gf_histogram(~sampling_dsn, bins = 30, xlim = range(boot_dsn), 
+             xlab = "sample means", color = "gray30",) %>%
+  gf_vline(xintercept = ~mean(~sampling_dsn), color = "blue", size = 2) 
+```
+
+```{r echo=FALSE}
+favstats(~sampling_dsn)[,-9] %>% 
+  gt() |>
+  fmt_number(decimals = 3) |>
+  tab_options(table.font.size = 24)
+```
+
+## Key comparisons
+
+|   | Mean | SD | Bias |
+|------------------------|----------------|----------------|----------------|
+| Population | 1 | 0.5 |  |
+| Sample | `r round(mean(sample_data), 3)` | `r round(mean(sample_data), 3)` |  |
+| Sampling distribution | `r round(mean(sampling_dsn), 3)` | `r round(sd(sampling_dsn), 3)` | `r round(mean(sampling_dsn) - 1, 3)` |
+| Bootstrap distribution | `r round(mean(boot_dsn), 3)` | `r round(sd(boot_dsn), 3)` | `r round(mean(boot_dsn) - mean(sample_data), 3)` |
+
+## `r fa("r-project")` implementation
+
+::: {style="font-size: 80%;"}
+```{r bootstrap-example-code, results='hide'}
+#| echo: true
+# Subsetting to get only one species
+gentoo <- dplyr::filter(penguins, species == "Gentoo")
+
+# Bookkeeping
+y <- gentoo$bill_length_mm
+n <- nrow(gentoo)        # sample size
+N <- 10^4                # desired no. resamples
+boot_means <- numeric(N) # a place to store the bootstrap stats
+
+# Resampling from the sample
+for (i in 1:N) {
+  x <- sample(y, size = n, replace = TRUE)
+  boot_means[i] <- mean(x, na.rm = TRUE)  # you can choose other statistics
+}
+# Calculate a 95% percentile interval
+quantile(boot_means, probs = c(0.025, 0.975))
+```
+:::
+
+
+## Your turn: theoretical example {.scrollable}
+
+Consider a population that has a gamma distribution with parameters
+r=5, 𝜆=1∕4.
+
+::: {.nonincremental}
+
+(a) Use simulation (with n = 200) to generate an approximate sampling distribution of the mean; plot and describe the distribution.
+(b) Now, draw one random sample of size 200 from this population. Create a histogram of your sample and find the mean and standard deviation.
+(c) Compute the bootstrap distribution of the mean for your sample, plot it, and note the bootstrap mean and standard error.
+(d) Compare the bootstrap distribution to the approximate theoretical sampling distribution by creating a table like slide 17
+:::
+
+Repeat (a)–(e) for sample sizes of n = 50 and n = 10. Describe carefully your observations about the effects of sample size on the bootstrap distribution.
+
+## Your turn: data example  {.scrollable}
+
+The `Bangladesh` data set contains information about arsenic, cobalt, and chlorine concentrations from a sample of 271 water wells in Bangladesh. 
+
+```{r}
+library(resampledata3)
+library(tidyverse)
+```
+
+::: {.nonincremental}
+(a) Conduct EDA on the chlorine concentrations and describe the
+salient features.
+(b) Find the bootstrap distribution of the mean.
+(c) Find and interpret the 95% bootstrap percentile confidence interval.
+(d) What is the bootstrap estimate of the bias? What fraction of the
+bootstrap standard error does it represent?
+:::
+

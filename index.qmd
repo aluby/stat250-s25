@@ -27,6 +27,10 @@ Day10: [handout](/notes/10-asymptotics/notes10.pdf) | [R activity](/notes/10-asy
 
 Day11: [handout](/notes/11-review/notes11.pdf) 
 
+Day12:  Exam I
+
+Day13: [slides](/slides/13/slides13.html) | [handout](/notes/13-intro-ci/notes13.pdf) | [R activity](/notes/13-intro-ci/activity13.html)
+
 # Other Resources and Readings
 
 - [R Basics](readings/r-basics.html)

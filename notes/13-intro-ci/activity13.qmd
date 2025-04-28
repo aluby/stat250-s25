@@ -1,0 +1,116 @@
+---
+title: "13: Bootstrap"
+format: 
+  html:
+    code-tools: true
+---
+
+```{r setup}
+#| include: false
+
+knitr::opts_chunk$set(echo = TRUE,
+                  message = FALSE,
+                  warning = FALSE)
+```
+
+```{r}
+library(tidyverse)
+library(patchwork)
+```
+
+# R implementation examples from class
+
+## Theoretical example
+
+```{r}
+set.seed(1234)
+sample_data <- rgamma(50, 2, 2)
+mean(sample_data)
+sd(sample_data)
+```
+
+### Bootstrap distribution
+
+```{r}
+n_sims <- 10^5
+boot_dsn <- numeric(n_sims)
+for(i in 1:n_sims){
+  boot_dsn[i] <- mean(sample(sample_data, length(sample_data), replace = TRUE))
+}
+
+mean(boot_dsn)
+sd(boot_dsn)
+```
+
+### Sampling distribution
+
+```{r}
+n_sims <- 10^5
+sampling_dsn <- numeric(n_sims)
+for(i in 1:n_sims){
+  sampling_dsn[i] <- mean(rgamma(50, 2, 2))
+}
+
+mean(sampling_dsn)
+sd(sampling_dsn)
+```
+
+## Data example
+
+```{r bootstrap-example-code, results='hide'}
+#| echo: true
+
+data("penguins", package = "palmerpenguins")
+
+# Subsetting to get only one species
+gentoo <- dplyr::filter(penguins, species == "Gentoo")
+
+# Bookkeeping
+y <- gentoo$bill_length_mm
+n <- nrow(gentoo)        # sample size
+N <- 10^4                # desired no. resamples
+boot_means <- numeric(N) # a place to store the bootstrap stats
+
+# Resampling from the sample
+for (i in 1:N) {
+  x <- sample(y, size = n, replace = TRUE)
+  boot_means[i] <- mean(x, na.rm = TRUE)  # you can choose other statistics
+}
+# Calculate a 95% percentile interval
+quantile(boot_means, probs = c(0.025, 0.975))
+```
+
+
+## Your turn: theoretical example {.scrollable}
+
+Consider a population that has a gamma distribution with parameters
+r=5, 𝜆=1∕4.
+
+(a) Use simulation (with n = 200) to generate an approximate sampling distribution of the mean; plot and describe the distribution.
+(b) Now, draw one random sample of size 200 from this population. Create a histogram of your sample and find the mean and standard deviation.
+(c) Compute the bootstrap distribution of the mean for your sample, plot it, and note the bootstrap mean and standard error.
+(d) Compare the bootstrap distribution to the approximate theoretical sampling distribution by creating a table like slide 17
+
+
+Repeat (a)–(e) for sample sizes of n = 50 and n = 10. Describe carefully your observations about the effects of sample size on the bootstrap distribution.
+
+## Your turn: data example  {.scrollable}
+
+The `Bangladesh` data set contains information about arsenic, cobalt, and chlorine concentrations from a sample of 271 water wells in Bangladesh. 
+
+```{r}
+library(resampledata3)
+library(tidyverse)
+```
+
+(a) Conduct EDA on the chlorine concentrations and describe the
+salient features.
+(b) Find the bootstrap distribution of the mean.
+(c) Find and interpret the 95% bootstrap percentile confidence interval.
+(d) What is the bootstrap estimate of the bias? What fraction of the
+bootstrap standard error does it represent?
+
+
+
+
+
