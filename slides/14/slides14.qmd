@@ -7,7 +7,7 @@ title-slide-attributes:
 author: "Prof Amanda Luby"
 format: 
   revealjs:
-    incremental: true
+    incremental: false
 editor: 
   markdown: 
     wrap: 72
