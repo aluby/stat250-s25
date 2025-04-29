@@ -1,0 +1,383 @@
+---
+title: "CLT-based Confidence Intervals"
+subtitle: "Day 14"
+title-slide-attributes:
+  data-background-gradient: "linear-gradient(to right, #46337e, #440154)"
+  data-slide-number: none
+author: "Prof Amanda Luby"
+format: 
+  revealjs:
+    incremental: true
+editor: 
+  markdown: 
+    wrap: 72
+---
+
+```{r setup}
+#| include: false
+
+library(tidyverse)
+library(countdown)
+
+library(ggformula)
+library(openintro)
+library(patchwork)
+library(fivethirtyeight)
+library(dplyr)
+library(tidyr)
+library(fontawesome)
+library(gt)
+
+library(gridExtra)
+library(tidyverse)
+library(knitr)
+library(mosaic)
+library(infer)
+library(kableExtra)
+library(latex2exp)
+
+library(plotly)
+
+# #440154
+knitr::opts_chunk$set(echo = TRUE,
+                  message = FALSE,
+                  warning = FALSE)
+
+slides_theme = theme_minimal(base_family = "serif", base_size = 16) +
+  theme(plot.background = element_rect(fill = "#f0f1eb", colour = NA))
+  
+
+theme_set(slides_theme)
+```
+
+## Last time
+
+- penguins bootstrap example
+
+## What are plausible values for $\theta$ given $\hat\theta$?
+
+We want to develop an **interval estimate** of a population parameter
+
+1.  *Exact method:* Find the sampling distribution in closed form
+    (Chapter 4). Requires knowledge of the distribution of the data!
+
+2.  *Bootstrap method:* Use the sample to approximate the population
+    and simulate a sampling distribution (Chapter 5).
+
+3.  **Asymptotic method:** Use large-sample theory to approximate the
+    sampling distribution (e.g., appeal to CLT; Chapter 7)
+    
+    
+    
+## Strategy
+
+- We have an estimator $\hat\theta$ in hand
+- Use $\hat\theta$ to find a range of plausible values for $\theta$ where
+
+$$P(\hat\theta_L \le \theta \le \hat\theta_U) = 1-\alpha$$
+
+## `qnorm` and `pnorm`
+
+## Example
+
+::::: columns
+::: {.column .nonincremental width="50%"}
+-   Dr. Kristen Gorman and the Palmer Station, Antarctica LTER, are
+    studying the bill dimensions of a certain species of penguin
+
+-   They want to estimate the average bill depth and bill length (in mm)
+
+```{r}
+data("penguins", package = "palmerpenguins")
+gentoo <- filter(penguins, species == "Gentoo")
+```
+:::
+
+::: {.column width="50%"}
+![](https://allisonhorst.github.io/palmerpenguins/reference/figures/culmen_depth.png){.my-img-border}
+:::
+:::::
+
+::: footer
+Horst AM, Hill AP, Gorman KB (2020). palmerpenguins: Palmer Archipelago
+(Antarctica) penguin data. R package:
+https://allisonhorst.github.io/palmerpenguins/
+:::
+
+## Your turn
+
+Find a 90% confidence interval for the mean bill length of Gentoo penguins. 
+
+Assume that $\sigma = 3.08$
+
+Sample statistics:
+
+$\bar{X}$ = `r round(mean(gentoo$bill_length_mm, na.rm = TRUE),2)`
+
+n = `r sum(!is.na(gentoo$bill_length_mm))`
+
+## Interpreting CI's: intro stat redux {.center}
+
+
+> We are $(1-\alpha)100$% confident that the true parameter of interest is between L and U
+
+## Interpreting CIs redux
+
+
+```{r, echo=FALSE, fig.height=4, fig.width=4, fig.align='center'}
+set.seed(46453435)
+POPULATION <- rnorm(n=10000, mean = 10, sd = 5)
+# hist(POPULATION, main = "Population Distribution", xlab = "Y", cex.lab=1.5, cex.main=1.5, cex.axis=1.5)
+# abline(v = 10, lwd = 2, col='red')
+# mtext(side = 1, "Population Mean", at = 10, col='red',cex=1.5)
+set.seed(2345)
+n <- 10
+SAMPLE <- sample(POPULATION, size = 10)
+# par(mfrow = c(1,2))
+# hist(POPULATION, main = "Population Distribution", xlab = "X", cex.lab=1.5, 
+     # cex.main=1.5, cex.axis=1.5, xlim = c(-10,30))
+# abline(v = 10, lwd = 2, col='red')
+# mtext(side = 1, "Population Mean", at = 10, col='red', cex=1.5)
+
+# hist(SAMPLE, main = "Empirical Distribution", xlab = "X", cex.lab=1.5, cex.main=1.5,
+     # cex.axis=1.5, xlim = c(-10,30))
+# abline(v = mean(SAMPLE), lwd = 2, col='red')
+# mtext(side = 1, "Sample Mean", at = mean(SAMPLE), col='red', cex=1.5)
+```
+
+::::{.columns}
+:::{.column width="50%"}
+```{r, echo=FALSE, fig.height=4, fig.width = 4, out.width = "90%"}
+set.seed(12245)
+B <- 1e4
+CI <- matrix(NA, nrow = B, ncol=2)
+colnames(CI) <- c("lower", "upper")
+for(b in 1:B){
+  SAMPLE <- sample(POPULATION, size = 10)
+  CI[b,] <- mean(SAMPLE) + c(-1,1) * 2 * 5/sqrt(10)
+}
+
+df <- as.data.frame(CI) %>%
+  mutate(contains = lower <= 10 & upper >= 10) %>%
+  group_by(contains) %>%
+  slice_sample(prop = .01/2) %>%
+  ungroup() %>%
+  mutate(row = row_number()) %>%
+  mutate(row = sample(row))
+
+gf_vline(xintercept = ~10, linetype = 2) %>%
+gf_linerange(factor(row) ~ lower + upper, data = df %>% head(30),
+              color = ~factor(contains)) +
+  scale_color_manual("Covers truth?", values = c("darkorange", "gray20")) +
+  theme(axis.line.y = element_blank(), 
+        axis.ticks.y = element_blank(), 
+        axis.text.y = element_blank(), 
+        axis.title.y = element_blank())
+```
+:::
+:::{.column width="50%"}
+:::::{style="font-size: 80%;"}
+- (L, U) is a random interval **before** data are observed
+
+- The **process** by which the interval constructed is a random process
+
+- $(1-\alpha)100$% is the long-run proportion of intervals that will capture the parameter
+
+- In practice, we don't know which "type" of interval we have (good/bad)
+:::::
+:::
+::::
+
+## Plug-in principle
+
+Let $X_1, \ldots, X_n \overset{\text{iid}}{\sim} N(\mu, \sigma^2)$.
+
+- In practice both $\mu$ and $\sigma^2$ are unknown
+
+- $\dfrac{\bar{X} - \mu}{\sigma/\sqrt{n}} \sim N(0, 1)$ 
+
+- PROBLEM: $\bar{x} \pm z_{1-\alpha/2} \left( \dfrac{\sigma}{\sqrt{n}} \right)$
+
+**Proposed solution:** plug in the sample standard deviation
+
+
+## Estimating $\sigma$ impacts the distribution
+
+
+```{r echo=FALSE, fig.height=3, fig.width = 6.5, out.width="95%", fig.align='center'}
+z_known_sigma <- numeric(B)
+z_unknown_sigma <- numeric(B)
+
+n <- 10
+
+for(i in 1:B) {
+  s <- sample(POPULATION, size = n)
+  z_known_sigma[i] <- (mean(s) - 10) / (5/sqrt(n))
+  z_unknown_sigma[i] <- (mean(s) - 10) / (sd(s)/sqrt(n))
+}
+
+qq1 <- gf_qq(~z_known_sigma, title = "Distribution of Z, known SD") %>%
+  gf_qqline() 
+qq2 <-  gf_qq(~z_unknown_sigma, title = "Distribution of Z, unknown SD") %>%
+  gf_qqline()  
+
+qq1 + qq2
+```
+
+
+
+## (Student's) t distribution
+
+Let $T = \dfrac{Z}{\sqrt{V/df}}$ where $Z \sim N(0, 1)$, $V \sim \chi^2_{df}$, and $Z \perp V \Longrightarrow T \sim t_{df}$
+
+```{r t-dsn, fig.height = 4, echo=FALSE, message=FALSE, fig.align='center'}
+library(openintro)
+data(COL)
+par(mar = c(2, .1, .1, .1))
+plot(c(-4, 4),
+     c(0, dnorm(0)),
+     type = 'n',
+     axes = FALSE)
+at <- seq(-4, 4, 2)
+axis(1, at)
+axis(1, at, rep("", length(at)), tcl = -0.1)
+abline(h = 0)
+
+COL. <- fadeColor(COL[5], c("FF", "89", "68", "4C", "33"))
+COLt <- fadeColor(COL[5], c("FF", "AA", "85", "60", "45"))
+DF   <- c('normal', 8, 4, 2, 1)
+
+X <- seq(-4.5, 4.5, 0.02)
+Y <- dnorm(X)
+lines(X, Y, col = COL.[1])
+
+for (i in 2:5) {
+  Y <- dt(X, as.numeric(DF[i]))
+  lines(X, Y, col = COL.[i])
+}
+
+legend(2.5, 0.4,
+       legend = c(DF[1],
+       paste('t, df = ', DF[2:5], sep = '')),
+       col = COL.,
+       text.col = COLt,
+       lty = rep(1, 5))
+```
+
+## t distribution properties
+
+::::{.columns}
+:::{.column width="50%"}
+- Symmetric around 0
+
+- For $df=1$, mean doesn't exist (Cauchy distribution)
+
+- For $df \ge 2$, $E(T) = E(Z) E \left(1 / \sqrt{V/n} \right) = 0$
+
+- Heavier tails than normal distribution
+
+- $t_{df} \to N(0, 1)$ as $df \to \infty$
+:::
+:::{.column width="50%"}
+```{r t-dsn,  fig.height = 3.5, fig.width= 6, echo=FALSE, message=FALSE, fig.align='center', out.width = "100%"}
+```
+:::
+::::
+
+
+## Your turn
+
+### Finding t quantiles in `r fa("r-project")`
+
+`qt(p, df)` will calculate the p quantile of $t_{\rm df}$
+
+Find the value of `q` that is needed for the following $(1-\alpha)100\%$ normal-based CIs:
+
+1. 90%, n = 123
+
+2. 95%, n = 25
+
+3. 99%, n = 34
+
+```{r echo=FALSE}
+countdown(3)
+```
+
+
+## Your turn
+
+Find a 90% confidence interval for the mean bill length of Gentoo penguins.
+
+Assume that $\sigma = `r sd(~bill_length_mm, data = gentoo, na.rm = TRUE) %>% round(2)`$.
+
+Sample statistics:
+
+- $n=`r gentoo$bill_length_mm %>% na.omit() %>% length()`$ 
+
+- $\bar{x} = `r mean(~bill_length_mm, data = gentoo, na.rm = TRUE) %>% round(2)`$
+
+- $s = `r sd(~bill_length_mm, data = gentoo, na.rm = TRUE) %>% round(2)`$
+
+
+## Underlying validity conditions
+
+We have a random sample from a normal population distribution
+
+<br>
+
+### Ask Yourself...
+
+- Are the observations independent?
+
+- Are the observations approximately normal?
+
+
+## Checking conditions
+
+::::{.columns}
+:::{.column width="50%"}
+- Are the penguins independent?
+
+- Are the bill lengths approximately normal?
+:::
+:::{.column width="50%"}
+```{r echo=FALSE, fig.height = 3, fig.width= 3, out.width = "100%", warning=FALSE}
+gf_qq(~bill_length_mm, data = gentoo) %>%
+  gf_qqline() 
+```
+:::
+::::
+
+
+## Robustness
+
+If the a procedure "perform well" even if some of the assumptions under which they were developed do not hold, then they will be called **robust.**
+
+
+## Simulation study
+
+To check whether a procedure is robust, we can use simulation:
+
+1. Simulate data from a variety of different probability distributions
+
+2. Run the procedure (e.g., build a one-sample t-interval)
+
+3. Compare the results of the procedure to what should have happened. 
+    
+    for a large number of CIs, approximately 95% of 95% CIs should capture the parameter value
+    
+
+##  {background-image="img/robust-1sample-t.png" background-size="contain"}
+
+
+## Robustness one-sample $t$ 
+
+:::::{style="font-size: 95%;"}
+- If the population distribution is roughly symmetric and unimodal, then the procedure works well for sample sizes of at least 10–15 (just a rough guide)
+
+- For skewed population distributions, the t-procedure can be substantially affected, depending on the severity of the skew and the sample size.
+
+- t-procedures are not resistant to outliers.
+
+- If observations are not independent, the results can be misleading.
+:::
