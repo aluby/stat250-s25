@@ -40,3 +40,238 @@ gentoo <- filter(penguins, species == "Gentoo")
 theme_set(theme_minimal())
 ```
 
+Goal: develop an **interval estimate** of a population parameter
+
+Today, we'll use the **asymptotic method:**, which uses large-sample theory to approximate the sampling distribution, primarily through the CLT.
+
+::: callout-note
+## (1 - $\alpha$) Confidence Interval
+
+$$P( \hat \theta_L \le \theta \le \hat\theta_U) = 1- \alpha$$
+:::
+
+
+::: callout-note
+## Central Limit Theorem
+
+If $X_1, ..., X_n \sim N(\mu, \sigma^2)$, then
+\vspace{.5in}
+:::
+
+# R detour
+
+```{r}
+#| eval: false
+#| echo: true
+rnorm(100)
+```
+
+```{r}
+#| echo: true
+dnorm(1)
+```
+
+```{r}
+#| echo: false
+#| fig-width: 3
+#| fig-height: 2
+
+gf_function(dnorm, xlim = c(-3,3)) 
+```
+
+```{r}
+#| echo: true
+pnorm(1)
+```
+
+```{r}
+#| echo: false
+#| fig-width: 3
+#| fig-height: 2
+
+gf_function(dnorm, xlim = c(-3,3)) 
+```
+
+```{r}
+#| echo: true
+qnorm(.8413447)
+```
+
+```{r}
+#| echo: false
+#| fig-width: 3
+#| fig-height: 2
+
+gf_function(dnorm, xlim = c(-3,3)) 
+```
+
+**Example:** Find the value of `q` that is needed for the following $(1-\alpha)100\%$ normal-based CIs:
+
+1. 90%
+
+2. 95%
+
+3. 97%
+
+
+**Example:**  Find a 90% confidence interval for the mean bill length of Gentoo penguins. Assume that $\sigma = 3.08$. We also have $\bar{X}$ = `r round(mean(gentoo$bill_length_mm, na.rm = TRUE),2)` and n = `r sum(!is.na(gentoo$bill_length_mm))`
+
+\vspace{2in}
+
+# Plug-in principle
+
+Let $X_1, \ldots, X_n \overset{\text{iid}}{\sim} N(\mu, \sigma^2)$. Then $\dfrac{\bar{X} - \mu}{\sigma/\sqrt{n}} \sim N(0, 1)$ 
+
+PROBLEM: $\bar{x} \pm z_{1-\alpha/2} \left( \dfrac{\sigma}{\sqrt{n}} \right)$
+
+**Proposed solution:** 
+
+\vspace{.75in}
+
+```{r}
+#| echo: false
+#| fig-width: 6
+#| fig-height: 2
+
+set.seed(46453435)
+POPULATION <- rnorm(n=10000, mean = 10, sd = 5)
+
+set.seed(2345)
+n <- 10
+SAMPLE <- sample(POPULATION, size = 10)
+
+set.seed(12245)
+B <- 1e4
+CI <- matrix(NA, nrow = B, ncol=2)
+colnames(CI) <- c("lower", "upper")
+for(b in 1:B){
+  SAMPLE <- sample(POPULATION, size = 10)
+  CI[b,] <- mean(SAMPLE) + c(-1,1) * 2 * 5/sqrt(10)
+}
+
+z_known_sigma <- numeric(B)
+z_unknown_sigma <- numeric(B)
+
+n <- 10
+
+for(i in 1:B) {
+  s <- sample(POPULATION, size = n)
+  z_known_sigma[i] <- (mean(s) - 10) / (5/sqrt(n))
+  z_unknown_sigma[i] <- (mean(s) - 10) / (sd(s)/sqrt(n))
+}
+
+qq1 <- gf_qq(~z_known_sigma, title = "Z, known SD") %>%
+  gf_qqline() 
+qq2 <-  gf_qq(~z_unknown_sigma, title = "Z, unknown SD") %>%
+  gf_qqline()  
+
+qq1 + qq2
+```
+
+::: callout-note
+## Student's t-distribution
+
+$$T = \dfrac{Z}{\sqrt{V/df}}$$
+
+where $Z \sim N(0, 1)$, $V \sim \chi^2_{df}$, and $Z \perp V \Longrightarrow T \sim t_{df}$
+:::
+
+:::: {layout="[0.5, 0.5]"}
+:::{#firstcol}
+```{r t-dsn, fig.height = 3, fig.width = 6, echo=FALSE, message=FALSE, fig.align='left'}
+library(openintro)
+data(COL)
+par(mar = c(2, .1, .1, .1))
+plot(c(-4, 4),
+     c(0, dnorm(0)),
+     type = 'n',
+     axes = FALSE)
+at <- seq(-4, 4, 2)
+axis(1, at)
+axis(1, at, rep("", length(at)), tcl = -0.1)
+abline(h = 0)
+
+COL. <- fadeColor(COL[5], c("FF", "89", "68", "4C", "33"))
+COLt <- fadeColor(COL[5], c("FF", "AA", "85", "60", "45"))
+DF   <- c('normal', 8, 4, 2, 1)
+
+X <- seq(-4.5, 4.5, 0.02)
+Y <- dnorm(X)
+lines(X, Y, col = COL.[1])
+
+for (i in 2:5) {
+  Y <- dt(X, as.numeric(DF[i]))
+  lines(X, Y, col = COL.[i])
+}
+
+legend(2.5, 0.4,
+       legend = c(DF[1],
+       paste('t, df = ', DF[2:5], sep = '')),
+       col = COL.,
+       text.col = COLt,
+       lty = rep(1, 5))
+```
+:::
+
+:::{#secondcol}
+- Symmetric around 0
+
+- For $df=1$, mean doesn't exist (Cauchy distribution)
+
+- For $df \ge 2$, $E(T) = E(Z) E \left(1 / \sqrt{V/n} \right) = 0$
+
+- Heavier tails than normal distribution
+
+- $t_{df} \to N(0, 1)$ as $df \to \infty$
+:::
+::::
+
+**Example:** Find the value of `q` that is needed for the following $(1-\alpha)100\%$ t-based CIs:
+
+1. 90%, n = 123
+
+2. 95%, n = 25
+
+3. 99%, n = 34
+
+**Example:** Find a 90% confidence interval for the mean bill length of Gentoo penguins. ~~Assume that σ = 3.08~~.
+
+Sample statistics:
+
+- $n=`r gentoo$bill_length_mm %>% na.omit() %>% length()`$ 
+
+- $\bar{x} = `r mean(~bill_length_mm, data = gentoo, na.rm = TRUE) %>% round(2)`$
+
+- $s = `r sd(~bill_length_mm, data = gentoo, na.rm = TRUE) %>% round(2)`$
+
+# Assumptions
+
+- Random sample from a _______________ population distribution
+- _________________ observations
+
+::: callout-note
+## Robustness
+
+If the a procedure "perform well" even if some of the assumptions under which they were developed do not hold, then they are called **robust.**
+:::
+
+To check whether a procedure is robust, we can use simulation:
+
+1. Simulate data from a variety of different probability distributions
+
+2. Run the procedure (e.g., build a one-sample t-interval)
+
+3. Compare the results of the procedure to what should have happened. 
+
+![](../img/robust-1sample-t.png){width=60%}
+
+**Robustness for 1-sample t procedure:**
+
+- If the population distribution is roughly _________________ and ___________________, then the procedure works well for sample sizes of at least _________________ (just a rough guide)
+
+- For _________________ population distributions, the t-procedure can be substantially affected, depending on the severity of the ____________ and the sample size.
+
+- t-procedures are not resistant to _________________
+
+- If observations are not ___________________, everything breaks
+

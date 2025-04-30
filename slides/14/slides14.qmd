@@ -52,34 +52,6 @@ theme_set(slides_theme)
 
 ## Last time
 
-- penguins bootstrap example
-
-## What are plausible values for $\theta$ given $\hat\theta$?
-
-We want to develop an **interval estimate** of a population parameter
-
-1.  *Exact method:* Find the sampling distribution in closed form
-    (Chapter 4). Requires knowledge of the distribution of the data!
-
-2.  *Bootstrap method:* Use the sample to approximate the population
-    and simulate a sampling distribution (Chapter 5).
-
-3.  **Asymptotic method:** Use large-sample theory to approximate the
-    sampling distribution (e.g., appeal to CLT; Chapter 7)
-    
-    
-    
-## Strategy
-
-- We have an estimator $\hat\theta$ in hand
-- Use $\hat\theta$ to find a range of plausible values for $\theta$ where
-
-$$P(\hat\theta_L \le \theta \le \hat\theta_U) = 1-\alpha$$
-
-## `qnorm` and `pnorm`
-
-## Example
-
 ::::: columns
 ::: {.column .nonincremental width="50%"}
 -   Dr. Kristen Gorman and the Palmer Station, Antarctica LTER, are
@@ -104,6 +76,151 @@ Horst AM, Hill AP, Gorman KB (2020). palmerpenguins: Palmer Archipelago
 https://allisonhorst.github.io/palmerpenguins/
 :::
 
+## Last Time
+
+```{r}
+#| echo: false
+set.seed(1234)
+# Bookkeeping
+n <- nrow(gentoo)        # sample size
+N <- 10^4                # desired no. resamples
+
+boot_means <- numeric(N) # a place to store the bootstrap stats
+
+# Resampling from the sample
+for (i in 1:N) {
+  x <- sample(gentoo$bill_length_mm, size = n, replace = TRUE)
+  boot_means[i] <- mean(x, na.rm = TRUE)  # you can choose other statistics
+}
+
+quant_df <- data.frame(quants = quantile(boot_means, probs = c(0.025, 0.975)),
+                       y = 750)
+
+gf_histogram(~boot_means, bins = 30, title = "Bootstrap distribution", xlab = "Bootstrap means", col = "white") %>%
+  gf_vline(xintercept = ~quantile(boot_means, probs = c(0.025, 0.975)), color = "blue") %>%
+  gf_label(y ~ quants,  data = quant_df[1,], label = ~round(quants, 2), hjust = 1.2, size = 6) %>%
+  gf_label(y ~ quants,  data = quant_df[2,], label = ~round(quants, 2), hjust = -0.5, size = 6) 
+```
+
+## What are plausible values for $\theta$ given $\hat\theta$?
+
+We want to develop an **interval estimate** of a population parameter
+
+1.  *Exact method:* Find the sampling distribution in closed form
+    (Chapter 4). Requires knowledge of the distribution of the data!
+
+2.  *Bootstrap method:* Use the sample to approximate the population
+    and simulate a sampling distribution (Chapter 5).
+
+3.  **Asymptotic method:** Use large-sample theory to approximate the
+    sampling distribution (e.g., appeal to CLT; Chapter 7)
+    
+    
+    
+## Strategy
+
+- We have an estimator $\hat\theta$ in hand
+- Use $\hat\theta$ to find a range of plausible values for $\theta$ where
+
+$$P(\hat\theta_L \le \theta \le \hat\theta_U) = 1-\alpha$$
+
+## Central Limit Theorem
+
+If $X_1, ...., X_n$ are iid normal random variables mean $\mu$ and variance $\sigma^2$,
+
+$$\bar{X} \sim N(\mu, \frac{\sigma^2}{n})$$
+
+
+## `rnorm`
+
+Draw random samples from a normal distribution
+
+```{r}
+rnorm(100)
+```
+
+::: aside
+All distribution functions in R that start with `rXXX` draw random samples (`rexp`, `rgamma`, `rbinom`, etc)
+:::
+
+## `dnorm`
+
+Return the pdf evaluated at `x`
+
+```{r}
+dnorm(1)
+```
+
+```{r}
+#| echo: false
+#| fig-width: 8
+#| fig-height: 4
+#| out-width: "95%"
+#| fig-align: 'center'
+
+
+gf_function(dnorm, xlim = c(-3,3)) + 
+  annotate("segment", x = 1, xend = 1, y = 0, yend = dnorm(1), linetype = "dashed") + 
+  annotate("point", x = 1, y = dnorm(1), size = 2) + 
+  annotate("segment", x = -3, xend = 1, y = dnorm(1), linetype = "dashed", col = "purple4", size = 1.5)  + 
+  annotate("label", x = -3, y = dnorm(1), label = round(dnorm(1),3), col = "purple4")
+```
+
+## `pnorm`
+
+Return the cdf evaluated at `x`
+
+```{r}
+pnorm(1)
+```
+
+```{r}
+#| echo: false
+#| fig-width: 8
+#| fig-height: 4
+#| out-width: "95%"
+#| fig-align: 'center'
+gf_function(dnorm, xlim = c(-3,3)) + 
+  stat_function(fun = dnorm, 
+                xlim = c(-3,1),
+                geom = "area",
+                fill = "purple4") +
+  annotate("label", x = 0, y = .1, label = round(pnorm(1),3), col = "purple4")
+```
+
+
+## `qnorm`
+
+Return the quantile where the cdf is equal to `x`
+
+```{r}
+qnorm(.8413447)
+```
+
+```{r}
+#| echo: false
+#| fig-width: 8
+#| fig-height: 4
+#| out-width: "95%"
+#| fig-align: 'center'
+gf_function(dnorm, xlim = c(-3,3)) + 
+  stat_function(fun = dnorm, 
+                xlim = c(-3,1),
+                geom = "area",
+                fill = "purple4") +
+  annotate("label", x = qnorm(.8413447), y = -.025, label = round(qnorm(.8413447),7), col = "purple4")
+```
+
+## Try it
+
+Find the value of `q` that is needed for the following $(1-\alpha)100\%$ normal-based CIs:
+
+1. 90%
+
+2. 95%
+
+3. 97%
+
 ## Your turn
 
 Find a 90% confidence interval for the mean bill length of Gentoo penguins. 
@@ -121,7 +238,7 @@ n = `r sum(!is.na(gentoo$bill_length_mm))`
 
 > We are $(1-\alpha)100$% confident that the true parameter of interest is between L and U
 
-## Interpreting CIs redux
+## {.center}
 
 
 ```{r, echo=FALSE, fig.height=4, fig.width=4, fig.align='center'}
@@ -192,19 +309,22 @@ gf_linerange(factor(row) ~ lower + upper, data = df %>% head(30),
 
 Let $X_1, \ldots, X_n \overset{\text{iid}}{\sim} N(\mu, \sigma^2)$.
 
-- In practice both $\mu$ and $\sigma^2$ are unknown
+::: {.incremental}
 
 - $\dfrac{\bar{X} - \mu}{\sigma/\sqrt{n}} \sim N(0, 1)$ 
 
 - PROBLEM: $\bar{x} \pm z_{1-\alpha/2} \left( \dfrac{\sigma}{\sqrt{n}} \right)$
 
-**Proposed solution:** plug in the sample standard deviation
+- In practice both $\mu$ and $\sigma^2$ are unknown
 
+- **Proposed solution:** plug in the sample standard deviation $s$
+:::
 
 ## Estimating $\sigma$ impacts the distribution
 
 
-```{r echo=FALSE, fig.height=3, fig.width = 6.5, out.width="95%", fig.align='center'}
+```{r}
+#| echo: false
 z_known_sigma <- numeric(B)
 z_unknown_sigma <- numeric(B)
 
@@ -216,9 +336,21 @@ for(i in 1:B) {
   z_unknown_sigma[i] <- (mean(s) - 10) / (sd(s)/sqrt(n))
 }
 
-qq1 <- gf_qq(~z_known_sigma, title = "Distribution of Z, known SD") %>%
+qq1 <- gf_histogram(~z_known_sigma, title = "Z, known SD", col = "white") + xlim(-5,5)
+qq2 <-  gf_histogram(~z_unknown_sigma, title = "Z, unknown SD", col = "white") + xlim(-5,5)
+
+qq1 + qq2
+```
+
+## Estimating $\sigma$ impacts the distribution
+
+
+```{r}
+#| echo: false
+
+qq1 <- gf_qq(~z_known_sigma, title = "Z, known SD") %>%
   gf_qqline() 
-qq2 <-  gf_qq(~z_unknown_sigma, title = "Distribution of Z, unknown SD") %>%
+qq2 <-  gf_qq(~z_unknown_sigma, title = "Z, unknown SD") %>%
   gf_qqline()  
 
 qq1 + qq2
@@ -233,7 +365,7 @@ Let $T = \dfrac{Z}{\sqrt{V/df}}$ where $Z \sim N(0, 1)$, $V \sim \chi^2_{df}$, a
 ```{r t-dsn, fig.height = 4, echo=FALSE, message=FALSE, fig.align='center'}
 library(openintro)
 data(COL)
-par(mar = c(2, .1, .1, .1))
+par(mar = c(2, .1, .1, .1), bg = "#f0f1eb")
 plot(c(-4, 4),
      c(0, dnorm(0)),
      type = 'n',
@@ -267,7 +399,7 @@ legend(2.5, 0.4,
 ## t distribution properties
 
 ::::{.columns}
-:::{.column width="50%"}
+:::{.column width="50%" .incremental}
 - Symmetric around 0
 
 - For $df=1$, mean doesn't exist (Cauchy distribution)
@@ -285,9 +417,7 @@ legend(2.5, 0.4,
 ::::
 
 
-## Your turn
-
-### Finding t quantiles in `r fa("r-project")`
+## Your turn: Finding t quantiles in `r fa("r-project")`
 
 `qt(p, df)` will calculate the p quantile of $t_{\rm df}$
 
@@ -308,7 +438,7 @@ countdown(3)
 
 Find a 90% confidence interval for the mean bill length of Gentoo penguins.
 
-Assume that $\sigma = `r sd(~bill_length_mm, data = gentoo, na.rm = TRUE) %>% round(2)`$.
+~~Assume that σ = 3.08~~.
 
 Sample statistics:
 
@@ -322,6 +452,8 @@ Sample statistics:
 ## Underlying validity conditions
 
 We have a random sample from a normal population distribution
+
+. . . 
 
 <br>
 
@@ -349,9 +481,9 @@ gf_qq(~bill_length_mm, data = gentoo) %>%
 ::::
 
 
-## Robustness
+## Robustness {.center}
 
-If the a procedure "perform well" even if some of the assumptions under which they were developed do not hold, then they will be called **robust.**
+If the a procedure "perform well" even if some of the assumptions under which they were developed do not hold, then they are called **robust.**
 
 
 ## Simulation study
@@ -367,10 +499,10 @@ To check whether a procedure is robust, we can use simulation:
     for a large number of CIs, approximately 95% of 95% CIs should capture the parameter value
     
 
-##  {background-image="img/robust-1sample-t.png" background-size="contain"}
+##  {background-image="../img/robust-1sample-t.png" background-size="contain"}
 
 
-## Robustness one-sample $t$ 
+## Robustness: one-sample $t$ 
 
 :::::{style="font-size: 95%;"}
 - If the population distribution is roughly symmetric and unimodal, then the procedure works well for sample sizes of at least 10–15 (just a rough guide)
@@ -379,5 +511,5 @@ To check whether a procedure is robust, we can use simulation:
 
 - t-procedures are not resistant to outliers.
 
-- If observations are not independent, the results can be misleading.
+- If observations are not independent, everything breaks
 :::
