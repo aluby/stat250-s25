@@ -140,6 +140,181 @@
     "text": "What do you conclude?"
   },
   {
+    "objectID": "slides/14/slides14.html#last-time",
+    "href": "slides/14/slides14.html#last-time",
+    "title": "CLT-based Confidence Intervals",
+    "section": "Last time",
+    "text": "Last time\n\n\n\nDr. Kristen Gorman and the Palmer Station, Antarctica LTER, are studying the bill dimensions of a certain species of penguin\nThey want to estimate the average bill depth and bill length (in mm)\n\n\ndata(\"penguins\", package = \"palmerpenguins\")\ngentoo &lt;- filter(penguins, species == \"Gentoo\")\n\n\n\n\n\nHorst AM, Hill AP, Gorman KB (2020). palmerpenguins: Palmer Archipelago (Antarctica) penguin data. R package: https://allisonhorst.github.io/palmerpenguins/"
+  },
+  {
+    "objectID": "slides/14/slides14.html#last-time-1",
+    "href": "slides/14/slides14.html#last-time-1",
+    "title": "CLT-based Confidence Intervals",
+    "section": "Last Time",
+    "text": "Last Time"
+  },
+  {
+    "objectID": "slides/14/slides14.html#what-are-plausible-values-for-theta-given-hattheta",
+    "href": "slides/14/slides14.html#what-are-plausible-values-for-theta-given-hattheta",
+    "title": "CLT-based Confidence Intervals",
+    "section": "What are plausible values for \\(\\theta\\) given \\(\\hat\\theta\\)?",
+    "text": "What are plausible values for \\(\\theta\\) given \\(\\hat\\theta\\)?\nWe want to develop an interval estimate of a population parameter\n\nExact method: Find the sampling distribution in closed form (Chapter 4). Requires knowledge of the distribution of the data!\nBootstrap method: Use the sample to approximate the population and simulate a sampling distribution (Chapter 5).\nAsymptotic method: Use large-sample theory to approximate the sampling distribution (e.g., appeal to CLT; Chapter 7)"
+  },
+  {
+    "objectID": "slides/14/slides14.html#strategy",
+    "href": "slides/14/slides14.html#strategy",
+    "title": "CLT-based Confidence Intervals",
+    "section": "Strategy",
+    "text": "Strategy\n\nWe have an estimator \\(\\hat\\theta\\) in hand\nUse \\(\\hat\\theta\\) to find a range of plausible values for \\(\\theta\\) where\n\n\\[P(\\hat\\theta_L \\le \\theta \\le \\hat\\theta_U) = 1-\\alpha\\]"
+  },
+  {
+    "objectID": "slides/14/slides14.html#central-limit-theorem",
+    "href": "slides/14/slides14.html#central-limit-theorem",
+    "title": "CLT-based Confidence Intervals",
+    "section": "Central Limit Theorem",
+    "text": "Central Limit Theorem\nIf \\(X_1, ...., X_n\\) are iid normal random variables mean \\(\\mu\\) and variance \\(\\sigma^2\\),\n\\[\\bar{X} \\sim N(\\mu, \\frac{\\sigma^2}{n})\\]"
+  },
+  {
+    "objectID": "slides/14/slides14.html#rnorm",
+    "href": "slides/14/slides14.html#rnorm",
+    "title": "CLT-based Confidence Intervals",
+    "section": "rnorm",
+    "text": "rnorm\nDraw random samples from a normal distribution\n\nrnorm(100)\n\n  [1]  0.689997495  0.243009315 -0.807401540  0.374458542 -0.915732432\n  [6]  0.178867707 -1.027265141  0.242949546 -1.842819078 -0.979080488\n [11]  0.600574438 -1.585153699 -0.264674428 -2.354315837 -1.485571171\n [16]  0.387874140 -1.512696626 -0.449453148  0.440283232  0.107874436\n [21]  0.893008371  1.306476920  1.052635158  1.248282276  0.238040548\n [26] -0.726755145 -0.921146552 -1.090287875  1.525105205  0.738510117\n [31] -0.581905367 -1.174651589 -0.647301509  1.236758361  1.329885783\n [36] -0.250956569  0.077823736  0.532409529 -0.868581185 -1.344989890\n [41] -0.055143175 -0.558497326  0.163625827  0.116062082  0.283748319\n [46] -0.185443284 -0.905502739 -0.378970109  2.444398064  1.545879204\n [51]  1.661460098 -1.765290580 -0.640270478 -0.179410439 -0.323670270\n [56]  0.818200954  0.869805697  0.583986275 -0.282794918 -0.455207421\n [61]  0.217383610 -0.023017063 -0.317057367 -0.594464928 -0.180541495\n [66]  0.902926695 -0.346319348 -1.719542799  0.375358299 -0.745854018\n [71] -0.215431321  1.442550814  0.556950688 -0.572394649  0.801313966\n [76] -0.035591859 -0.308874351  1.206091825  0.323264481  0.430756886\n [81] -0.826246153 -3.013584878  0.713907243  0.643560029 -0.323800012\n [86] -0.553170310  1.803857176  0.389636234 -0.953947150  0.075435359\n [91]  0.503398676  0.257374899 -0.009081139  0.065887151 -0.075173157\n [96] -1.128362548  1.121108578  0.987522633  0.528639124 -0.092888292\n\n\n\n\nAll distribution functions in R that start with rXXX draw random samples (rexp, rgamma, rbinom, etc)"
+  },
+  {
+    "objectID": "slides/14/slides14.html#dnorm",
+    "href": "slides/14/slides14.html#dnorm",
+    "title": "CLT-based Confidence Intervals",
+    "section": "dnorm",
+    "text": "dnorm\nReturn the pdf evaluated at x\n\ndnorm(1)\n\n[1] 0.2419707"
+  },
+  {
+    "objectID": "slides/14/slides14.html#pnorm",
+    "href": "slides/14/slides14.html#pnorm",
+    "title": "CLT-based Confidence Intervals",
+    "section": "pnorm",
+    "text": "pnorm\nReturn the cdf evaluated at x\n\npnorm(1)\n\n[1] 0.8413447"
+  },
+  {
+    "objectID": "slides/14/slides14.html#qnorm",
+    "href": "slides/14/slides14.html#qnorm",
+    "title": "CLT-based Confidence Intervals",
+    "section": "qnorm",
+    "text": "qnorm\nReturn the quantile where the cdf is equal to x\n\nqnorm(.8413447)\n\n[1] 0.9999998"
+  },
+  {
+    "objectID": "slides/14/slides14.html#try-it",
+    "href": "slides/14/slides14.html#try-it",
+    "title": "CLT-based Confidence Intervals",
+    "section": "Try it",
+    "text": "Try it\nFind the value of q that is needed for the following \\((1-\\alpha)100\\%\\) normal-based CIs:\n\n90%\n95%\n97%"
+  },
+  {
+    "objectID": "slides/14/slides14.html#your-turn",
+    "href": "slides/14/slides14.html#your-turn",
+    "title": "CLT-based Confidence Intervals",
+    "section": "Your turn",
+    "text": "Your turn\nFind a 90% confidence interval for the mean bill length of Gentoo penguins.\nAssume that \\(\\sigma = 3.08\\)\nSample statistics:\n\\(\\bar{X}\\) = 47.5\nn = 123"
+  },
+  {
+    "objectID": "slides/14/slides14.html#interpreting-cis-intro-stat-redux",
+    "href": "slides/14/slides14.html#interpreting-cis-intro-stat-redux",
+    "title": "CLT-based Confidence Intervals",
+    "section": "Interpreting CI’s: intro stat redux",
+    "text": "Interpreting CI’s: intro stat redux\n\nWe are \\((1-\\alpha)100\\)% confident that the true parameter of interest is between L and U"
+  },
+  {
+    "objectID": "slides/14/slides14.html#section",
+    "href": "slides/14/slides14.html#section",
+    "title": "CLT-based Confidence Intervals",
+    "section": "",
+    "text": "(L, U) is a random interval before data are observed\nThe process by which the interval constructed is a random process\n\\((1-\\alpha)100\\)% is the long-run proportion of intervals that will capture the parameter\nIn practice, we don’t know which “type” of interval we have (good/bad)"
+  },
+  {
+    "objectID": "slides/14/slides14.html#plug-in-principle",
+    "href": "slides/14/slides14.html#plug-in-principle",
+    "title": "CLT-based Confidence Intervals",
+    "section": "Plug-in principle",
+    "text": "Plug-in principle\nLet \\(X_1, \\ldots, X_n \\overset{\\text{iid}}{\\sim} N(\\mu, \\sigma^2)\\).\n\n\n\\(\\dfrac{\\bar{X} - \\mu}{\\sigma/\\sqrt{n}} \\sim N(0, 1)\\)\nPROBLEM: \\(\\bar{x} \\pm z_{1-\\alpha/2} \\left( \\dfrac{\\sigma}{\\sqrt{n}} \\right)\\)\nIn practice both \\(\\mu\\) and \\(\\sigma^2\\) are unknown\nProposed solution: plug in the sample standard deviation \\(s\\)"
+  },
+  {
+    "objectID": "slides/14/slides14.html#estimating-sigma-impacts-the-distribution",
+    "href": "slides/14/slides14.html#estimating-sigma-impacts-the-distribution",
+    "title": "CLT-based Confidence Intervals",
+    "section": "Estimating \\(\\sigma\\) impacts the distribution",
+    "text": "Estimating \\(\\sigma\\) impacts the distribution"
+  },
+  {
+    "objectID": "slides/14/slides14.html#estimating-sigma-impacts-the-distribution-1",
+    "href": "slides/14/slides14.html#estimating-sigma-impacts-the-distribution-1",
+    "title": "CLT-based Confidence Intervals",
+    "section": "Estimating \\(\\sigma\\) impacts the distribution",
+    "text": "Estimating \\(\\sigma\\) impacts the distribution"
+  },
+  {
+    "objectID": "slides/14/slides14.html#students-t-distribution",
+    "href": "slides/14/slides14.html#students-t-distribution",
+    "title": "CLT-based Confidence Intervals",
+    "section": "(Student’s) t distribution",
+    "text": "(Student’s) t distribution\nLet \\(T = \\dfrac{Z}{\\sqrt{V/df}}\\) where \\(Z \\sim N(0, 1)\\), \\(V \\sim \\chi^2_{df}\\), and \\(Z \\perp V \\Longrightarrow T \\sim t_{df}\\)"
+  },
+  {
+    "objectID": "slides/14/slides14.html#t-distribution-properties",
+    "href": "slides/14/slides14.html#t-distribution-properties",
+    "title": "CLT-based Confidence Intervals",
+    "section": "t distribution properties",
+    "text": "t distribution properties\n\n\n\nSymmetric around 0\nFor \\(df=1\\), mean doesn’t exist (Cauchy distribution)\nFor \\(df \\ge 2\\), \\(E(T) = E(Z) E \\left(1 / \\sqrt{V/n} \\right) = 0\\)\nHeavier tails than normal distribution\n\\(t_{df} \\to N(0, 1)\\) as \\(df \\to \\infty\\)"
+  },
+  {
+    "objectID": "slides/14/slides14.html#your-turn-finding-t-quantiles-in",
+    "href": "slides/14/slides14.html#your-turn-finding-t-quantiles-in",
+    "title": "CLT-based Confidence Intervals",
+    "section": "Your turn: Finding t quantiles in ",
+    "text": "Your turn: Finding t quantiles in \nqt(p, df) will calculate the p quantile of \\(t_{\\rm df}\\)\nFind the value of q that is needed for the following \\((1-\\alpha)100\\%\\) normal-based CIs:\n\n90%, n = 123\n95%, n = 25\n99%, n = 34\n\n\n\n\n−+\n03:00"
+  },
+  {
+    "objectID": "slides/14/slides14.html#your-turn-1",
+    "href": "slides/14/slides14.html#your-turn-1",
+    "title": "CLT-based Confidence Intervals",
+    "section": "Your turn",
+    "text": "Your turn\nFind a 90% confidence interval for the mean bill length of Gentoo penguins.\nAssume that σ = 3.08.\nSample statistics:\n\n\\(n=123\\)\n\\(\\bar{x} = 47.5\\)\n\\(s = 3.08\\)"
+  },
+  {
+    "objectID": "slides/14/slides14.html#underlying-validity-conditions",
+    "href": "slides/14/slides14.html#underlying-validity-conditions",
+    "title": "CLT-based Confidence Intervals",
+    "section": "Underlying validity conditions",
+    "text": "Underlying validity conditions\nWe have a random sample from a normal population distribution\n\n\nAsk Yourself…\n\nAre the observations independent?\nAre the observations approximately normal?"
+  },
+  {
+    "objectID": "slides/14/slides14.html#checking-conditions",
+    "href": "slides/14/slides14.html#checking-conditions",
+    "title": "CLT-based Confidence Intervals",
+    "section": "Checking conditions",
+    "text": "Checking conditions\n\n\n\nAre the penguins independent?\nAre the bill lengths approximately normal?"
+  },
+  {
+    "objectID": "slides/14/slides14.html#robustness",
+    "href": "slides/14/slides14.html#robustness",
+    "title": "CLT-based Confidence Intervals",
+    "section": "Robustness",
+    "text": "Robustness\nIf the a procedure “perform well” even if some of the assumptions under which they were developed do not hold, then they are called robust."
+  },
+  {
+    "objectID": "slides/14/slides14.html#simulation-study",
+    "href": "slides/14/slides14.html#simulation-study",
+    "title": "CLT-based Confidence Intervals",
+    "section": "Simulation study",
+    "text": "Simulation study\nTo check whether a procedure is robust, we can use simulation:\n\nSimulate data from a variety of different probability distributions\nRun the procedure (e.g., build a one-sample t-interval)\nCompare the results of the procedure to what should have happened.\nfor a large number of CIs, approximately 95% of 95% CIs should capture the parameter value"
+  },
+  {
+    "objectID": "slides/14/slides14.html#robustness-one-sample-t",
+    "href": "slides/14/slides14.html#robustness-one-sample-t",
+    "title": "CLT-based Confidence Intervals",
+    "section": "Robustness: one-sample \\(t\\)",
+    "text": "Robustness: one-sample \\(t\\)\n\n\nIf the population distribution is roughly symmetric and unimodal, then the procedure works well for sample sizes of at least 10–15 (just a rough guide)\nFor skewed population distributions, the t-procedure can be substantially affected, depending on the severity of the skew and the sample size.\nt-procedures are not resistant to outliers.\nIf observations are not independent, everything breaks"
+  },
+  {
     "objectID": "slides/00-test/00-test.html#r-code",
     "href": "slides/00-test/00-test.html#r-code",
     "title": "Test slides",
@@ -851,7 +1026,7 @@
     "href": "index.html",
     "title": "Stat250-S25",
     "section": "",
-    "text": "Landing page for Stat250 course materials in Spring 2025\n\nIn-Class Materials\nDay02: slides handout r code\nDay03: handout activity qmd\nDay04: slides | handout\nDay05: slides | handout\nDay06: slides | handout\nDay07: slides | handout\nDay08: slides | handout\nDay09: slides | handout\nDay10: handout | R activity\nDay11: handout\nDay12: Exam I\nDay13: slides | handout | R activity\n\n\nOther Resources and Readings\n\nR Basics\nHow to do homework in R in Stat250"
+    "text": "Landing page for Stat250 course materials in Spring 2025\n\nIn-Class Materials\nDay02: slides handout r code\nDay03: handout activity qmd\nDay04: slides | handout\nDay05: slides | handout\nDay06: slides | handout\nDay07: slides | handout\nDay08: slides | handout\nDay09: slides | handout\nDay10: handout | R activity\nDay11: handout\nDay12: Exam I\nDay13: slides | handout | R activity\nDay14: slides | handout\n\n\nOther Resources and Readings\n\nR Basics\nHow to do homework in R in Stat250"
   },
   {
     "objectID": "slides/05/slides05.html#section",
