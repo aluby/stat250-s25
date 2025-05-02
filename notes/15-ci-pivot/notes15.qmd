@@ -42,20 +42,50 @@ theme_set(theme_minimal())
 
 Goal: develop an **interval estimate** of a population parameter
 
-**Recap:** 
+**Example:** Let $X_1, ..., X_n \sim N(\mu_1, \sigma^2_1)$ and let $Y_1, ..., Y_n \sim N(\mu_2, \sigma^2_2)$. Assume the X's are iid, Y's are iid, and all X's are independent of all Y's. Find the form of a $(1-\alpha)%$ confidence interval for $\mu_1 - \mu_2$
 
-\vspace{1.5in}
+\pagebreak
 
+Let's break down what we've done today and last time: 
+
+1. Find a statistic that depends on parameter $\theta$ and estimator $\hat\theta$
+2. Find the sampling distribution of that statistic and write down a probability statement that is true
+3. Rearrange terms *within* the probability statement to solve for $\theta$, giving us a lower/upper bound in terms of $\hat\theta$ (and other functions of the data $h(X_i, n)$)
 
 ::: callout-note
 ## Pivotal Quantity
 \vspace{1in}
 :::
 
+**Exercise:** Assume $X_i, ...., X_n \sim N(\mu, \sigma^2)$ where $\sigma^2$ is _known_. Which of the following are pivotal quantities? 
+
+(a) $\bar{X}$
+
+(b) $\bar{X} - \mu$
+
+(c) $\frac{\bar{X} - \mu}{\sigma}$
+
+(d) $\frac{\bar{X} - \mu}{\sigma/\sqrt{n}}$
+
+(e) $\bar{X} \pm 1.96 \frac{\sigma}{\sqrt{n}}$
+
 **Example:** Let $X_1, ..., X_n \sim \text{Gamma}(r, \lambda)$ with $\lambda$ _known_. Recall that 
 $$\hat{\lambda}_{MLE} = \frac{r}{\bar{X}}$$
 
 (a) Use the MLE as a starting point to find a pivotal statistic for $\lambda$ 
 
-(b) Use the pivotal statistic to construct a $100(1-\alpha)\%$ confidence interval for $\lambda$
+\vspace{3in}
 
+(b) Use the pivotal statistic to construct a $100(1-\alpha)\%$ confidence interval for $\lambda$. Include R code for finding any necessary quantiles.
+
+\vspace{4in}
+
+(c) Obtain an alternative pivotal quantity by using the CLT to approximate the distribution of $\bar{X}$ (Recall that $E(X) = r/\lambda$ and $\text{Var}(X) = r/\lambda^2$ for a Gamma($r, \lambda$) distribution)
+
+\vspace{4in}
+
+(d) Find the form of an alternative $100(1-\alpha)\%$ confidence interval for $\lambda$ using your pivotal quantity in (c) 
+
+\vspace{4in}
+
+(e) Suppose $n=300$ and $\bar{X} = 1.6$. Construct two confidence intervals for $\lambda$ using your results from (b) and (d) and compare them. 

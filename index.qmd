@@ -27,11 +27,13 @@ Day10: [handout](/notes/10-asymptotics/notes10.pdf) | [R activity](/notes/10-asy
 
 Day11: [handout](/notes/11-review/notes11.pdf) 
 
-Day12:  Exam I
+Day12:  Exam I [corrections info](/notes/exam01-corrections/exam01-corrections.pdf)
 
 Day13: [slides](/slides/13/slides13.html) | [handout](/notes/13-intro-ci/notes13.pdf) | [R activity](/notes/13-intro-ci/activity13.html)
 
 Day14: [slides](/slides/14/slides14.html) | [handout](/notes/14-clt-ci/notes14.pdf) 
+
+Day15: [handout](/notes/15-ci-pivot/notes15.pdf) 
 
 # Other Resources and Readings
 
