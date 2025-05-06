@@ -1,3 +1,5 @@
+library(tidyverse)
+
 lp_results <- read_delim("https://www.fbi.gov/file-repository/laboratory/testresponses.txt/@@download/file/TestResponses.txt", delim = "\t")
 
 set.seed(0501)
@@ -13,11 +15,11 @@ examiner_error_rates <- lp_results |>
   group_by(Examiner_ID) |>
   summarize(
     error_rate = mean(error)
-  ) |>
+  )  |>
   slice_sample(n=30)
 
 ggplot(examiner_error_rates, aes(x = error_rate)) + 
-  geom_histogram(bins = 20)
+  geom_histogram(bins = 10)
 
 error_rates <- examiner_error_rates$error_rate
 n = length(error_rates)
@@ -40,6 +42,9 @@ t.test(examiner_error_rates$error_rate, conf.level = .9)$conf.int
 quantile(boot_means, probs = c(.05, .95))
 xbar - quantile(t_star, probs = c(.05, .95))*(sd(error_rates)/sqrt(n))
 
+ggplot() + 
+  geom_qq(aes(sample = t_star), distribution = qt, dparams = 168) + 
+  geom_qq_line(aes(sample = t_star), distribution = qt, dparams = 168)
 
 ## what if we only care about a one-sided confidence interval? 
 
