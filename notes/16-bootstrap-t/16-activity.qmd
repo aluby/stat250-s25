@@ -1,0 +1,43 @@
+---
+title: "16: Comparing confidence intervals"
+---
+
+```{r}
+library(tidyverse)
+library(nycflights23)
+glimpse(flights)
+```
+
+::: callout-note
+## Q1: EDA 
+
+Make a histogram of `dep_delay`. This represents our population. What do you notice about the distribution? What is the true $\mu$ in this case?
+:::
+
+::: callout-note
+## Q2: Draw your sample 
+
+Use the code below to draw a sample of size 40 from the `flights` dataset. Make sure to set a seed! This is the "sample data" that you'll work with for the rest of this activity.
+:::
+
+```{r}
+set.seed(1) # Replace "1" with a random seed
+sample_index <- sample(1:nrow(flights), size = 40)
+flights_sample <- flights[sample_index,]
+dep_delay <- flights_sample$dep_delay
+```
+
+::: callout-note
+## Q3: Construct your confidence intervals
+
+Using your sample `dep_delay` from above, compute three confidence intervals: 
+
+1. percentile bootstrap
+2. CLT-based t
+3. bootstrap t-based 
+
+template code can be found in the handout for today
+:::
+
+when you're done, enter your lower and upper bounds here: https://docs.google.com/spreadsheets/d/1K3v67icpu-Q9vpYMcbCUsGJDJST2YPFGKtvgtmyIaQI/edit?usp=sharing 
+

@@ -1,0 +1,243 @@
+---
+title: "16: Confidence Intervals via Bootstrap T distributions"
+author: "Prof Amanda Luby"
+subtitle: "Stat250 S25"
+callout-appearance: minimal
+knitr:
+    opts_chunk: 
+      dev: "ragg_png"
+      echo: false
+      warning: false
+      message: false
+format:
+  pdf:
+    include-in-header: 
+       - "../preamble.tex"
+    toc: false
+    number-sections: true
+    colorlinks: true
+    geometry:
+      - top=1in
+      - left=1in
+      - right=1in
+      - bottom=1in
+      - heightrounded
+    mainfont: "Linux Libertine"
+    sansfont: "Linux Libertine"
+    mathfont: "Libertinus Math"
+    monofont: "Monaco"
+fontsize: 11pt
+---
+
+```{r}
+library(tidyverse)
+library(ggformula)
+library(knitr)
+library(mosaic)
+library(patchwork)
+theme_set(theme_minimal())
+```
+
+Goal: develop an **interval estimate** of a population parameter
+
+**Example:** Suppose we observe $X_1, ..., X_n$ , which represent the error rates of $n$ different forensic examiners. I am interested in finding a confidence interval for $\mu$, the average error rate in the population. We have a sample of size 30 shown below:
+
+```{r}
+#| fig-width: 3
+#| fig-height: 2
+#| layout-ncol: 2
+
+lp_results <- read_delim("https://www.fbi.gov/file-repository/laboratory/testresponses.txt/@@download/file/TestResponses.txt", delim = "\t")
+
+set.seed(0501)
+examiner_error_rates <- lp_results |>
+  mutate(
+    error = case_when(
+      Compare_Value == "Exclusion" & Mating == "Mates" ~ 1,
+      Compare_Value == "Individualization" & Mating == "Non-mates" ~ 1,
+      is.na(Latent_Value) ~ NA,
+      TRUE ~ 0
+    )
+  ) |>
+  group_by(Examiner_ID) |>
+  summarize(
+    error_rate = mean(error)
+  )  |>
+  slice_sample(n=30)
+
+ggplot(examiner_error_rates, aes(x = error_rate)) + 
+  geom_histogram(bins = 12, col = "white")
+
+examiner_error_rates |>
+  summarize(
+    mean = mean(error_rate),
+    sd = sd(error_rate),
+    n = n()
+  ) |>
+  round(digits = 4) |>
+  knitr::kable()
+```
+
+Let's review our confidence interval toolkit so far:
+
+1.  Construct a bootstrap distribution and find a **percentile-based** confidence interval
+
+2.  Either (a) assume a normal population or (b) use the CLT to construct a **formula t-based** confidence interval
+
+3.  Assume a different population distribution and construct a **pivot-based** confidence interval
+
+### Bootstrap percentile interval {.unnumbered}
+
+```{r}
+#| echo: true 
+error_rates <- examiner_error_rates$error_rate
+n = length(error_rates)
+N = 10^4
+boot_means = numeric(N)
+
+for(i in 1:N){
+  x <- sample(error_rates, size = n, replace = TRUE)
+  boot_means[i] <- mean(x, na.rm = TRUE)
+}
+
+quantile(boot_means, probs = c(.05, .95))
+```
+
+### CLT-based t confidence interval {.unnumbered}
+
+```{r}
+#| echo: true 
+
+qt(.975, df = 29)
+```
+
+\vspace{1in}
+
+```{r}
+#| echo: true 
+
+t.test(error_rates, conf.level = .95)$conf
+```
+
+**When do we trust this confidence interval?**
+
+\vspace{1in}
+
+```{r}
+#| echo: true
+t_star <- numeric(N)
+
+for(i in 1:N){
+  x <- sample(error_rates, size = n, replace = TRUE)
+  t_star[i] <- (mean(x) - mean(error_rates))/(sd(x)/sqrt(n))
+}
+
+```
+
+```{r}
+#| fig-height: 2
+#| fig-width: 6
+p1 <- ggplot() + 
+  geom_histogram(bins = 12, col = "white", aes(x = t_star)) + 
+  labs(
+    title = "Distribution of T*"
+  )
+
+p2 <- ggplot() + 
+  geom_qq(aes(sample = t_star), distribution = qt, dparams = 29) + 
+  geom_qq_line(aes(sample = t_star), distribution = qt, dparams = 29)  + 
+  labs(
+    title = "QQ of T*",
+    subtitle = "Compared to theoretical t(29)"
+  )
+
+p1 + p2
+```
+
+-   Distribution of $T*$ is slightly **left-skewed**
+-   Tails of $T*$ don't seem to match the theoretical t
+
+**Why does this happen?**
+
+```{r}
+#| fig-width: 4
+#| fig-height: 2
+
+boot_mean <- numeric(N)
+boot_sd <- numeric(N)
+t_star <- numeric(N)
+for(i in 1:N){
+  x <- sample(error_rates, size = n, replace = TRUE)
+  boot_mean[i] <- mean(x)
+  boot_sd[i] <- sd(x)
+  t_star[i] <- (mean(x) - mean(error_rates))/(sd(x)/sqrt(n))
+}
+
+limit <- max(abs(t_star)) * c(-1, 1)
+
+ggplot() + 
+  geom_point(aes(x = boot_mean, y = boot_sd, col = t_star), size = .5) +
+  scale_color_distiller(type = "div", limit = max(abs(t_star)) * c(-1, 1)) + 
+  theme_gray()
+```
+
+### Bootstrap t confidence interval {.unnumbered}
+
+The CLT-based confidence interval relies on:
+
+$$1-\alpha = P(t_{\alpha/2} < \frac{\bar{X} - \mu}{s/\sqrt{n}} < t_{1-\alpha/2})$$
+
+**Idea:** generate "better" quantiles using the bootstrap distribution:
+
+\vspace{1in}
+
+Then solve for $\mu$:
+
+\vspace{1.75in}
+
+to obtain the bootstrap $t$ confidence interval:
+
+::: callout-warning
+## Watch out!
+
+Lower bound is computed from the **upper** percentile and upper bound is computed from the **lower** percentile
+:::
+
+::: callout-note
+## Bootstrap t algorithm
+
+1.  Repeat the bootstrap procedure many times:
+    -   Take bootstrap sample
+    -   Compute mean ($\bar{X}^*$) and sd ($s^*$) of each bootstrap sample
+    -   Compute t-statistic for each bootstrap sample: $T^* = \frac{\bar{X}^* - \bar{X}}{s^*/\sqrt{n}}$
+2.  Find quantiles $Q_{\alpha/2}^*$ and $Q_{1-\alpha/2}^*$ using distribution of $T^*$
+3.  Compute confidence interval using the bootstrap t quantiles: $$(\bar{x} - Q^*_{1-\alpha/2}\frac{s}{\sqrt{n}}, \bar{x} + Q^*_{\alpha/2}\frac{s}{\sqrt{n}})$$
+:::
+
+**Example:** Let's find a bootstrap t confidence interval for the 30 forensic examiners
+
+```{r}
+#| echo: true 
+n = length(error_rates)
+N = 10^4
+boot_means <- numeric(N)
+boot_tstar <- numeric(N)
+for(i in 1:N){
+  x <- sample(error_rates, size = n, replace = TRUE)
+  boot_means[i] <- mean(x)
+  t_star[i] <- (mean(x) - mean(error_rates))/(sd(x)/sqrt(n))
+}
+
+quantile(t_star, probs = c(.025, .975))
+mean(error_rates) - quantile(t_star, probs = c(.025, .975))*sd(error_rates)/sqrt(n)
+```
+
+### Summary of results {-}
+
+|                      | Lower | Upper |
+|----------------------|-------|-------|
+| Percentile Bootstrap | .033  | .057  |
+| CLT t-based          | .029  | .059  |
+| Bootstrap t          | .031  | .063  |
+
+
