@@ -1,5 +1,5 @@
 ---
-title: "CLT-based Confidence Intervals"
+title: "Confidence intervals via Bootstrap t"
 subtitle: "Day 16"
 title-slide-attributes:
   data-background-gradient: "linear-gradient(to right, #46337e, #440154)"
