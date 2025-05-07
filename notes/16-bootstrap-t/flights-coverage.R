@@ -4,7 +4,7 @@ library(nycflights23)
 set.seed(0501)
 
 flights_sample <- flights |>
-  drop_na(dep_delay) |>
+  #drop_na(dep_delay) |>
   slice_sample(n=40)
 
 ggplot(flights_sample, aes(x = dep_delay)) + 
@@ -40,11 +40,11 @@ for(j in 1:N_bootstraps){
   ci_results$t_lower[j] = t.test(data_sample, conf.level = .95)$conf.int[1]
   ci_results$t_upper[j] = t.test(data_sample, conf.level = .95)$conf.int[2]
   
-  ci_results$percentile_lower[j] = quantile(boot_means, probs = c(.05))
-  ci_results$percentile_upper[j] = quantile(boot_means, probs = c(.95))
+  ci_results$percentile_lower[j] = quantile(boot_means, probs = c(.025))
+  ci_results$percentile_upper[j] = quantile(boot_means, probs = c(.975))
   
-  ci_results$boott_lower[j] = xbar - quantile(t_star, probs = c(.95))*(sd(data_sample)/sqrt(n))
-  ci_results$boott_upper[j] = xbar - quantile(t_star, probs = c(.05))*(sd(data_sample)/sqrt(n))
+  ci_results$boott_lower[j] = xbar - quantile(t_star, probs = c(.975))*(sd(data_sample)/sqrt(n))
+  ci_results$boott_upper[j] = xbar - quantile(t_star, probs = c(.025))*(sd(data_sample)/sqrt(n))
 }
   
 ci_results %>%
@@ -56,7 +56,11 @@ ci_results %>%
     missed = (lower > mean(flights$dep_delay, na.rm = TRUE)) | (upper < mean(flights$dep_delay, na.rm = TRUE))
   ) |>
   ggplot(aes(xmin = lower, xmax = upper, y = sim_id, col = missed)) +
-  geom_errorbar() + 
+  geom_errorbar(size = 2) + 
   facet_wrap(vars(type)) +
   geom_vline(xintercept = mean(flights$dep_delay, na.rm = TRUE)) +
-  scale_color_viridis_d(end = .76, option = "plasma", direction = -1)
+  scale_color_viridis_d(end = .76, option = "plasma", direction = -1) +
+  theme(text = element_text(size = 36))
+
+ggsave("flights-coverage-plot.png", width = 24, height = 16)
+

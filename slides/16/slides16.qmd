@@ -1,51 +1,63 @@
 ---
-title: "16: Confidence Intervals via Bootstrap T distributions"
+title: "CLT-based Confidence Intervals"
+subtitle: "Day 16"
+title-slide-attributes:
+  data-background-gradient: "linear-gradient(to right, #46337e, #440154)"
+  data-slide-number: none
 author: "Prof Amanda Luby"
-subtitle: "Stat250 S25"
-callout-appearance: minimal
-knitr:
-    opts_chunk: 
-      dev: "ragg_png"
-      echo: false
-      warning: false
-      message: false
-format:
-  pdf:
-    include-in-header: 
-       - "../preamble.tex"
-    toc: false
-    number-sections: true
-    colorlinks: true
-    geometry:
-      - top=1in
-      - left=1in
-      - right=1in
-      - bottom=1in
-      - heightrounded
-    mainfont: "Linux Libertine"
-    sansfont: "Linux Libertine"
-    mathfont: "Libertinus Math"
-    monofont: "Monaco"
-fontsize: 11pt
+format: 
+  revealjs:
+    incremental: false
+editor: 
+  markdown: 
+    wrap: 72
 ---
 
-```{r}
+```{r setup}
+#| include: false
+
 library(tidyverse)
+library(countdown)
+
 library(ggformula)
+library(openintro)
+library(patchwork)
+library(fivethirtyeight)
+library(dplyr)
+library(tidyr)
+library(fontawesome)
+library(gt)
+
+library(gridExtra)
+library(tidyverse)
 library(knitr)
 library(mosaic)
-library(patchwork)
-theme_set(theme_minimal())
+library(infer)
+library(kableExtra)
+library(latex2exp)
+
+library(plotly)
+
+# #440154
+knitr::opts_chunk$set(echo = TRUE,
+                  message = FALSE,
+                  warning = FALSE)
+
+slides_theme = theme_minimal(base_family = "serif", base_size = 16) +
+  theme(plot.background = element_rect(fill = "#f0f1eb", colour = NA))
+  
+
+theme_set(slides_theme)
 ```
 
-Goal: develop an **interval estimate** of a population parameter
+## Goal: develop an **interval estimate** of a population parameter {.center}
+
+## 
 
 **Example:** Suppose we observe $X_1, ..., X_n$ , which represent the error rates of $n$ different forensic examiners. I am interested in finding a confidence interval for $\mu$, the average error rate in the population. We have a sample of size 30 shown below:
 
 ```{r}
-#| fig-width: 3
-#| fig-height: 2
-#| layout-ncol: 2
+#| echo: false
 
 lp_results <- read_delim("https://www.fbi.gov/file-repository/laboratory/testresponses.txt/@@download/file/TestResponses.txt", delim = "\t")
 
@@ -78,7 +90,7 @@ examiner_error_rates |>
   knitr::kable()
 ```
 
-Let's review our confidence interval toolkit so far:
+## Let's review our confidence interval toolkit so far:
 
 1.  Construct a bootstrap distribution and find a **percentile-based** confidence interval
 
@@ -86,10 +98,9 @@ Let's review our confidence interval toolkit so far:
 
 3.  Assume a different population distribution and construct a **pivot-based** confidence interval
 
-### Bootstrap percentile interval {.unnumbered}
+## Bootstrap percentile interval
 
 ```{r}
-#| echo: true 
 error_rates <- examiner_error_rates$error_rate
 n = length(error_rates)
 N = 10^4
@@ -103,7 +114,7 @@ for(i in 1:N){
 quantile(boot_means, probs = c(.025, .975))
 ```
 
-### CLT-based t confidence interval {.unnumbered}
+## CLT-based t confidence interval
 
 ```{r}
 #| echo: true 
@@ -111,7 +122,9 @@ quantile(boot_means, probs = c(.025, .975))
 qt(.975, df = 29)
 ```
 
-\vspace{1in}
+## CLT-based t confidence interval
+
+Can also use a built-in R function:
 
 ```{r}
 #| echo: true 
@@ -121,7 +134,7 @@ t.test(error_rates, conf.level = .95)$conf
 
 **When do we trust this confidence interval?**
 
-\vspace{1in}
+## Look at bootstrap T*
 
 ```{r}
 #| echo: true
@@ -135,8 +148,7 @@ for(i in 1:N){
 ```
 
 ```{r}
-#| fig-height: 2
-#| fig-width: 6
+#| echo: false
 p1 <- ggplot() + 
   geom_histogram(bins = 12, col = "white", aes(x = t_star)) + 
   labs(
@@ -154,14 +166,16 @@ p2 <- ggplot() +
 p1 + p2
 ```
 
+## Issues
+
 -   Distribution of $T*$ is slightly **left-skewed**
 -   Tails of $T*$ don't seem to match the theoretical t
 
-**Why does this happen?**
+## Why does this happen?
 
 ```{r}
-#| fig-width: 4
-#| fig-height: 2
+#| echo: false
+
 
 boot_mean <- numeric(N)
 boot_sd <- numeric(N)
@@ -176,12 +190,12 @@ for(i in 1:N){
 limit <- max(abs(t_star)) * c(-1, 1)
 
 ggplot() + 
-  geom_point(aes(x = boot_mean, y = boot_sd, col = t_star), size = .5) +
-  scale_color_distiller(type = "div", limit = max(abs(t_star)) * c(-1, 1)) + 
-  theme_gray()
+  geom_point(aes(x = boot_mean, y = boot_sd, col = t_star)) +
+  scale_color_distiller(type = "div", limit = max(abs(t_star) -1) * c(-1, 1)) +
+  theme(panel.background = element_rect(fill = "gray25"))
 ```
 
-### Bootstrap t confidence interval {.unnumbered}
+## Bootstrap t confidence interval 
 
 The CLT-based confidence interval relies on:
 
@@ -189,22 +203,25 @@ $$1-\alpha = P(t_{\alpha/2} < \frac{\bar{X} - \mu}{s/\sqrt{n}} < t_{1-\alpha/2})
 
 **Idea:** generate "better" quantiles using the bootstrap distribution:
 
-\vspace{1in}
+## Then solve for $\mu$:
 
-Then solve for $\mu$:
 
-\vspace{1.75in}
 
-to obtain the bootstrap $t$ confidence interval:
+## to obtain the bootstrap $t$ confidence interval:
 
+
+::: aside
 ::: callout-warning
 ## Watch out!
 
 Lower bound is computed from the **upper** percentile and upper bound is computed from the **lower** percentile
 :::
+:::
+
+## Bootstrap T algorithm
 
 ::: callout-note
-## Bootstrap t algorithm
+## Bootstrap T algorithm
 
 1.  Repeat the bootstrap procedure many times:
     -   Take bootstrap sample
@@ -214,7 +231,7 @@ Lower bound is computed from the **upper** percentile and upper bound is compute
 3.  Compute confidence interval using the bootstrap t quantiles: $$(\bar{x} - Q^*_{1-\alpha/2}\frac{s}{\sqrt{n}}, \bar{x} - Q^*_{\alpha/2}\frac{s}{\sqrt{n}})$$
 :::
 
-**Example:** Let's find a bootstrap t confidence interval for the 30 forensic examiners
+## Example: bootstrap t for error rates
 
 ```{r}
 #| echo: true 
@@ -232,7 +249,7 @@ quantile(t_star, probs = c(.025, .975))
 mean(error_rates) - quantile(t_star, probs = c(.025, .975))*sd(error_rates)/sqrt(n)
 ```
 
-### Summary of results {-}
+## Summary of results 
 
 |                      | Lower | Upper |
 |----------------------|-------|-------|
@@ -240,4 +257,14 @@ mean(error_rates) - quantile(t_star, probs = c(.025, .975))*sd(error_rates)/sqrt
 | CLT t-based          | .020  | .0453  |
 | Bootstrap t          | .022  | .0509  |
 
+## R Activity
 
+The {nycflights23} R package contains a dataset called `flights`. This dataset contains all flights in and out of NYC-area airports in 2023. Since the dataset has **all** flights, we can treat it as a population. We're interested in the average **departure delay** of **flights departing from NYC area airports**. 
+
+We'll explore the performance of our different confidence interval procedures. To do so, you'll first draw a *sample* from the `flights` dataset. You'll treat this as your data sample throughout the rest of the activity, and compare your confidence intervals to the true value from the whole dataset.
+
+## Results
+
+## 
+
+![](../img/flights-coverage-plot.png)

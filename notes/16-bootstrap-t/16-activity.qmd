@@ -1,10 +1,17 @@
 ---
-title: "16: Comparing confidence intervals"
+title: "16: Comparing confidence interval procedures"
 ---
+
+The {nycflights23} R package contains a dataset called `flights`. This dataset contains all flights in and out of NYC-area airports in 2023. Since the dataset has **all** flights, we can treat it as a population. We're interested in the average **departure delay** of **flights departing from NYC area airports**. 
 
 ```{r}
 library(tidyverse)
 library(nycflights23)
+
+flights <- flights |>
+  filter(origin %in% c("JFK", "EWR", "LGA")) |> # filter to departing flights from NYC
+  drop_na(dep_delay) # drop observations with missing dep_delay variables
+
 glimpse(flights)
 ```
 
@@ -14,10 +21,13 @@ glimpse(flights)
 Make a histogram of `dep_delay`. This represents our population. What do you notice about the distribution? What is the true $\mu$ in this case?
 :::
 
+
+Let's explore the performance of our different confidence interval procedures. To do so, you'll first draw a *sample* from the `flights` dataset. You'll treat this as your data sample throughout the rest of the activity, and compare your confidence intervals to the true value that you found in Q1. 
+
 ::: callout-note
 ## Q2: Draw your sample 
 
-Use the code below to draw a sample of size 40 from the `flights` dataset. Make sure to set a seed! This is the "sample data" that you'll work with for the rest of this activity.
+Use the code below to draw a sample of size 40 from the `flights` dataset. Make sure to set a seed that you think is different from everyone else in the class! This is the "sample data" that you'll work with for the rest of this activity.
 :::
 
 ```{r}
@@ -39,5 +49,11 @@ Using your sample `dep_delay` from above, compute three confidence intervals:
 template code can be found in the handout for today
 :::
 
-when you're done, enter your lower and upper bounds here: https://docs.google.com/spreadsheets/d/1K3v67icpu-Q9vpYMcbCUsGJDJST2YPFGKtvgtmyIaQI/edit?usp=sharing 
+when you're done, enter your lower and upper bounds [in this google sheet](https://docs.google.com/spreadsheets/d/1K3v67icpu-Q9vpYMcbCUsGJDJST2YPFGKtvgtmyIaQI/edit?usp=sharing)
 
+
+::: callout-note
+## Q4: (stretch goal, if time) Run coverage simulation
+
+Try to set up a "simulation of simulations". Repeat your confidence interval procedure 100 times, on 100 different samples from `flights`, storing the upper and lower bounds for each confidence interval procedure as you go. 
+:::
