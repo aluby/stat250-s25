@@ -765,119 +765,119 @@
   {
     "objectID": "slides/16/slides16.html#goal-develop-an-interval-estimate-of-a-population-parameter",
     "href": "slides/16/slides16.html#goal-develop-an-interval-estimate-of-a-population-parameter",
-    "title": "CLT-based Confidence Intervals",
+    "title": "Confidence intervals via Bootstrap t",
     "section": "Goal: develop an interval estimate of a population parameter",
     "text": "Goal: develop an interval estimate of a population parameter"
   },
   {
     "objectID": "slides/16/slides16.html#section",
     "href": "slides/16/slides16.html#section",
-    "title": "CLT-based Confidence Intervals",
+    "title": "Confidence intervals via Bootstrap t",
     "section": "",
     "text": "Example: Suppose we observe \\(X_1, ..., X_n\\) , which represent the error rates of \\(n\\) different forensic examiners. I am interested in finding a confidence interval for \\(\\mu\\), the average error rate in the population. We have a sample of size 30 shown below:\n\n\n\n\n\n\nmean\nsd\nn\n\n\n\n\n0.0325\n0.0343\n30"
   },
   {
     "objectID": "slides/16/slides16.html#lets-review-our-confidence-interval-toolkit-so-far",
     "href": "slides/16/slides16.html#lets-review-our-confidence-interval-toolkit-so-far",
-    "title": "CLT-based Confidence Intervals",
+    "title": "Confidence intervals via Bootstrap t",
     "section": "Let’s review our confidence interval toolkit so far:",
     "text": "Let’s review our confidence interval toolkit so far:\n\nConstruct a bootstrap distribution and find a percentile-based confidence interval\nEither (a) assume a normal population or (b) use the CLT to construct a formula t-based confidence interval\nAssume a different population distribution and construct a pivot-based confidence interval"
   },
   {
     "objectID": "slides/16/slides16.html#bootstrap-percentile-interval",
     "href": "slides/16/slides16.html#bootstrap-percentile-interval",
-    "title": "CLT-based Confidence Intervals",
+    "title": "Confidence intervals via Bootstrap t",
     "section": "Bootstrap percentile interval",
     "text": "Bootstrap percentile interval\n\nerror_rates &lt;- examiner_error_rates$error_rate\nn = length(error_rates)\nN = 10^4\nboot_means = numeric(N)\n\nfor(i in 1:N){\n  x &lt;- sample(error_rates, size = n, replace = TRUE)\n  boot_means[i] &lt;- mean(x, na.rm = TRUE)\n}\n\nquantile(boot_means, probs = c(.025, .975))\n\n      2.5%      97.5% \n0.02147176 0.04576585"
   },
   {
     "objectID": "slides/16/slides16.html#clt-based-t-confidence-interval",
     "href": "slides/16/slides16.html#clt-based-t-confidence-interval",
-    "title": "CLT-based Confidence Intervals",
+    "title": "Confidence intervals via Bootstrap t",
     "section": "CLT-based t confidence interval",
     "text": "CLT-based t confidence interval\n\nqt(.975, df = 29)\n\n[1] 2.04523"
   },
   {
     "objectID": "slides/16/slides16.html#clt-based-t-confidence-interval-1",
     "href": "slides/16/slides16.html#clt-based-t-confidence-interval-1",
-    "title": "CLT-based Confidence Intervals",
+    "title": "Confidence intervals via Bootstrap t",
     "section": "CLT-based t confidence interval",
     "text": "CLT-based t confidence interval\nCan also use a built-in R function:\n\nt.test(error_rates, conf.level = .95)$conf\n\n[1] 0.01969500 0.04531505\nattr(,\"conf.level\")\n[1] 0.95\n\n\nWhen do we trust this confidence interval?"
   },
   {
     "objectID": "slides/16/slides16.html#look-at-bootstrap-t",
     "href": "slides/16/slides16.html#look-at-bootstrap-t",
-    "title": "CLT-based Confidence Intervals",
+    "title": "Confidence intervals via Bootstrap t",
     "section": "Look at bootstrap T*",
     "text": "Look at bootstrap T*\n\nt_star &lt;- numeric(N)\n\nfor(i in 1:N){\n  x &lt;- sample(error_rates, size = n, replace = TRUE)\n  t_star[i] &lt;- (mean(x) - mean(error_rates))/(sd(x)/sqrt(n))\n}"
   },
   {
     "objectID": "slides/16/slides16.html#issues",
     "href": "slides/16/slides16.html#issues",
-    "title": "CLT-based Confidence Intervals",
+    "title": "Confidence intervals via Bootstrap t",
     "section": "Issues",
     "text": "Issues\n\nDistribution of \\(T*\\) is slightly left-skewed\nTails of \\(T*\\) don’t seem to match the theoretical t"
   },
   {
     "objectID": "slides/16/slides16.html#why-does-this-happen",
     "href": "slides/16/slides16.html#why-does-this-happen",
-    "title": "CLT-based Confidence Intervals",
+    "title": "Confidence intervals via Bootstrap t",
     "section": "Why does this happen?",
     "text": "Why does this happen?"
   },
   {
     "objectID": "slides/16/slides16.html#bootstrap-t-confidence-interval",
     "href": "slides/16/slides16.html#bootstrap-t-confidence-interval",
-    "title": "CLT-based Confidence Intervals",
+    "title": "Confidence intervals via Bootstrap t",
     "section": "Bootstrap t confidence interval",
     "text": "Bootstrap t confidence interval\nThe CLT-based confidence interval relies on:\n\\[1-\\alpha = P(t_{\\alpha/2} &lt; \\frac{\\bar{X} - \\mu}{s/\\sqrt{n}} &lt; t_{1-\\alpha/2})\\]\nIdea: generate “better” quantiles using the bootstrap distribution:"
   },
   {
     "objectID": "slides/16/slides16.html#then-solve-for-mu",
     "href": "slides/16/slides16.html#then-solve-for-mu",
-    "title": "CLT-based Confidence Intervals",
+    "title": "Confidence intervals via Bootstrap t",
     "section": "Then solve for \\(\\mu\\):",
     "text": "Then solve for \\(\\mu\\):"
   },
   {
     "objectID": "slides/16/slides16.html#to-obtain-the-bootstrap-t-confidence-interval",
     "href": "slides/16/slides16.html#to-obtain-the-bootstrap-t-confidence-interval",
-    "title": "CLT-based Confidence Intervals",
+    "title": "Confidence intervals via Bootstrap t",
     "section": "to obtain the bootstrap \\(t\\) confidence interval:",
     "text": "to obtain the bootstrap \\(t\\) confidence interval:\n\n\n\n\n\n\n\n\nWatch out!\n\n\nLower bound is computed from the upper percentile and upper bound is computed from the lower percentile"
   },
   {
     "objectID": "slides/16/slides16.html#bootstrap-t-algorithm",
     "href": "slides/16/slides16.html#bootstrap-t-algorithm",
-    "title": "CLT-based Confidence Intervals",
+    "title": "Confidence intervals via Bootstrap t",
     "section": "Bootstrap T algorithm",
     "text": "Bootstrap T algorithm\n\n\n\n\n\n\nBootstrap T algorithm\n\n\n\nRepeat the bootstrap procedure many times:\n\nTake bootstrap sample\nCompute mean (\\(\\bar{X}^*\\)) and sd (\\(s^*\\)) of each bootstrap sample\nCompute t-statistic for each bootstrap sample: \\(T^* = \\frac{\\bar{X}^* - \\bar{X}}{s^*/\\sqrt{n}}\\)\n\nFind quantiles \\(Q_{\\alpha/2}^*\\) and \\(Q_{1-\\alpha/2}^*\\) using distribution of \\(T^*\\)\nCompute confidence interval using the bootstrap t quantiles: \\[(\\bar{x} - Q^*_{1-\\alpha/2}\\frac{s}{\\sqrt{n}}, \\bar{x} - Q^*_{\\alpha/2}\\frac{s}{\\sqrt{n}})\\]"
   },
   {
     "objectID": "slides/16/slides16.html#example-bootstrap-t-for-error-rates",
     "href": "slides/16/slides16.html#example-bootstrap-t-for-error-rates",
-    "title": "CLT-based Confidence Intervals",
+    "title": "Confidence intervals via Bootstrap t",
     "section": "Example: bootstrap t for error rates",
     "text": "Example: bootstrap t for error rates\n\nn = length(error_rates)\nN = 10^4\nboot_means &lt;- numeric(N)\nboot_tstar &lt;- numeric(N)\nfor(i in 1:N){\n  x &lt;- sample(error_rates, size = n, replace = TRUE)\n  boot_means[i] &lt;- mean(x)\n  t_star[i] &lt;- (mean(x) - mean(error_rates))/(sd(x)/sqrt(n))\n}\n\nquantile(t_star, probs = c(.025, .975))\n\n     2.5%     97.5% \n-2.934144  1.717921 \n\nmean(error_rates) - quantile(t_star, probs = c(.025, .975))*sd(error_rates)/sqrt(n)\n\n      2.5%      97.5% \n0.05088264 0.02174506"
   },
   {
     "objectID": "slides/16/slides16.html#summary-of-results",
     "href": "slides/16/slides16.html#summary-of-results",
-    "title": "CLT-based Confidence Intervals",
+    "title": "Confidence intervals via Bootstrap t",
     "section": "Summary of results",
     "text": "Summary of results\n\n\n\n\nLower\nUpper\n\n\n\n\nPercentile Bootstrap\n.021\n.0458\n\n\nCLT t-based\n.020\n.0453\n\n\nBootstrap t\n.022\n.0509"
   },
   {
     "objectID": "slides/16/slides16.html#r-activity",
     "href": "slides/16/slides16.html#r-activity",
-    "title": "CLT-based Confidence Intervals",
+    "title": "Confidence intervals via Bootstrap t",
     "section": "R Activity",
     "text": "R Activity\nThe {nycflights23} R package contains a dataset called flights. This dataset contains all flights in and out of NYC-area airports in 2023. Since the dataset has all flights, we can treat it as a population. We’re interested in the average departure delay of flights departing from NYC area airports.\nWe’ll explore the performance of our different confidence interval procedures. To do so, you’ll first draw a sample from the flights dataset. You’ll treat this as your data sample throughout the rest of the activity, and compare your confidence intervals to the true value from the whole dataset."
   },
   {
     "objectID": "slides/16/slides16.html#results",
     "href": "slides/16/slides16.html#results",
-    "title": "CLT-based Confidence Intervals",
+    "title": "Confidence intervals via Bootstrap t",
     "section": "Results",
     "text": "Results"
   },
