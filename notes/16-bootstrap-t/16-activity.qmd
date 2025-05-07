@@ -1,5 +1,8 @@
 ---
 title: "16: Comparing confidence interval procedures"
+format: 
+  html:
+    code-tools: true
 ---
 
 The {nycflights23} R package contains a dataset called `flights`. This dataset contains all flights in and out of NYC-area airports in 2023. Since the dataset has **all** flights, we can treat it as a population. We're interested in the average **departure delay** of **flights departing from NYC area airports**. 
