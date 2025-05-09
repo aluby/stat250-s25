@@ -225,11 +225,11 @@ boot_tstar <- numeric(N)
 for(i in 1:N){
   x <- sample(error_rates, size = n, replace = TRUE)
   boot_means[i] <- mean(x)
-  t_star[i] <- (mean(x) - mean(error_rates))/(sd(x)/sqrt(n))
+  boot_tstar[i] <- (mean(x) - mean(error_rates))/(sd(x)/sqrt(n))
 }
 
-quantile(t_star, probs = c(.025, .975))
-mean(error_rates) - quantile(t_star, probs = c(.025, .975))*sd(error_rates)/sqrt(n)
+quantile(boot_tstar, probs = c(.025, .975))
+mean(error_rates) - quantile(boot_tstar, probs = c(.025, .975))*sd(error_rates)/sqrt(n)
 ```
 
 ### Summary of results {-}

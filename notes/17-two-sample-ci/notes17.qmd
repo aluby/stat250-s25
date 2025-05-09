@@ -1,0 +1,201 @@
+---
+title: "17: Two sample Confidence Intervals"
+author: "Prof Amanda Luby"
+subtitle: "Stat250 S25"
+callout-appearance: minimal
+knitr:
+    opts_chunk: 
+      dev: "ragg_png"
+      echo: false
+      warning: false
+      message: false
+format:
+  pdf:
+    include-in-header: 
+       - "../preamble.tex"
+    toc: false
+    number-sections: true
+    colorlinks: true
+    geometry:
+      - top=1in
+      - left=1in
+      - right=1in
+      - bottom=1in
+      - heightrounded
+    mainfont: "Linux Libertine"
+    sansfont: "Linux Libertine"
+    mathfont: "Libertinus Math"
+    monofont: "Monaco"
+fontsize: 11pt
+---
+
+```{r}
+library(tidyverse)
+library(ggformula)
+library(knitr)
+library(mosaic)
+library(patchwork)
+theme_set(theme_minimal())
+```
+
+```{r}
+bullets <- readxl::read_excel("monson.xlsx", sheet = 2) |>
+  group_by(ExamID) |>
+  summarize(
+    er_bb = mean(`Score` %in% c("Incorrect-actually Match(gt)", "Incorrect-actually Non Match(gt)")),
+    inc_bb = mean(Score %in% c("Match(gt) marked Inconclusive", "Non-Matched(gt) marked Inconclusive"))
+  )
+
+cc <- readxl::read_excel("monson.xlsx", sheet = 3) |>
+  group_by(ExamID) |>
+  summarize(
+    er_cc = mean(`Score` %in% c("Incorrect-actually Match(gt)", "Incorrect-actually Non Match(gt)")),
+    inc_cc = mean(Score %in% c("Match(gt) marked Inconclusive", "Non-Matched(gt) marked Inconclusive"))
+  )
+
+set.seed(0508)
+firearms <- bullets |>
+  left_join(cc, by = "ExamID") |>
+  slice_sample(n=40)
+```
+
+Goal: develop an **interval estimate** for a difference in population means: $\mu_1 - \mu_2$
+
+**Example:** There are two types of forensic analyses that are typically performed in cases where firearms evidence has been collected: bullets and cartridges. We are interested in whether there is a difference in the average *inconclusive rate* (how often the firearms examiner cannot come to a definitive conclusion) for these two evidence types. Some results from a study are included below:
+
+```{r}
+#| fig-width: 3
+#| fig-height: 2
+#| layout-ncol: 2
+
+firearms0 = firearms
+firearms0[1:2, 2:3] = NA
+
+firearms0 |>
+  pivot_longer(c(inc_bb, inc_cc)) |>
+  ggplot(aes(x = value, fill = name)) + 
+  geom_histogram(bins = 15, col = "white") + 
+  scale_fill_viridis_d(end = .75, option = "plasma") + 
+  facet_wrap(~name) + 
+  theme(legend.position = "none")
+
+firearms0 |>
+  pivot_longer(c(inc_bb, inc_cc)) |>
+  mutate(
+    type = ifelse(name == "inc_bb", "bullet", "cartridge")
+  ) |>
+  group_by(type) |>
+  summarize(
+    mean = mean(value, na.rm = TRUE),
+    sd = sd(value, na.rm = TRUE),
+    n = sum(!is.na(value))
+  ) |>
+  knitr::kable(digits = 3)
+```
+
+Let's review our confidence interval toolkit so far:
+
+1.  Construct a bootstrap distribution and find a **percentile-based** confidence interval
+
+2.  Either (a) assume a normal population or (b) use the CLT to construct a **formula t-based** confidence interval
+
+3.  Use the bootstrap to find the distribution of the T statistics to construct a **bootstrap t** confidence interval
+
+### Bootstrap percentile interval {.unnumbered}
+
+```{r}
+bullets_inc <- firearms0$inc_bb[!is.na(firearms0$inc_bb)]
+cc_inc <- firearms0$inc_cc[!is.na(firearms0$inc_cc)]
+```
+
+```{r}
+#| echo: true 
+x <- bullets_inc
+y <- cc_inc
+
+n1 = length(x)
+n2 = length(y)
+N = 10^4
+boot_diff = numeric(N)
+
+for(i in 1:N){
+  x_boot <- sample(x, size = n1, replace = TRUE)
+  y_boot <- sample(y, size = n2, replace = TRUE)
+  boot_diff[i] <- mean(x_boot, na.rm = TRUE) - mean(y_boot, na.rm = TRUE)
+}
+
+quantile(boot_diff, probs = c(.025, .975))
+```
+
+### CLT-based t confidence interval {.unnumbered}
+
+```{r}
+#| echo: true 
+
+qt(.975, df = 29)
+```
+
+\vspace{1in}
+
+```{r}
+#| echo: true 
+
+t.test(bullets_inc, cc_inc, conf.level = .95)$conf
+```
+
+
+### Bootstrap t confidence interval {.unnumbered}
+
+
+```{r}
+#| echo: true 
+n1 = length(bullets_inc)
+n2 = length(cc_inc)
+N = 10^4
+boot_tstar <- numeric(N)
+for(i in 1:N){
+  x_boot <- sample(x, size = n1, replace = TRUE)
+  y_boot <- sample(y, size = n2, replace = TRUE)
+  boot_tstar[i] <- ((mean(x_boot) - mean(y_boot)) - (mean(x) - mean(y)))/sqrt(var(x_boot)/n1 + var(y_boot)/n2)
+}
+
+quantile(boot_tstar, probs = c(.025, .975))
+(mean(x)- mean(y)) - quantile(boot_tstar, c(.975, .025))*sqrt(var(x)/n1 + var(y)/n2)
+```
+
+::: callout-warning
+## Watch out!
+
+Independent vs Paired
+:::
+
+
+**Example:** Oops! I forgot to tell you that this study actually had the same examiners in both samples. (There are just two missing values in `bullets_inc`). 
+
+\vspace{2in}
+
+```{r}
+#| echo: true
+
+
+x <- bullets_inc - cc_inc[-c(1,2)]
+n = length(x)
+N = 10^4
+boot_diff = numeric(N)
+
+for(i in 1:N){
+  x_boot <- sample(x, size = n, replace = TRUE)
+  boot_diff[i] <- mean(x_boot, na.rm = TRUE)
+}
+
+quantile(boot_diff, probs = c(.025, .975))
+```
+
+
+```{r}
+#| echo: true 
+
+
+t.test(bullets_inc, cc_inc[-c(1,2)], paired = TRUE)$conf
+```
+
