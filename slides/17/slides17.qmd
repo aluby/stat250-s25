@@ -1,44 +1,57 @@
 ---
-title: "17: Two sample Confidence Intervals"
+title: "Two Sample Confidence Intervals"
+subtitle: "Day 17"
+title-slide-attributes:
+  data-background-gradient: "linear-gradient(to right, #46337e, #440154)"
+  data-slide-number: none
 author: "Prof Amanda Luby"
-subtitle: "Stat250 S25"
-callout-appearance: minimal
-knitr:
-    opts_chunk: 
-      dev: "ragg_png"
-      echo: false
-      warning: false
-      message: false
-format:
-  pdf:
-    include-in-header: 
-       - "../preamble.tex"
-    toc: false
-    number-sections: true
-    colorlinks: true
-    geometry:
-      - top=1in
-      - left=1in
-      - right=1in
-      - bottom=1in
-      - heightrounded
-    mainfont: "Linux Libertine"
-    sansfont: "Linux Libertine"
-    mathfont: "Libertinus Math"
-    monofont: "Monaco"
-fontsize: 11pt
+format: 
+  revealjs:
+    incremental: false
+editor: 
+  markdown: 
+    wrap: 72
 ---
 
-```{r}
+```{r setup}
+#| include: false
+
 library(tidyverse)
+library(countdown)
+
 library(ggformula)
+library(openintro)
+library(patchwork)
+library(fivethirtyeight)
+library(dplyr)
+library(tidyr)
+library(fontawesome)
+library(gt)
+
+library(gridExtra)
+library(tidyverse)
 library(knitr)
 library(mosaic)
-library(patchwork)
-theme_set(theme_minimal())
+library(infer)
+library(kableExtra)
+library(latex2exp)
+
+library(plotly)
+
+# #440154
+knitr::opts_chunk$set(echo = TRUE,
+                  message = FALSE,
+                  warning = FALSE)
+
+slides_theme = theme_minimal(base_family = "serif", base_size = 24) +
+  theme(plot.background = element_rect(fill = "#f0f1eb", colour = NA))
+  
+
+theme_set(slides_theme)
 ```
 
 ```{r}
+#| echo: false
 bullets <- readxl::read_excel("monson.xlsx", sheet = 2) |>
   group_by(ExamID) |>
   summarize(
@@ -59,14 +72,16 @@ firearms <- bullets |>
   slice_sample(n=40)
 ```
 
-Goal: develop an **interval estimate** for a difference in population means: $\mu_1 - \mu_2$
 
-**Example:** There are two types of forensic analyses that are typically performed in cases where firearms evidence has been collected: bullets and cartridges. We are interested in whether there is a difference in the average *inconclusive rate* (how often the firearms examiner cannot come to a definitive conclusion) for these two evidence types. Some results from a study are included below:
+## Goal: develop an **interval estimate** for $\mu_1 - \mu_2$ {.center}
+
+## 
+
+**Example:** There are two types of forensic analyses that are typically performed in cases where firearms evidence has been collected: bullets and cartridges. We are interested in whether there is a difference in the average *inconclusive rate* (how often the firearms examiner cannot come to a definitive conclusion) for these two evidence types.
 
 ```{r}
-#| fig-width: 3
-#| fig-height: 2
 #| layout-ncol: 2
+#| echo: false
 
 firearms0 = firearms
 firearms0[1:2, 2:3] = NA
@@ -96,7 +111,7 @@ firearms0 |>
   knitr::kable(digits = 3)
 ```
 
-Let's review our confidence interval toolkit so far:
+## Confidence Interval toolkit:
 
 1.  Construct a bootstrap distribution and find a **percentile-based** confidence interval
 
@@ -106,9 +121,10 @@ Let's review our confidence interval toolkit so far:
 
 4.  Use the bootstrap to find the distribution of the T statistics to construct a **bootstrap t** confidence interval
 
-### Bootstrap percentile interval {.unnumbered}
+## Bootstrap percentile interval 
 
 ```{r}
+#| echo: false
 bullets_inc <- firearms0$inc_bb[!is.na(firearms0$inc_bb)]
 cc_inc <- firearms0$inc_cc[!is.na(firearms0$inc_cc)]
 ```
@@ -132,7 +148,7 @@ for(i in 1:N){
 quantile(boot_diff, probs = c(.025, .975))
 ```
 
-### CLT-based t confidence interval {.unnumbered}
+## CLT-based t confidence interval 
 
 ```{r}
 #| echo: true 
@@ -140,7 +156,7 @@ quantile(boot_diff, probs = c(.025, .975))
 qt(.975, df = 37)
 ```
 
-\vspace{1in}
+<br> <br> <br> <br>
 
 ```{r}
 #| echo: true 
@@ -148,9 +164,7 @@ qt(.975, df = 37)
 t.test(bullets_inc, cc_inc, conf.level = .95)$conf
 ```
 
-
-### Bootstrap t confidence interval {.unnumbered}
-
+## Bootstrap t confidence interval 
 
 ```{r}
 #| echo: true 
@@ -168,9 +182,10 @@ quantile(boot_tstar, probs = c(.025, .975))
 (mean(x)- mean(y)) - quantile(boot_tstar, c(.975, .025))*sqrt(var(x)/n1 + var(y)/n2)
 ```
 
+## Is bootstrap t necessary?
+
 ```{r}
-#| fig-width: 6
-#| fig-height: 2
+#| echo: false
 p1 <- ggplot() + 
   geom_histogram(bins = 12, col = "white", aes(x = boot_tstar)) + 
   labs(
@@ -188,26 +203,34 @@ p2 <- ggplot() +
 p1 + p2
 ```
 
-\vspace{.5in}
+## {.center}
 
 ::: callout-warning
 ## Watch out!
 
-\vspace{1in}
+<br>
+<br>
+<br>
 :::
 
+## 
 
 **Example:** Oops! I forgot to tell you that this study actually had the same examiners in both samples. (There are just two missing values in `bullets_inc`). 
 
-\vspace{3in}
+## Observations are positive correlated $\to$
+
+<br> 
+<br>
+<br>
 
 ```{r}
-#| fig-width: 3
-#| fig-height: 2
+#| echo: false
 gf_point(bullets_inc ~ cc_inc[-c(1,2)]) + 
   labs(x = "cc",
        y = "bullet")
 ```
+
+## Percentile bootstrap for paired data
 
 ```{r}
 #| echo: true
@@ -226,6 +249,10 @@ for(i in 1:N){
 quantile(boot_diff, probs = c(.025, .975))
 ```
 
+## Formula-based t for paired data
+
+<br>
+<br>
 
 ```{r}
 #| echo: true 
@@ -236,3 +263,6 @@ t.test(bullets_inc, cc_inc[-c(1,2)], paired = TRUE)$conf
 t.test(bullets_inc - cc_inc[-c(1,2)])$conf
 ```
 
+## R Activity
+
+![](../img/robust-1sample-t.png)

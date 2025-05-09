@@ -37,6 +37,8 @@ Day15: [handout](/notes/15-ci-pivot/notes15.pdf)
 
 Day16: [handout](/notes/16-bootstrap-t/notes16-h.pdf) | [R activity](/notes/16-bootstrap-t/16-activity.html) | [slides](/slides/16/slides16.html) 
 
+Day17: [handout](/notes/17-two-sample-ci/notes17.pdf) | [R activity](/notes/17-two-sample-ci/17-activity.html) | [slides](/slides/17/slides17.html) 
+
 # Other Resources and Readings
 
 - [R Basics](readings/r-basics.html)
