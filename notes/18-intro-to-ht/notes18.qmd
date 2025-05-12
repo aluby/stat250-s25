@@ -1,0 +1,219 @@
+---
+title: "18: Classical Hypothesis Tests"
+author: "Prof Amanda Luby"
+subtitle: "Stat250 S25"
+callout-appearance: minimal
+knitr:
+    opts_chunk: 
+      dev: "ragg_png"
+      echo: false
+      warning: false
+      message: false
+format:
+  pdf:
+    include-in-header: 
+       - "../preamble.tex"
+    toc: false
+    number-sections: true
+    colorlinks: true
+    geometry:
+      - top=1in
+      - left=1in
+      - right=1in
+      - bottom=1in
+      - heightrounded
+    mainfont: "Linux Libertine"
+    sansfont: "Linux Libertine"
+    mathfont: "Libertinus Math"
+    monofont: "Monaco"
+fontsize: 11pt
+---
+
+```{r}
+library(tidyverse)
+library(ggformula)
+library(knitr)
+library(mosaic)
+library(patchwork)
+library(palmerpenguins)
+library(ggridges)
+theme_set(theme_minimal())
+```
+
+# Logic of Testing
+
+1. Formulate two competing **hypotheses** about the population: the *null hypothesis* and the *alternative hyptohesis*
+
+2. Calculate a **test statistic** that summarizes the relevant information
+
+3. Look at the **behavior of the test statistic** assuming that the null hypothesis is true
+
+4. **Compare** the observed test statistic to the expected behavior (strength of evidence against the null) 
+
+5. State a **conclusion** in context. 
+
+
+# Permutation Test Recap
+
+**Example:** We are interested in whether there is a difference in the average flipper length between Adelie and Chinstrap penguins. 
+
+
+```{r}
+#| layout-ncol: 2
+#| fig-height: 2.5
+
+penguins_subset <- penguins |> filter(species %in% c("Adelie", "Chinstrap")) |> drop_na(flipper_length_mm)
+
+penguins_subset |>
+  ggplot(aes(y = species, x = flipper_length_mm, fill = species)) + 
+  geom_density_ridges(alpha = .8) + 
+  scale_fill_viridis_d(end = .8, option = "plasma") + 
+  theme(legend.position = "none")
+
+penguins_subset |>
+  group_by(species) |>
+  summarize(
+    n = n(),
+    mean = mean(flipper_length_mm, na.rm = TRUE),
+    sd = sd(flipper_length_mm, na.rm = TRUE)
+  ) |>
+  knitr::kable(digits = 2)
+
+x <- penguins_subset$flipper_length_mm 
+observed <- mean(x[penguins_subset$species == "Chinstrap"]) - 
+               mean(x[penguins_subset$species == "Adelie"])
+```
+
+
+1. Pool the $n_1 + n_2$ data values
+
+2. Draw a sample of size $n_1$ without replacement, assign those values to Group 1. Assign the remaining $n_2$ values to Group 2. 
+
+3. Calculate the test statistic comparing the samples from the resampled groups.
+
+4. Repeat steps 2 and 3 until we have enough samples.
+
+5. Estimate the p-value as the proportion of times the observed test statistic exceeds the original (observed) test statistic: p-value = $\frac{\text{\# statistics that exceed the original+1}}{\text{\# of statistics in the distribution+1}}$
+
+```{r}
+#| echo: true
+
+
+N <- 10^4 - 1 # Number of permutations to do
+sample_size <- nrow(penguins_subset) # Sample size for each permutation (same as data)
+x <- penguins_subset$flipper_length_mm # data vector
+
+result <- numeric(N) # Create an empty vector to store results
+for (i in 1:N){
+  index <- sample(sample_size, 68, replace = FALSE) # Sample indices for group 1
+  result[i] <- mean(x[index]) - mean(x[-index]) # Compute differences between groups
+}
+
+sum(result >= observed + 1)/(N+1)
+```
+
+```{r}
+#| fig-width: 3
+#| fig-height: 1.5
+ggplot() + 
+  geom_histogram(aes(x = result), col = "white") + 
+  geom_vline(xintercept = observed, 
+             linetype = "dashed", 
+             col = "darkred")
+```
+
+# T-Test for a difference in means
+
+Instead of conducting a permutation test, we can instead **assume** that (a) our data comes from a normal population or (b) that the CLT applies. 
+
+$$\frac{(\bar{X}_1 - \bar{X}_2) - (\mu_1 - \mu_2)}{\sqrt{\frac{s_1^2}{n_1} + \frac{s_2^2}{n_2}}} \sim t_{df}$$
+
+**Example:** Use the summary table from p1 to perform a t-test for $H_0: \mu_{\text{Chinstrap}} - \mu_{\text{Adelie}} = 0$ against $H_A: \mu_{\text{Chinstrap}} - \mu_{\text{Adelie}} \ne 0$
+
+\vspace{4in}
+
+```{r}
+#| echo: true
+
+t.test(flipper_length_mm ~ species, data = penguins_subset)
+```
+
+# T-Test for one mean
+
+**Example:** Do Carls sleep less than 8 hours per night? A sample of Stat 120 students answered the question: "On average, how many hours of sleep do you get on a weeknight?"
+
+```{r}
+#| layout-ncol: 2
+#| fig-height: 2
+
+
+survey <- read.csv("https://aloy.rbind.io/data/survey2022.csv")
+
+survey |> 
+  ggplot(aes(x = sleep)) + 
+  geom_density(fill = "gray") + 
+  labs(
+    y = ""
+  )
+
+survey |>
+  summarize(
+    n = n(),
+    mean = mean(sleep),
+    sd = sd(sleep),
+    median = median(sleep),
+    min = min(sleep),
+    max = max(sleep)
+  ) |>
+  t() |>
+  knitr::kable(digits = 2)
+```
+
+What is the appropriate **test statistic**? What is the **distribution** of the test statistic under the null hypothesis? 
+
+\vspace{1.5in}
+
+```{r}
+#| echo: true 
+
+t.test(~sleep, data = survey, mu = 8, alternative = "less")
+```
+
+# Hypothesis tests for binomial data
+
+**Example:** Do Americans support a national health plan? A Kaiser Family Foundation poll for a random sample of US adults in 2019 found that 79% of Democrats, 55% of Independents, and 24% of Republicans supported a generic "National Health Plan." There were 347 Democrats, 298 Republicans, and 617 Independents surveyed. A political pundit on TV claims that a majority of Independents support a National Health Plan. Do these data provide strong evidence to support this type of statement? 
+
+Assume:
+
+Hypotheses:
+
+Test Statistic: 
+
+Null distribution: 
+
+\vspace{1.5in}
+
+```{r}
+#| echo: true
+
+binom.test(x = 339, n = 617, p = 0.5, alternative = "greater")
+```
+
+CLT: 
+
+Approx null distribution:
+
+Large-sample test statistic:
+
+```{r}
+#| echo: true
+
+prop.test(x = 339, n = 617, p = 0.5, alternative = "greater")
+``` 
+
+**Is n large enough to use the CLT?**
+
+- Many textbooks suggest _______________ and ________________
+- Our textbook suggest _______________ and ________________
+- Otherwise, use the exact binomial test
+
