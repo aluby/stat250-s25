@@ -56,144 +56,11 @@
     "text": "library(tidyverse)\n\nThe goal for today is to understand the concept of a sampling distribution by comparing theoretical results with simulation results using R. We will investigate the sampling distributions of the sample mean.\nYou’ve been assigned to groups of 3-4 for this activity. You should submit your rendered file on gradescope as a group assignment. If folks from your assigned group did not show up, groups of 2 can combine into groups of 4.\n\nIntroduction\nA sampling distribution is the probability distribution of a statistic (like the sample mean \\(\\bar{x}\\) or sample variance \\(s^2\\)) obtained through a large number of samples drawn from a specific population. Understanding sampling distributions is crucial for statistical inference, as it allows us to make probability statements about sample statistics. In this activity, we will generate empirical sampling distributions through simulation and compare them to theoretical results.\nAlong the way, you’ll get some practice in R and some probability review.\n\n\nPart 1: Sampling distribution of the mean (Normal population)\nAssume data points \\(X_1, X_2, ..., X_n\\) are sampled from a normally distributed population\n\nIf \\(X_1, X_2, ..., X_n \\sim N(\\mu, \\sigma^2)\\), what is the expected value \\(E[\\bar{X}]\\) and theoretical standard deviation of \\(\\bar{X}\\) (also known as the standard error)?\nWhat is the theoretical distribution of \\(\\bar{X}\\)? (Note: you do not need to prove/derive this!)\n\nLet’s simulate this. Assume our population is \\(N(50, 10^2)\\) (so \\(\\sigma=10\\)). We will draw samples of size n = 25:\n\npop_mean &lt;- 50\npop_sd &lt;- 10\nsample_size &lt;- 25\nn_simulations &lt;- 100\n\nsample_means &lt;- numeric(n_simulations)\n\nfor(i in 1:n_simulations){\n  x &lt;- rnorm(sample_size, mean = pop_mean, sd = pop_sd)\n  sample_means[i] &lt;- mean(x)\n}\n\n\nWhat is the mean of sample_means? How close is it to \\(E[\\bar{X}]\\) above?\nWhat is the sd of sample_means? How close is it to the theoretical standard error you found above?\nThe code below makes a histogram of sample_means and overlays an incorrect theoretical density curve on top. Replace pop_mean and pop_sd with the theoretical values that you found in Q1.\n\n\ndf &lt;- data.frame(\n  sample_means = sample_means\n)\n\nggplot(df, aes(x = sample_means)) + \n  geom_histogram(aes(y = stat(density)), col = \"white\", bins = 20) + \n  stat_function(fun = dnorm, args = list(mean = pop_mean, s = pop_sd), col = \"cornflowerblue\")\n\n\n\n\n\n\n\n\n\nTry different values for sample_size and n_simulations. When does the histogram match the theoretical density most closely?\n\n\n\n\n\n\n\nCentral Limit Theorem\n\n\n\nYou have (hopefully) just demonstrated the Central Limit Theorem in action. Nice work! The CLT tells us that, as our sample size approaches \\(\\infty\\),\n\\[F_\\bar{X}(\\bar{X}) \\to N(\\mu, \\frac{\\sigma}{\\sqrt{n}})\\]\n\n\n\n\nPart 2: Non-normal population\nWe often use the Exponential distribution to model the time until an event occurs in a process where events happen randomly and independently at a constant average rate (a Poisson process). A common example is the time between consecutive arrivals of customers, like a coffee shop, during a period where the arrival rate is relatively stable. The key parameter is the rate \\(\\lambda\\) (e.g., average customers per minute) or its reciprocal, the mean time \\(\\mu = 1/\\lambda\\) (e.g., average minutes between customers). Individual inter-arrival times will follow a skewed distribution (many short times, fewer long times), but the CLT tells us something interesting about the average of these times if we look at many samples.\n\nLet \\(X\\) be the time (in minutes) between consecutive customer arrivals at a small coffee shop during a specific hour. Suppose this time can be modeled by an Exponential distribution. We observe that, on average over a long period of time, a customer arrives every 5 minutes. This average time is the mean of the distribution, \\(\\mu = 5\\) minutes. What is the rate, \\(\\lambda\\)? What is \\(E[X]\\) and \\(\\sigma_X\\)? (You can use the distributions cheat sheet in the back of the book)\nThe code below plots a theoretical exponential distribution with \\(\\lambda=1\\). Change it to the appropriate value.\n\n\n\n\n\n\n\n\n\n\n\nAccording to the CLT, if we take a sample of n = 40 consecutive inter-arrival times, what should the approximate distribution of the average inter-arrival time (\\(\\bar{X}\\)) be across many such samples? What are its approximate mean and standard error?\nLet’s check our answers through simulation. Replace all _____ with appropriate values in the code chunk below, and then remove the line with #| eval: false.\n\n\npop_lambda &lt;- ____\nsample_size &lt;- ____\nn_simulations &lt;- 1000\n\nsample_means &lt;- numeric(n_simulations)\n\nfor(i in 1:n_simulations){\n  x &lt;- rexp(sample_size, rate = pop_lambda)\n  sample_means[i] &lt;- mean(x)\n}\n\ndf &lt;- data.frame(\n  sample_means = sample_means\n)\n\nggplot(df, aes(x = sample_means)) + \n  geom_histogram(aes(y = stat(density)), col = \"white\", bins = 20) + \n  stat_function(fun = dnorm, args = list(mean = ______, s = ______), col = \"cornflowerblue\")\n\n\nHow well does the normal curve approximate the distribution of the average inter-arrival times, even though the distribution of individual inter-arrival times is heavily skewed (Exponential)?\nWhat happens if the sample size n is much smaller (e.g., \\(n=5\\))?\n\n\n\nPart 3: Discrete data\nThe true magic of the CLT is that it applies to any probability distribution, even discrete ones!\nExample: According to the 2004 American Community Survey, 28% of adults over 25 years old in Utah have completed a bachelor’s degree. In a random sample of 64 adults over age 25 from Utah, what is the probability that at least 30 have a bachelor’s degree?\nLet \\(X_i\\) indicate whether a sampled person has a bachelor’s degree. Then, \\(X_1, ...., X_n \\sim Binom(n,p)\\).\n\nWhat is \\(n\\) and what is \\(p\\)?\n\nWe are interested in how many people have a bachelor’s degree, or \\(\\frac{\\sum X_i}{n}\\). This is also an \\(\\bar{X}\\)!\n\nUse the CLT to find \\(E[\\hat{p}]\\) and \\(s_{\\hat{p}}\\).\nUse the normal distribution to find \\(P(\\bar{X} &gt; .3)\\) (Hint: use pnorm)\nAlternatively, we can answer this question through simulation. Use sample_means to estimate this probability. How close are you to your answer from (3)?\n\n\npop_p &lt;- .28\nsample_size &lt;- 64\nn_simulations &lt;- 1000\n\nsample_means &lt;- numeric(n_simulations)\n\nfor(i in 1:n_simulations){\n  x &lt;- rbinom(1, size = sample_size, prob = pop_p)\n  sample_means[i] &lt;- x/sample_size\n}\n\n\n\nPart 4: Summary and Reflection\n\nWhat is the difference between a population distribution, sample distribution, and distribution of a sample?\nWhy is the CLT important?\nGive one benefit of finding sampling distributions theoretically with probability\nGive one benefit of finding sampling distributions computationally through simulation\nDoes your group have any lingering questions for me?"
   },
   {
-    "objectID": "notes/17-two-sample-ci/17-activity.html",
-    "href": "notes/17-two-sample-ci/17-activity.html",
-    "title": "17: Comparing two sample confidence interval procedures",
+    "objectID": "notes/16-bootstrap-t/16-activity.html",
+    "href": "notes/16-bootstrap-t/16-activity.html",
+    "title": "16: Comparing confidence interval procedures",
     "section": "",
-    "text": "library(tidyverse)\nlibrary(patchwork)\nRecall the coverage simulation results that we looked at for the 1-sample t procedure:\nYour task for today is to replicate the simulation study for the following settings:\nYou should also assess how the sample size impacts the coverage:"
-  },
-  {
-    "objectID": "notes/17-two-sample-ci/17-activity.html#setup",
-    "href": "notes/17-two-sample-ci/17-activity.html#setup",
-    "title": "17: Comparing two sample confidence interval procedures",
-    "section": "Setup",
-    "text": "Setup\n\n# Sample sizes for x and y\nn1 &lt;- 10\nn2 &lt;- 10\n\nN_sim &lt;- 100    # keep this small-ish for efficiency. This is the number of times you will draw new samples\nN_boot &lt;- 1000  # keep this smaller than usual as well. This is the number of bootstrap simulations you will run for each pair of samples\n\n# Storage for results\nresults &lt;- data.frame( \n  t_lower = numeric(N_sim),\n  t_upper = numeric(N_sim), \n  boott_lower = numeric(N_sim), \n  boott_upper = numeric(N_sim), \n  boot_lower = numeric(N_sim),\n  boot_upper = numeric(N_sim)\n)"
-  },
-  {
-    "objectID": "notes/17-two-sample-ci/17-activity.html#run-simulation",
-    "href": "notes/17-two-sample-ci/17-activity.html#run-simulation",
-    "title": "17: Comparing two sample confidence interval procedures",
-    "section": "Run Simulation",
-    "text": "Run Simulation\n\nset.seed(050825)\n\nfor(i in 1:N_sim){\n  # Step 1: draw random samples. This should be the only thing you change within this chunk between the simulations\n  x &lt;- rnorm(n1, mean = 0, sd = 1)\n  y &lt;- rnorm(n2, mean = 1.5, sd = 2)\n  \n  true_diff &lt;- -1.5 # this is the true difference in the population means (x - y)\n  \n  # Step 2: compute formula t confidence interval\n  t_ci &lt;- t.test(x, y, conf.level = .95)$conf\n  results$t_lower[i] &lt;- t_ci[1]\n  results$t_upper[i] &lt;- t_ci[2]\n  \n  # Step 3: run bootstrap for each sample; store bootstrap means and bootstrap t's\n  \n  diff_mean &lt;- numeric(N_boot) # storage for bootstrap differences\n  t_boot &lt;- numeric(N_boot) # storage for bootstrap differences\n  \n  for(j in 1:N_boot){\n    x_boot &lt;- sample(x, n1, replace = TRUE)\n    y_boot &lt;- sample(y, n2, replace = TRUE)\n    diff_mean[j] &lt;- mean(x_boot) - mean(y_boot)\n    t_boot[j] &lt;- ((mean(x_boot) - mean(y_boot)) - (mean(x) - mean(y)))/sqrt(var(x_boot)/n1 + var(y_boot)/n2)\n  }\n  \n  results$boot_lower[i] &lt;- quantile(diff_mean, prob = c(.025))\n  results$boot_upper[i] &lt;- quantile(diff_mean, prob = c(.975))\n  \n  results$boott_lower[i] &lt;- (mean(x)- mean(y)) - quantile(t_boot, .975)*sqrt(var(x)/n1 + var(y)/n2)\n  results$boott_upper[i] &lt;- (mean(x)- mean(y)) - quantile(t_boot, .025)*sqrt(var(x)/n1 + var(y)/n2)\n}"
-  },
-  {
-    "objectID": "notes/17-two-sample-ci/17-activity.html#analyze-results-find-coverage-rates",
-    "href": "notes/17-two-sample-ci/17-activity.html#analyze-results-find-coverage-rates",
-    "title": "17: Comparing two sample confidence interval procedures",
-    "section": "Analyze results: find coverage rates",
-    "text": "Analyze results: find coverage rates\n\nmean(true_diff &lt; results$t_lower) # percent of times that t CI is too high\n\n[1] 0.01\n\nmean(true_diff &gt; results$t_upper) # percent of times that t CI is too low\n\n[1] 0.05\n\nmean(true_diff &lt; results$boot_lower) # percent of times that bootstrap CI is too high\n\n[1] 0.01\n\nmean(true_diff &gt; results$boot_upper) # percent of times that bootstrap CI is too low\n\n[1] 0.07\n\nmean(true_diff &lt; results$boott_lower) # percent of times that bootstrap T CI is too high\n\n[1] 0.01\n\nmean(true_diff &gt; results$boott_upper) # percent of times that bootstrap T CI is too low\n\n[1] 0.05"
-  },
-  {
-    "objectID": "notes/17-two-sample-ci/17-activity.html#analyze-results-graph",
-    "href": "notes/17-two-sample-ci/17-activity.html#analyze-results-graph",
-    "title": "17: Comparing two sample confidence interval procedures",
-    "section": "Analyze results: graph",
-    "text": "Analyze results: graph\nNote: if you use &gt;100 samples, this plot will probably not look very nice!\n\np1 &lt;- ggplot(results, aes(xmin = t_lower, xmax = t_upper, y = 1:N_sim, col = (true_diff &lt; t_lower )| (true_diff &gt; t_upper))) +\n  geom_errorbarh() +\n  labs(title = \"t formula\", \n       col = \"Missed\", \n       y = \"Simulation\", \n       x = \"Diff in means\") + \n  scale_color_viridis_d(end = .75, option = \"plasma\")\n\np2 &lt;- ggplot(results, aes(xmin = boot_lower, xmax = boot_upper, y = 1:N_sim, col = (true_diff &lt; boot_lower )| (true_diff &gt; boot_upper))) +\n  geom_errorbarh() +\n  labs(title = \"Bootstrap\",\n       col = \"Missed\",\n       y = \"Simulation\", \n       x = \"Diff in means\") + \n  scale_color_viridis_d(end = .75, option = \"plasma\")\n\np3 &lt;- ggplot(results, aes(xmin = boott_lower, xmax = boott_upper, y = 1:N_sim, col = (true_diff &lt; boott_lower )| (true_diff &gt; boott_upper))) +\n  geom_errorbarh() +\n  labs(title = \"Bootstrap T\",\n       col = \"Missed\", \n       y = \"Simulation\", \n       x = \"Diff in means\") + \n  scale_color_viridis_d(end = .75, option = \"plasma\")\n\np1 + p2 + p3 + plot_layout(guides = \"collect\") & theme_minimal() & theme(legend.position = \"bottom\")"
-  },
-  {
-    "objectID": "notes/13-intro-ci/activity13.html",
-    "href": "notes/13-intro-ci/activity13.html",
-    "title": "13: Bootstrap",
-    "section": "",
-    "text": "library(tidyverse)\nlibrary(patchwork)"
-  },
-  {
-    "objectID": "notes/13-intro-ci/activity13.html#theoretical-example",
-    "href": "notes/13-intro-ci/activity13.html#theoretical-example",
-    "title": "13: Bootstrap",
-    "section": "Theoretical example",
-    "text": "Theoretical example\n\nset.seed(1234)\nsample_data &lt;- rgamma(50, 2, 2)\nmean(sample_data)\n\n[1] 0.9245653\n\nsd(sample_data)\n\n[1] 0.8237878\n\n\n\nBootstrap distribution\n\nn_sims &lt;- 10^5\nboot_dsn &lt;- numeric(n_sims)\nfor(i in 1:n_sims){\n  boot_dsn[i] &lt;- mean(sample(sample_data, length(sample_data), replace = TRUE))\n}\n\nmean(boot_dsn)\n\n[1] 0.924705\n\nsd(boot_dsn)\n\n[1] 0.1157962\n\n\n\n\nSampling distribution\n\nn_sims &lt;- 10^5\nsampling_dsn &lt;- numeric(n_sims)\nfor(i in 1:n_sims){\n  sampling_dsn[i] &lt;- mean(rgamma(50, 2, 2))\n}\n\nmean(sampling_dsn)\n\n[1] 0.9998301\n\nsd(sampling_dsn)\n\n[1] 0.09989004"
-  },
-  {
-    "objectID": "notes/13-intro-ci/activity13.html#data-example",
-    "href": "notes/13-intro-ci/activity13.html#data-example",
-    "title": "13: Bootstrap",
-    "section": "Data example",
-    "text": "Data example\n\ndata(\"penguins\", package = \"palmerpenguins\")\n\n# Subsetting to get only one species\ngentoo &lt;- dplyr::filter(penguins, species == \"Gentoo\")\n\n# Bookkeeping\ny &lt;- gentoo$bill_length_mm\nn &lt;- nrow(gentoo)        # sample size\nN &lt;- 10^4                # desired no. resamples\nboot_means &lt;- numeric(N) # a place to store the bootstrap stats\n\n# Resampling from the sample\nfor (i in 1:N) {\n  x &lt;- sample(y, size = n, replace = TRUE)\n  boot_means[i] &lt;- mean(x, na.rm = TRUE)  # you can choose other statistics\n}\n# Calculate a 95% percentile interval\nquantile(boot_means, probs = c(0.025, 0.975))"
-  },
-  {
-    "objectID": "notes/13-intro-ci/activity13.html#your-turn-theoretical-example",
-    "href": "notes/13-intro-ci/activity13.html#your-turn-theoretical-example",
-    "title": "13: Bootstrap",
-    "section": "Your turn: theoretical example",
-    "text": "Your turn: theoretical example\nConsider a population that has a gamma distribution with parameters r=5, 𝜆=1∕4.\n\nUse simulation (with n = 200) to generate an approximate sampling distribution of the mean; plot and describe the distribution.\nNow, draw one random sample of size 200 from this population. Create a histogram of your sample and find the mean and standard deviation.\nCompute the bootstrap distribution of the mean for your sample, plot it, and note the bootstrap mean and standard error.\nCompare the bootstrap distribution to the approximate theoretical sampling distribution by creating a table like slide 17\n\nRepeat (a)–(e) for sample sizes of n = 50 and n = 10. Describe carefully your observations about the effects of sample size on the bootstrap distribution."
-  },
-  {
-    "objectID": "notes/13-intro-ci/activity13.html#your-turn-data-example",
-    "href": "notes/13-intro-ci/activity13.html#your-turn-data-example",
-    "title": "13: Bootstrap",
-    "section": "Your turn: data example",
-    "text": "Your turn: data example\nThe Bangladesh data set contains information about arsenic, cobalt, and chlorine concentrations from a sample of 271 water wells in Bangladesh.\n\nlibrary(resampledata3)\nlibrary(tidyverse)\n\n\nConduct EDA on the chlorine concentrations and describe the salient features.\nFind the bootstrap distribution of the mean.\nFind and interpret the 95% bootstrap percentile confidence interval.\nWhat is the bootstrap estimate of the bias? What fraction of the bootstrap standard error does it represent?"
-  },
-  {
-    "objectID": "notes/10-asymptotics/activity10.html",
-    "href": "notes/10-asymptotics/activity10.html",
-    "title": "10: Asymptotic Properties",
-    "section": "",
-    "text": "library(tidyverse)\nlibrary(patchwork)"
-  },
-  {
-    "objectID": "notes/10-asymptotics/activity10.html#example-1",
-    "href": "notes/10-asymptotics/activity10.html#example-1",
-    "title": "10: Asymptotic Properties",
-    "section": "Example 1:",
-    "text": "Example 1:\nLet \\(Y_1, ..., Y_n\\) be \\(n\\) Exp(\\(\\lambda\\)) random variables Let \\(\\widehat\\lambda = \\frac{n}{\\sum Y_i}\\). How does Var(\\(\\widehat\\lambda\\)) compare with the CRLB?\n\nlambda &lt;- .5\nn &lt;- 20\nn_sims &lt;- 10000\nlambda_hat &lt;- numeric(n_sims)\n\nfor(i in 1:n_sims){\n  sample &lt;- rexp(n, rate = lambda)\n  lambda_hat[i] &lt;- n/sum(sample)\n}\n\nvar(lambda_hat)\n\n[1] 0.01488985\n\nlambda^2/n\n\n[1] 0.0125"
-  },
-  {
-    "objectID": "notes/10-asymptotics/activity10.html#example-1-1",
-    "href": "notes/10-asymptotics/activity10.html#example-1-1",
-    "title": "10: Asymptotic Properties",
-    "section": "Example 1:",
-    "text": "Example 1:\nExample: The median \\(m\\) of an Exponential(\\(\\lambda\\)) distribution satisfies P(X ≤ m) = 0.5. Solving \\(1 - e^{-\\lambda m} = 0.5\\) gives \\(m = ln(2) / \\lambda\\). This suggests an estimator for \\(\\lambda\\) based on the median: \\(\\widehat{\\lambda} = \\frac{ln(2)}{m}\\). Finding the analytical variance of \\(\\widehat \\lambda\\) is complicated. Finding the sampling distribution of \\(m\\) is complicated, and finding the non-linear transformation is also complicated.\nUse simulation to see whether \\(\\frac{ln(2)}{m}\\) (a) is unbiased and (b) achieves the CRLB\n\n# your code here"
-  },
-  {
-    "objectID": "notes/10-asymptotics/activity10.html#running-means",
-    "href": "notes/10-asymptotics/activity10.html#running-means",
-    "title": "10: Asymptotic Properties",
-    "section": "Running Means",
-    "text": "Running Means\nThe code below creates the “running mean” graph from the textbook for the Cauchy distribution. In your groups, talk through the steps and ask if you have questions. (It’s a little different than other simulations that we’ve seen!) Run the code chunk a couple of times to get a sense of the behavior of the mean of a Cauchy distribution.\n\nn &lt;- 10000\nrunning_mean &lt;- numeric(n)\nsample &lt;- rcauchy(n)\n\nfor(i in 1:n){\n  running_mean[i] &lt;- mean(sample[1:i])\n}\n\nggplot() + \n  geom_line(aes(x = 1:n, y = running_mean)) \n\n\n\n\n\n\n\n\nNow, use the code chunk below to do the same “running mean” example for a Normal(0,1) distribution. What do you notice? How is it the same/different from the Cauchy example above?\n\n# your code here"
-  },
-  {
-    "objectID": "notes/10-asymptotics/activity10.html#variance-of-sample-means",
-    "href": "notes/10-asymptotics/activity10.html#variance-of-sample-means",
-    "title": "10: Asymptotic Properties",
-    "section": "Variance of sample means",
-    "text": "Variance of sample means\nThe code chunk below runs a simulation comparing the variance of the sample mean of a Normal(0,1) distribution to the variance of the sample mean for a Cauchy distribution. Run it a few times to get a sense of the behavior, then try larger values of n. What do you notice? What does this mean about the consistency of the estimators?\n\nn &lt;- 20\nn_sims &lt;- 1000\nsample_mean_norm &lt;- numeric(n)\nsample_mean_cauchy &lt;- numeric(n)\n\nfor(i in 1:n_sims){\n  samp1 &lt;- rnorm(n)\n  samp2 &lt;- rcauchy(n)\n  sample_mean_norm[i] = mean(samp1)\n  sample_mean_cauchy[i] = mean(samp2)\n}\n\nvar(sample_mean_norm)\n\n[1] 0.05104321\n\nvar(sample_mean_cauchy)\n\n[1] 939.2958"
-  },
-  {
-    "objectID": "notes/10-asymptotics/activity10-sols.html",
-    "href": "notes/10-asymptotics/activity10-sols.html",
-    "title": "10: Asymptotic Properties",
-    "section": "",
-    "text": "library(tidyverse)\nlibrary(patchwork)"
-  },
-  {
-    "objectID": "notes/10-asymptotics/activity10-sols.html#example-1",
-    "href": "notes/10-asymptotics/activity10-sols.html#example-1",
-    "title": "10: Asymptotic Properties",
-    "section": "Example 1:",
-    "text": "Example 1:\nLet \\(Y_1, ..., Y_n\\) be \\(n\\) Exp(\\(\\lambda\\)) random variables Let \\(\\widehat\\lambda = \\frac{n}{\\sum Y_i}\\). How does Var(\\(\\widehat\\lambda\\)) compare with the CRLB?\n\nlambda &lt;- .5\nn &lt;- 20\nn_sims &lt;- 10000\nlambda_hat &lt;- numeric(n_sims)\n\nfor(i in 1:n_sims){\n  sample &lt;- rexp(n, rate = lambda)\n  lambda_hat[i] &lt;- n/sum(sample)\n}\n\nvar(lambda_hat)\n\n[1] 0.0154848\n\nlambda^2/n\n\n[1] 0.0125"
-  },
-  {
-    "objectID": "notes/10-asymptotics/activity10-sols.html#example-1-1",
-    "href": "notes/10-asymptotics/activity10-sols.html#example-1-1",
-    "title": "10: Asymptotic Properties",
-    "section": "Example 1:",
-    "text": "Example 1:\nExample: The median \\(m\\) of an Exponential(\\(\\lambda\\)) distribution satisfies P(X ≤ m) = 0.5. Solving \\(1 - e^{-\\lambda m} = 0.5\\) gives \\(m = ln(2) / \\lambda\\). This suggests an estimator for \\(\\lambda\\) based on the median: \\(\\widehat{\\lambda} = \\frac{ln(2)}{m}\\). Finding the analytical variance of \\(\\widehat \\lambda\\) is complicated. Finding the sampling distribution of \\(m\\) is complicated, and finding the non-linear transformation is also complicated.\nUse simulation to see whether \\(\\frac{ln(2)}{m}\\) (a) is unbiased and (b) achieves the CRLB\n\nlambda &lt;- .5\nn &lt;- 200\nn_sims &lt;- 10000\nlambda_hat &lt;- numeric(n_sims)\n\nfor(i in 1:n_sims){\n  sample &lt;- rexp(n, rate = lambda)\n  lambda_hat[i] &lt;- log(2)/median(sample)\n}\n\nmean(lambda_hat)\n\n[1] 0.5023425\n\nlambda\n\n[1] 0.5\n\nvar(lambda_hat)\n\n[1] 0.002668319\n\nlambda^2/n\n\n[1] 0.00125"
-  },
-  {
-    "objectID": "notes/10-asymptotics/activity10-sols.html#running-means",
-    "href": "notes/10-asymptotics/activity10-sols.html#running-means",
-    "title": "10: Asymptotic Properties",
-    "section": "Running Means",
-    "text": "Running Means\nThe code below creates the “running mean” graph from the textbook for the Cauchy distribution. In your groups, talk through the steps and ask if you have questions. (It’s a little different than other simulations that we’ve seen!) Run the code chunk a couple of times to get a sense of the behavior of the mean of a Cauchy distribution.\n\nn &lt;- 10000\nrunning_mean &lt;- numeric(n)\nsample &lt;- rcauchy(n)\n\nfor(i in 1:n){\n  running_mean[i] &lt;- mean(sample[1:i])\n}\n\nggplot() + \n  geom_line(aes(x = 1:n, y = running_mean)) \n\n\n\n\n\n\n\n\nNow, use the code chunk below to do the same “running mean” example for a Normal(0,1) distribution. What do you notice? How is it the same/different from the Cauchy example above?\n\nn &lt;- 10000\nrunning_mean &lt;- numeric(n)\nsample &lt;- rnorm(n)\n\nfor(i in 1:n){\n  running_mean[i] &lt;- mean(sample[1:i])\n}\n\nggplot() + \n  geom_line(aes(x = 1:n, y = running_mean))"
-  },
-  {
-    "objectID": "notes/10-asymptotics/activity10-sols.html#variance-of-sample-means",
-    "href": "notes/10-asymptotics/activity10-sols.html#variance-of-sample-means",
-    "title": "10: Asymptotic Properties",
-    "section": "Variance of sample means",
-    "text": "Variance of sample means\nThe code chunk below runs a simulation comparing the variance of the sample mean of a Normal(0,1) distribution to the variance of the sample mean for a Cauchy distribution. Run it a few times to get a sense of the behavior, then try larger values of n. What do you notice? What does this mean about the consistency of the estimators?\n\nn &lt;- 20\nn_sims &lt;- 1000\nsample_mean_norm &lt;- numeric(n)\nsample_mean_cauchy &lt;- numeric(n)\n\nfor(i in 1:n_sims){\n  samp1 &lt;- rnorm(n)\n  samp2 &lt;- rcauchy(n)\n  sample_mean_norm[i] = mean(samp1)\n  sample_mean_cauchy[i] = mean(samp2)\n}\n\nvar(sample_mean_norm)\n\n[1] 0.05207371\n\nvar(sample_mean_cauchy)\n\n[1] 297.7243"
+    "text": "The {nycflights23} R package contains a dataset called flights. This dataset contains all flights in and out of NYC-area airports in 2023. Since the dataset has all flights, we can treat it as a population. We’re interested in the average departure delay of flights departing from NYC area airports.\n\nlibrary(tidyverse)\n\n── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──\n✔ dplyr     1.1.4     ✔ readr     2.1.5\n✔ forcats   1.0.0     ✔ stringr   1.5.1\n✔ ggplot2   3.5.1     ✔ tibble    3.2.1\n✔ lubridate 1.9.3     ✔ tidyr     1.3.1\n✔ purrr     1.0.2     \n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ dplyr::filter() masks stats::filter()\n✖ dplyr::lag()    masks stats::lag()\nℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors\n\nlibrary(nycflights23)\n\nflights &lt;- flights |&gt;\n  filter(origin %in% c(\"JFK\", \"EWR\", \"LGA\")) |&gt; # filter to departing flights from NYC\n  drop_na(dep_delay) # drop observations with missing dep_delay variables\n\nglimpse(flights)\n\nRows: 424,614\nColumns: 19\n$ year           &lt;int&gt; 2023, 2023, 2023, 2023, 2023, 2023, 2023, 2023, 2023, 2…\n$ month          &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1…\n$ day            &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1…\n$ dep_time       &lt;int&gt; 1, 18, 31, 33, 36, 503, 520, 524, 537, 547, 549, 551, 5…\n$ sched_dep_time &lt;int&gt; 2038, 2300, 2344, 2140, 2048, 500, 510, 530, 520, 545, …\n$ dep_delay      &lt;dbl&gt; 203, 78, 47, 173, 228, 3, 10, -6, 17, 2, -10, -9, -7, -…\n$ arr_time       &lt;int&gt; 328, 228, 500, 238, 223, 808, 948, 645, 926, 845, 905, …\n$ sched_arr_time &lt;int&gt; 3, 135, 426, 2352, 2252, 815, 949, 710, 818, 852, 901, …\n$ arr_delay      &lt;dbl&gt; 205, 53, 34, 166, 211, -7, -1, -25, 68, -7, 4, -13, -14…\n$ carrier        &lt;chr&gt; \"UA\", \"DL\", \"B6\", \"B6\", \"UA\", \"AA\", \"B6\", \"AA\", \"UA\", \"…\n$ flight         &lt;int&gt; 628, 393, 371, 1053, 219, 499, 996, 981, 206, 225, 800,…\n$ tailnum        &lt;chr&gt; \"N25201\", \"N830DN\", \"N807JB\", \"N265JB\", \"N17730\", \"N925…\n$ origin         &lt;chr&gt; \"EWR\", \"JFK\", \"JFK\", \"JFK\", \"EWR\", \"EWR\", \"JFK\", \"EWR\",…\n$ dest           &lt;chr&gt; \"SMF\", \"ATL\", \"BQN\", \"CHS\", \"DTW\", \"MIA\", \"BQN\", \"ORD\",…\n$ air_time       &lt;dbl&gt; 367, 108, 190, 108, 80, 154, 192, 119, 258, 157, 164, 1…\n$ distance       &lt;dbl&gt; 2500, 760, 1576, 636, 488, 1085, 1576, 719, 1400, 1065,…\n$ hour           &lt;dbl&gt; 20, 23, 23, 21, 20, 5, 5, 5, 5, 5, 5, 6, 5, 6, 6, 6, 6,…\n$ minute         &lt;dbl&gt; 38, 0, 44, 40, 48, 0, 10, 30, 20, 45, 59, 0, 59, 0, 0, …\n$ time_hour      &lt;dttm&gt; 2023-01-01 20:00:00, 2023-01-01 23:00:00, 2023-01-01 2…\n\n\n\n\n\n\n\n\nQ1: EDA\n\n\n\nMake a histogram of dep_delay. This represents our population. What do you notice about the distribution? What is the true \\(\\mu\\) in this case?\n\n\nLet’s explore the performance of our different confidence interval procedures. To do so, you’ll first draw a sample from the flights dataset. You’ll treat this as your data sample throughout the rest of the activity, and compare your confidence intervals to the true value that you found in Q1.\n\n\n\n\n\n\nQ2: Draw your sample\n\n\n\nUse the code below to draw a sample of size 40 from the flights dataset. Make sure to set a seed that you think is different from everyone else in the class! This is the “sample data” that you’ll work with for the rest of this activity.\n\n\n\nset.seed(1) # Replace \"1\" with a random seed\nsample_index &lt;- sample(1:nrow(flights), size = 40)\nflights_sample &lt;- flights[sample_index,]\ndep_delay &lt;- flights_sample$dep_delay\n\n\n\n\n\n\n\nQ3: Construct your confidence intervals\n\n\n\nUsing your sample dep_delay from above, compute three confidence intervals:\n\npercentile bootstrap\nCLT-based t\nbootstrap t-based\n\ntemplate code can be found in the handout for today\n\n\nwhen you’re done, enter your lower and upper bounds in this google sheet\n\n\n\n\n\n\nQ4: (stretch goal, if time) Run coverage simulation\n\n\n\nTry to set up a “simulation of simulations”. Repeat your confidence interval procedure 100 times, on 100 different samples from flights, storing the upper and lower bounds for each confidence interval procedure as you go."
   },
   {
     "objectID": "slides/13/slides13.html#roadmap",
@@ -1771,11 +1638,144 @@
     "text": "Robustness: one-sample \\(t\\)\n\n\nIf the population distribution is roughly symmetric and unimodal, then the procedure works well for sample sizes of at least 10–15 (just a rough guide)\nFor skewed population distributions, the t-procedure can be substantially affected, depending on the severity of the skew and the sample size.\nt-procedures are not resistant to outliers.\nIf observations are not independent, everything breaks"
   },
   {
-    "objectID": "notes/16-bootstrap-t/16-activity.html",
-    "href": "notes/16-bootstrap-t/16-activity.html",
-    "title": "16: Comparing confidence interval procedures",
+    "objectID": "notes/10-asymptotics/activity10-sols.html",
+    "href": "notes/10-asymptotics/activity10-sols.html",
+    "title": "10: Asymptotic Properties",
     "section": "",
-    "text": "The {nycflights23} R package contains a dataset called flights. This dataset contains all flights in and out of NYC-area airports in 2023. Since the dataset has all flights, we can treat it as a population. We’re interested in the average departure delay of flights departing from NYC area airports.\n\nlibrary(tidyverse)\n\n── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──\n✔ dplyr     1.1.4     ✔ readr     2.1.5\n✔ forcats   1.0.0     ✔ stringr   1.5.1\n✔ ggplot2   3.5.1     ✔ tibble    3.2.1\n✔ lubridate 1.9.3     ✔ tidyr     1.3.1\n✔ purrr     1.0.2     \n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ dplyr::filter() masks stats::filter()\n✖ dplyr::lag()    masks stats::lag()\nℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors\n\nlibrary(nycflights23)\n\nflights &lt;- flights |&gt;\n  filter(origin %in% c(\"JFK\", \"EWR\", \"LGA\")) |&gt; # filter to departing flights from NYC\n  drop_na(dep_delay) # drop observations with missing dep_delay variables\n\nglimpse(flights)\n\nRows: 424,614\nColumns: 19\n$ year           &lt;int&gt; 2023, 2023, 2023, 2023, 2023, 2023, 2023, 2023, 2023, 2…\n$ month          &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1…\n$ day            &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1…\n$ dep_time       &lt;int&gt; 1, 18, 31, 33, 36, 503, 520, 524, 537, 547, 549, 551, 5…\n$ sched_dep_time &lt;int&gt; 2038, 2300, 2344, 2140, 2048, 500, 510, 530, 520, 545, …\n$ dep_delay      &lt;dbl&gt; 203, 78, 47, 173, 228, 3, 10, -6, 17, 2, -10, -9, -7, -…\n$ arr_time       &lt;int&gt; 328, 228, 500, 238, 223, 808, 948, 645, 926, 845, 905, …\n$ sched_arr_time &lt;int&gt; 3, 135, 426, 2352, 2252, 815, 949, 710, 818, 852, 901, …\n$ arr_delay      &lt;dbl&gt; 205, 53, 34, 166, 211, -7, -1, -25, 68, -7, 4, -13, -14…\n$ carrier        &lt;chr&gt; \"UA\", \"DL\", \"B6\", \"B6\", \"UA\", \"AA\", \"B6\", \"AA\", \"UA\", \"…\n$ flight         &lt;int&gt; 628, 393, 371, 1053, 219, 499, 996, 981, 206, 225, 800,…\n$ tailnum        &lt;chr&gt; \"N25201\", \"N830DN\", \"N807JB\", \"N265JB\", \"N17730\", \"N925…\n$ origin         &lt;chr&gt; \"EWR\", \"JFK\", \"JFK\", \"JFK\", \"EWR\", \"EWR\", \"JFK\", \"EWR\",…\n$ dest           &lt;chr&gt; \"SMF\", \"ATL\", \"BQN\", \"CHS\", \"DTW\", \"MIA\", \"BQN\", \"ORD\",…\n$ air_time       &lt;dbl&gt; 367, 108, 190, 108, 80, 154, 192, 119, 258, 157, 164, 1…\n$ distance       &lt;dbl&gt; 2500, 760, 1576, 636, 488, 1085, 1576, 719, 1400, 1065,…\n$ hour           &lt;dbl&gt; 20, 23, 23, 21, 20, 5, 5, 5, 5, 5, 5, 6, 5, 6, 6, 6, 6,…\n$ minute         &lt;dbl&gt; 38, 0, 44, 40, 48, 0, 10, 30, 20, 45, 59, 0, 59, 0, 0, …\n$ time_hour      &lt;dttm&gt; 2023-01-01 20:00:00, 2023-01-01 23:00:00, 2023-01-01 2…\n\n\n\n\n\n\n\n\nQ1: EDA\n\n\n\nMake a histogram of dep_delay. This represents our population. What do you notice about the distribution? What is the true \\(\\mu\\) in this case?\n\n\nLet’s explore the performance of our different confidence interval procedures. To do so, you’ll first draw a sample from the flights dataset. You’ll treat this as your data sample throughout the rest of the activity, and compare your confidence intervals to the true value that you found in Q1.\n\n\n\n\n\n\nQ2: Draw your sample\n\n\n\nUse the code below to draw a sample of size 40 from the flights dataset. Make sure to set a seed that you think is different from everyone else in the class! This is the “sample data” that you’ll work with for the rest of this activity.\n\n\n\nset.seed(1) # Replace \"1\" with a random seed\nsample_index &lt;- sample(1:nrow(flights), size = 40)\nflights_sample &lt;- flights[sample_index,]\ndep_delay &lt;- flights_sample$dep_delay\n\n\n\n\n\n\n\nQ3: Construct your confidence intervals\n\n\n\nUsing your sample dep_delay from above, compute three confidence intervals:\n\npercentile bootstrap\nCLT-based t\nbootstrap t-based\n\ntemplate code can be found in the handout for today\n\n\nwhen you’re done, enter your lower and upper bounds in this google sheet\n\n\n\n\n\n\nQ4: (stretch goal, if time) Run coverage simulation\n\n\n\nTry to set up a “simulation of simulations”. Repeat your confidence interval procedure 100 times, on 100 different samples from flights, storing the upper and lower bounds for each confidence interval procedure as you go."
+    "text": "library(tidyverse)\nlibrary(patchwork)"
+  },
+  {
+    "objectID": "notes/10-asymptotics/activity10-sols.html#example-1",
+    "href": "notes/10-asymptotics/activity10-sols.html#example-1",
+    "title": "10: Asymptotic Properties",
+    "section": "Example 1:",
+    "text": "Example 1:\nLet \\(Y_1, ..., Y_n\\) be \\(n\\) Exp(\\(\\lambda\\)) random variables Let \\(\\widehat\\lambda = \\frac{n}{\\sum Y_i}\\). How does Var(\\(\\widehat\\lambda\\)) compare with the CRLB?\n\nlambda &lt;- .5\nn &lt;- 20\nn_sims &lt;- 10000\nlambda_hat &lt;- numeric(n_sims)\n\nfor(i in 1:n_sims){\n  sample &lt;- rexp(n, rate = lambda)\n  lambda_hat[i] &lt;- n/sum(sample)\n}\n\nvar(lambda_hat)\n\n[1] 0.0154848\n\nlambda^2/n\n\n[1] 0.0125"
+  },
+  {
+    "objectID": "notes/10-asymptotics/activity10-sols.html#example-1-1",
+    "href": "notes/10-asymptotics/activity10-sols.html#example-1-1",
+    "title": "10: Asymptotic Properties",
+    "section": "Example 1:",
+    "text": "Example 1:\nExample: The median \\(m\\) of an Exponential(\\(\\lambda\\)) distribution satisfies P(X ≤ m) = 0.5. Solving \\(1 - e^{-\\lambda m} = 0.5\\) gives \\(m = ln(2) / \\lambda\\). This suggests an estimator for \\(\\lambda\\) based on the median: \\(\\widehat{\\lambda} = \\frac{ln(2)}{m}\\). Finding the analytical variance of \\(\\widehat \\lambda\\) is complicated. Finding the sampling distribution of \\(m\\) is complicated, and finding the non-linear transformation is also complicated.\nUse simulation to see whether \\(\\frac{ln(2)}{m}\\) (a) is unbiased and (b) achieves the CRLB\n\nlambda &lt;- .5\nn &lt;- 200\nn_sims &lt;- 10000\nlambda_hat &lt;- numeric(n_sims)\n\nfor(i in 1:n_sims){\n  sample &lt;- rexp(n, rate = lambda)\n  lambda_hat[i] &lt;- log(2)/median(sample)\n}\n\nmean(lambda_hat)\n\n[1] 0.5023425\n\nlambda\n\n[1] 0.5\n\nvar(lambda_hat)\n\n[1] 0.002668319\n\nlambda^2/n\n\n[1] 0.00125"
+  },
+  {
+    "objectID": "notes/10-asymptotics/activity10-sols.html#running-means",
+    "href": "notes/10-asymptotics/activity10-sols.html#running-means",
+    "title": "10: Asymptotic Properties",
+    "section": "Running Means",
+    "text": "Running Means\nThe code below creates the “running mean” graph from the textbook for the Cauchy distribution. In your groups, talk through the steps and ask if you have questions. (It’s a little different than other simulations that we’ve seen!) Run the code chunk a couple of times to get a sense of the behavior of the mean of a Cauchy distribution.\n\nn &lt;- 10000\nrunning_mean &lt;- numeric(n)\nsample &lt;- rcauchy(n)\n\nfor(i in 1:n){\n  running_mean[i] &lt;- mean(sample[1:i])\n}\n\nggplot() + \n  geom_line(aes(x = 1:n, y = running_mean)) \n\n\n\n\n\n\n\n\nNow, use the code chunk below to do the same “running mean” example for a Normal(0,1) distribution. What do you notice? How is it the same/different from the Cauchy example above?\n\nn &lt;- 10000\nrunning_mean &lt;- numeric(n)\nsample &lt;- rnorm(n)\n\nfor(i in 1:n){\n  running_mean[i] &lt;- mean(sample[1:i])\n}\n\nggplot() + \n  geom_line(aes(x = 1:n, y = running_mean))"
+  },
+  {
+    "objectID": "notes/10-asymptotics/activity10-sols.html#variance-of-sample-means",
+    "href": "notes/10-asymptotics/activity10-sols.html#variance-of-sample-means",
+    "title": "10: Asymptotic Properties",
+    "section": "Variance of sample means",
+    "text": "Variance of sample means\nThe code chunk below runs a simulation comparing the variance of the sample mean of a Normal(0,1) distribution to the variance of the sample mean for a Cauchy distribution. Run it a few times to get a sense of the behavior, then try larger values of n. What do you notice? What does this mean about the consistency of the estimators?\n\nn &lt;- 20\nn_sims &lt;- 1000\nsample_mean_norm &lt;- numeric(n)\nsample_mean_cauchy &lt;- numeric(n)\n\nfor(i in 1:n_sims){\n  samp1 &lt;- rnorm(n)\n  samp2 &lt;- rcauchy(n)\n  sample_mean_norm[i] = mean(samp1)\n  sample_mean_cauchy[i] = mean(samp2)\n}\n\nvar(sample_mean_norm)\n\n[1] 0.05207371\n\nvar(sample_mean_cauchy)\n\n[1] 297.7243"
+  },
+  {
+    "objectID": "notes/10-asymptotics/activity10.html",
+    "href": "notes/10-asymptotics/activity10.html",
+    "title": "10: Asymptotic Properties",
+    "section": "",
+    "text": "library(tidyverse)\nlibrary(patchwork)"
+  },
+  {
+    "objectID": "notes/10-asymptotics/activity10.html#example-1",
+    "href": "notes/10-asymptotics/activity10.html#example-1",
+    "title": "10: Asymptotic Properties",
+    "section": "Example 1:",
+    "text": "Example 1:\nLet \\(Y_1, ..., Y_n\\) be \\(n\\) Exp(\\(\\lambda\\)) random variables Let \\(\\widehat\\lambda = \\frac{n}{\\sum Y_i}\\). How does Var(\\(\\widehat\\lambda\\)) compare with the CRLB?\n\nlambda &lt;- .5\nn &lt;- 20\nn_sims &lt;- 10000\nlambda_hat &lt;- numeric(n_sims)\n\nfor(i in 1:n_sims){\n  sample &lt;- rexp(n, rate = lambda)\n  lambda_hat[i] &lt;- n/sum(sample)\n}\n\nvar(lambda_hat)\n\n[1] 0.01488985\n\nlambda^2/n\n\n[1] 0.0125"
+  },
+  {
+    "objectID": "notes/10-asymptotics/activity10.html#example-1-1",
+    "href": "notes/10-asymptotics/activity10.html#example-1-1",
+    "title": "10: Asymptotic Properties",
+    "section": "Example 1:",
+    "text": "Example 1:\nExample: The median \\(m\\) of an Exponential(\\(\\lambda\\)) distribution satisfies P(X ≤ m) = 0.5. Solving \\(1 - e^{-\\lambda m} = 0.5\\) gives \\(m = ln(2) / \\lambda\\). This suggests an estimator for \\(\\lambda\\) based on the median: \\(\\widehat{\\lambda} = \\frac{ln(2)}{m}\\). Finding the analytical variance of \\(\\widehat \\lambda\\) is complicated. Finding the sampling distribution of \\(m\\) is complicated, and finding the non-linear transformation is also complicated.\nUse simulation to see whether \\(\\frac{ln(2)}{m}\\) (a) is unbiased and (b) achieves the CRLB\n\n# your code here"
+  },
+  {
+    "objectID": "notes/10-asymptotics/activity10.html#running-means",
+    "href": "notes/10-asymptotics/activity10.html#running-means",
+    "title": "10: Asymptotic Properties",
+    "section": "Running Means",
+    "text": "Running Means\nThe code below creates the “running mean” graph from the textbook for the Cauchy distribution. In your groups, talk through the steps and ask if you have questions. (It’s a little different than other simulations that we’ve seen!) Run the code chunk a couple of times to get a sense of the behavior of the mean of a Cauchy distribution.\n\nn &lt;- 10000\nrunning_mean &lt;- numeric(n)\nsample &lt;- rcauchy(n)\n\nfor(i in 1:n){\n  running_mean[i] &lt;- mean(sample[1:i])\n}\n\nggplot() + \n  geom_line(aes(x = 1:n, y = running_mean)) \n\n\n\n\n\n\n\n\nNow, use the code chunk below to do the same “running mean” example for a Normal(0,1) distribution. What do you notice? How is it the same/different from the Cauchy example above?\n\n# your code here"
+  },
+  {
+    "objectID": "notes/10-asymptotics/activity10.html#variance-of-sample-means",
+    "href": "notes/10-asymptotics/activity10.html#variance-of-sample-means",
+    "title": "10: Asymptotic Properties",
+    "section": "Variance of sample means",
+    "text": "Variance of sample means\nThe code chunk below runs a simulation comparing the variance of the sample mean of a Normal(0,1) distribution to the variance of the sample mean for a Cauchy distribution. Run it a few times to get a sense of the behavior, then try larger values of n. What do you notice? What does this mean about the consistency of the estimators?\n\nn &lt;- 20\nn_sims &lt;- 1000\nsample_mean_norm &lt;- numeric(n)\nsample_mean_cauchy &lt;- numeric(n)\n\nfor(i in 1:n_sims){\n  samp1 &lt;- rnorm(n)\n  samp2 &lt;- rcauchy(n)\n  sample_mean_norm[i] = mean(samp1)\n  sample_mean_cauchy[i] = mean(samp2)\n}\n\nvar(sample_mean_norm)\n\n[1] 0.05104321\n\nvar(sample_mean_cauchy)\n\n[1] 939.2958"
+  },
+  {
+    "objectID": "notes/13-intro-ci/activity13.html",
+    "href": "notes/13-intro-ci/activity13.html",
+    "title": "13: Bootstrap",
+    "section": "",
+    "text": "library(tidyverse)\nlibrary(patchwork)"
+  },
+  {
+    "objectID": "notes/13-intro-ci/activity13.html#theoretical-example",
+    "href": "notes/13-intro-ci/activity13.html#theoretical-example",
+    "title": "13: Bootstrap",
+    "section": "Theoretical example",
+    "text": "Theoretical example\n\nset.seed(1234)\nsample_data &lt;- rgamma(50, 2, 2)\nmean(sample_data)\n\n[1] 0.9245653\n\nsd(sample_data)\n\n[1] 0.8237878\n\n\n\nBootstrap distribution\n\nn_sims &lt;- 10^5\nboot_dsn &lt;- numeric(n_sims)\nfor(i in 1:n_sims){\n  boot_dsn[i] &lt;- mean(sample(sample_data, length(sample_data), replace = TRUE))\n}\n\nmean(boot_dsn)\n\n[1] 0.924705\n\nsd(boot_dsn)\n\n[1] 0.1157962\n\n\n\n\nSampling distribution\n\nn_sims &lt;- 10^5\nsampling_dsn &lt;- numeric(n_sims)\nfor(i in 1:n_sims){\n  sampling_dsn[i] &lt;- mean(rgamma(50, 2, 2))\n}\n\nmean(sampling_dsn)\n\n[1] 0.9998301\n\nsd(sampling_dsn)\n\n[1] 0.09989004"
+  },
+  {
+    "objectID": "notes/13-intro-ci/activity13.html#data-example",
+    "href": "notes/13-intro-ci/activity13.html#data-example",
+    "title": "13: Bootstrap",
+    "section": "Data example",
+    "text": "Data example\n\ndata(\"penguins\", package = \"palmerpenguins\")\n\n# Subsetting to get only one species\ngentoo &lt;- dplyr::filter(penguins, species == \"Gentoo\")\n\n# Bookkeeping\ny &lt;- gentoo$bill_length_mm\nn &lt;- nrow(gentoo)        # sample size\nN &lt;- 10^4                # desired no. resamples\nboot_means &lt;- numeric(N) # a place to store the bootstrap stats\n\n# Resampling from the sample\nfor (i in 1:N) {\n  x &lt;- sample(y, size = n, replace = TRUE)\n  boot_means[i] &lt;- mean(x, na.rm = TRUE)  # you can choose other statistics\n}\n# Calculate a 95% percentile interval\nquantile(boot_means, probs = c(0.025, 0.975))"
+  },
+  {
+    "objectID": "notes/13-intro-ci/activity13.html#your-turn-theoretical-example",
+    "href": "notes/13-intro-ci/activity13.html#your-turn-theoretical-example",
+    "title": "13: Bootstrap",
+    "section": "Your turn: theoretical example",
+    "text": "Your turn: theoretical example\nConsider a population that has a gamma distribution with parameters r=5, 𝜆=1∕4.\n\nUse simulation (with n = 200) to generate an approximate sampling distribution of the mean; plot and describe the distribution.\nNow, draw one random sample of size 200 from this population. Create a histogram of your sample and find the mean and standard deviation.\nCompute the bootstrap distribution of the mean for your sample, plot it, and note the bootstrap mean and standard error.\nCompare the bootstrap distribution to the approximate theoretical sampling distribution by creating a table like slide 17\n\nRepeat (a)–(e) for sample sizes of n = 50 and n = 10. Describe carefully your observations about the effects of sample size on the bootstrap distribution."
+  },
+  {
+    "objectID": "notes/13-intro-ci/activity13.html#your-turn-data-example",
+    "href": "notes/13-intro-ci/activity13.html#your-turn-data-example",
+    "title": "13: Bootstrap",
+    "section": "Your turn: data example",
+    "text": "Your turn: data example\nThe Bangladesh data set contains information about arsenic, cobalt, and chlorine concentrations from a sample of 271 water wells in Bangladesh.\n\nlibrary(resampledata3)\nlibrary(tidyverse)\n\n\nConduct EDA on the chlorine concentrations and describe the salient features.\nFind the bootstrap distribution of the mean.\nFind and interpret the 95% bootstrap percentile confidence interval.\nWhat is the bootstrap estimate of the bias? What fraction of the bootstrap standard error does it represent?"
+  },
+  {
+    "objectID": "notes/17-two-sample-ci/17-activity.html",
+    "href": "notes/17-two-sample-ci/17-activity.html",
+    "title": "17: Comparing two sample confidence interval procedures",
+    "section": "",
+    "text": "library(tidyverse)\nlibrary(patchwork)\nRecall the coverage simulation results that we looked at for the 1-sample t procedure:\nYour task for today is to replicate the simulation study for the following settings:\nYou should also assess how the sample size impacts the coverage:"
+  },
+  {
+    "objectID": "notes/17-two-sample-ci/17-activity.html#setup",
+    "href": "notes/17-two-sample-ci/17-activity.html#setup",
+    "title": "17: Comparing two sample confidence interval procedures",
+    "section": "Setup",
+    "text": "Setup\n\n# Sample sizes for x and y\nn1 &lt;- 10\nn2 &lt;- 10\n\nN_sim &lt;- 100    # keep this small-ish for efficiency. This is the number of times you will draw new samples\nN_boot &lt;- 1000  # keep this smaller than usual as well. This is the number of bootstrap simulations you will run for each pair of samples\n\n# Storage for results\nresults &lt;- data.frame( \n  t_lower = numeric(N_sim),\n  t_upper = numeric(N_sim), \n  boott_lower = numeric(N_sim), \n  boott_upper = numeric(N_sim), \n  boot_lower = numeric(N_sim),\n  boot_upper = numeric(N_sim)\n)"
+  },
+  {
+    "objectID": "notes/17-two-sample-ci/17-activity.html#run-simulation",
+    "href": "notes/17-two-sample-ci/17-activity.html#run-simulation",
+    "title": "17: Comparing two sample confidence interval procedures",
+    "section": "Run Simulation",
+    "text": "Run Simulation\n\nset.seed(050825)\n\nfor(i in 1:N_sim){\n  # Step 1: draw random samples. This should be the only thing you change within this chunk between the simulations\n  x &lt;- rnorm(n1, mean = 0, sd = 1)\n  y &lt;- rnorm(n2, mean = 1.5, sd = 2)\n  \n  true_diff &lt;- -1.5 # this is the true difference in the population means (x - y)\n  \n  # Step 2: compute formula t confidence interval\n  t_ci &lt;- t.test(x, y, conf.level = .95)$conf\n  results$t_lower[i] &lt;- t_ci[1]\n  results$t_upper[i] &lt;- t_ci[2]\n  \n  # Step 3: run bootstrap for each sample; store bootstrap means and bootstrap t's\n  \n  diff_mean &lt;- numeric(N_boot) # storage for bootstrap differences\n  t_boot &lt;- numeric(N_boot) # storage for bootstrap differences\n  \n  for(j in 1:N_boot){\n    x_boot &lt;- sample(x, n1, replace = TRUE)\n    y_boot &lt;- sample(y, n2, replace = TRUE)\n    diff_mean[j] &lt;- mean(x_boot) - mean(y_boot)\n    t_boot[j] &lt;- ((mean(x_boot) - mean(y_boot)) - (mean(x) - mean(y)))/sqrt(var(x_boot)/n1 + var(y_boot)/n2)\n  }\n  \n  results$boot_lower[i] &lt;- quantile(diff_mean, prob = c(.025))\n  results$boot_upper[i] &lt;- quantile(diff_mean, prob = c(.975))\n  \n  results$boott_lower[i] &lt;- (mean(x)- mean(y)) - quantile(t_boot, .975)*sqrt(var(x)/n1 + var(y)/n2)\n  results$boott_upper[i] &lt;- (mean(x)- mean(y)) - quantile(t_boot, .025)*sqrt(var(x)/n1 + var(y)/n2)\n}"
+  },
+  {
+    "objectID": "notes/17-two-sample-ci/17-activity.html#analyze-results-find-coverage-rates",
+    "href": "notes/17-two-sample-ci/17-activity.html#analyze-results-find-coverage-rates",
+    "title": "17: Comparing two sample confidence interval procedures",
+    "section": "Analyze results: find coverage rates",
+    "text": "Analyze results: find coverage rates\n\nmean(true_diff &lt; results$t_lower) # percent of times that t CI is too high\n\n[1] 0.01\n\nmean(true_diff &gt; results$t_upper) # percent of times that t CI is too low\n\n[1] 0.05\n\nmean(true_diff &lt; results$boot_lower) # percent of times that bootstrap CI is too high\n\n[1] 0.01\n\nmean(true_diff &gt; results$boot_upper) # percent of times that bootstrap CI is too low\n\n[1] 0.07\n\nmean(true_diff &lt; results$boott_lower) # percent of times that bootstrap T CI is too high\n\n[1] 0.01\n\nmean(true_diff &gt; results$boott_upper) # percent of times that bootstrap T CI is too low\n\n[1] 0.05"
+  },
+  {
+    "objectID": "notes/17-two-sample-ci/17-activity.html#analyze-results-graph",
+    "href": "notes/17-two-sample-ci/17-activity.html#analyze-results-graph",
+    "title": "17: Comparing two sample confidence interval procedures",
+    "section": "Analyze results: graph",
+    "text": "Analyze results: graph\nNote: if you use &gt;100 samples, this plot will probably not look very nice!\n\np1 &lt;- ggplot(results, aes(xmin = t_lower, xmax = t_upper, y = 1:N_sim, col = (true_diff &lt; t_lower )| (true_diff &gt; t_upper))) +\n  geom_errorbarh() +\n  labs(title = \"t formula\", \n       col = \"Missed\", \n       y = \"Simulation\", \n       x = \"Diff in means\") + \n  scale_color_viridis_d(end = .75, option = \"plasma\")\n\np2 &lt;- ggplot(results, aes(xmin = boot_lower, xmax = boot_upper, y = 1:N_sim, col = (true_diff &lt; boot_lower )| (true_diff &gt; boot_upper))) +\n  geom_errorbarh() +\n  labs(title = \"Bootstrap\",\n       col = \"Missed\",\n       y = \"Simulation\", \n       x = \"Diff in means\") + \n  scale_color_viridis_d(end = .75, option = \"plasma\")\n\np3 &lt;- ggplot(results, aes(xmin = boott_lower, xmax = boott_upper, y = 1:N_sim, col = (true_diff &lt; boott_lower )| (true_diff &gt; boott_upper))) +\n  geom_errorbarh() +\n  labs(title = \"Bootstrap T\",\n       col = \"Missed\", \n       y = \"Simulation\", \n       x = \"Diff in means\") + \n  scale_color_viridis_d(end = .75, option = \"plasma\")\n\np1 + p2 + p3 + plot_layout(guides = \"collect\") & theme_minimal() & theme(legend.position = \"bottom\")"
   },
   {
     "objectID": "notes/02-permutation/activity02.html",
