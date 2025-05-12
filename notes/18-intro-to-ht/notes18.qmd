@@ -134,6 +134,14 @@ $$\frac{(\bar{X}_1 - \bar{X}_2) - (\mu_1 - \mu_2)}{\sqrt{\frac{s_1^2}{n_1} + \fr
 
 ```{r}
 #| echo: true
+#| eval: false
+
+t.test(x_vector, y_vector)
+t.test(numeric_vector ~ group_vector, data = dataset_name)
+```
+
+```{r}
+#| echo: true
 
 t.test(flipper_length_mm ~ species, data = penguins_subset)
 ```
@@ -169,9 +177,9 @@ survey |>
   knitr::kable(digits = 2)
 ```
 
-What is the appropriate **test statistic**? What is the **distribution** of the test statistic under the null hypothesis? 
+Set up a t-test for this question. Include **assumptions**, **hypotheses**, **test statistic**, **distribution of the test statistic** under the null hypothesis, and **p-value computation**. 
 
-\vspace{1.5in}
+\pagebreak
 
 ```{r}
 #| echo: true 
@@ -184,14 +192,24 @@ t.test(~sleep, data = survey, mu = 8, alternative = "less")
 **Example:** Do Americans support a national health plan? A Kaiser Family Foundation poll for a random sample of US adults in 2019 found that 79% of Democrats, 55% of Independents, and 24% of Republicans supported a generic "National Health Plan." There were 347 Democrats, 298 Republicans, and 617 Independents surveyed. A political pundit on TV claims that a majority of Independents support a National Health Plan. Do these data provide strong evidence to support this type of statement? 
 
 Assume:
+\vspace{.25in}
 
 Hypotheses:
+\vspace{.25in}
 
 Test Statistic: 
+\vspace{.25in}
 
 Null distribution: 
+\vspace{.25in}
 
 \vspace{1.5in}
+
+```{r}
+#| echo: true
+
+sum(dbinom(339:617, 617, .5))
+```
 
 ```{r}
 #| echo: true
@@ -199,11 +217,18 @@ Null distribution:
 binom.test(x = 339, n = 617, p = 0.5, alternative = "greater")
 ```
 
-CLT: 
+CLT Assumption: 
+
+\vspace{.25in}
+
 
 Approx null distribution:
+\vspace{.25in}
+
 
 Large-sample test statistic:
+\vspace{.25in}
+
 
 ```{r}
 #| echo: true
