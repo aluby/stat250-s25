@@ -44,7 +44,7 @@ theme_set(theme_minimal())
 
 **Example:** A high school was chosen to participate in the evaluation of a new geometry and algebra curriculum. In the recent past, the school’s students were considered “typical”, receiving scores on standardized tests that were very close to the nationwide average. In the year of the study, 86 sophomores were randomly selected to participate in a special set of classes that integrated geometry and algebra. Those students averaged 502 on the SAT-I math exam; the nationwide average was 494 with a standard deviation of 124.  
 
-Administrator A thinks that an average above 500 indicates a big enough improvement to warrant a change in curriculum, but Administrator B thinks that the average should be above 600. If there was actually no improvement, what's the probability we come to the wrong conclusion under Adminstrator A and B's cutoffs? 
+Administrator A thinks that an average above 500 indicates a big enough improvement to warrant a change in curriculum, but Administrator B thinks that the average should be above 600. If there was actually no improvement, what's the probability we come to the wrong conclusion under Administrator A and B's cutoffs? 
 
 \vspace{4in}
 
@@ -77,6 +77,17 @@ In any hypothesis test procedure, there are two ways we can be wrong: we can (1)
 
 
 \vspace{2in}
+**Type I vs Type II Error tradeoff**
+
+\pagebreak
+
+**Effect size and Type II error**
+
+\vspace{1.5in}
+
+**SE and Type II Error**
+
+\vspace{1.5in}
 
 ::: callout-note
 ## Power 
@@ -86,7 +97,8 @@ In any hypothesis test procedure, there are two ways we can be wrong: we can (1)
 
 **Example:** If the true $\mu$ in the Math curriculum example is 498 (so $H_0$ is false), what is the power of the test of Administrator A? What if true $\mu$ is 510? 
 
-\vspace{2in}
+
+\pagebreak
 
 # Power Function
 

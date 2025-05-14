@@ -1,0 +1,380 @@
+---
+title: "Testing Errors and Power"
+subtitle: "Day 19"
+title-slide-attributes:
+  data-background-gradient: "linear-gradient(to right, #46337e, #440154)"
+  data-slide-number: none
+author: "Prof Amanda Luby"
+format: 
+  revealjs:
+    incremental: false
+editor: 
+  markdown: 
+    wrap: 72
+---
+
+```{r setup}
+#| include: false
+
+library(tidyverse)
+library(countdown)
+
+library(ggformula)
+library(openintro)
+library(patchwork)
+library(fivethirtyeight)
+library(dplyr)
+library(tidyr)
+library(fontawesome)
+library(gt)
+
+library(gridExtra)
+library(tidyverse)
+library(knitr)
+library(mosaic)
+library(infer)
+library(kableExtra)
+library(latex2exp)
+
+library(plotly)
+library(ggthemes)
+
+# #440154
+knitr::opts_chunk$set(echo = TRUE,
+                  message = FALSE,
+                  warning = FALSE)
+
+slides_theme = theme_minimal(base_family = "serif", base_size = 24) +
+  theme(plot.background = element_rect(fill = "#f0f1eb", colour = NA))
+  
+
+theme_set(slides_theme)
+```
+
+## Recap
+
+- Last time, we covered CLT-based hypothesis tests
+    - Difference in two means
+    - One mean
+    - One proportion
+    
+- Today, we're going to dive into some of the choices we can make when setting up different tests, and how we evaluate if our test is "performing well"
+
+## 
+
+**Example:** A high school was chosen to participate in the evaluation of a new geometry and algebra curriculum. In the recent past, the school’s students were considered “typical”, receiving scores on standardized tests that were very close to the nationwide average. In the year of the study, 86 sophomores were randomly selected to participate in a special set of classes that integrated geometry and algebra. Those students averaged 502 on the SAT-I math exam; the nationwide average was 494 with a standard deviation of 124.  
+
+Administrator A thinks that an average above 500 indicates a big enough improvement to warrant a change in curriculum, but Administrator B thinks that the average should be above 600. If there was actually no improvement, what's the probability we come to the wrong conclusion under Administrator A and B's cutoffs? 
+
+## 
+
+##
+
+### Decision Rule
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+### Mapping to Z Score
+
+## 
+
+::: callout-note
+## Critical Region
+
+<br>
+<br>
+<br>
+:::
+
+### Setting a significance level
+
+## Types of Errors
+
+In any hypothesis test procedure, there are two ways we can be wrong: we can (1) conclude $H_0$ is true when $H_1$ is actually true, or we can (2) conclude $H_0$ is false when $H_0$ is actually true. 
+
+|                       | $H_0$ True   | $H_1$ True    |
+|-----------------------|--------------|---------------|
+| Reject $H_0$          | Type I Error | Correct       |
+| Fail to reject $H_0$  | Correct      | Type II Error |
+
+
+## 
+
+![](../img/type_1_errors.png)
+
+::: aside
+Image credit: Allison Horst
+:::
+
+## 
+
+![](../img/type_2_errors.png)
+
+::: aside
+Image credit: Allison Horst
+:::
+
+## Type I and type II errors
+
+```{r, echo=FALSE,  fig.height = 4.5, fig.align='center', out.width = "73%"}
+mu <- 1
+par(bg = "#f0f1eb")
+curve(dnorm(x), lwd=2, xlim = c(-3.5,4.5), xlab = "t", 
+      ylab = "Density", 
+      main = "", axes=F)
+mtext(at = 0, expression(paste("H"[0]," Distribution")), col='black', line=1)
+
+curve(dnorm(x, mean=mu), lwd=2, xlim = c(-3.5,4.5),
+      add=TRUE, col='darkorange')
+axis(1)
+axis(2)
+mtext(at = 1, expression(paste("H"["a"]," Distribution")), col='darkorange')
+
+cord.x <- c(2,seq(2,4.5,len=100),3.5)
+cord.y <- c(0,dnorm(seq(2,4.5,len=100)),0) 
+polygon(cord.x,cord.y,col=rgb(0, 0, 0,0.5))
+
+cord.x <- c(-3.5,seq(-3.5,2,len=100),2)
+cord.y <- c(0,dnorm(seq(-3.5,2,len=100), mean=mu),0) 
+polygon(cord.x,cord.y,col=rgb(1, 0.5, 0,0.5), border='darkorange')
+
+text(x=3.3, y = 0.1,"Type I Error Rate")
+arrows(x0=3.3,y0=0.075,x1=2.25,y1=0.01,length=0.1)
+
+text(x=-1.25, y = 0.3,"Type II Error Rate", col='darkorange')
+arrows(x0=-1.25,y0=0.27,x1=1,y1=0.2,length=0.1, col='darkorange')
+```
+
+How could we decrease the Type I error rate?
+
+## Smaller Type I $\to$ bigger Type II 
+
+```{r, echo=FALSE, fig.height = 4.5, fig.align='center', out.width = "73%"}
+mu <- 1
+par(bg = "#f0f1eb")
+curve(dnorm(x), lwd=2, xlim = c(-3.5,4.5), xlab = "t", 
+      ylab = "Density", 
+      main = "", axes=F)
+mtext(at = 0, expression(paste("H"[0]," Distribution")), col='black', line=1)
+
+curve(dnorm(x, mean=mu), lwd=2, xlim = c(-3.5,4.5),
+      add=TRUE, col='darkorange')
+axis(1)
+axis(2)
+mtext(at = 1, expression(paste("H"["a"]," Distribution")), col='darkorange')
+
+cord.x <- c(2.5,seq(2.5,4.5,len=100),3.5)
+cord.y <- c(0,dnorm(seq(2.5,4.5,len=100)),0) 
+polygon(cord.x,cord.y,col=rgb(0, 0, 0,0.5))
+
+cord.x <- c(-3.5,seq(-3.5,2.5,len=100),2.5)
+cord.y <- c(0,dnorm(seq(-3.5,2.5,len=100), mean=mu),0) 
+polygon(cord.x,cord.y,col=rgb(1, 0.5, 0,0.5), border='darkorange')
+
+text(x=3.3, y = 0.1,"Type I Error Rate")
+arrows(x0=3.3,y0=0.075,x1=2.75,y1=0.01,length=0.1)
+
+text(x=-1.25, y = 0.3,"Type II Error Rate", col='darkorange')
+arrows(x0=-1.25,y0=0.27,x1=1,y1=0.2,length=0.1, col='darkorange')
+```
+
+## Effect size and type II error
+
+```{r, echo=FALSE, fig.height = 4.5, fig.align='center', out.width = "73%"}
+mu <- 3
+par(bg = "#f0f1eb")
+curve(dnorm(x), lwd=2, xlim = c(-3.5,6.5), xlab = "t", 
+      ylab = "Density", 
+      main = "", axes=F)
+mtext(at = 0, expression(paste("H"[0]," Distribution")), col='black', line=1)
+
+curve(dnorm(x, mean=mu), lwd=2, xlim = c(-3.5,6.5),
+      add=TRUE, col='darkorange')
+axis(1)
+axis(2)
+mtext(at = mu, expression(paste("H"["a"]," Distribution")), col='darkorange')
+
+cord.x <- c(2,seq(2,4.5,len=100),3.5)
+cord.y <- c(0,dnorm(seq(2,4.5,len=100)),0) 
+polygon(cord.x,cord.y,col=rgb(0, 0, 0,0.5))
+
+cord.x <- c(-3.5,seq(-3.5,2,len=100),2)
+cord.y <- c(0,dnorm(seq(-3.5,2,len=100), mean=mu),0) 
+polygon(cord.x,cord.y,col=rgb(1, 0.5, 0,0.5), border='darkorange')
+
+text(x=3.3, y = 0.1,"Type I Error Rate")
+arrows(x0=3.3,y0=0.075,x1=2.25,y1=0.01,length=0.1)
+
+text(x=-1, y = 0.2,"Type II Error Rate", col='darkorange')
+arrows(x0=-1,y0=0.17,x1=1.25,y1=0.05,length=0.1, col='darkorange')
+```
+
+## SE and type II error
+
+::: panel-tabset
+
+## Larger SE 
+
+```{r, echo=FALSE, fig.height = 4.5, fig.align='center', out.width = "73%"}
+mu <- 1
+par(bg = "#f0f1eb")
+
+curve(dnorm(x), lwd=2, xlim = c(-3.5,4.5), xlab = "t", 
+      ylab = "Density", 
+      main = "", axes=F)
+mtext(at = 0, expression(paste("H"[0]," Distribution")), col='black', line=1)
+
+curve(dnorm(x, mean=mu), lwd=2, xlim = c(-3.5,4.5),
+      add=TRUE, col='darkorange')
+axis(1)
+axis(2)
+mtext(at = 1, expression(paste("H"["a"]," Distribution")), col='darkorange')
+
+cord.x <- c(2,seq(2,4.5,len=100),3.5)
+cord.y <- c(0,dnorm(seq(2,4.5,len=100)),0) 
+polygon(cord.x,cord.y,col=rgb(0, 0, 0,0.5))
+
+cord.x <- c(-3.5,seq(-3.5,2,len=100),2)
+cord.y <- c(0,dnorm(seq(-3.5,2,len=100), mean=mu),0) 
+polygon(cord.x,cord.y,col=rgb(1, 0.5, 0,0.5), border='darkorange')
+
+text(x=3.3, y = 0.1,"Type I Error Rate")
+arrows(x0=3.3,y0=0.075,x1=2.25,y1=0.01,length=0.1)
+
+text(x=-1.25, y = 0.3,"Type II Error Rate", col='darkorange')
+arrows(x0=-1.25,y0=0.27,x1=1,y1=0.2,length=0.1, col='darkorange')
+```
+
+## Smaller SE 
+
+
+```{r, echo=FALSE, fig.height = 4.5, fig.align='center', out.width = "73%"}
+mu <- 1
+par(bg = "#f0f1eb")
+
+curve(dnorm(x, sd=0.25), lwd=2, xlim = c(-3.5,4.5), xlab = "t", 
+      ylab = "Density", 
+      main = "", axes=F, n=1e3)
+mtext(at = 0, expression(paste("H"[0]," Distribution")), col='black', line=1)
+
+curve(dnorm(x, mean=mu, sd=0.25), lwd=2, xlim = c(-3.5,4.5),
+      add=TRUE, col='darkorange', n=1e3)
+axis(1)
+axis(2)
+mtext(at = 1, expression(paste("H"["a"]," Distribution")), col='darkorange')
+
+cord.x <- c(0.49,seq(0.49,4.5,len=100),3.5)
+cord.y <- c(0,dnorm(seq(0.49,4.5,len=100), sd=0.25),0) 
+polygon(cord.x,cord.y,col=rgb(0, 0, 0,0.5))
+
+cord.x <- c(-3.5,seq(-3.5,0.49,len=100),0.49)
+cord.y <- c(0,dnorm(seq(-3.5,0.49,len=100), mean=mu, sd=0.25),0) 
+polygon(cord.x,cord.y,col=rgb(1, 0.5, 0,0.5), border='darkorange')
+
+text(x=2.3, y = 0.1,"Type I Error Rate")
+arrows(x0=1.7,y0=0.075,x1=1,y1=0.01,length=0.1)
+
+text(x=-1.25, y = 0.3,"Type II Error Rate", col='darkorange')
+arrows(x0=-1.25,y0=0.27,x1=0.4,y1=0.15,length=0.1, col='darkorange')
+```
+
+:::
+
+## 
+
+::: callout-note
+## Power 
+
+<br>
+<br>
+<br>
+<br>
+:::
+
+**Example:** If the true $\mu$ in the Math curriculum example is 498 (so $H_0$ is false), what is the power of the test of Administrator A? What if true $\mu$ is 510? 
+
+## 
+
+::: callout-note
+## Power Function
+<br>
+<br>
+<br>
+<br>
+:::
+
+*Note:* What does an ideal power function look like?
+
+- if $\theta = \theta_0$
+
+- if $\theta \in \Omega_A$
+
+## Example: Math Curriculum
+
+```{r}
+#| echo: false
+
+expand_grid(
+  mu = seq(425, 650, by = 1),
+  c = c(500, 600)
+) %>%
+  mutate(
+    power = 1-pnorm((c-mu)/(124/sqrt(80)))
+  ) %>%
+  ggplot(aes(x = mu, y = power, linetype = as.factor(c))) +
+  geom_line(size = 2) + 
+  labs(
+    linetype = "Decision Rule", 
+    y = expression(pi(mu)),
+    x = expression(mu)
+  ) + 
+  theme(axis.text = element_text(size = 10))
+```
+
+## Example: One sample t-test for $H_0: \mu = 5$ vs. $H_a: \mu \ne 5$ at the $\alpha = .05$ level (assuming $s=2$). 
+```{r}
+#| echo: false
+#| warning: false
+mu_grid <- seq(5-3*2, 5+3*2, by = 0.05)
+
+
+calc_power <- function(null = 5, truth, n = 15, s = 2, alpha = 0.05) {
+  quant <- qt(1 - alpha/2, df = n - 1)
+  se <- s / sqrt(n)
+  cr_low <- (null - quant * se - truth) / se
+  cr_high <- (null + quant * se - truth) / se
+  
+  pt(cr_low, df = n - 1) + 1 - pt(cr_high, df = n - 1)
+}
+
+calc_power <- Vectorize(calc_power, vectorize.args = "truth")
+
+tpower15 <- calc_power(truth = mu_grid, n = 15)
+tpower30 <- calc_power(truth = mu_grid, n = 30)
+tpower60 <- calc_power(truth = mu_grid, n = 60)
+
+tpower_df <- bind_rows(
+  data.frame(n = 15, power = tpower15, mu = mu_grid),
+  data.frame(n = 30, power = tpower30, mu = mu_grid),
+  data.frame(n = 60, power = tpower60, mu = mu_grid),
+)
+
+gf_line(power ~ mu, data = tpower_df, linetype = ~factor(n), size = 2, color = ~factor(n), xlab = expression(mu)) + 
+  labs(
+    y = expression(pi(mu)),
+    x = expression(mu)
+  ) + 
+  scale_color_colorblind("n") +
+  scale_linetype("n") + 
+  scale_x_continuous(limits = c(2, 8), expand = expansion(mult = c(0, 0))) +
+  scale_y_continuous(expand = expansion(mult = c(0.01, 0.02))) 
+```
+
+## 
+
+**Example:** Let $Y_i \sim N(\mu,52)$. We wish to test $H_0: \mu = 7$ vs. $H_A:\mu>7$ at the $\alpha=0.05$ level. What is the smallest sample size such that the test has power at least .80 when $\mu=8$?
