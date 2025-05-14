@@ -39,8 +39,9 @@ Day16: [handout](/notes/16-bootstrap-t/notes16-h.pdf) | [R activity](/notes/16-b
 
 Day17: [handout](/notes/17-two-sample-ci/notes17.pdf) | [R activity](/notes/17-two-sample-ci/17-activity.html) | [slides](/slides/17/slides17.html) 
 
-Day17: [handout](/notes/18-intro-to-ht/notes18.pdf) | 
+Day18: [handout](/notes/18-intro-to-ht/notes18.pdf) | 
 
+Day19: [handout](/notes/19-errors-power/notes19.pdf) | [slides](/slides/19/slides19.html)
 
 # Other Resources and Readings
 
