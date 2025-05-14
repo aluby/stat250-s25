@@ -1,0 +1,175 @@
+---
+title: "19: Errors + Power"
+author: "Prof Amanda Luby"
+subtitle: "Stat250 S25"
+callout-appearance: minimal
+knitr:
+    opts_chunk: 
+      dev: "ragg_png"
+      echo: false
+      warning: false
+      message: false
+format:
+  pdf:
+    include-in-header: 
+       - "../preamble.tex"
+    toc: false
+    number-sections: true
+    colorlinks: true
+    geometry:
+      - top=1in
+      - left=1in
+      - right=1in
+      - bottom=1in
+      - heightrounded
+    mainfont: "Linux Libertine"
+    sansfont: "Linux Libertine"
+    mathfont: "Libertinus Math"
+    monofont: "Monaco"
+fontsize: 11pt
+---
+
+```{r}
+library(tidyverse)
+library(ggformula)
+library(ggthemes)
+library(knitr)
+library(mosaic)
+library(patchwork)
+library(palmerpenguins)
+library(ggridges)
+theme_set(theme_minimal())
+```
+
+
+**Example:** A high school was chosen to participate in the evaluation of a new geometry and algebra curriculum. In the recent past, the school’s students were considered “typical”, receiving scores on standardized tests that were very close to the nationwide average. In the year of the study, 86 sophomores were randomly selected to participate in a special set of classes that integrated geometry and algebra. Those students averaged 502 on the SAT-I math exam; the nationwide average was 494 with a standard deviation of 124.  
+
+Administrator A thinks that an average above 500 indicates a big enough improvement to warrant a change in curriculum, but Administrator B thinks that the average should be above 600. If there was actually no improvement, what's the probability we come to the wrong conclusion under Adminstrator A and B's cutoffs? 
+
+\vspace{4in}
+
+**Decision Rule** 
+
+\vspace{1in}
+
+::: callout-note
+## Critical Region
+
+\vspace{1in}
+:::
+
+**Mapping to Z-scores:** 
+
+\vspace{1.5in}
+
+
+**Setting a significance level:** 
+
+\vspace{1.5in}
+
+# Types of Errors
+
+In any hypothesis test procedure, there are two ways we can be wrong: we can (1) conclude $H_0$ is true when $H_1$ is actually true, or we can (2) conclude $H_0$ is false when $H_0$ is actually true. 
+
+|                       | $H_0$ True   | $H_1$ True    |
+|-----------------------|--------------|---------------|
+| Reject $H_0$          | Type I Error | Correct       |
+| Fail to reject $H_0$  | Correct      | Type II Error |
+
+
+\vspace{2in}
+
+::: callout-note
+## Power 
+
+\vspace{1in}
+:::
+
+**Example:** If the true $\mu$ in the Math curriculum example is 498 (so $H_0$ is false), what is the power of the test of Administrator A? What if true $\mu$ is 510? 
+
+\vspace{2in}
+
+# Power Function
+
+::: callout-note
+## Power Function
+
+\vspace{1in}
+:::
+
+*Note:* What does an ideal power function look like?
+
+- if $\theta = \theta_0$
+
+- if $\theta \in \Omega_A$
+
+\vspace{1in}
+
+**Example:** Math Curriculum Example
+
+```{r}
+#| fig-width: 4
+#| fig-height: 2
+
+
+expand_grid(
+  mu = seq(425, 650, by = 1),
+  c = c(500, 600)
+) %>%
+  mutate(
+    power = 1-pnorm((c-mu)/(124/sqrt(80)))
+  ) %>%
+  ggplot(aes(x = mu, y = power, linetype = as.factor(c))) +
+  geom_line() + 
+  labs(
+    linetype = "Decision Rule", 
+    y = expression(pi(mu)),
+    x = expression(mu)
+  )
+```
+
+**Example:** One sample t-test for $H_0: \mu = 5$ vs. $H_a: \mu \ne 5$ (assuming $s=2$). 
+
+```{r}
+#| echo: false
+#| fig-width: 4
+#| fig-height: 2
+#| warning: false
+mu_grid <- seq(5-3*2, 5+3*2, by = 0.05)
+
+
+calc_power <- function(null = 5, truth, n = 15, s = 2, alpha = 0.05) {
+  quant <- qt(1 - alpha/2, df = n - 1)
+  se <- s / sqrt(n)
+  cr_low <- (null - quant * se - truth) / se
+  cr_high <- (null + quant * se - truth) / se
+  
+  pt(cr_low, df = n - 1) + 1 - pt(cr_high, df = n - 1)
+}
+
+calc_power <- Vectorize(calc_power, vectorize.args = "truth")
+
+tpower15 <- calc_power(truth = mu_grid, n = 15)
+tpower30 <- calc_power(truth = mu_grid, n = 30)
+tpower60 <- calc_power(truth = mu_grid, n = 60)
+
+tpower_df <- bind_rows(
+  data.frame(n = 15, power = tpower15, mu = mu_grid),
+  data.frame(n = 30, power = tpower30, mu = mu_grid),
+  data.frame(n = 60, power = tpower60, mu = mu_grid),
+)
+
+gf_line(power ~ mu, data = tpower_df, linetype = ~factor(n), color = ~factor(n), xlab = expression(mu)) + 
+  labs(
+    y = expression(pi(mu)),
+    x = expression(mu)
+  ) + 
+  scale_color_colorblind("n") +
+  scale_linetype("n") +
+  scale_x_continuous(limits = c(2, 8), expand = expansion(mult = c(0, 0))) +
+  scale_y_continuous(expand = expansion(mult = c(0.01, 0.02))) 
+```
+
+
+**Example:** Let $Y_i \sim N(μ,52)$. We wish to test $H_0: \mu = 7$ vs. $H_A:μ>7$ at the $α=0.05$ level. What is the smallest sample size such that the test has power at least .80 when $μ=8$?
+
