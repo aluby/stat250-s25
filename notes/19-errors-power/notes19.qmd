@@ -52,16 +52,15 @@ Administrator A thinks that an average above 500 indicates a big enough improvem
 
 \vspace{1in}
 
+**Mapping to Z-scores:** 
+
+\vspace{1.5in}
+
 ::: callout-note
 ## Critical Region
 
 \vspace{1in}
 :::
-
-**Mapping to Z-scores:** 
-
-\vspace{1.5in}
-
 
 **Setting a significance level:** 
 
@@ -128,7 +127,7 @@ expand_grid(
   )
 ```
 
-**Example:** One sample t-test for $H_0: \mu = 5$ vs. $H_a: \mu \ne 5$ (assuming $s=2$). 
+**Example:** One sample t-test for $H_0: \mu = 5$ vs. $H_a: \mu \ne 5$ at the $\alpha = .05$ level (assuming $s=2$). 
 
 ```{r}
 #| echo: false
