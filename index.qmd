@@ -47,9 +47,9 @@ Day20: [handout](/notes/20-ht-ci-connection/notes20.pdf)
 
 # Project
 
-[Proposal Info and Rubric](/project/project.pdf) 
+[Proposal Info and Rubric](/notes/project/project.pdf) 
 
-[Project Topic Ideas](/project/proj-ideas.html) (*Note:* Will continue to be updated) 
+[Project Topic Ideas](/notes/project/proj-ideas.html) (*Note:* Will continue to be updated) 
 
 
 # Other Resources and Readings

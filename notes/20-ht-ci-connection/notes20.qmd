@@ -65,6 +65,8 @@ Let's pretend we run an A/B test on 200 users, showing links in \textcolor{Cornf
 \vspace{.25in}
 
 ```{r}
+#| echo: true
+
 prop.test(x = c(26, 22), n = c(26+74, 22+78), alternative = "two.sided", conf.level = .85)
 ```
 
@@ -72,10 +74,10 @@ prop.test(x = c(26, 22), n = c(26+74, 22+78), alternative = "two.sided", conf.le
 
 **Example:** Oops! These are the same 100 people on two different visits, with the order of the color assignment randomized. 
 
-|                                             | Clicked | Did Not Click |
+|                                             | \textcolor{CornflowerBlue}{Clicked} | \textcolor{CornflowerBlue}{Did Not Click} |
 |---------------------------------------------|---------|---------------|
-| \textcolor{CornflowerBlue}{Cornflower Blue} | 26      | 74            |
-| \textcolor{MidnightBlue}{Midnight Blue}     | 22      | 78            |
+| \textcolor{MidnightBlue}{Clicked}  | 12      | 10            |
+| \textcolor{MidnightBlue}{Did Not click}     | 14      | 64            |
 
 ::: callout-note
 ## McNemar's test for paired proportions
@@ -84,7 +86,9 @@ prop.test(x = c(26, 22), n = c(26+74, 22+78), alternative = "two.sided", conf.le
 :::
 
 ```{r}
-prop.test(22, 22+26, p = .5, conf.level = .85)
+#| echo: true
+
+prop.test(10, 24, p = .5, conf.level = .85)
 ```
 
 # Connection between Confidence Intervals and Hypothesis Tests
@@ -96,5 +100,6 @@ prop.test(22, 22+26, p = .5, conf.level = .85)
 \vspace{3in}
 
 ```{r}
-binom.test(22, 22+26, p = .5, conf.level = .85)
+#| echo: true
+binom.test(10, 24, p = .5, conf.level = .85)
 ```
