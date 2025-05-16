@@ -41,32 +41,60 @@ library(ggridges)
 theme_set(theme_minimal())
 ```
 
+**Example: A/B Testing** Online controlled experiments are a digital version of randomized controlled trials, where the designer randomly assigns participants to see a different version of a website. These are colloquially referred to as "A/B" tests. For example, Google famously tested "50 shades of blue" when determining which color to use for links in ads, where they showed users the same webpage, where the only difference was the color of blue used in a link. If more users clicked on the link for one shade of blue than another, they used that shade of blue. This experiment reportedly led to a \$200M increase in ad revenue (see *Why Google has 200m reasons to put engineers over designers* in **The Guardian**)
 
-**Example:** A/B tests, click-through rate. 
+Let's pretend we run an A/B test on 200 users, showing links in \textcolor{CornflowerBlue}{Cornflower Blue} or \textcolor{MidnightBlue}{Midnight Blue}. Since the stakes of making a mistake are not too high, we'll use $\alpha = .15$. 
+
+|                                             | Clicked | Did Not Click |
+|---------------------------------------------|---------|---------------|
+| \textcolor{CornflowerBlue}{Cornflower Blue} | 26      | 74            |
+| \textcolor{MidnightBlue}{Midnight Blue}     | 22      | 78            |
 
 # Two-sample proportion tests
 
-**Sample Statistic:** 
+**Sample Statistic:**
 
-**Test Statistic:** 
+\vspace{.25in}
 
-**Sampling distribution under $H_0$:**
+**Test Statistic:**
 
-`prop.test`
+\vspace{.25in}
+
+**Sampling distribution under** $H_0$:
+
+\vspace{.25in}
+
+```{r}
+prop.test(x = c(26, 22), n = c(26+74, 22+78), alternative = "two.sided", conf.level = .85)
+```
 
 ## Matched Pairs for Proportions
 
-**Example:** 
+**Example:** Oops! These are the same 100 people on two different visits, with the order of the color assignment randomized. 
+
+|                                             | Clicked | Did Not Click |
+|---------------------------------------------|---------|---------------|
+| \textcolor{CornflowerBlue}{Cornflower Blue} | 26      | 74            |
+| \textcolor{MidnightBlue}{Midnight Blue}     | 22      | 78            |
 
 ::: callout-note
 ## McNemar's test for paired proportions
 
 \vspace{2in}
-
 :::
+
+```{r}
+prop.test(22, 22+26, p = .5, conf.level = .85)
+```
 
 # Connection between Confidence Intervals and Hypothesis Tests
 
+\vspace{2in}
 
+**Inverting a hypothesis test** 
 
-**Inverting a hypothesis test** Exact binomial interval
+\vspace{3in}
+
+```{r}
+binom.test(22, 22+26, p = .5, conf.level = .85)
+```
