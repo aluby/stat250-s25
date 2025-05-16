@@ -1,0 +1,72 @@
+---
+title: "20: Two Sample Proportion Tests + Connection to Confidence Intervals"
+author: "Prof Amanda Luby"
+subtitle: "Stat250 S25"
+callout-appearance: minimal
+knitr:
+    opts_chunk: 
+      dev: "ragg_png"
+      echo: false
+      warning: false
+      message: false
+format:
+  pdf:
+    include-in-header: 
+       - "../preamble.tex"
+    toc: false
+    number-sections: true
+    colorlinks: true
+    geometry:
+      - top=1in
+      - left=1in
+      - right=1in
+      - bottom=1in
+      - heightrounded
+    mainfont: "Linux Libertine"
+    sansfont: "Linux Libertine"
+    mathfont: "Libertinus Math"
+    monofont: "Monaco"
+fontsize: 11pt
+---
+
+```{r}
+library(tidyverse)
+library(ggformula)
+library(ggthemes)
+library(knitr)
+library(mosaic)
+library(patchwork)
+library(palmerpenguins)
+library(ggridges)
+theme_set(theme_minimal())
+```
+
+
+**Example:** A/B tests, click-through rate. 
+
+# Two-sample proportion tests
+
+**Sample Statistic:** 
+
+**Test Statistic:** 
+
+**Sampling distribution under $H_0$:**
+
+`prop.test`
+
+## Matched Pairs for Proportions
+
+**Example:** 
+
+::: callout-note
+## McNemar's test for paired proportions
+
+\vspace{2in}
+
+:::
+
+# Connection between Confidence Intervals and Hypothesis Tests
+
+
+
+**Inverting a hypothesis test** Exact binomial interval

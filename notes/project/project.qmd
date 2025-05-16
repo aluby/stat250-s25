@@ -1,0 +1,90 @@
+---
+title: "Course Project"
+subtitle: "Stat250 S25"
+callout-appearance: minimal
+knitr:
+    opts_chunk: 
+      dev: "ragg_png"
+      echo: false
+      warning: false
+      message: false
+format:
+  pdf:
+    include-in-header: 
+       - "../preamble.tex"
+    toc: false
+    number-sections: true
+    colorlinks: true
+    geometry:
+      - top=1in
+      - left=1in
+      - right=1in
+      - bottom=1in
+      - heightrounded
+    mainfont: "Linux Libertine"
+    sansfont: "Linux Libertine"
+    mathfont: "Libertinus Math"
+    monofont: "Monaco"
+fontsize: 11pt
+---
+
+```{r}
+library(tidyverse)
+library(ggformula)
+library(knitr)
+library(mosaic)
+library(patchwork)
+data("penguins", package = "palmerpenguins")
+gentoo <- filter(penguins, species == "Gentoo")
+theme_set(theme_minimal())
+```
+
+The Stat250 course project is going to be an investigation into a topic related to class. This can be topics from the textbook we didn't get a chance to cover or more advanced topics that are related to things we talked about in class. You can work on your own or with a partner. 
+
+Your final project should include: 
+
+  (a) An introduction to the topic, brief history, and how it fits into the material that we learned in this course.
+  
+  (b) At least one of: 
+   - A detailed, step-by-step mathematical derivation or proof. It is OK to reference existing proofs, but yours should include more explanation than one in, e.g., a textbook. 
+   - An illustration using simulation 
+   - An example using real data. 
+  
+Note that not all topics will be appropriate for all 3 options. I anticipate most A's on the project to include two of the above, or go "above and beyond" in other ways. If you choose to use an application or simulation, your project should still engage deeply with the theoretical aspects of the topic. (E.g. It's not enough to compute a confidence interval for a given question, but you could explore different ways to compute confidence intervals, their coverage properties under different assumptions, and how/whether your conclusions would change.)
+
+Your project proposal, due Fri of Week 8, should include the following: 
+
+ 1. Whether it will be an individual or partner project
+ 2. The topic that you're going to dive into (see `topic-ideas` for some examples)
+ 3. The format you anticipate your project will take (e.g. paper, poster, slides, video, interactive document, etc.)
+ 4. At least 2 sources you plan to reference. I would like to see at least one non-textbook source, but this is not a hard requirement depending on your topic. To get started, I recommend our textbook, *Mathematical Statistics and Its Applications* by Larsen & Marx, *Mathematical Statistics & Data Analysis* by Rice, or *Probability and Statistics* by DeGroot and Schervish. I'm also happy to recommend sources once you have a rough idea of the topic you'd like to pursue. 
+ 
+
+# Format and presentation expectations: 
+
+## Paper
+
+Should be engaging and readable to a Stat250 audience; well-written; publication-ready (no typos, etc.). All equations should be typed, all graphs should have appropriate and readable labels. 3 (single-space) page limit without graphs, 4 pages with graphs. (If you need to go over this limit, you must decide which proofs and/or results belong in an appendix rather than the main text). 
+
+## Presentation/Slides
+
+Should be engaging for a Stat250 audience; well-written; publication-ready (no typos, etc.). All equations should be typed, all graphs should have appropriate and readable labels. Slides should *not* be text-heavy and presentation should be organized to tell a clear story. Maximum 10 slides. 
+
+## Other formats (blog post, dashboard, etc.)
+
+Should be engaging and readable to a Stat250 audience; publication-ready (no typos, etc.). All equations should be formatted, all graphs should have appropriate and readable labels. Code should run with no errors and methods should be fully explained throughout (you can assume familiarity with your chosen programming language). It is harder to quantify a “limit”, but it should take the reader no longer than 10-15 minutes to read through all of your content. 
+
+# Rubric
+
+Projects will be scored out of ten in each category; final score will be determined by weight as in the last column. Partial points/adjustments within each category are possible, this is to give you a rough idea of how project will be graded. 
+
+
+
+|                                                                      | 1                                                                                                      | 5                                                                                                                             | 10                                                                                                                                                       | Weight    |
+|----------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|-----------|
+| Demonstrates proficiency with Stat Inference course content | Final product does not make clear how the project is related to course content                         | Project is related to course content but final product does not integrate material into broader context of what we’ve covered | Project demonstrates a strong understanding of course material and it is very clear how topic fits in to broader context of Stat Inference      | x 3 |
+| Engages with a topic beyond what was covered in class  | Most of the final product could be done with material that was covered in class                        | Moderate engagement with additional content (e.g. summarized sources, replicated a simulation or analysis)                    | Deep engagement with additional content (e.g. proofs/simulations/analyses are not straight replications from sources; combines ideas from multiple sources, etc.) | x 3 |
+| Format and Presentation                                              | Substantial issues in meeting expectations                                                             | Meets most expectations                                                                                                       | Meets all expectations (defined in more detail for specific projects above)                                                                              | x 2 |
+| Followed proposal                                                    | Major changes between proposal and final project OR did not follow proposal feedback in final product  | Some changes between proposal and final project OR did not completely follow proposal feedback in final product               | Only minor changes between proposal and final project; followed all feedback                                                                             | x 1 |
+| Scope of project/Creativity                                          | Chose an inappropriate topic and/or format                                                                  | Chose an appropriate topic and format. Clearly spent extra time thinking about the format of the project    | Ambitious; goes above and beyond course material in content or format.                                                                                   | x 1  |
+ 

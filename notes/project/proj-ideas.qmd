@@ -1,0 +1,24 @@
+---
+title: "Ideas for final project"
+format: html
+---
+
+*Note:* I will continue to update this list as we go. If more than 2 groups propose the same project, I will ask you to coordinate to make sure your projects are different enough from one another. 
+
+# Potential Topics 
+
+1. Proof of Invariance of MLE
+2. Expectation-Maximization (E-M) algorithm 
+    - Introduction:
+    - Journal article: Meng, Xiao-Li and David van Dyk (1997). “[The EM Algorithm–An Old Folk-Song Sung to a Fast New Tune](http://www.jstor.org/stable/2346009)”. In: Journal of the Royal Statistical Society: Series B (Methodological)
+3. Proof of the Cramer-Rao Lower Bound
+4. Sufficiency and the Rao-Blackwell Theorem
+5. The Zero-Inflated Poisson model and how to estimate parameters
+6. Capture-Recapture Model and how to estimate parameters
+7. There are a number of heuristics for when we can use large-sample approximations (e.g. using the normal distribution instead of the T distribution, using the normal distribution instead of the binomial distribution, etc.). Show why these heuristics came to be and explore if/when they fail. 
+8. Research and provide a proof for the *Neyman-Pearson* Lemma, which states that the GLRT is at least as powerful as any other test with the same or smaller $\alpha$. 
+9. Research and provide a proof for *Wilks' Theorem*, which states that if $\lambda$ is the GLRT statistic, $-2 \ln \lambda$ is an approximate $\chi^2$ random variable. (Taylor expansion alert!!) 
+10. Sequential hypothesis testing
+
+
+You are also welcome to propose your own topic! I encourage you to talk with me before submitting a proposal to make sure that it is appropriate for the class. 
