@@ -43,6 +43,15 @@ Day18: [handout](/notes/18-intro-to-ht/notes18.pdf) |
 
 Day19: [handout](/notes/19-errors-power/notes19.pdf) | [slides](/slides/19/slides19.html)
 
+Day20: [handout](/notes/20-ht-ci-connection/notes20.pdf) 
+
+# Project
+
+[Proposal Info and Rubric](/notes/project/project.pdf) 
+
+[Project Topic Ideas](/notes/project/proj-ideas.html) (*Note:* Will continue to be updated) 
+
+
 # Other Resources and Readings
 
 - [R Basics](readings/r-basics.html)

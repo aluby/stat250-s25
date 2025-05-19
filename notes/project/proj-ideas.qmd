@@ -8,17 +8,22 @@ format: html
 # Potential Topics 
 
 1. Proof of Invariance of MLE
+    - Introduction: Chihara & Hesterberg 6.3.5
+    - Journal article: Zehna, Peter (1966) ["Invariance of Maximum Likelihood Estimators"](https://www.jstor.org/stable/2238750?seq=1)
 2. Expectation-Maximization (E-M) algorithm 
-    - Introduction:
+    - Introduction: Chihara & Hesterberg 13.8
     - Journal article: Meng, Xiao-Li and David van Dyk (1997). “[The EM Algorithm–An Old Folk-Song Sung to a Fast New Tune](http://www.jstor.org/stable/2346009)”. In: Journal of the Royal Statistical Society: Series B (Methodological)
 3. Proof of the Cramer-Rao Lower Bound
 4. Sufficiency and the Rao-Blackwell Theorem
+    - Introduction: Chihara & Hesterberg [online supplemental materials](https://github.com/lchihara/MathStatsResamplingR/blob/main/Edition3/Chapters/c06_Supplement.pdf) 
 5. The Zero-Inflated Poisson model and how to estimate parameters
 6. Capture-Recapture Model and how to estimate parameters
+7. Sequential Tests/Optional Stopping for Hypothesis testing
+    - Journal article: Larsen et al 2024 ["Statistical Challenges in Online Controlled Experiments: A Review of A/B Testing Methodology"](https://www.tandfonline.com/doi/full/10.1080/00031305.2023.2257237#d1e3919) In: *The American Statistician*
+    - Journal article: Wald 1945 ["Sequential Tests of Statistical Hypotheses"](https://projecteuclid.org/journals/annals-of-mathematical-statistics/volume-16/issue-2/Sequential-Tests-of-Statistical-Hypotheses/10.1214/aoms/1177731118.full) in *Annals of Mathematical Statistics*
 7. There are a number of heuristics for when we can use large-sample approximations (e.g. using the normal distribution instead of the T distribution, using the normal distribution instead of the binomial distribution, etc.). Show why these heuristics came to be and explore if/when they fail. 
-8. Research and provide a proof for the *Neyman-Pearson* Lemma, which states that the GLRT is at least as powerful as any other test with the same or smaller $\alpha$. 
-9. Research and provide a proof for *Wilks' Theorem*, which states that if $\lambda$ is the GLRT statistic, $-2 \ln \lambda$ is an approximate $\chi^2$ random variable. (Taylor expansion alert!!) 
-10. Sequential hypothesis testing
-
+8. Research and provide a proof for the **Neyman-Pearson** Lemma, which states that the GLRT is at least as powerful as any other test with the same or smaller $\alpha$. 
+9. Research and provide a proof for **Wilks' Theorem**, which states that if $\lambda$ is the GLRT statistic, $-2 \ln \lambda$ is an approximate $\chi^2$ random variable. (Taylor expansion alert!!) 
+10. Estimation for a Mixture of Normal Distributions
 
 You are also welcome to propose your own topic! I encourage you to talk with me before submitting a proposal to make sure that it is appropriate for the class. 
