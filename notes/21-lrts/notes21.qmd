@@ -41,7 +41,7 @@ library(ggridges)
 theme_set(theme_minimal())
 ```
 
-Most of the inference that we've covered so far 
+Most of the inference that we've covered so far has been for limited settings (e.g. binomial or normal data) or based on simulation (e.g. bootstrap). Today, we're going to talk about some of the theoretical underpinnings for setting up more complicated tests.
 
 **Example:** Suppose we observe $X_1, ..., X_9 \sim Exp(\theta)$ and are interested in testing $H_0: \theta = 9$ against $H_A: \theta = 10$. 
 
