@@ -1,0 +1,125 @@
+---
+title: "21: Likelihood Ratio Tests"
+author: "Prof Amanda Luby"
+subtitle: "Stat250 S25"
+callout-appearance: minimal
+knitr:
+    opts_chunk: 
+      dev: "ragg_png"
+      echo: false
+      warning: false
+      message: false
+format:
+  pdf:
+    include-in-header: 
+       - "../preamble.tex"
+    toc: false
+    number-sections: true
+    colorlinks: true
+    geometry:
+      - top=1in
+      - left=1in
+      - right=1in
+      - bottom=1in
+      - heightrounded
+    mainfont: "Linux Libertine"
+    sansfont: "Linux Libertine"
+    mathfont: "Libertinus Math"
+    monofont: "Monaco"
+fontsize: 11pt
+---
+
+```{r}
+library(tidyverse)
+library(ggformula)
+library(ggthemes)
+library(knitr)
+library(mosaic)
+library(patchwork)
+library(palmerpenguins)
+library(ggridges)
+theme_set(theme_minimal())
+```
+
+Most of the inference that we've covered so far 
+
+**Example:** Suppose we observe $X_1, ..., X_9 \sim Exp(\theta)$ and are interested in testing $H_0: \theta = 9$ against $H_A: \theta = 10$. 
+
+\vspace{1in}
+
+```{r}
+#| fig-width: 4
+#| fig-height: 2
+results <- tibble(
+  h0 = numeric(1e4), 
+  ha = numeric(1e4)
+)
+for(i in 1:1e4){
+results$h0[i] <- sum(rexp(9, rate = 8))
+results$ha[i] <- sum(rexp(9, rate = 10))
+}
+
+results |>
+  pivot_longer(everything()) |> 
+  ggplot(aes(x = value, fill = name)) + 
+  geom_histogram(alpha = .7, col = "white", position = "identity") + 
+  scale_fill_viridis_d(end = .8, option = "plasma") + 
+  labs(
+    x = expression(sum(X[i])),
+    fill = "",
+    y = ""
+  )
+```
+
+::: callout-note
+## Likelihood Ratio Test Statistic
+
+\vspace{1in}
+:::
+
+\vspace{3in}
+
+::: callout-note
+## Neyman-Pearson Lemma
+
+\vspace{2in}
+:::
+
+## LRT for Composite Hypotheses
+
+::: callout-note
+## Likelihood Ratio Test Statistic
+
+\vspace{1in}
+:::
+
+**Example:** Suppose we observe $X_1, ..., X_9 \sim Exp(\theta)$ and are interested in testing $H_0: \theta \le 8$ against $H_A: \theta > 8$. 
+
+\pagebreak
+
+
+::: callout-note
+## Wilk's Theorem
+
+\vspace{1.5in}
+:::
+
+```{r}
+#| fig-width: 4
+#| fig-height: 2
+
+
+glrt <- numeric(1e4)
+
+for(i in 1:1e4){
+  x <- rexp(9, 11)
+  glrt[i] <- -2*log((8^9 * exp(-8*sum(x))) / ((9/sum(x))^9 *exp(-9)))
+}
+ggplot(tibble(glrt = glrt), aes(x = glrt)) +
+  geom_histogram(col = "white", aes(y = ..density..)) + 
+  stat_function(fun = dchisq, args = list(df = 2), color = "darkred", linewidth = 1) +
+  labs(
+    title = "Simulated GLRT T's compared to X(1)"
+  )
+
+```
