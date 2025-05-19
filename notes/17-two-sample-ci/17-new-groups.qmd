@@ -1,0 +1,56 @@
+---
+title: "New Groups Round 3"
+subtitle: "GROUP NAMES HERE:"
+date: "Stat250-S25"
+callout-appearance: minimal
+knitr:
+    opts_chunk: 
+      dev: "ragg_png"
+      echo: false
+      warning: false
+      message: false
+format:
+  pdf:
+    include-in-header: 
+       - "../preamble.tex"
+    toc: false
+    number-sections: true
+    colorlinks: true
+    geometry:
+      - top=1in
+      - left=1in
+      - right=1in
+      - bottom=1in
+      - heightrounded
+fontfamily: libertine
+fontsize: 11pt
+---
+
+```{r, echo = FALSE}
+library(tidyverse)
+library(Sleuth3)
+library(mosaic)
+library(infer)
+```
+
+Please discuss the following questions before you get started:
+
+1.  Introduce yourselves if you haven't met yet!
+2.  What are some things that have gone well in your previous groups
+3.  What are some things that have *not* gone well in your previous groups
+
+**List three group expectations here:**
+
+\vspace{2in}
+
+And fill in this table with your simulation results:
+
+|   | Bell Shaped | Short Tailed | Skewed Left | Skewed Right | One left skewed, one right skewed |
+|----|----|----|----|----|----|
+|  |  |  |  |  |  |
+| n=10 |  |  |  |  |  |
+|  |  |  |  |  |  |
+| n=30 |  |  |  |  |  |
+|  |  |  |  |  |  |
+| n=100 |  |  |  |  |  |
+|  |  |  |  |  |  |

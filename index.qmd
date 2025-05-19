@@ -45,6 +45,8 @@ Day19: [handout](/notes/19-errors-power/notes19.pdf) | [slides](/slides/19/slide
 
 Day20: [handout](/notes/20-ht-ci-connection/notes20.pdf) 
 
+Day21: [handout](/notes/21-lrts/notes21.pdf) 
+
 # Project
 
 [Proposal Info and Rubric](/notes/project/project.pdf) 

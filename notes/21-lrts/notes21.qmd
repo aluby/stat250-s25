@@ -55,8 +55,8 @@ results <- tibble(
   ha = numeric(1e4)
 )
 for(i in 1:1e4){
-results$h0[i] <- sum(rexp(9, rate = 8))
-results$ha[i] <- sum(rexp(9, rate = 10))
+results$h0[i] <- 9/sum(rexp(9, rate = 8))
+results$ha[i] <- 9/sum(rexp(9, rate = 10))
 }
 
 results |>
@@ -85,17 +85,21 @@ results |>
 \vspace{2in}
 :::
 
+**Example:** Consider a sequence of $n$ independent Bernoulli random variables $X_1, ..., X_n$. We are interested in the most powerful test for $H_0: p = .4$ versus $H_A: p = .3$. Derive the form of the rejection region for this test directly. How would you define an $\alpha$ level test in this case?
+
+\pagebreak 
+
 ## LRT for Composite Hypotheses
 
 ::: callout-note
-## Likelihood Ratio Test Statistic
+## Generalized Likelihood Ratio Test Statistic
 
 \vspace{1in}
 :::
 
 **Example:** Suppose we observe $X_1, ..., X_9 \sim Exp(\theta)$ and are interested in testing $H_0: \theta \le 8$ against $H_A: \theta > 8$. 
 
-\pagebreak
+\vspace{4.25in}
 
 
 ::: callout-note
@@ -123,3 +127,6 @@ ggplot(tibble(glrt = glrt), aes(x = glrt)) +
   )
 
 ```
+
+
+**Example:** Consider a sequence of $n$ independent Bernoulli random variables $X_1, ..., X_n$. We are interested in the most powerful test for $H_0: p = .4$ versus $H_A: p < .4$. Derive the form of the rejection region for this test directly. How would you define an $\alpha$ level test in this case?
