@@ -30,5 +30,7 @@ format: html
 10. Estimation for a Mixture of Normal Distributions
 11. Research and summarize the history of the "p-value"
     - [Before p < 0.05 to Beyond p < 0.05: Using History to Contextualize p-Values and Significance Testing](https://www.tandfonline.com/doi/full/10.1080/00031305.2018.1537891?src=exp-tr#abstract) in: *The American Statistician*
+12. Multiple testing and the distribution of p-values in published studies
+    - [The distribution of P-values in medical research articles suggested selective reporting associated with statistical significance](https://www.sciencedirect.com/science/article/pii/S0895435616308381?via%3Dihub)
 
 You are also welcome to propose your own topic! I encourage you to talk with me before submitting a proposal to make sure that it is appropriate for the class. 

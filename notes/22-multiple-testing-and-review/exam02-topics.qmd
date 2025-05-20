@@ -1,0 +1,189 @@
+---
+title: "Exam 02 Review"
+author: "Prof Amanda Luby"
+subtitle: "Stat250 S25"
+callout-appearance: minimal
+knitr:
+    opts_chunk: 
+      dev: "ragg_png"
+      echo: false
+      warning: false
+      message: false
+format:
+  pdf:
+    include-in-header: 
+       - "../preamble.tex"
+    toc: false
+    number-sections: false
+    colorlinks: true
+    geometry:
+      - top=1in
+      - left=1in
+      - right=1in
+      - bottom=1in
+      - heightrounded
+    mainfont: "Linux Libertine"
+    sansfont: "Linux Libertine"
+    mathfont: "Libertinus Math"
+    monofont: "Monaco"
+fontsize: 11pt
+---
+
+```{r setup, include = FALSE}
+library(tidyverse)
+library(ggformula)
+library(ggthemes)
+library(knitr)
+library(mosaic)
+library(patchwork)
+library(palmerpenguins)
+library(ggridges)
+theme_set(theme_minimal())
+```
+
+Exam II will be held in class Friday of Week 8. The exam is closed book, but you can use the formula sheet provided by me along with one side of one notecard of your own notes. You will also have access to a calculator.
+
+To study, I recommend carefully going through class notes, homework problems, and this handout. After reviewing those materials, I recommend solving lots and lots of practice problems (e.g. the problems in the textbook with answers in the back). 
+
+
+# General Topics
+
+## Confidence Intervals
+
+- Interpret confidence intervals in the context of the problem
+- State the conclusion of a hypothesis test based on a confidence interval
+- Know the definition of a confidence interval and the coverage properties
+
+### Using the pivotal method 
+
+- Know the definition of a pivotal quantity
+- Set up a probability statement that can be used to derive a CI from a pivot
+- Derive CI's for population parameters using pivotal quantities
+
+**Example question:** Suppose that $X_1, ..., X_n$ form a random sample from an exponential distribution with mean $1/\lambda$. The sum of iid Exp($\lambda$) random variables is Gamma($n, \lambda$). Based on this fact, it can be shown that $\frac{\lambda}{2} \sum X_i \sim \text{Gamma}(n, \frac{1}{2})$. Explain why $\frac{\lambda}{2} \sum X_i$ is a pivotal quantity and then derive a formula for a $(1-\alpha)$ confidence interval for $\lambda$. 
+
+### Using a large-sample approximation
+
+- Write down appropriate R code to find quantiles from the $t$ and $z$ distributions 
+- Know what standard error and margin of error refer to 
+- Check necessary conditions to use a large-sample approximation
+- Read and interpret R output
+
+**Example question:** 20 subjects are enrolled in a weight loss program, and each person's weight loss over one month was recorded (in pounds). Mean weight loss was 4.5 pounds with a sample standard deviation of 6.3 pounds. Assume that each observation comes from a normal distribution with unknown mean $\mu$ and unknown variance $\sigma^2$. It may help to know that:
+
+```{r} 
+#| echo: true
+
+qt(.05, df = 19)
+qt(.975, df = 19)
+qt(.05, df = 25)
+qt(.975, df = 25)
+```
+
+(a) Find a 95% confidence interval for $\mu$
+(b) What assumptions/conditions must hold for the interval in (a) to be valid? 
+
+**Example question:** A major credit card company is planning a new offer for their current card holders.
+To test the effectiveness of the campaign, the company sent out offers to a random sample of 50,000 cardholders. Of those, 1184 registered for the new offer. If the acceptance rate is 2% or less, the campaign won’t
+be worth the expense.
+
+Consider the below R output to help you answer this question
+
+```{r}
+#| echo: true
+
+
+prop.test(x = 1184, n = 50000, conf.level = 0.9, alternative = "less")$conf
+prop.test(x = 1184, n = 50000, conf.level = 0.9, alternative = "greater")$conf
+prop.test(x = 1184, n = 50000, conf.level = 0.9, alternative = "two.sided")$conf
+```
+
+
+(a) Which confidence interval is most useful in exploring whether the campaign is worth the expense? Justify your answer.
+(b) Will a 93% confidence interval be wider or narrower? How do you know?
+
+### Using bootstrap percentile or bootstrap t distributions
+
+- Explain when a bootstrap percentile or a bootstrap t might be more appropriate than a formula t interval
+- Interpret a given interval in context
+
+**Example question:** The histogram below displays a random sample of 98 exam scores for graduating seniors in a certain country. We are interested in building a 90% confidence interval for $\mu$, the average exam score. 
+
+(a) If we built a bootstrap percentile interval, formula-t confidence interval, and bootstrap-t confidence interval, would you expect to see nearly identical results? Why or why not?
+(b) Which of the 3 intervals would you prefer in this scenario? Why? 
+
+```{r}
+#| fig-width: 4
+#| fig-height: 2
+
+
+set.seed(0520)
+ggplot() + 
+  geom_histogram(aes(x = rexp(98, .5)), col = "white", alpha = .8) +
+  labs(x = "Exam score")
+```
+
+
+## Hypothesis Testing
+
+- Interpret results from a testing procedure in context
+- Know whether a confidence interval will contain a particular value based on the results from a hypothesis test
+- Know all the basic hypothesis testing ideas from Ch3 (test statistic, p-value, statistical significance)
+- State null and alternative hypotheses
+
+### Large sample approximations
+
+- For a given one-sample, two-sample, or paired testing situation, calculate the appropriate test statistic and associated p-value
+- Use proper notation for population parameters
+- Read and interpret R output 
+- Provide R code to find p-values for a given test statistic
+- Specify the null distribution 
+- Check conditions to apply an inferential procedure
+
+**Example Question:** Subjects in the HELP (Health Evaluation and Linkage to Primary Care) study were
+asked about their depressive symptoms (CESD score) and homeless status (housed vs. homeless). Higher
+scores on the cesd measure indicate more depressive symptoms.
+
+| homeless | min  | Q1    | median | Q3    | max   | mean  | sd    | n   |
+|----------|------|-------|--------|-------|-------|-------|-------|-----|
+| homeless | 1.00 | 28.00 | 36.00  | 41.00 | 60.00 | 34.02 | 12.32 | 209 |
+| housed   | 3.00 | 23.00 | 32.00  | 40.00 | 58.00 | 31.84 | 12.62 | 244 |
+
+(a) State the appropriate hypotheses to test whether there is a true difference between the CESD score
+for the groups based on homeless status.
+(b) Calculate the appropriate test statistic (plug in completely, but you do not need to simplify).
+(c) Explain how you would find the p-value for this test. Note that df = 443.365. (A randomly selected stat250 student should be able to follow your explanation and perform the calculation)
+
+### Exact tests
+
+- Given a data distribution and $\alpha$ level, find an appropriate rejection region
+- Set up a likelihood ratio test or generalized likelihood ratio test and derive the form of a rejection region
+- State why the LRT or GLRT test is desirable
+
+**Example question:** Suppose $X_1, ..., X_10$ are a random sample from a population with exponential distribution with $\lambda > 0$. 
+
+(a) Derive the most powerful test for $H_0: \lambda = 7$ against $H_A: \lambda = 5$
+(b) If we instead want to test $H_0: \lambda \ge 7$ against $H_A: \lambda < 7$, explain how the most powerful test statistic would change
+
+### Errors and Power
+
+- Know the definition for Type I error, Type II error, and power
+- Identify/explain what a Type I and Type II error is in the context of the problem
+- Given a type I error and hypotheses, define the rejection region in terms of the sample statistic or test statistic
+- Given a testing setup and a value of the parameter in $H_A$, calculate the type II error rate and power of the test
+- Given a testing setup, type I error rate, and desired power; determine the necessary sample size
+- Read a power curve and explain how it was found
+
+
+**Example question:** The time between arrivals are generally known to follow an exponential distribution. Let $X_i$ be the time between arrivals at the TSA pre-check line at MSP Airport. Assume that $X_1, ..., X_5$ are a random sample from an exponential distribution with unknown parameter $\lambda$. We wish to test $H_0: \lambda \ge .5$ against $H_A: \lambda < .5$ using the test statistic $Y = \sum X_i$. We will reject $H_0$ if $Y > c$, where $c$ is chosen to give $\alpha = .05$. 
+
+(a) In this setting, $c=18.3$. Show how this was found. 
+(b) Find the power of the test when $\lambda = .25$. 
+
+### Multiple Testing
+
+- Calculate the probability of making at least one type I error in a series of $k$ tests
+- Apply the Sidak correction and Bonferroni correction 
+
+
+

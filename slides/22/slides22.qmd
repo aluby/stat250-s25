@@ -1,0 +1,261 @@
+---
+title: "Multiple Testing"
+subtitle: "Day 22"
+title-slide-attributes:
+  data-background-gradient: "linear-gradient(to right, #46337e, #440154)"
+  data-slide-number: none
+author: "Prof Amanda Luby"
+format: 
+  revealjs:
+    incremental: false
+editor: 
+  markdown: 
+    wrap: 72
+---
+
+```{r setup}
+#| include: false
+
+library(tidyverse)
+library(countdown)
+
+library(ggformula)
+library(openintro)
+library(patchwork)
+library(fivethirtyeight)
+library(dplyr)
+library(tidyr)
+library(fontawesome)
+library(gt)
+
+library(gridExtra)
+library(tidyverse)
+library(knitr)
+library(mosaic)
+library(infer)
+library(kableExtra)
+library(latex2exp)
+
+library(plotly)
+library(ggthemes)
+
+# #440154
+knitr::opts_chunk$set(echo = TRUE,
+                  message = FALSE,
+                  warning = FALSE)
+
+slides_theme = theme_minimal(base_family = "serif", base_size = 24) +
+  theme(plot.background = element_rect(fill = "#f0f1eb", colour = NA))
+  
+
+theme_set(slides_theme)
+```
+
+## Is there such a thing as "Extrasensory Perception" (ESP)? 
+
+
+
+![](zener.png)
+
+. . . 
+
+Idea: subjects draw a card at random and telepathically communicate this to someone who then guesses the symbol
+
+. . . 
+
+Let's say we run this experiment with 14 subjects and 3 get the answer right.
+
+## On your own...
+
+Write out the *population parameter*, *sample statistic*, $H_0$ and $H_A$.
+
+- Population Parameter: $p$, the proportion of correctly guessed cards *in the population*
+- Sample Statistic: $\hat{p}$, the proportion of correctly guessed cards *in our sample* (3/14)
+- $H_0: p = .2$
+- $H_A: p > .2$
+
+
+## Results
+
+```{r}
+prop.test(3, 14, p = .2)
+```
+
+## Oops! I meant that there were 1400 subjects and 300 got the answer right
+
+. . . 
+
+```{r}
+prop.test(300, 1400, p = .2)
+```
+
+## Oops! I meant that there were 14000 subjects and 3000 got the answer right
+
+. . . 
+
+```{r}
+prop.test(3000, 14000, p = .2)
+```
+
+# Significance $\ne$ Effect Size
+
+## Sample Size has a *huge* impact on "significance"
+
+. . . 
+
+With *small samples*, even large effects might not be statistically significant.
+
+. . . 
+
+With *large samples*, even very small effects can be statistically significant. 
+
+. . . 
+
+This is one reason why some people prefer "discernible" to "significant" 
+
+# Multiple Testing 
+
+## 
+
+```{r}
+#| echo: false
+knitr::include_graphics("../img/xkcd1.png")
+```
+
+## 
+
+```{r}
+#| echo: false
+knitr::include_graphics("../img/xkcd2.png")
+```
+
+## 
+
+```{r}
+#| echo: false
+knitr::include_graphics("../img/xkcd3.png")
+```
+
+## 
+
+```{r}
+#| echo: false
+knitr::include_graphics("../img/xkcd4.png")
+```
+
+
+## Multiple Testing 
+
+Whenever you do a **single** hypothesis test, your Type I Error rate is $\alpha$. If we do 10 hypothesis tests, what is the probability we make **at least one** Type I Error? 
+
+## 
+
+The probability of making at least Type I error among $k$ tests is $1-(1-\alpha)^k$
+
+. . . 
+
+If you do 10 tests at the $\alpha = .05$ level, your overall Type I Error rate is 40%
+
+. . . 
+
+If you do 100 tests at the $\alpha = .05$ level, your overall Type I Error rate is 99%!
+
+. . . 
+
+Need to do a *multiple testing correction* in these cases. Plan the number of tests in advance and adjust your original $\alpha$ accordingly
+
+## False Discovery Rate
+
+::: callout-note
+## False Discovery Rate
+<br>
+<br>
+<br>
+::: 
+
+Idea: if we have a desired FDR = $\alpha^*$, what $\alpha$ do we need for each hypothesis test?
+
+## Sidak Correction
+
+## Bonferroni Correction
+
+# Publication Bias 
+
+## 
+
+A 2017 paper in the [Journal of Clinical Epidemiology](https://www.sciencedirect.com/science/article/pii/S0895435616308381?via%3Dihub) looked at published p-values in 120 medical research articles published in top medical journals in 2016. 
+
+Theoretically, the distribution of p-values should be *uniform* under $H_0$: 
+
+. . . 
+
+
+```{r}
+#| echo: false
+#| fig-height: 4
+#| fig-width: 8
+tibble(
+  label = c("[1,2)", "[2,3)", "[3,4)", "[4,5)", "[5,6)", "[6,7)", "[7,8)", "[8,9)"),
+  betterlab = c(".01-.02", ".02-.03", ".03-.04", ".04-.05", ".05-.06", ".06-.07", ".07-.08", ".08-.09"),
+  count = c(80, 82, 84, 76, 75, 81, 80, 85)
+) %>%
+  ggplot(aes(x = betterlab, y = count)) + 
+  geom_col() + 
+  labs(x = "")
+```
+
+## 
+
+Under $H_A$, the distribution of p-values should be *monotonically increasing*:
+
+```{r}
+#| echo: false
+#| fig-height: 4
+#| fig-width: 8
+tibble(
+  label = c("[1,2)", "[2,3)", "[3,4)", "[4,5)", "[5,6)", "[6,7)", "[7,8)", "[8,9)"),
+  betterlab = c(".01-.02", ".02-.03", ".03-.04", ".04-.05", ".05-.06", ".06-.07", ".07-.08", ".08-.09"),
+  count = c(10, 12, 30, 40, 60, 80, 85, 100)
+) %>%
+  ggplot(aes(x = betterlab, y = count)) + 
+  geom_col() + 
+  labs(x = "")
+```
+
+## {background-color="white"}
+
+Instead, the distribution looked like: 
+
+. . . 
+
+```{r}
+#| echo: false
+knitr::include_graphics("https://ars.els-cdn.com/content/image/1-s2.0-S0895435616308381-gr2.jpg")
+```
+
+## {background-color="white"}
+
+```{r}
+#| echo: false
+knitr::include_graphics("../img/asa-statement.png")
+```
+
+
+## Six principles from the ASA statement
+
+1. P-values can indicate how incompatible the data are with a specified statistical model.
+2. P-values do not measure the probability that the studied hypothesis is true, or the probability that the data were produced by random chance alone.
+3. Scientific conclusions and business or policy decisions should not be based only on whether a p-value passes a specific threshold.
+4. Proper inference requires full reporting and transparency.
+5. A p-value, or statistical significance, does not measure the size of an effect or the importance of a result.
+6. By itself, a p-value does not provide a good measure of evidence regarding a model or hypothesis. 
+
+## {background-color="white"}
+
+43 articles and over 400 pages of opinions and suggestions for ways to move forward
+
+```{r}
+#| echo: false
+knitr::include_graphics("../img/AmStat.png")
+```
+
