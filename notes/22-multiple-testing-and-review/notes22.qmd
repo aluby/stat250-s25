@@ -41,7 +41,96 @@ library(ggridges)
 theme_set(theme_minimal())
 ```
 
-# Statistical Significance vs Practical Importance
+# Statistical significance vs practical importance
+
+**Example:** ESP with Zener cards
+
+$H_0:$
+
+$H_A:$
+
+| X   | N   | $\hat{p}$ | p-value |
+|-----|-----|-----------|---------|
+|     |     |           |         |
+|     |     |           |         |
+|     |     |           |         |
+
+**Takeaway:**
+
+\vspace{.5in}
 
 # Multiple Testing
 
+**Example:** If we do 10 level-$\alpha$ hypothesis tests, what is the probability we make at least one Type I Error?
+
+\vspace{2in}
+
+::: callout-note
+## Family-Wise Error Rate
+
+\vspace{1in}
+:::
+
+\pagebreak
+
+::: callout-note
+## Sidak Correction
+
+\vspace{1in}
+:::
+
+::: callout-note
+## Bonferroni Correction
+
+\vspace{1in}
+:::
+
+# Publication Bias
+
+```{r}
+#| echo: false
+#| fig-height: 2
+#| fig-width: 9
+p1 <- tibble(
+  label = c("[1,2)", "[2,3)", "[3,4)", "[4,5)", "[5,6)", "[6,7)", "[7,8)", "[8,9)"),
+  betterlab = c(".01-.02", ".02-.03", ".03-.04", ".04-.05", ".05-.06", ".06-.07", ".07-.08", ".08-.09"),
+  count = c(80, 82, 84, 76, 75, 81, 80, 85)
+) %>%
+  ggplot(aes(x = betterlab, y = count)) + 
+  geom_col() + 
+  labs(x = "")  + 
+  ylim(c(0,100))
+
+p2 <- tibble(
+  label = c("[1,2)", "[2,3)", "[3,4)", "[4,5)", "[5,6)", "[6,7)", "[7,8)", "[8,9)"),
+  betterlab = c(".01-.02", ".02-.03", ".03-.04", ".04-.05", ".05-.06", ".06-.07", ".07-.08", ".08-.09"),
+  count = c(10, 12, 30, 40, 60, 80, 85, 99)
+) %>%
+  ggplot(aes(x = betterlab, y = count)) + 
+  geom_col() + 
+  labs(x = "") + 
+  ylim(c(0,100))
+
+p3 <- tibble(
+  label = c("[1,2)", "[2,3)", "[3,4)", "[4,5)", "[5,6)", "[6,7)", "[7,8)", "[8,9)"),
+  betterlab = c(".01-.02", ".02-.03", ".03-.04", ".04-.05", ".05-.06", ".06-.07", ".07-.08", ".08-.09"),
+  count = c(0, 0, 0, 0, 0, 0, 0, 0)
+) %>%
+  ggplot(aes(x = betterlab, y = count)) + 
+  geom_col() + 
+  labs(x = "")  + 
+  ylim(c(0,100))
+
+p1 + p2 + p3
+```
+
+\vspace{1in}
+
+**Six principles from the ASA statement**
+
+1. P-values can indicate how incompatible the data are with a specified statistical model.
+2. P-values do not measure the probability that the studied hypothesis is true, or the probability that the data were produced by random chance alone.
+3. Scientific conclusions and business or policy decisions should not be based only on whether a p-value passes a specific threshold.
+4. Proper inference requires full reporting and transparency.
+5. A p-value, or statistical significance, does not measure the size of an effect or the importance of a result.
+6. By itself, a p-value does not provide a good measure of evidence regarding a model or hypothesis. 

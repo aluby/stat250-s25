@@ -7,7 +7,7 @@ title-slide-attributes:
 author: "Prof Amanda Luby"
 format: 
   revealjs:
-    incremental: false
+    incremental: true
 editor: 
   markdown: 
     wrap: 72
@@ -51,11 +51,11 @@ slides_theme = theme_minimal(base_family = "serif", base_size = 24) +
 theme_set(slides_theme)
 ```
 
-## Is there such a thing as "Extrasensory Perception" (ESP)? 
+## Is there such a thing as "Extrasensory Perception" (ESP)? {background-color="white"}
 
 
 
-![](zener.png)
+![](../img/zener.png)
 
 . . . 
 
@@ -65,13 +65,11 @@ Idea: subjects draw a card at random and telepathically communicate this to some
 
 Let's say we run this experiment with 14 subjects and 3 get the answer right.
 
-## On your own...
+## Testing setup
 
-Write out the *population parameter*, *sample statistic*, $H_0$ and $H_A$.
-
-- Population Parameter: $p$, the proportion of correctly guessed cards *in the population*
-- Sample Statistic: $\hat{p}$, the proportion of correctly guessed cards *in our sample* (3/14)
-- $H_0: p = .2$
+- Population Parameter: $p$, the proportion of correctly guessed cards in the population 
+- Sample Statistic: $\widehat{p}$, the proportion of correctly guessed cards in our sample (3/14)
+- $H_0: p = .2$ -- if there is no ESP, people choose cards according to random guessing
 - $H_A: p > .2$
 
 
@@ -79,6 +77,10 @@ Write out the *population parameter*, *sample statistic*, $H_0$ and $H_A$.
 
 ```{r}
 prop.test(3, 14, p = .2)
+```
+
+```{r}
+binom.test(3, 14, p = .2)
 ```
 
 ## Oops! I meant that there were 1400 subjects and 300 got the answer right
@@ -122,12 +124,20 @@ This is one reason why some people prefer "discernible" to "significant"
 knitr::include_graphics("../img/xkcd1.png")
 ```
 
+::: aside
+Source: [xkcd 882](https://xkcd.com/882/)
+:::
+
 ## 
 
 ```{r}
 #| echo: false
 knitr::include_graphics("../img/xkcd2.png")
 ```
+
+::: aside
+Source: [xkcd 882](https://xkcd.com/882/)
+:::
 
 ## 
 
@@ -136,6 +146,10 @@ knitr::include_graphics("../img/xkcd2.png")
 knitr::include_graphics("../img/xkcd3.png")
 ```
 
+::: aside
+Source: [xkcd 882](https://xkcd.com/882/)
+:::
+
 ## 
 
 ```{r}
@@ -143,6 +157,9 @@ knitr::include_graphics("../img/xkcd3.png")
 knitr::include_graphics("../img/xkcd4.png")
 ```
 
+::: aside
+Source: [xkcd 882](https://xkcd.com/882/)
+:::
 
 ## Multiple Testing 
 
@@ -154,26 +171,26 @@ The probability of making at least Type I error among $k$ tests is $1-(1-\alpha)
 
 . . . 
 
-If you do 10 tests at the $\alpha = .05$ level, your overall Type I Error rate is 40%
+If you do 10 tests at the $\alpha = .05$ level, your overall Type I Error rate is over 40%
 
 . . . 
 
-If you do 100 tests at the $\alpha = .05$ level, your overall Type I Error rate is 99%!
+If you do 100 tests at the $\alpha = .05$ level, your overall Type I Error rate is over 99%!
 
 . . . 
 
 Need to do a *multiple testing correction* in these cases. Plan the number of tests in advance and adjust your original $\alpha$ accordingly
 
-## False Discovery Rate
+## Family-Wise Error Rate
 
 ::: callout-note
-## False Discovery Rate
+## Family-Wise Error Rate
 <br>
 <br>
 <br>
 ::: 
 
-Idea: if we have a desired FDR = $\alpha^*$, what $\alpha$ do we need for each hypothesis test?
+Idea: if we have a desired FWER = $\alpha^*$, what $\alpha$ do we need for each hypothesis test?
 
 ## Sidak Correction
 

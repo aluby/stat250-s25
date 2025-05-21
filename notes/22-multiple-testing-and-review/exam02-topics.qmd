@@ -46,9 +46,8 @@ Exam II will be held in class Friday of Week 8. The exam is closed book, but you
 To study, I recommend carefully going through class notes, homework problems, and this handout. After reviewing those materials, I recommend solving lots and lots of practice problems (e.g. the problems in the textbook with answers in the back). 
 
 
-# General Topics
 
-## Confidence Intervals
+# 1. Confidence Intervals 
 
 - Interpret confidence intervals in the context of the problem
 - State the conclusion of a hypothesis test based on a confidence interval
@@ -73,6 +72,9 @@ To study, I recommend carefully going through class notes, homework problems, an
 
 ```{r} 
 #| echo: true
+#| collapse: true
+#| comment: ">"
+
 
 qt(.05, df = 19)
 qt(.975, df = 19)
@@ -91,7 +93,8 @@ Consider the below R output to help you answer this question
 
 ```{r}
 #| echo: true
-
+#| collapse: true
+#| comment: ">"
 
 prop.test(x = 1184, n = 50000, conf.level = 0.9, alternative = "less")$conf
 prop.test(x = 1184, n = 50000, conf.level = 0.9, alternative = "greater")$conf
@@ -119,12 +122,12 @@ prop.test(x = 1184, n = 50000, conf.level = 0.9, alternative = "two.sided")$conf
 
 set.seed(0520)
 ggplot() + 
-  geom_histogram(aes(x = rexp(98, .5)), col = "white", alpha = .8) +
+  geom_histogram(aes(x = 200-(rexp(98, .5))^2), col = "white", alpha = .8) +
   labs(x = "Exam score")
 ```
 
 
-## Hypothesis Testing
+# 2. Hypothesis Testing
 
 - Interpret results from a testing procedure in context
 - Know whether a confidence interval will contain a particular value based on the results from a hypothesis test
@@ -185,5 +188,33 @@ for the groups based on homeless status.
 - Calculate the probability of making at least one type I error in a series of $k$ tests
 - Apply the Sidak correction and Bonferroni correction 
 
+**Example question:** I am interested in testing whether there is a difference in the average number of hours slept per night among first-years, sophomores, and juniors. I conduct a random survey and obtain the following results.
 
+```{r}
 
+  fy = rnorm(66, mean = 7.75, sd = .75)
+  soph = rnorm(48, mean = 8, sd = 2)
+  jr = rnorm(25, mean = 7.5, sd = 1.5)
+
+fav_stats(fy) |>
+  bind_rows(fav_stats(soph)) |>
+  bind_rows(fav_stats(jr)) |>
+  mutate(year = c("fy", "soph", "jr")) |>
+  relocate(year) |>
+  remove_rownames() |>
+  knitr::kable(digits = 2)
+```
+
+(a) If I do the following tests at the $\alpha = .05$ level:
+
+$H_0: \mu_{fy} - \mu_{soph} = 0$ against $H_A: \mu_{fy} - \mu_{soph} \ne 0$
+
+$H_0: \mu_{fy} - \mu_{jr} = 0$ against $H_A: \mu_{fy} - \mu_{jr} \ne 0$
+
+$H_0: \mu_{soph} - \mu_{jr} = 0$ against $H_A: \mu_{soph} - \mu_{jr} \ne 0$
+
+what is the probability I make at least one Type I error?
+
+(b) What $\alpha$ level should I use for each test to obtain an overall Type I error rate of $\alpha^* = .05$ according to the Sidak correction? According to the Bonferroni?
+
+(c) Which correction gives me greater power?
