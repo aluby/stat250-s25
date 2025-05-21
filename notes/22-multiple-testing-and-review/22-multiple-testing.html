@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Ideas for final project – Stat 250</title>
+<title>22-multiple-testing – Stat 250</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -66,35 +66,6 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 </head>
 
@@ -111,7 +82,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Ideas for final project</h1>
+<h1 class="title">22-multiple-testing</h1>
 </div>
 
 
@@ -128,58 +99,8 @@ window.Quarto = {
 </header>
 
 
-<p><em>Note:</em> I will continue to update this list as we go. If more than 2 groups propose the same project, I will ask you to coordinate to make sure your projects are different enough from one another.</p>
-<section id="potential-topics" class="level1">
-<h1>Potential Topics</h1>
-<ol type="1">
-<li>Proof of Invariance of MLE
-<ul>
-<li>Introduction: Chihara &amp; Hesterberg 6.3.5</li>
-<li>Journal article: Zehna, Peter (1966) <a href="https://www.jstor.org/stable/2238750?seq=1">“Invariance of Maximum Likelihood Estimators”</a></li>
-</ul></li>
-<li>Expectation-Maximization (E-M) algorithm
-<ul>
-<li>Introduction: Chihara &amp; Hesterberg 13.8</li>
-<li>Journal article: Meng, Xiao-Li and David van Dyk (1997). “<a href="http://www.jstor.org/stable/2346009">The EM Algorithm–An Old Folk-Song Sung to a Fast New Tune</a>”. In: Journal of the Royal Statistical Society: Series B (Methodological)</li>
-</ul></li>
-<li>Proof of the Cramer-Rao Lower Bound
-<ul>
-<li>Rice Ch8.7</li>
-</ul></li>
-<li>Sufficiency and the Rao-Blackwell Theorem
-<ul>
-<li>Introduction: Chihara &amp; Hesterberg <a href="https://github.com/lchihara/MathStatsResamplingR/blob/main/Edition3/Chapters/c06_Supplement.pdf">online supplemental materials</a></li>
-</ul></li>
-<li>The Zero-Inflated Poisson model and how to estimate parameters
-<ul>
-<li><a href="https://www.tandfonline.com/doi/full/10.1080/00031305.2023.2249529#abstract">Counting the Unseen: Estimation of Susceptibility Proportions in Zero-Inflated Models Using a Conditional Likelihood Approach</a> in: <em>The American Statistician</em></li>
-</ul></li>
-<li>Capture-Recapture Model and how to estimate parameters
-<ul>
-<li>Case study: <a href="https://www.tandfonline.com/doi/full/10.1080/00031305.2013.821093#d1e1030">Applications of Multiple Systems Estimation in Human Rights Research</a> in <em>The American Statistician</em></li>
-</ul></li>
-<li>Sequential Tests/Optional Stopping for Hypothesis testing
-<ul>
-<li>Journal article: Larsen et al 2024 <a href="https://www.tandfonline.com/doi/full/10.1080/00031305.2023.2257237#d1e3919">“Statistical Challenges in Online Controlled Experiments: A Review of A/B Testing Methodology”</a> In: <em>The American Statistician</em></li>
-<li>Journal article: Wald 1945 <a href="https://projecteuclid.org/journals/annals-of-mathematical-statistics/volume-16/issue-2/Sequential-Tests-of-Statistical-Hypotheses/10.1214/aoms/1177731118.full">“Sequential Tests of Statistical Hypotheses”</a> in <em>Annals of Mathematical Statistics</em></li>
-</ul></li>
-<li>There are a number of heuristics for when we can use large-sample approximations (e.g.&nbsp;using the normal distribution instead of the T distribution, using the normal distribution instead of the binomial distribution, etc.). Show why these heuristics came to be and explore if/when they fail.</li>
-<li>Research and provide a proof for the <strong>Neyman-Pearson</strong> Lemma, which states that the GLRT is at least as powerful as any other test with the same or smaller <span class="math inline">\(\alpha\)</span>.</li>
-<li>Research and provide a proof for <strong>Wilks’ Theorem</strong>, which states that if <span class="math inline">\(\lambda\)</span> is the GLRT statistic, <span class="math inline">\(-2 \ln \lambda\)</span> is an approximate <span class="math inline">\(\chi^2\)</span> random variable. (Taylor expansion alert!!)</li>
-<li>Estimation for a Mixture of Normal Distributions</li>
-<li>Research and summarize the history of the “p-value”
-<ul>
-<li><a href="https://www.tandfonline.com/doi/full/10.1080/00031305.2018.1537891?src=exp-tr#abstract">Before p &lt; 0.05 to Beyond p &lt; 0.05: Using History to Contextualize p-Values and Significance Testing</a> in: <em>The American Statistician</em></li>
-</ul></li>
-<li>Multiple testing and the distribution of p-values in published studies
-<ul>
-<li><a href="https://www.sciencedirect.com/science/article/pii/S0895435616308381?via%3Dihub">The distribution of P-values in medical research articles suggested selective reporting associated with statistical significance</a></li>
-</ul></li>
-</ol>
-<p>You are also welcome to propose your own topic! I encourage you to talk with me before submitting a proposal to make sure that it is appropriate for the class.</p>
 
 
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -274,7 +195,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp("https:\/\/aluby\.github\.io\/stat250-s25\/");
+      var filterRegex = new RegExp('/' + window.location.host + '/');
     var isInternal = (href) => {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
