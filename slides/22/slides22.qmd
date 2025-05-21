@@ -119,10 +119,8 @@ This is one reason why some people prefer "discernible" to "significant"
 
 ## 
 
-```{r}
-#| echo: false
-knitr::include_graphics("../img/xkcd1.png")
-```
+![](../img/xkcd1.png)
+
 
 ::: aside
 Source: [xkcd 882](https://xkcd.com/882/)
@@ -130,10 +128,7 @@ Source: [xkcd 882](https://xkcd.com/882/)
 
 ## 
 
-```{r}
-#| echo: false
-knitr::include_graphics("../img/xkcd2.png")
-```
+![](../img/xkcd2.png)
 
 ::: aside
 Source: [xkcd 882](https://xkcd.com/882/)
@@ -141,10 +136,7 @@ Source: [xkcd 882](https://xkcd.com/882/)
 
 ## 
 
-```{r}
-#| echo: false
-knitr::include_graphics("../img/xkcd3.png")
-```
+![](../img/xkcd3.png)
 
 ::: aside
 Source: [xkcd 882](https://xkcd.com/882/)
@@ -152,10 +144,7 @@ Source: [xkcd 882](https://xkcd.com/882/)
 
 ## 
 
-```{r}
-#| echo: false
-knitr::include_graphics("../img/xkcd4.png")
-```
+![](../img/xkcd4.png)
 
 ::: aside
 Source: [xkcd 882](https://xkcd.com/882/)
