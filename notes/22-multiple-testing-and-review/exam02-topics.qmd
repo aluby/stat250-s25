@@ -96,9 +96,9 @@ Consider the below R output to help you answer this question
 #| collapse: true
 #| comment: ">"
 
-prop.test(x = 1184, n = 50000, conf.level = 0.9, alternative = "less")$conf
-prop.test(x = 1184, n = 50000, conf.level = 0.9, alternative = "greater")$conf
-prop.test(x = 1184, n = 50000, conf.level = 0.9, alternative = "two.sided")$conf
+prop.test(x = 1184, n = 50000, conf.level = 0.9, p = .02, alternative = "less")$conf
+prop.test(x = 1184, n = 50000, conf.level = 0.9, p = .02, alternative = "greater")$conf
+prop.test(x = 1184, n = 50000, conf.level = 0.9, p = .02, alternative = "two.sided")$conf
 ```
 
 

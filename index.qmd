@@ -49,6 +49,10 @@ Day21: [handout](/notes/21-lrts/notes21.pdf)
 
 Day22: [handout](/notes/22-multiple-testing-and-review/notes22.pdf) | [slides](/slides/22/slides22.html) | [Exam 02 Review](/notes/22-multiple-testing-and-review/exam02-topics.pdf)
 
+Day23: Exam II 
+
+Day24: [handout](/notes/24/notes24.pdf) | [slides](/slides/24/slides24.html) 
+
 # Project
 
 [Proposal Info and Rubric](/notes/project/project.pdf) 

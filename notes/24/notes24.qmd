@@ -1,0 +1,251 @@
+---
+title: "23: Chi-Squared Tests"
+author: "Prof Amanda Luby"
+subtitle: "Stat250 S25"
+callout-appearance: minimal
+knitr:
+    opts_chunk: 
+      dev: "ragg_png"
+      echo: false
+      warning: false
+      message: false
+format:
+  pdf:
+    include-in-header: 
+       - "../preamble.tex"
+    toc: false
+    number-sections: true
+    colorlinks: true
+    geometry:
+      - top=1in
+      - left=1in
+      - right=1in
+      - bottom=1in
+      - heightrounded
+    mainfont: "Linux Libertine"
+    sansfont: "Linux Libertine"
+    mathfont: "Libertinus Math"
+    monofont: "Monaco"
+fontsize: 11pt
+---
+
+```{r}
+library(tidyverse)
+library(ggformula)
+library(ggthemes)
+library(knitr)
+library(mosaic)
+library(patchwork)
+library(palmerpenguins)
+library(ggridges)
+library(janitor)
+library(gt)
+theme_set(theme_minimal())
+data("happy", package = "ggmosaic")
+happy2018 <- filter(happy, year == 2018) %>%
+  drop_na(happy, finrela)
+yt <- 0
+```
+
+**Example:**  The General Social Survey (GSS) is a sociological survey used to collect data on demographic characteristics and attitudes of residents of the United States. We'll consider two survey questions:
+
+  *  Compared with American families in general, would you say your family income is far below average, below average, average, above average, or far above average?
+  * Taken all together, how would you say things are these days—would you say that you are very happy, pretty happy, or not too happy?
+  
+```{r}
+#| echo: false
+
+tabyl(happy2018, happy, finrela) |>
+  adorn_totals(where = c("row", "col")) |>
+  knitr::kable()
+```
+
+**H_0**
+
+\vspace{.25in}
+
+**H_A**
+
+\vspace{.25in}
+
+Expected table under $H_0$
+
+```{r echo=FALSE}
+chisq.test(happy2018$happy, happy2018$finrela)$expect |>
+  as.data.frame() |>
+  tibble::rownames_to_column(var = "happy") |>
+  knitr::kable()
+```
+
+How was this table computed?
+
+\vspace{1in}
+
+**Test Statistic:**
+
+\vspace{.5in}
+
+When $H_0$ is true, $C \dot \sim$ ___________________
+
+```{r}
+#| echo: false
+#| fig-width: 4
+#| fig-height: 2
+
+
+gf_function(
+    fun = dchisq,
+    args = list(df = 4*2),
+    color = "steelblue",
+    size = 1
+  ) + 
+  xlim(c(0,30)) + 
+  labs(
+    x = "C",
+    y = ""
+  )
+
+observed <- chisq.test(happy2018$happy, happy2018$finrela)$obs
+expected <- chisq.test(happy2018$happy, happy2018$finrela)$expect
+```
+
+3 ways to find p-values: 
+
+1. "By hand"
+
+```{r}
+#| echo: true
+#| collapse: true
+#| comment: ">"
+
+sum((observed - expected)^2/expected)
+
+1-pchisq(sum((observed - expected)^2/expected), df = (3-1)*(5-1))
+```
+
+2. `chisq.test` with vectors
+
+```{r}
+#| echo: true
+#| collapse: true
+#| comment: ">"
+chisq.test(happy2018$happy, happy2018$finrela)
+```
+
+3. `chisq.test` with table
+
+```{r}
+#| echo: true
+#| collapse: true
+#| comment: ">"
+
+chisq.test(observed)
+```
+
+# Permutation test {-}
+
+:::{.nonincremental}
+1. Store the data in a table: one row per observation, one column per variable. 
+
+2. Calculate a test statistic for the original data. 
+
+3. **Repeat** 
+  
+    + Randomly permute the rows in one of the columns. 
+    + Calculate the test statistic for the permuted data. 
+
+4. Calculate the $p$-value as the fraction of times the random statistics exceed the original statistic. 
+:::
+
+1. Drop any missing values
+
+```{r}
+#| echo: true
+#| collapse: true
+#| comment: ">"
+df <- happy2018 |> drop_na(happy, finrela)
+```
+
+2. Calculate the observed test statistic
+```{r}
+#| echo: true
+#| collapse: true
+#| comment: ">"
+observed <- chisq.test(happy2018$happy, happy2018$finrela)$statistic
+```
+
+3. Construct the permutation distribution 
+
+```{r cache=TRUE}
+#| echo: true
+#| collapse: true
+#| comment: ">"
+set.seed(55057)
+N <- 10^4 - 1
+result <- numeric(N)
+for(i in 1:N) {
+  finrela_perm <- sample(happy2018$finrela)
+  result[i] <- chisq.test(happy2018$happy, finrela_perm)$statistic
+}
+```
+
+```{r}
+#| echo: false
+#| fig-width: 4
+#| fig-height: 2
+gf_histogram(~result, bins = 50, xlab = "Chi-squared statistics", col = "white") 
+```
+
+4. Find p-value
+
+```{r collapse=TRUE}
+#| echo: true
+#| collapse: true
+#| comment: ">"
+(sum(result >= observed) + 1) / (N + 1)
+```
+
+Alternatively, use a shortcut to the permutation test:
+
+```{r}
+#| echo: true
+#| collapse: true
+#| comment: ">"
+chisq.test(happy2018$happy, happy2018$finrela, simulate.p.value = TRUE)
+```
+
+::: callout-warning
+## Caution!
+
+The $\chi^2$ distribution provides a reasonable approximation of the null distribution **as long as the sample size is "large enough"**
+
+- "Cochran's rule:" All of the cells have **expected counts** > __________
+
+- All expected counts are at least __________ and no more than 20% of cells have **expected counts** < __________
+:::
+
+Use a permutation test if the expected counts aren't large enough
+
+
+**Example:** Some people think that children who are the older ones in their class at school naturally perform better in sports and that these children then get more coaching and encouragement as they get older. Could that make a difference in who makes it to the professional level in sports? Below is the birth month of 1478 major league players born since 1975, along with the national birth percentage across the same years.
+
+
+| Month    | 1     | 2     | 3     | 4     | 5     | 6     | 7     | 8     | 9     | 10    | 11    | 12    |
+|----------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|
+| Obs      | 137   | 121   | 116   | 121   | 126   | 114   | 102   | 165   | 134   | 115   | 105   | 122   |
+| Birth \% | 8\%   | 7\%   | 8\%   | 8\%   | 8\%   | 8\%   | 9\%   | 9\%   | 9\%   | 9\%   | 8\%   | 9\%   |
+
+
+
+- Write out an appropriate null and alternative hypothesis
+- Calculate the expected counts for each cell under the null hypothesis
+- Compute the chi-square test statistic
+- Compute the p-value
+- Draw a conclusion in context
+
+
+\vspace{4in}
+
+# Likelihood Ratio test {-}
+
+
