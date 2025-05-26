@@ -336,134 +336,134 @@
     "text": "Robustness: one-sample \\(t\\)\n\n\nIf the population distribution is roughly symmetric and unimodal, then the procedure works well for sample sizes of at least 10–15 (just a rough guide)\nFor skewed population distributions, the t-procedure can be substantially affected, depending on the severity of the skew and the sample size.\nt-procedures are not resistant to outliers.\nIf observations are not independent, everything breaks"
   },
   {
-    "objectID": "slides/23/slides23.html#can-money-buy-you-happiness",
-    "href": "slides/23/slides23.html#can-money-buy-you-happiness",
+    "objectID": "slides/24/slides24.html#can-money-buy-you-happiness",
+    "href": "slides/24/slides24.html#can-money-buy-you-happiness",
     "title": "Chi-Squared Tests",
     "section": "Can money buy you happiness?",
     "text": "Can money buy you happiness?\n\nThe General Social Survey (GSS) is a sociological survey used to collect data on demographic characteristics and attitudes of residents of the United States. We’ll consider two questions:\n\nCompared with American families in general, would you say your family income is far below average, below average, average, above average, or far above average?\nTaken all together, how would you say things are these days—would you say that you are very happy, pretty happy, or not too happy?"
   },
   {
-    "objectID": "slides/23/slides23.html#can-money-buy-you-happiness-1",
-    "href": "slides/23/slides23.html#can-money-buy-you-happiness-1",
+    "objectID": "slides/24/slides24.html#can-money-buy-you-happiness-1",
+    "href": "slides/24/slides24.html#can-money-buy-you-happiness-1",
     "title": "Chi-Squared Tests",
     "section": "Can money buy you happiness?",
     "text": "Can money buy you happiness?"
   },
   {
-    "objectID": "slides/23/slides23.html#happiness-contingency-table",
-    "href": "slides/23/slides23.html#happiness-contingency-table",
+    "objectID": "slides/24/slides24.html#happiness-contingency-table",
+    "href": "slides/24/slides24.html#happiness-contingency-table",
     "title": "Chi-Squared Tests",
     "section": "Happiness contingency table",
     "text": "Happiness contingency table\n\n\n\n\n\n\n\n\nhappy\nfar below average\nbelow average\naverage\nabove average\nfar above average\nTotal\n\n\n\n\nnot too happy\n50\n123\n120\n33\n4\n330\n\n\npretty happy\n64\n350\n602\n253\n24\n1293\n\n\nvery happy\n39\n121\n319\n190\n25\n694\n\n\nTotal\n153\n594\n1041\n476\n53\n2317\n\n\n\n\n\n\n\nHow can we conclude whether opinion on income and happiness are associated?"
   },
   {
-    "objectID": "slides/23/slides23.html#hypotheses",
-    "href": "slides/23/slides23.html#hypotheses",
+    "objectID": "slides/24/slides24.html#hypotheses",
+    "href": "slides/24/slides24.html#hypotheses",
     "title": "Chi-Squared Tests",
     "section": "Hypotheses",
     "text": "Hypotheses\n\\(H_0:\\) the variables are independent\n\nWhat would the contingency table look like under \\(H_0\\)?\n\n\n\n\n\n\n\n\n\nhappy\nfar below average\nbelow average\naverage\nabove average\nfar above average\n\n\n\n\nnot too happy\n21.79111\n84.60078\n148.2650\n67.79456\n7.548554\n\n\npretty happy\n85.38153\n331.48123\n580.9292\n265.63142\n29.576608\n\n\nvery happy\n45.82736\n177.91800\n311.8058\n142.57402\n15.874838"
   },
   {
-    "objectID": "slides/23/slides23.html#how-can-we-compare-what-we-observe-to-what-would-be-expected-under-h_0",
-    "href": "slides/23/slides23.html#how-can-we-compare-what-we-observe-to-what-would-be-expected-under-h_0",
+    "objectID": "slides/24/slides24.html#how-can-we-compare-what-we-observe-to-what-would-be-expected-under-h_0",
+    "href": "slides/24/slides24.html#how-can-we-compare-what-we-observe-to-what-would-be-expected-under-h_0",
     "title": "Chi-Squared Tests",
     "section": "How can we compare what we observe to what would be expected under \\(H_0\\)?",
     "text": "How can we compare what we observe to what would be expected under \\(H_0\\)?\nObserved:\n\n\n\n\n\n\n\n\nhappy\nfar below average\nbelow average\naverage\nabove average\nfar above average\nTotal\n\n\n\n\nnot too happy\n50\n123\n120\n33\n4\n330\n\n\npretty happy\n64\n350\n602\n253\n24\n1293\n\n\nvery happy\n39\n121\n319\n190\n25\n694\n\n\nTotal\n153\n594\n1041\n476\n53\n2317\n\n\n\n\n\n\n\nExpected:\n\n\n\n\n\n\n\n\nhappy\nfar below average\nbelow average\naverage\nabove average\nfar above average\nTotal\n\n\n\n\nnot too happy\n21.79111\n84.60078\n148.2650\n67.79456\n7.548554\n330\n\n\npretty happy\n85.38153\n331.48123\n580.9292\n265.63142\n29.576608\n1293\n\n\nvery happy\n45.82736\n177.91800\n311.8058\n142.57402\n15.874838\n694\n\n\nTotal\n153\n594\n1041\n476\n53\n2317"
   },
   {
-    "objectID": "slides/23/slides23.html#chi-square-test-stat",
-    "href": "slides/23/slides23.html#chi-square-test-stat",
+    "objectID": "slides/24/slides24.html#chi-square-test-stat",
+    "href": "slides/24/slides24.html#chi-square-test-stat",
     "title": "Chi-Squared Tests",
     "section": "Chi-square test stat",
     "text": "Chi-square test stat\n\\[C = \\sum_{\\text{all cells}} \\frac{(\\text{observed} - \\text{expected})^2}{\\text{expected}} = \\sum (O - E)^2/E\\]\n\nBig when differences are big\nSmall when differences are small\nScaled by “bigness” of expected counts\nAll cells contribute"
   },
   {
-    "objectID": "slides/23/slides23.html#when-h_0-is-true-c-dotsim-chi2_i-1j-1",
-    "href": "slides/23/slides23.html#when-h_0-is-true-c-dotsim-chi2_i-1j-1",
+    "objectID": "slides/24/slides24.html#when-h_0-is-true-c-dotsim-chi2_i-1j-1",
+    "href": "slides/24/slides24.html#when-h_0-is-true-c-dotsim-chi2_i-1j-1",
     "title": "Chi-Squared Tests",
     "section": "When \\(H_0\\) is true, C \\(\\dot\\sim \\chi^2_{(I-1)(J-1)}\\)",
     "text": "When \\(H_0\\) is true, C \\(\\dot\\sim \\chi^2_{(I-1)(J-1)}\\)"
   },
   {
-    "objectID": "slides/23/slides23.html#finding-p-values",
-    "href": "slides/23/slides23.html#finding-p-values",
+    "objectID": "slides/24/slides24.html#finding-p-values",
+    "href": "slides/24/slides24.html#finding-p-values",
     "title": "Chi-Squared Tests",
     "section": "Finding p-values",
     "text": "Finding p-values\n\n“By hand”chisq with vectorschisq with table\n\n\n\n(observed - expected)^2/expected\n\n               happy2018$finrela\nhappy2018$happy far below average below average    average above average\n  not too happy        36.5167974    17.4289220  5.3883932    17.8577972\n  pretty happy          5.3544337     1.0345835  0.7642546     0.6006547\n  very happy            1.0171409    18.2087168  0.1659904    15.7758320\n               happy2018$finrela\nhappy2018$happy far above average\n  not too happy         1.6681654\n  pretty happy          1.0514577\n  very happy            5.2453183\n\nsum((observed - expected)^2/expected)\n\n[1] 128.0785\n\n1-pchisq(sum((observed - expected)^2/expected), df = (3-1)*(5-1))\n\n[1] 0\n\n\n\n\n\nchisq.test(happy2018$happy, happy2018$finrela)\n\n\n    Pearson's Chi-squared test\n\ndata:  happy2018$happy and happy2018$finrela\nX-squared = 128.08, df = 8, p-value &lt; 2.2e-16\n\n\n\n\n\nchisq.test(observed)\n\n\n    Pearson's Chi-squared test\n\ndata:  observed\nX-squared = 128.08, df = 8, p-value &lt; 2.2e-16"
   },
   {
-    "objectID": "slides/23/slides23.html#permutation-test",
-    "href": "slides/23/slides23.html#permutation-test",
+    "objectID": "slides/24/slides24.html#permutation-test",
+    "href": "slides/24/slides24.html#permutation-test",
     "title": "Chi-Squared Tests",
     "section": "Permutation test",
     "text": "Permutation test\n\n\nStore the data in a table: one row per observation, one column per variable.\nCalculate a test statistic for the original data.\nRepeat\n\nRandomly permute the rows in one of the columns.\nCalculate the test statistic for the permuted data.\n\nCalculate the \\(p\\)-value as the fraction of times the random statistics exceed the original statistic."
   },
   {
-    "objectID": "slides/23/slides23.html#permutation-test-setup",
-    "href": "slides/23/slides23.html#permutation-test-setup",
+    "objectID": "slides/24/slides24.html#permutation-test-setup",
+    "href": "slides/24/slides24.html#permutation-test-setup",
     "title": "Chi-Squared Tests",
     "section": "Permutation test setup",
     "text": "Permutation test setup\nDrop any missing values\n\ndf &lt;- happy2018 |&gt; drop_na(happy, finrela)\n\nCalculate the observed test statistic\n\nobserved &lt;- chisq.test(happy2018$happy, happy2018$finrela)$statistic\nobserved\n\nX-squared \n 128.0785"
   },
   {
-    "objectID": "slides/23/slides23.html#section",
-    "href": "slides/23/slides23.html#section",
+    "objectID": "slides/24/slides24.html#section",
+    "href": "slides/24/slides24.html#section",
     "title": "Chi-Squared Tests",
     "section": "",
     "text": "Construct the permutation distribution\n\nset.seed(55057)\nN &lt;- 10^4 - 1\nresult &lt;- numeric(N)\nfor(i in 1:N) {\n  finrela_perm &lt;- sample(happy2018$finrela)\n  result[i] &lt;- chisq.test(happy2018$happy, finrela_perm)$statistic\n}"
   },
   {
-    "objectID": "slides/23/slides23.html#permutation-distribution",
-    "href": "slides/23/slides23.html#permutation-distribution",
+    "objectID": "slides/24/slides24.html#permutation-distribution",
+    "href": "slides/24/slides24.html#permutation-distribution",
     "title": "Chi-Squared Tests",
     "section": "Permutation distribution",
     "text": "Permutation distribution"
   },
   {
-    "objectID": "slides/23/slides23.html#p-value",
-    "href": "slides/23/slides23.html#p-value",
+    "objectID": "slides/24/slides24.html#p-value",
+    "href": "slides/24/slides24.html#p-value",
     "title": "Chi-Squared Tests",
     "section": "p-value",
     "text": "p-value\n\n\n(sum(result &gt;= observed) + 1) / (N + 1)\n## [1] 1e-04"
   },
   {
-    "objectID": "slides/23/slides23.html#chi-squared-reference-distribution",
-    "href": "slides/23/slides23.html#chi-squared-reference-distribution",
+    "objectID": "slides/24/slides24.html#chi-squared-reference-distribution",
+    "href": "slides/24/slides24.html#chi-squared-reference-distribution",
     "title": "Chi-Squared Tests",
     "section": "Chi-squared reference distribution",
     "text": "Chi-squared reference distribution"
   },
   {
-    "objectID": "slides/23/slides23.html#section-1",
-    "href": "slides/23/slides23.html#section-1",
+    "objectID": "slides/24/slides24.html#section-1",
+    "href": "slides/24/slides24.html#section-1",
     "title": "Chi-Squared Tests",
     "section": "",
     "text": "Simulation vs. model-based results\n\nChi-squared test\n\n1 - pchisq(observed, df = (3 - 1) * (5 - 1))\n\nX-squared \n        0 \n\n\n\nPermutation test\n\n(sum(result &gt;= observed) + 1) / (N + 1)\n\n[1] 0.0001"
   },
   {
-    "objectID": "slides/23/slides23.html#a-shortcut-to-the-permutation-test",
-    "href": "slides/23/slides23.html#a-shortcut-to-the-permutation-test",
+    "objectID": "slides/24/slides24.html#a-shortcut-to-the-permutation-test",
+    "href": "slides/24/slides24.html#a-shortcut-to-the-permutation-test",
     "title": "Chi-Squared Tests",
     "section": "A shortcut to the permutation test",
     "text": "A shortcut to the permutation test\n\nchisq.test(happy2018$happy, happy2018$finrela, simulate.p.value = TRUE)\n\n\n    Pearson's Chi-squared test with simulated p-value (based on 2000\n    replicates)\n\ndata:  happy2018$happy and happy2018$finrela\nX-squared = 128.08, df = NA, p-value = 0.0004998"
   },
   {
-    "objectID": "slides/23/slides23.html#caution",
-    "href": "slides/23/slides23.html#caution",
+    "objectID": "slides/24/slides24.html#caution",
+    "href": "slides/24/slides24.html#caution",
     "title": "Chi-Squared Tests",
     "section": "Caution",
     "text": "Caution\nThe \\(\\chi^2\\) distribution provides a reasonable approximation of the null distribution as long as the sample size is “large enough”\nCommon guidelines:\n\n\n“Cochran’s rule:” All of the cells have expected counts &gt; 5\nAll expected counts are at least 1 and no more than 20% of cells have expected counts &lt; 5\n\n\nUse a permutation test if the expected counts aren’t large enough"
   },
   {
-    "objectID": "slides/23/slides23.html#example",
-    "href": "slides/23/slides23.html#example",
+    "objectID": "slides/24/slides24.html#example",
+    "href": "slides/24/slides24.html#example",
     "title": "Chi-Squared Tests",
     "section": "Example",
     "text": "Example\nSome people think that children who are the older ones in their class at school naturally perform better in sports and that these children then get more coaching and encouragement as they get older. Could that make a difference in who makes it to the professional level in sports? Below is the birth month of 1478 major league players born since 1975, along with the national birth percentage across the same years.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nMonth\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n\n\n\n\nObs\n137\n121\n116\n121\n126\n114\n102\n165\n134\n115\n105\n122\n\n\nBirth %\n8%\n7%\n8%\n8%\n8%\n8%\n9%\n9%\n9%\n9%\n8%\n9%\n\n\n\n\n\nWrite out an appropriate null and alternative hypothesis\nCalculate the expected counts for each cell under the null hypothesis\nCompute the chi-square test statistic\nCompute the p-value\nDraw a conclusion in context"
   },
   {
-    "objectID": "slides/23/slides23.html#likelihood-ratio-test",
-    "href": "slides/23/slides23.html#likelihood-ratio-test",
+    "objectID": "slides/24/slides24.html#likelihood-ratio-test",
+    "href": "slides/24/slides24.html#likelihood-ratio-test",
     "title": "Chi-Squared Tests",
     "section": "Likelihood Ratio test",
     "text": "Likelihood Ratio test"
