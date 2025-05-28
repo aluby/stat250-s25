@@ -61,9 +61,7 @@ ggplot(adelie, aes(x = body_mass_g, y = flipper_length_mm)) +
 
 **Notation:** 
 
-\vspace{1in}
-
-
+\vspace{.25in}
 
 ::: callout-note
 ## Covariance
@@ -104,7 +102,7 @@ Correlation only measures the strength of **linear** functions
 #| collapse: true
 #| comment: "#>"
 #| fig-width: 3
-#| fig-height: 2
+#| fig-height: 1.5
 #| echo: true
 
 x <- -5:5
@@ -124,31 +122,35 @@ Correlation is **sensitive to outliers**
 #| collapse: true
 #| comment: "#>"
 #| fig-width: 6
-#| fig-height: 2
+#| fig-height: 1.5
 
 p1 <- qplot(x3, y3, data = anscombe) +
   xlab("x") + ylab("y") + scale_y_continuous(limits=c(5,13)) +
-  annotate("text", label = "r = 0.816", x = 6, y = 12, size = 3) +
-  theme_light()
+  annotate("text", label = "r = 0.816", x = 6, y = 12, size = 3) 
 
 p2 <- qplot(x3, y3, data = subset(anscombe, y3 < 9)) +
   xlab("x") + ylab("y") + scale_y_continuous(limits=c(5,13)) +
-  annotate("text", label = "r = 0.999", x = 6, y = 12, size = 3) +
-  theme_light()
+  annotate("text", label = "r = 0.999", x = 6, y = 12, size = 3) 
 
 p1 + p2
 ```
 
 # Least Squares Line
 
-- Goal: predict flipper length based on body mass using a linear function: $$\hat y = \hat \alpha + \hat b x_i$$
+- Goal: predict flipper length based on body mass using a linear function: $$\hat y = \hat a + \hat b x_i$$
 - Approach: minimize the **residual sum of squares**: 
 
-\vspace{.5in}
 
 In math: 
 
 \vspace{1.5in}
+
+::: callout-note
+## Least Squares Estimates
+
+$$\hat a = \bar{y} - \hat b \bar{x}$$
+$$\hat b = \frac{\sum (x_i - \bar{x})(y_i - \bar{y})}{\sum (x_i - \bar{x})^2}$$
+:::
 
 In R: 
 
@@ -159,15 +161,6 @@ In R:
 
 
 adelie_fit <- lm(flipper_length_mm ~ body_mass_g, data = adelie)
-```
-
-To print the least squares estimates:
-
-```{r}
-#| collapse: true
-#| comment: "#>"
-#| echo: true
-
 adelie_fit
 ```
 
@@ -175,9 +168,11 @@ adelie_fit
 
 $\hat a$:
 
-\vspace{1in}
+\vspace{.25in}
 
 $\hat b$: 
+
+\vspace{.25in}
 
 # "Nonlinear" Least Squares
 
@@ -198,11 +193,11 @@ Obviously, not every relationship can be adequately described by a straight line
 |                                |                     |                     |
 | $y = ax^b$                     |                     |                     |
 |                                |                     |                     |
-| $y = \frac{1}{1 + \exp(a+bx)}$ |                     |                     |
-|                                |                     |                     |
 | $y= \frac{1}{a+bx}$            |                     |                     |
 |                                |                     |                     |
 | $y = \frac{x}{a+bx}$           |                     |                     |
+|                                |                     |                     |
+| $y = \frac{1}{1 + \exp(a+bx)}$ |                     |                     |
 |                                |                     |                     |
 | $y = 1-e^{-x^b/a}$             |                     |                     |
 
@@ -217,23 +212,18 @@ Everything we’ve talked about up until this point has not used any statistical
 
 ::: callout-note
 ## Simple Linear Regression Model
-
 * Least Squares only assumes that there is a linear relationship between $x$ and $y$
+* The SLR model adds assumptions that can be written in a few forms:
 
-* Additional assumptions are needed to understand the uncertainty of our predictions
-
-* The SLR model can be written in a few forms
-
-    + $Y_i = \alpha + \beta x_i + \varepsilon_i$ where $\varepsilon\overset{iid}{\sim} N(0, \sigma^2)$
-
-    + $Y_i \overset{iid}{\sim} N(\alpha + \beta x_i, \sigma^2)$
+    + $Y_i = \beta_0 + \beta_1 x_i + \varepsilon_i$ where $\varepsilon\overset{iid}{\sim} N(0, \sigma^2)$
+    + $Y_i \overset{iid}{\sim} N(\beta_0 + \beta_1 x_i, \sigma^2)$
 :::
 
 ```{r}
 #| collapse: true
 #| comment: "#>"
 #| fig-width: 4
-#| fig-height: 3
+#| fig-height: 2
 
 
 set.seed(0)
@@ -273,7 +263,7 @@ ggplot(dat, aes(x, y)) +
 
 **LINE** Mnemonic: 
 
-1. **Linearity**: $E(Y_i|X = x_i) = \mu_i = \alpha + \beta x_i$
+1. **Linearity**: $E(Y_i|X = x_i) = \mu_i = \beta_0 + \beta_1 x_i$
 
 1. **Independence**: $\varepsilon_1, \ldots, \varepsilon_n$ are independent
 
@@ -282,4 +272,22 @@ ggplot(dat, aes(x, y)) +
 1. **Equal error variance**: $Var(\varepsilon_1) = \cdots = Var(\varepsilon_n) = \sigma^2$
 
 *Note:* This model also assumes that the $x$ variables are **fixed**, which is why they get little x's instead of big X's
+
+**How many parameters must be estimated?**
+
+MLE's: 
+
+\vspace{2in}
+
+::: callout-note
+## Maximum Likelihood Estimators for SLR
+
+$$\hat \beta_0 = \bar{Y} - \hat\beta_1 \bar{x}$$
+
+$$\hat \beta_1  = \frac{\sum(x_i - \bar{x})(Y_i - \bar{Y})}{\sum (x_i - \bar{x})^2}$$
+
+$$ \hat\sigma^2 = \frac{\sum e_i^2}{n}$$
+:::
+
+*Note:*
 
