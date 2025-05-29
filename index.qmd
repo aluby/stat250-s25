@@ -53,14 +53,14 @@ Day23: Exam II
 
 Day24: [handout](/notes/24/notes24.pdf) | [slides](/slides/24/slides24.html) 
 
-Day25: [handout](/notes/25/notes25.pdf) 
+Day25: [handout](/notes/25-least-squares/notes25.pdf) 
+
 
 # Project
 
 [Proposal Info and Rubric](/notes/project/project.pdf) 
 
 [Project Topic Ideas](/notes/project/proj-ideas.html) (*Note:* Will continue to be updated) 
-
 
 # Other Resources and Readings
 
