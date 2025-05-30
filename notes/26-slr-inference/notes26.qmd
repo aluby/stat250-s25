@@ -47,237 +47,94 @@ happy2018 <- filter(happy, year == 2018) %>%
 yt <- 0
 ```
 
-**Example:**  Let's return to the Adelie penguins that we've seen before. The Long Term Ecological Research Network (LTER) has collected data on a group of Adelie penguins, including their body mass, flipper length, bill length, and bill depth. It’s relatively easy to measure their body mass, but harder to get accurate measurements of their flipper length. We generally expect heavier penguins will have longer flippers, but the researcher would like to know (a) how strong this relationship is and (b) the magnitude of this relationship.
-
 ```{r}
-#| fig-width: 4
-#| fig-height: 2
+bullets <- readxl::read_excel("../17-two-sample-ci/monson.xlsx", sheet = 2) |>
+  group_by(ExamID) |>
+  summarize(
+    er_bb = mean(`Score` %in% c("Incorrect-actually Match(gt)", "Incorrect-actually Non Match(gt)")),
+    inc_bul = mean(Score %in% c("Match(gt) marked Inconclusive", "Non-Matched(gt) marked Inconclusive"))
+  )
 
-adelie <- penguins |> filter(species == "Adelie") |> drop_na(body_mass_g, flipper_length_mm)
-ggplot(adelie, aes(x = body_mass_g, y = flipper_length_mm)) + 
-  geom_point()
+cc <- readxl::read_excel("../17-two-sample-ci/monson.xlsx", sheet = 3) |>
+  group_by(ExamID) |>
+  summarize(
+    er_cc = mean(`Score` %in% c("Incorrect-actually Match(gt)", "Incorrect-actually Non Match(gt)")),
+    inc_cart = mean(Score %in% c("Match(gt) marked Inconclusive", "Non-Matched(gt) marked Inconclusive"))
+  )
 
+set.seed(0508)
+firearms <- bullets |>
+  left_join(cc, by = "ExamID") 
 ```
 
-**Notation:** 
 
-\vspace{.25in}
+# SLR Model Recap 
 
-::: callout-note
-## Covariance
+$$Y_i | x_i \sim N(\beta_0 + \beta_1 x_i, \sigma^2)$$
 
-$$Cov[X, Y] = E[(X - \mu_X)(Y - \mu_Y)] = E[XY] - \mu_X \mu_Y$$
-:::
+Key features:
 
-::: callout-note
-## Correlation
+\vspace{1.75in}
 
-$$\rho(X,Y) =$$
+All three of these data sets were generated from the SLR model:
 
-:::
-
-```{r}
-#| fig-width: 4
-#| fig-height: 2
-
-z_score <- function(x){
-  (x - mean(x)) / sd(x)
-}
-ggplot(adelie, aes(x = z_score(body_mass_g), y = z_score(flipper_length_mm))) + 
-  geom_point() + 
-  labs(x = "Body Mass Z Score",
-       y = "Flipper Z Score") + 
-  geom_hline(yintercept = 0 , col = "darkorange") +
-  geom_vline(xintercept = 0 , col = "darkorange") 
+```{r, echo=FALSE}
+n<- 3000
+set.seed(7712)
+e <- rnorm(n,0,2)
+x1 <- runif(n,0,20)
+y1 <- 2 + 1*x1 + e
+x2 <- rexp(n,rate=.3)
+y2 <- 2 + 1*x2 + e
+x3 <- rnorm(n,10,3)
+y3 <- 2 + 1*x3 + e
+df <- data.frame(model = rep(1:3,each=n),x=c(x1,x2,x3),y=c(y1,y2,y3))
 ```
 
-::: callout-warning
-## Watch out! 
-
-Correlation only measures the strength of **linear** functions
-
-:::
-
-```{r}
-#| collapse: true
-#| comment: "#>"
-#| fig-width: 3
-#| fig-height: 1.5
-#| echo: true
-
-x <- -5:5
-y <- x^2
-cor(x, y)
-gf_point(y ~ x)
-```
-
-::: callout-warning
-## Watch out! 
-
-Correlation is **sensitive to outliers**
-
-:::
-
-```{r}
-#| collapse: true
-#| comment: "#>"
+```{r, echo=FALSE}
 #| fig-width: 6
-#| fig-height: 1.5
-
-p1 <- qplot(x3, y3, data = anscombe) +
-  xlab("x") + ylab("y") + scale_y_continuous(limits=c(5,13)) +
-  annotate("text", label = "r = 0.816", x = 6, y = 12, size = 3) 
-
-p2 <- qplot(x3, y3, data = subset(anscombe, y3 < 9)) +
-  xlab("x") + ylab("y") + scale_y_continuous(limits=c(5,13)) +
-  annotate("text", label = "r = 0.999", x = 6, y = 12, size = 3) 
-
-p1 + p2
-```
-
-# Least Squares Line
-
-- Goal: predict flipper length based on body mass using a linear function: $$\hat y = \hat a + \hat b x_i$$
-- Approach: minimize the **residual sum of squares**: 
-
-
-In math: 
-
-\vspace{1.5in}
-
-::: callout-note
-## Least Squares Estimates
-
-$$\hat a = \bar{y} - \hat b \bar{x}$$
-$$\hat b = \frac{\sum (x_i - \bar{x})(y_i - \bar{y})}{\sum (x_i - \bar{x})^2}$$
-:::
-
-In R: 
-
-```{r}
-#| collapse: true
-#| comment: "#>"
-#| echo: true
-
-
-adelie_fit <- lm(flipper_length_mm ~ body_mass_g, data = adelie)
-adelie_fit
-```
-
-**Interpretations:**
-
-$\hat a$:
-
-\vspace{.25in}
-
-$\hat b$: 
-
-\vspace{.25in}
-
-# "Nonlinear" Least Squares
-
-Obviously, not every relationship can be adequately described by a straight line. BUT linear models are very "nice" with "easy" solutions (as we saw above). Luckily, we can "linearize" many nonlinear relationship by transforming the X or Y variable.
-
-**Example:** We suspect that the true relationship between variables $X$ and $Y$ is described by $y = a e^{bx}$. What are the transformations of $X$ and $Y$ that "linearize" this relationship? 
-
-\vspace{1in}
-
-
-**Exercise:** Fill in the following table to show that all of these nonlinear relationships can be expressed as linear functions of transformations of the original variables.
-
-| True Relationship              | Transformation of Y | Transformation of X |
-|--------------------------------|---------------------|---------------------|
-| $y = a + b x^2$                |                     |                     |
-|                                |                     |                     |
-| $y = a e^{bx}$                 |                     |                     |
-|                                |                     |                     |
-| $y = ax^b$                     |                     |                     |
-|                                |                     |                     |
-| $y= \frac{1}{a+bx}$            |                     |                     |
-|                                |                     |                     |
-| $y = \frac{x}{a+bx}$           |                     |                     |
-|                                |                     |                     |
-| $y = \frac{1}{1 + \exp(a+bx)}$ |                     |                     |
-|                                |                     |                     |
-| $y = 1-e^{-x^b/a}$             |                     |                     |
-
-# Simple Linear Regression Model
-
-Everything we’ve talked about up until this point has not used any statistical properties at all: there have been no probability distributions, expectations, independence assumptions, etc. We’ve gone about “fitting curves” as a purely geometric exercise.
-
-**Example:** Suppose we observe an Adelie penguin that weighs 4,000g. 
-
-- What is the prediction for that penguin's flipper length? 
-- Would every 4,000g penguin have that flipper length? 
-
-::: callout-note
-## Simple Linear Regression Model
-* Least Squares only assumes that there is a linear relationship between $x$ and $y$
-* The SLR model adds assumptions that can be written in a few forms:
-
-    + $Y_i = \beta_0 + \beta_1 x_i + \varepsilon_i$ where $\varepsilon\overset{iid}{\sim} N(0, \sigma^2)$
-    + $Y_i \overset{iid}{\sim} N(\beta_0 + \beta_1 x_i, \sigma^2)$
-:::
-
-```{r}
-#| collapse: true
-#| comment: "#>"
-#| fig-width: 4
 #| fig-height: 2
-
-
-set.seed(0)
-dat <- data.frame(x=(x=runif(10000, 0, 50)),
-                  y=rnorm(10000, 10*x, 100))
-
-## breaks: where you want to compute densities
-breaks <- seq(0, max(dat$x), len=5)
-dat$section <- cut(dat$x, breaks)
-
-## Get the residuals
-dat$res <- residuals(lm(y ~ x, data=dat))
-
-## Compute densities for each section, flip the axes, add means of sections
-## Note: densities need to be scaled in relation to section size (2000 here)
-dens <- do.call(rbind, lapply(split(dat, dat$section), function(x) {
-  d <- density(x$res, n=5000)
-  res <- data.frame(x=max(x$x)- d$y*1000, y=d$x+mean(x$y))
-  res <- res[order(res$y), ]
-  ## Get some data for normal lines as well
-  xs <- seq(min(x$res), max(x$res), len=5000)
-  res <- rbind(res, data.frame(y=xs + mean(x$y),
-                               x=max(x$x) - 1000*dnorm(xs, 0, sd(x$res))))
-  res$type <- rep(c("empirical", "normal"), each=5000)
-  res
-}))
-dens$section <- rep(levels(dat$section), each=10000)
-
-ggplot(dat, aes(x, y)) +
-  geom_point(size = 0.1, alpha = 0.3) +
-  geom_smooth(method="lm", fill=NA, lwd=2) +
-  geom_path(data=dens[dens$type=="normal",], aes(x, y, group=section),
-            color="orange", lwd=1.1) +
-  geom_vline(xintercept=breaks, lty=2) +
-  ggtitle("SLR model")
+ggplot(df, aes(x=x,y=y)) + 
+  geom_point(size = .25) + 
+  geom_smooth(method="lm", se=FALSE) + 
+  facet_wrap(~model, scales="free")
 ```
 
-**LINE** Mnemonic: 
+But only data 3 has (marginally) normally distributed responses:
 
-1. **Linearity**: $E(Y_i|X = x_i) = \mu_i = \beta_0 + \beta_1 x_i$
+```{r, fig.height=5, fig.width=9, echo=FALSE}
+#| fig-width: 6
+#| fig-height: 2
+ggplot(df, aes(sample=y)) + 
+  geom_qq(size = .5) + stat_qqline(color="darkgray")+
+  facet_wrap(~model, scales="free") + 
+  ggtitle("Normal QQ plots of all Y's")
+```
 
-1. **Independence**: $\varepsilon_1, \ldots, \varepsilon_n$ are independent
+Let's look at the Y values for all cases with $x \approx 7$:
 
-1. **Normal error terms**: $\varepsilon_i \sim N(0, \sigma^2)$
+```{r, fig.height=5, fig.width=9, echo=FALSE}
+#| fig-width: 6
+#| fig-height: 2
+df2 <- df %>% filter(x > 6.5, x < 7.5)
+ggplot(df, aes(x=x,y=y)) + 
+  geom_point(size = .25) + geom_point(size = .25, data=df2, aes(x,y), color="darkorange") + 
+  geom_smooth(method="lm", se=FALSE) + 
+  facet_wrap(~model, scales="free")
+```
 
-1. **Equal error variance**: $Var(\varepsilon_1) = \cdots = Var(\varepsilon_n) = \sigma^2$
+The Y values are (conditionally) normally distributed for with $x \approx 7$ 
 
-*Note:* This model also assumes that the $x$ variables are **fixed**, which is why they get little x's instead of big X's
+```{r, fig.height=5, fig.width=9, echo=FALSE}
+#| fig-width: 6
+#| fig-height: 2
+ggplot(df2, aes(sample=y)) + 
+  geom_qq(size = .5) + stat_qqline(color="darkgray")+
+  facet_wrap(~model, scales="free") + 
+  ggtitle("Normal QQ plots of all Y's")
+```
 
-**How many parameters must be estimated?**
-
-MLE's: 
-
-\vspace{2in}
+# Inference for coefficients
 
 ::: callout-note
 ## Maximum Likelihood Estimators for SLR
@@ -289,5 +146,90 @@ $$\hat \beta_1  = \frac{\sum(x_i - \bar{x})(Y_i - \bar{Y})}{\sum (x_i - \bar{x})
 $$ \hat\sigma^2 = \frac{\sum e_i^2}{n}$$
 :::
 
-*Note:*
+Properties of the MLE's for SLR: 
 
+1. $\hat \beta_0$ and $\hat \beta_1$ are Normally-distributed random variables
+
+2. $\hat \beta_0$ and $\hat \beta_1$ are unbiased estimators
+
+3. $V(\hat \beta_1) = \frac{\sigma^2}{\sum (x_i - \bar{x})^2}$
+
+4. $V(\hat \beta_0) = \sigma^2 [\frac{1}{n} + \frac{\bar{x}^2}{\sum(x_i - \bar{x})^2}]$
+
+5. $\hat \beta_1 , \bar{Y}$ and $\hat \sigma^2$ are mutually independent
+
+6. $\frac{n \hat \sigma^2}{\sigma^2} \sim \chi^2_{n-2}$
+
+7. $s^2 = \frac{n}{n-2} \hat \sigma^2$ is an unbiased estimator for $\sigma^2$
+
+
+::: callout-note
+## Test statistic for $\beta_1$
+
+Let $(x_1, Y_1), (x_2, Y_2), ..., (x_n, Y_n)$ be a set of points satisfying $E(Y|X=x) = \beta_0 + \beta_1 x$ and let $S^2 = \frac{1}{n-2} \sum (Y_i - (\hat\beta_0 + \hat\beta_1 x_i))^2$. Then, 
+
+$T = \frac{\hat\beta_1 - \beta_1}{S/\sqrt{\sum (x_i - \bar{x})^2}}$
+:::
+
+\vspace{2.5in}
+
+
+**Example:**  We are interested in the average *inconclusive rate* (how often the firearms examiner cannot come to a definitive conclusion) for bullets compared to cartridge cases. Some results from a study are included below:
+
+```{r}
+#| fig-width: 4
+#| fig-height: 2
+
+ggplot(firearms, aes(x = inc_bul, y = inc_cart)) + 
+  geom_point(size = .5) + 
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+```{r}
+#| echo: true 
+cb_mod <- lm(inc_cart ~ inc_bul, data = firearms)
+summary(cb_mod)
+```
+
+What is a 95% confidence interval for $\beta_1$?
+
+\vspace{1.5in}
+
+# Inference for $\mu_{Y|x}$
+
+**Example:** How do we find a confidence interval for the line? 
+
+\vspace{4in}
+
+
+
+
+
+
+
+# Inference for new data points
+
+**Example:** If we observe a new examiner who was inconclusive 75% of time time on bullets, what would we predict for their inconclusive rate on cartridge cases? 
+
+
+\vspace{4in}
+
+```{r}
+#| echo: true
+#| collapse: true
+#| comment: ">"
+predict(cb_mod, newdata = data.frame(inc_bul = .75))
+predict(cb_mod, newdata = data.frame(inc_bul = .75), interval = "confidence")
+predict(cb_mod, newdata = data.frame(inc_bul = .75), interval = "prediction")
+```
+
+```{r}
+#| fig-width: 4
+#| fig-height: 2
+
+ggplot(firearms, aes(x = inc_bul, y = inc_cart)) + 
+  geom_point() + 
+  geom_smooth(method = "lm", se = FALSE) + 
+  geom_ribbon(data = broom::augment(cb_mod, interval = "prediction"), aes(ymin = .lower, ymax = .upper), fill = "darkorange",  alpha = .2) +
+  geom_ribbon(data = broom::augment(cb_mod, interval = "confidence"), aes(ymin = .lower, ymax = .upper), fill = "steelblue",  alpha = .4) 
+```
