@@ -55,6 +55,7 @@ Day24: [handout](/notes/24/notes24.pdf) | [slides](/slides/24/slides24.html)
 
 Day25: [handout](/notes/25-least-squares/notes25.pdf) 
 
+Day26: [handout](/notes/26-slr-inference/notes26.pdf) 
 
 # Project
 
