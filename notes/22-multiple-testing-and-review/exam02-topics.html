@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Prof Amanda Luby">
+
+<title>Exam 02 Review – Stat 250</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-2486e1f0a3ee9ee1fc393803a1361cdb.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-c5bd1d45debbbbefa3cfb1ba9e9be448.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body>
+
+<div id="quarto-search-results"></div>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        
+    <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="exam02-topics.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Exam 02 Review</h1>
+<p class="subtitle lead">Stat250 S25</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Prof Amanda Luby </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Exam II will be held in class Friday of Week 8. The exam is closed book, but you can use the formula sheet provided by me along with one side of one notecard of your own notes. You will also have access to a calculator.</p>
+<p>To study, I recommend carefully going through class notes, homework problems, and this handout. After reviewing those materials, I recommend solving lots and lots of practice problems (e.g.&nbsp;the problems in the textbook with answers in the back).</p>
+<section id="confidence-intervals" class="level1">
+<h1>1. Confidence Intervals</h1>
+<ul>
+<li>Interpret confidence intervals in the context of the problem</li>
+<li>State the conclusion of a hypothesis test based on a confidence interval</li>
+<li>Know the definition of a confidence interval and the coverage properties</li>
+</ul>
+<section id="using-the-pivotal-method" class="level3">
+<h3 class="anchored" data-anchor-id="using-the-pivotal-method">Using the pivotal method</h3>
+<ul>
+<li>Know the definition of a pivotal quantity</li>
+<li>Set up a probability statement that can be used to derive a CI from a pivot</li>
+<li>Derive CI’s for population parameters using pivotal quantities</li>
+</ul>
+<p><strong>Example question:</strong> Suppose that <span class="math inline">\(X_1, ..., X_n\)</span> form a random sample from an exponential distribution with mean <span class="math inline">\(1/\lambda\)</span>. The sum of iid Exp(<span class="math inline">\(\lambda\)</span>) random variables is Gamma(<span class="math inline">\(n, \lambda\)</span>). Based on this fact, it can be shown that <span class="math inline">\(\frac{\lambda}{2} \sum X_i \sim \text{Gamma}(n, \frac{1}{2})\)</span>. Explain why <span class="math inline">\(\frac{\lambda}{2} \sum X_i\)</span> is a pivotal quantity and then derive a formula for a <span class="math inline">\((1-\alpha)\)</span> confidence interval for <span class="math inline">\(\lambda\)</span>.</p>
+</section>
+<section id="using-a-large-sample-approximation" class="level3">
+<h3 class="anchored" data-anchor-id="using-a-large-sample-approximation">Using a large-sample approximation</h3>
+<ul>
+<li>Write down appropriate R code to find quantiles from the <span class="math inline">\(t\)</span> and <span class="math inline">\(z\)</span> distributions</li>
+<li>Know what standard error and margin of error refer to</li>
+<li>Check necessary conditions to use a large-sample approximation</li>
+<li>Read and interpret R output</li>
+</ul>
+<p><strong>Example question:</strong> 20 subjects are enrolled in a weight loss program, and each person’s weight loss over one month was recorded (in pounds). Mean weight loss was 4.5 pounds with a sample standard deviation of 6.3 pounds. Assume that each observation comes from a normal distribution with unknown mean <span class="math inline">\(\mu\)</span> and unknown variance <span class="math inline">\(\sigma^2\)</span>. It may help to know that:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">qt</span>(.<span class="dv">05</span>, <span class="at">df =</span> <span class="dv">19</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> [<span class="dv">1</span>] <span class="sc">-</span><span class="fl">1.729133</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">qt</span>(.<span class="dv">975</span>, <span class="at">df =</span> <span class="dv">19</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> [<span class="dv">1</span>] <span class="fl">2.093024</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">qt</span>(.<span class="dv">05</span>, <span class="at">df =</span> <span class="dv">25</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> [<span class="dv">1</span>] <span class="sc">-</span><span class="fl">1.708141</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">qt</span>(.<span class="dv">975</span>, <span class="at">df =</span> <span class="dv">25</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> [<span class="dv">1</span>] <span class="fl">2.059539</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol type="a">
+<li>Find a 95% confidence interval for <span class="math inline">\(\mu\)</span></li>
+<li>What assumptions/conditions must hold for the interval in (a) to be valid?</li>
+</ol>
+<p><strong>Example question:</strong> A major credit card company is planning a new offer for their current card holders. To test the effectiveness of the campaign, the company sent out offers to a random sample of 50,000 cardholders. Of those, 1184 registered for the new offer. If the acceptance rate is 2% or less, the campaign won’t be worth the expense.</p>
+<p>Consider the below R output to help you answer this question</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.test</span>(<span class="at">x =</span> <span class="dv">1184</span>, <span class="at">n =</span> <span class="dv">50000</span>, <span class="at">conf.level =</span> <span class="fl">0.9</span>, <span class="at">p =</span> .<span class="dv">02</span>, <span class="at">alternative =</span> <span class="st">"less"</span>)<span class="sc">$</span>conf</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> [<span class="dv">1</span>] <span class="fl">0.00000000</span> <span class="fl">0.02457739</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">attr</span>(,<span class="st">"conf.level"</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> [<span class="dv">1</span>] <span class="fl">0.9</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.test</span>(<span class="at">x =</span> <span class="dv">1184</span>, <span class="at">n =</span> <span class="dv">50000</span>, <span class="at">conf.level =</span> <span class="fl">0.9</span>, <span class="at">p =</span> .<span class="dv">02</span>, <span class="at">alternative =</span> <span class="st">"greater"</span>)<span class="sc">$</span>conf</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> [<span class="dv">1</span>] <span class="fl">0.02281426</span> <span class="fl">1.00000000</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">attr</span>(,<span class="st">"conf.level"</span>)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> [<span class="dv">1</span>] <span class="fl">0.9</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.test</span>(<span class="at">x =</span> <span class="dv">1184</span>, <span class="at">n =</span> <span class="dv">50000</span>, <span class="at">conf.level =</span> <span class="fl">0.9</span>, <span class="at">p =</span> .<span class="dv">02</span>, <span class="at">alternative =</span> <span class="st">"two.sided"</span>)<span class="sc">$</span>conf</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> [<span class="dv">1</span>] <span class="fl">0.02257725</span> <span class="fl">0.02483475</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">attr</span>(,<span class="st">"conf.level"</span>)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> [<span class="dv">1</span>] <span class="fl">0.9</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol type="a">
+<li>Which confidence interval is most useful in exploring whether the campaign is worth the expense? Justify your answer.</li>
+<li>Will a 93% confidence interval be wider or narrower? How do you know?</li>
+</ol>
+</section>
+<section id="using-bootstrap-percentile-or-bootstrap-t-distributions" class="level3">
+<h3 class="anchored" data-anchor-id="using-bootstrap-percentile-or-bootstrap-t-distributions">Using bootstrap percentile or bootstrap t distributions</h3>
+<ul>
+<li>Explain when a bootstrap percentile or a bootstrap t might be more appropriate than a formula t interval</li>
+<li>Interpret a given interval in context</li>
+</ul>
+<p><strong>Example question:</strong> The histogram below displays a random sample of 98 exam scores for graduating seniors in a certain country. We are interested in building a 90% confidence interval for <span class="math inline">\(\mu\)</span>, the average exam score.</p>
+<ol type="a">
+<li>If we built a bootstrap percentile interval, formula-t confidence interval, and bootstrap-t confidence interval, would you expect to see nearly identical results? Why or why not?</li>
+<li>Which of the 3 intervals would you prefer in this scenario? Why?</li>
+</ol>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="exam02-topics_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="384"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="hypothesis-testing" class="level1">
+<h1>2. Hypothesis Testing</h1>
+<ul>
+<li>Interpret results from a testing procedure in context</li>
+<li>Know whether a confidence interval will contain a particular value based on the results from a hypothesis test</li>
+<li>Know all the basic hypothesis testing ideas from Ch3 (test statistic, p-value, statistical significance)</li>
+<li>State null and alternative hypotheses</li>
+</ul>
+<section id="large-sample-approximations" class="level3">
+<h3 class="anchored" data-anchor-id="large-sample-approximations">Large sample approximations</h3>
+<ul>
+<li>For a given one-sample, two-sample, or paired testing situation, calculate the appropriate test statistic and associated p-value</li>
+<li>Use proper notation for population parameters</li>
+<li>Read and interpret R output</li>
+<li>Provide R code to find p-values for a given test statistic</li>
+<li>Specify the null distribution</li>
+<li>Check conditions to apply an inferential procedure</li>
+</ul>
+<p><strong>Example Question:</strong> Subjects in the HELP (Health Evaluation and Linkage to Primary Care) study were asked about their depressive symptoms (CESD score) and homeless status (housed vs.&nbsp;homeless). Higher scores on the cesd measure indicate more depressive symptoms.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 15%">
+<col style="width: 9%">
+<col style="width: 10%">
+<col style="width: 12%">
+<col style="width: 10%">
+<col style="width: 10%">
+<col style="width: 10%">
+<col style="width: 10%">
+<col style="width: 7%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>homeless</th>
+<th>min</th>
+<th>Q1</th>
+<th>median</th>
+<th>Q3</th>
+<th>max</th>
+<th>mean</th>
+<th>sd</th>
+<th>n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>homeless</td>
+<td>1.00</td>
+<td>28.00</td>
+<td>36.00</td>
+<td>41.00</td>
+<td>60.00</td>
+<td>34.02</td>
+<td>12.32</td>
+<td>209</td>
+</tr>
+<tr class="even">
+<td>housed</td>
+<td>3.00</td>
+<td>23.00</td>
+<td>32.00</td>
+<td>40.00</td>
+<td>58.00</td>
+<td>31.84</td>
+<td>12.62</td>
+<td>244</td>
+</tr>
+</tbody>
+</table>
+<ol type="a">
+<li>State the appropriate hypotheses to test whether there is a true difference between the CESD score for the groups based on homeless status.</li>
+<li>Calculate the appropriate test statistic (plug in completely, but you do not need to simplify).</li>
+<li>Explain how you would find the p-value for this test. Note that df = 443.365. (A randomly selected stat250 student should be able to follow your explanation and perform the calculation)</li>
+</ol>
+</section>
+<section id="exact-tests" class="level3">
+<h3 class="anchored" data-anchor-id="exact-tests">Exact tests</h3>
+<ul>
+<li>Given a data distribution and <span class="math inline">\(\alpha\)</span> level, find an appropriate rejection region</li>
+<li>Set up a likelihood ratio test or generalized likelihood ratio test and derive the form of a rejection region</li>
+<li>State why the LRT or GLRT test is desirable</li>
+</ul>
+<p><strong>Example question:</strong> Suppose <span class="math inline">\(X_1, ..., X_10\)</span> are a random sample from a population with exponential distribution with <span class="math inline">\(\lambda &gt; 0\)</span>.</p>
+<ol type="a">
+<li>Derive the most powerful test for <span class="math inline">\(H_0: \lambda = 7\)</span> against <span class="math inline">\(H_A: \lambda = 5\)</span></li>
+<li>If we instead want to test <span class="math inline">\(H_0: \lambda \ge 7\)</span> against <span class="math inline">\(H_A: \lambda &lt; 7\)</span>, explain how the most powerful test statistic would change</li>
+</ol>
+</section>
+<section id="errors-and-power" class="level3">
+<h3 class="anchored" data-anchor-id="errors-and-power">Errors and Power</h3>
+<ul>
+<li>Know the definition for Type I error, Type II error, and power</li>
+<li>Identify/explain what a Type I and Type II error is in the context of the problem</li>
+<li>Given a type I error and hypotheses, define the rejection region in terms of the sample statistic or test statistic</li>
+<li>Given a testing setup and a value of the parameter in <span class="math inline">\(H_A\)</span>, calculate the type II error rate and power of the test</li>
+<li>Given a testing setup, type I error rate, and desired power; determine the necessary sample size</li>
+<li>Read a power curve and explain how it was found</li>
+</ul>
+<p><strong>Example question:</strong> The time between arrivals are generally known to follow an exponential distribution. Let <span class="math inline">\(X_i\)</span> be the time between arrivals at the TSA pre-check line at MSP Airport. Assume that <span class="math inline">\(X_1, ..., X_5\)</span> are a random sample from an exponential distribution with unknown parameter <span class="math inline">\(\lambda\)</span>. We wish to test <span class="math inline">\(H_0: \lambda \ge .5\)</span> against <span class="math inline">\(H_A: \lambda &lt; .5\)</span> using the test statistic <span class="math inline">\(Y = \sum X_i\)</span>. We will reject <span class="math inline">\(H_0\)</span> if <span class="math inline">\(Y &gt; c\)</span>, where <span class="math inline">\(c\)</span> is chosen to give <span class="math inline">\(\alpha = .05\)</span>.</p>
+<ol type="a">
+<li>In this setting, <span class="math inline">\(c=18.3\)</span>. Show how this was found.</li>
+<li>Find the power of the test when <span class="math inline">\(\lambda = .25\)</span>.</li>
+</ol>
+</section>
+<section id="multiple-testing" class="level3">
+<h3 class="anchored" data-anchor-id="multiple-testing">Multiple Testing</h3>
+<ul>
+<li>Calculate the probability of making at least one type I error in a series of <span class="math inline">\(k\)</span> tests</li>
+<li>Apply the Sidak correction and Bonferroni correction</li>
+</ul>
+<p><strong>Example question:</strong> I am interested in testing whether there is a difference in the average number of hours slept per night among first-years, sophomores, and juniors. I conduct a random survey and obtain the following results.</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">year</th>
+<th style="text-align: right;">min</th>
+<th style="text-align: right;">Q1</th>
+<th style="text-align: right;">median</th>
+<th style="text-align: right;">Q3</th>
+<th style="text-align: right;">max</th>
+<th style="text-align: right;">mean</th>
+<th style="text-align: right;">sd</th>
+<th style="text-align: right;">n</th>
+<th style="text-align: right;">missing</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">fy</td>
+<td style="text-align: right;">5.31</td>
+<td style="text-align: right;">7.18</td>
+<td style="text-align: right;">7.69</td>
+<td style="text-align: right;">8.19</td>
+<td style="text-align: right;">9.53</td>
+<td style="text-align: right;">7.70</td>
+<td style="text-align: right;">0.74</td>
+<td style="text-align: right;">66</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">soph</td>
+<td style="text-align: right;">3.84</td>
+<td style="text-align: right;">5.93</td>
+<td style="text-align: right;">7.95</td>
+<td style="text-align: right;">8.65</td>
+<td style="text-align: right;">12.51</td>
+<td style="text-align: right;">7.66</td>
+<td style="text-align: right;">1.96</td>
+<td style="text-align: right;">48</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">jr</td>
+<td style="text-align: right;">5.36</td>
+<td style="text-align: right;">7.05</td>
+<td style="text-align: right;">7.75</td>
+<td style="text-align: right;">8.70</td>
+<td style="text-align: right;">10.04</td>
+<td style="text-align: right;">7.86</td>
+<td style="text-align: right;">1.25</td>
+<td style="text-align: right;">25</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<ol type="a">
+<li>If I do the following tests at the <span class="math inline">\(\alpha = .05\)</span> level:</li>
+</ol>
+<p><span class="math inline">\(H_0: \mu_{fy} - \mu_{soph} = 0\)</span> against <span class="math inline">\(H_A: \mu_{fy} - \mu_{soph} \ne 0\)</span></p>
+<p><span class="math inline">\(H_0: \mu_{fy} - \mu_{jr} = 0\)</span> against <span class="math inline">\(H_A: \mu_{fy} - \mu_{jr} \ne 0\)</span></p>
+<p><span class="math inline">\(H_0: \mu_{soph} - \mu_{jr} = 0\)</span> against <span class="math inline">\(H_A: \mu_{soph} - \mu_{jr} \ne 0\)</span></p>
+<p>what is the probability I make at least one Type I error?</p>
+<ol start="2" type="a">
+<li><p>What <span class="math inline">\(\alpha\)</span> level should I use for each test to obtain an overall Type I error rate of <span class="math inline">\(\alpha^* = .05\)</span> according to the Sidak correction? According to the Bonferroni?</p></li>
+<li><p>Which correction gives me greater power?</p></li>
+</ol>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

@@ -475,7 +475,7 @@ Prof Amanda Luby
 <section id="sampling-distribution-of-the-estimators" class="slide level2">
 <h2>Sampling Distribution of the Estimators</h2>
 
-<img data-src="slides08_files/figure-revealjs/unnamed-chunk-2-1.png" width="1152" class="r-stretch"><p>which estimator is “best”?</p>
+<img data-src="slides08_files/figure-html/unnamed-chunk-2-1.png" width="1152" class="r-stretch"><p>which estimator is “best”?</p>
 </section>
 <section id="properties-of-estimators" class="slide level2">
 <h2>Properties of Estimators</h2>
@@ -554,9 +554,9 @@ Prof Amanda Luby
 <pre><code># A tibble: 3 × 4
   estimator     bias   var    MSE
   &lt;chr&gt;        &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
-1 mean       0.00123  1.99   1.99
-2 median    -2.97     1.96  10.8 
-3 midpoint  12.4     40.7  195.  </code></pre>
+1 mean      -0.00331  2.01   2.01
+2 median    -2.97     1.98  10.8 
+3 midpoint  12.4     40.4  194.  </code></pre>
 </div>
 </div>
 </section>
@@ -578,7 +578,7 @@ Prof Amanda Luby
 <p><strong>(d) When does <span class="math inline">\(\widehat{\theta}_{MLE}\)</span> “beat” <span class="math inline">\(\widehat{\theta}_{MoM}\)</span> in terms of MSE?</strong></p>
 <p>MSE = “MSE factor” <span class="math inline">\(\times \theta^2\)</span></p>
 
-<img data-src="slides08_files/figure-revealjs/unnamed-chunk-4-1.png" width="960" class="r-stretch"></section>
+<img data-src="slides08_files/figure-html/unnamed-chunk-4-1.png" width="672" class="r-stretch"></section>
 <section id="example-uniform0theta" class="slide level2">
 <h2>Example: Uniform(<span class="math inline">\(0,\theta\)</span>)</h2>
 <div>
@@ -593,7 +593,7 @@ Prof Amanda Luby
 <p><strong>(f) Does <span class="math inline">\(\hat \theta_3\)</span> ever “beat” <span class="math inline">\(\hat \theta_{MLE}\)</span> in terms of MSE?</strong></p>
 <p>MSE = “MSE factor” <span class="math inline">\(\times \theta^2\)</span></p>
 
-<img data-src="slides08_files/figure-revealjs/unnamed-chunk-5-1.png" width="960" class="r-stretch"></section>
+<img data-src="slides08_files/figure-html/unnamed-chunk-5-1.png" width="672" class="r-stretch"></section>
 <section>
 <section id="can-we-find-a-better-estimator" class="title-slide slide level1 center">
 <h1>Can we find a “better” estimator?</h1>
@@ -875,44 +875,6 @@ Prof Amanda Luby
         ]
       });
     </script>
-    
-    <script>
-      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
-      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
-      // slide changes (different for each slide format).
-      (function () {
-        // dispatch for htmlwidgets
-        function fireSlideEnter() {
-          const event = window.document.createEvent("Event");
-          event.initEvent("slideenter", true, true);
-          window.document.dispatchEvent(event);
-        }
-
-        function fireSlideChanged(previousSlide, currentSlide) {
-          fireSlideEnter();
-
-          // dispatch for shiny
-          if (window.jQuery) {
-            if (previousSlide) {
-              window.jQuery(previousSlide).trigger("hidden");
-            }
-            if (currentSlide) {
-              window.jQuery(currentSlide).trigger("shown");
-            }
-          }
-        }
-
-        // hookup for slidy
-        if (window.w3c_slidy) {
-          window.w3c_slidy.add_observer(function (slide_num) {
-            // slide_num starts at position 1
-            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
-          });
-        }
-
-      })();
-    </script>
-
     <script id="quarto-html-after-body" type="application/javascript">
     window.document.addEventListener("DOMContentLoaded", function (event) {
       const toggleBodyColorMode = (bsSheetEl) => {

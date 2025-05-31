@@ -419,7 +419,7 @@ Prof Amanda Luby
 <div class="cell quarto-layout-panel" data-layout-ncol="2">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<p><img data-src="slides17_files/figure-revealjs/unnamed-chunk-2-1.png" width="960"></p>
+<p><img data-src="slides17_files/figure-html/unnamed-chunk-2-1.png" width="672"></p>
 </div>
 <div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
 <table class="caption-top">
@@ -529,7 +529,7 @@ attr(,"conf.level")
 <section id="is-bootstrap-t-necessary" class="slide level2">
 <h2>Is bootstrap t necessary?</h2>
 
-<img data-src="slides17_files/figure-revealjs/unnamed-chunk-8-1.png" width="960" class="r-stretch"></section>
+<img data-src="slides17_files/figure-html/unnamed-chunk-8-1.png" width="672" class="r-stretch"></section>
 <section id="section-1" class="slide level2 center">
 <h2></h2>
 <div class="callout callout-warning callout-titled callout-style-default">
@@ -554,7 +554,7 @@ attr(,"conf.level")
 <h2>Observations are positive correlated <span class="math inline">\(\to\)</span></h2>
 <p><br> <br> <br></p>
 
-<img data-src="slides17_files/figure-revealjs/unnamed-chunk-9-1.png" width="960" class="r-stretch"></section>
+<img data-src="slides17_files/figure-html/unnamed-chunk-9-1.png" width="672" class="r-stretch"></section>
 <section id="percentile-bootstrap-for-paired-data" class="slide level2">
 <h2>Percentile bootstrap for paired data</h2>
 <div class="cell">
@@ -816,44 +816,6 @@ attr(,"conf.level")
         ]
       });
     </script>
-    
-    <script>
-      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
-      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
-      // slide changes (different for each slide format).
-      (function () {
-        // dispatch for htmlwidgets
-        function fireSlideEnter() {
-          const event = window.document.createEvent("Event");
-          event.initEvent("slideenter", true, true);
-          window.document.dispatchEvent(event);
-        }
-
-        function fireSlideChanged(previousSlide, currentSlide) {
-          fireSlideEnter();
-
-          // dispatch for shiny
-          if (window.jQuery) {
-            if (previousSlide) {
-              window.jQuery(previousSlide).trigger("hidden");
-            }
-            if (currentSlide) {
-              window.jQuery(currentSlide).trigger("shown");
-            }
-          }
-        }
-
-        // hookup for slidy
-        if (window.w3c_slidy) {
-          window.w3c_slidy.add_observer(function (slide_num) {
-            // slide_num starts at position 1
-            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
-          });
-        }
-
-      })();
-    </script>
-
     <script id="quarto-html-after-body" type="application/javascript">
     window.document.addEventListener("DOMContentLoaded", function (event) {
       const toggleBodyColorMode = (bsSheetEl) => {
