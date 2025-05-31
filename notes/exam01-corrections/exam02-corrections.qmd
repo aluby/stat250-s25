@@ -1,0 +1,72 @@
+---
+title: "Exam 02 Corrections"
+subtitle: "Stat250 S25"
+callout-appearance: minimal
+knitr:
+    opts_chunk: 
+      dev: "ragg_png"
+      echo: false
+      warning: false
+      message: false
+format:
+  pdf:
+    include-in-header: 
+       - "../preamble.tex"
+    toc: false
+    number-sections: true
+    colorlinks: true
+    geometry:
+      - top=1in
+      - left=1in
+      - right=1in
+      - bottom=1in
+      - heightrounded
+    mainfont: "Linux Libertine"
+    sansfont: "Linux Libertine"
+    mathfont: "Libertinus Math"
+    monofont: "Monaco"
+fontsize: 11pt
+---
+
+```{r}
+library(tidyverse)
+library(ggformula)
+library(knitr)
+library(mosaic)
+library(patchwork)
+data("penguins", package = "palmerpenguins")
+gentoo <- filter(penguins, species == "Gentoo")
+theme_set(theme_minimal())
+```
+
+\vspace{-.25in}
+
+I offer exam corrections for two reasons: 
+
+(1) to correct any major misunderstandings before moving on to new material
+(2) to mitigate the impact that a bad exam day can have on your final grade
+
+You are not required to submit exam corrections and your grade will never be lowered by a second attempt. If you do submit problem corrections, you can earn back 50% of the points that you missed. Final (corrected) exam scores are capped at 90%. 
+
+**Guidelines:**
+
+- You **cannot** google questions or use any AI/large-language models to find answers to exam questions. I may ask you to come in and explain any of your corrections to me verbally. 
+    - I am super serious about this. Corrections are offered for your benefit and learning, and getting the answers from someone else is contrary to this goal. Suspected violations of this policy will be referred to the Academic Standing Committee
+- You **can** use any class reading, slides, activities, or homework examples. 
+- You **can** discuss exam questions with me (and only me). Do not discuss the exam with anyone else until after the corrections submission deadline.
+
+**What to submit:**
+
+- Turn in a hard copy (not on gradescope) containing new answers for any problem that you want to correct. I have your original exam on gradescope so you do not need to resubmit that exam and you do not need to re-answer questions that you got correct.
+- What am I looking for with a problem correction?
+    - your new attempt
+    - a reference to a previous homework/handout/textbook problem similar to the one you are resubmitting or a reference to a slide/textbook formula/definition that is directly related to your correction. 
+        - When referencing the textbook, include a section or example number.
+        - When referencing a slide/handout example, include a week number and day (posted on Moodle)
+        - When referencing a homework, include a homework number and problem number. 
+        - For multiple choice questions only: explain your thought process in deciding on your original answer and show work or an explanation on why the other answer is correct
+- You are only allowed to submit one correction for each exam. 
+
+**When to submit:**
+
+- Exam corrections are due at 5pm on the last day of classes (Wed, June 4). A paper copy must be submitted to me before this time. 

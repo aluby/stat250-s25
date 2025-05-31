@@ -1,0 +1,340 @@
+---
+title: Chi-Squared Tests
+subtitle: "Day 23"
+title-slide-attributes:
+  data-background-gradient: "linear-gradient(to right, #46337e, #440154)"
+  data-slide-number: none
+author: "Prof Amanda Luby"
+format: 
+  revealjs:
+    incremental: true
+editor: 
+  markdown: 
+    wrap: 72
+---
+
+```{r setup}
+#| include: false
+
+library(tidyverse)
+library(countdown)
+
+library(ggformula)
+library(openintro)
+library(patchwork)
+library(fivethirtyeight)
+library(dplyr)
+library(tidyr)
+library(fontawesome)
+library(gt)
+
+library(gridExtra)
+library(tidyverse)
+library(knitr)
+library(mosaic)
+library(infer)
+library(kableExtra)
+library(latex2exp)
+
+library(plotly)
+library(ggthemes)
+library(janitor)
+
+# #440154
+knitr::opts_chunk$set(echo = TRUE,
+                  message = FALSE,
+                  warning = FALSE)
+
+slides_theme = theme_minimal(base_family = "serif", base_size = 24) +
+  theme(plot.background = element_rect(fill = "#f0f1eb", colour = NA))
+  
+
+theme_set(slides_theme)
+
+data("happy", package = "ggmosaic")
+happy2018 <- filter(happy, year == 2018) %>%
+  drop_na(happy, finrela)
+yt <- 0
+```
+
+## Can money buy you happiness?
+:::{style="font-size: 90%;"}
+The General Social Survey (GSS) is a sociological survey used to collect data on demographic characteristics and attitudes of residents of the United States. We'll consider two questions:
+
+  *  Compared with American families in general, would you say your family income is far below average, below average, average, above average, or far above average?
+
+  * Taken all together, how would you say things are these days—would you say that you are very happy, pretty happy, or not too happy?
+:::
+
+## Can money buy you happiness?
+
+```{r}
+#| echo: false
+
+
+gf_bar(~finrela, data = happy2018, fill = ~happy, position = "fill") +
+  xlab("Family income") +
+  coord_flip() +
+  scale_fill_colorblind()
+```
+
+## Happiness contingency table
+
+```{r echo=FALSE}
+tabyl(happy2018, happy, finrela) |>
+  adorn_totals(where = c("row", "col")) |>
+  gt() |>
+  tab_options(table.font.size = 24,
+              table.background.color = "#f0f1eb")
+```
+
+
+How can we conclude whether opinion on income and happiness are associated?
+
+
+## Test statistic
+
+$H_0:$ the variables are independent
+
+<br>
+
+What would the contingency table look like under $H_0$?
+
+:::{.fragment}
+
+```{r echo=FALSE}
+chisq.test(happy2018$happy, happy2018$finrela)$expect |>
+  as.data.frame() |>
+  tibble::rownames_to_column(var = "happy") |>
+  gt() |>
+  tab_options(table.font.size = 24,
+              table.background.color = "#f0f1eb")
+```
+
+:::
+
+## How can we compare what we observe to what would be expected under $H_0$? {.smaller}
+
+**Observed:**
+
+
+```{r echo=FALSE}
+tabyl(happy2018, happy, finrela) |>
+  adorn_totals(where = c("row", "col")) |>
+  gt() |>
+  tab_options(table.font.size = 24,
+              table.background.color = "#f0f1eb")
+```
+
+**Expected:**
+
+```{r echo=FALSE}
+chisq.test(happy2018$happy, happy2018$finrela)$expect |>
+  as.data.frame() |>
+  tibble::rownames_to_column(var = "happy") |>
+  adorn_totals(where = c("row", "col")) |>
+  gt() |>
+  fmt_integer(rows = 4, sep_mark = "") |>
+  tab_options(table.font.size = 24,
+              table.background.color = "#f0f1eb")
+
+observed <- chisq.test(happy2018$happy, happy2018$finrela)$obs
+expected <- chisq.test(happy2018$happy, happy2018$finrela)$expect
+```
+
+
+## Chi-square test stat
+
+$$C = \sum_{\text{all cells}} \frac{(\text{observed} - \text{expected})^2}{\text{expected}} = \sum (O - E)^2/E$$
+
+- Big when differences are big
+- Small when differences are small
+- Scaled by "bigness" of expected counts
+- All cells contribute
+
+## When $H_0$ is true
+
+##
+
+
+## 
+
+::: panel-tabset
+
+## "By hand"
+
+```{r}
+(observed - expected)^2/expected
+
+sum((observed - expected)^2/expected)
+
+1-pchisq(sum((observed - expected)^2/expected), df = (3-1)*(5-1))
+```
+
+## `chisq` with vectors
+
+```{r}
+chisq.test(happy2018$happy, happy2018$finrela)
+```
+
+## `chisq` with table
+
+```{r}
+chisq.test(observed)
+```
+
+:::
+
+## Permutation test
+
+:::{.nonincremental}
+1. Store the data in a table: one row per observation, one column per variable. 
+
+2. Calculate a test statistic for the original data. 
+
+3. **Repeat** 
+  
+    + Randomly permute the rows in one of the columns. 
+    + Calculate the test statistic for the permuted data. 
+
+4. Calculate the $p$-value as the fraction of times the random statistics exceed the original statistic. 
+:::
+
+
+## Permutation test setup
+
+Drop any missing values
+
+```{r}
+#| echo: true
+
+df <- happy2018 |> drop_na(happy, finrela)
+```
+
+Calculate the observed test statistic
+```{r}
+#| echo: true
+observed <- chisq.test(happy2018$happy, happy2018$finrela)$statistic
+observed
+```
+
+
+##
+### Construct the permutation distribution 
+
+```{r cache=TRUE}
+#| echo: true
+set.seed(55057)
+N <- 10^4 - 1
+result <- numeric(N)
+for(i in 1:N) {
+  finrela_perm <- sample(happy2018$finrela)
+  result[i] <- chisq.test(happy2018$happy, finrela_perm)$statistic
+}
+```
+
+
+## Permutation distribution
+
+```{r echo=FALSE}
+gf_histogram(~result, bins = 50, xlab = "Chi-squared statistics", col = "white") 
+```
+
+
+## _p_-value
+
+```{r echo=FALSE}
+gf_histogram(~result, bins = 50, xlab = "Chi-squared statistics", col = "white") %>%
+  gf_vline(xintercept = ~observed, color = "darkorange") 
+```
+
+```{r collapse=TRUE}
+#| echo: true
+(sum(result >= observed) + 1) / (N + 1)
+```
+
+
+## Chi-squared reference distribution
+
+```{r echo=FALSE}
+gf_dhistogram(~result, data = data.frame(result = result), xlab = "Chi-squared statistics", bins = 50, col = "white") %>%
+  gf_function(
+    fun = dchisq,
+    args = list(df = 8),
+    color = "steelblue",
+    size = 1
+  )
+```
+
+
+##
+### Simulation vs. model-based results
+
+<br>
+
+**Chi-squared test**
+
+```{r}
+#| echo: true
+1 - pchisq(observed, df = (3 - 1) * (5 - 1))
+```
+
+<br>
+
+**Permutation test**
+
+```{r include=FALSE}
+options(scipen=999)
+```
+
+
+```{r}
+#| echo: true
+(sum(result >= observed) + 1) / (N + 1)
+```
+
+## A shortcut to the permutation test
+
+```{r}
+chisq.test(happy2018$happy, happy2018$finrela, simulate.p.value = TRUE)
+```
+
+## Caution
+
+The $\chi^2$ distribution provides a reasonable approximation of the null distribution **as long as the sample size is "large enough"**
+
+Common guidelines:
+
+::: {.nonincremental}
+
+- "Cochran's rule:" All of the cells have **expected counts** > 5
+
+- All expected counts are at least 1 and no more than 20% of cells have **expected counts** < 5
+
+:::
+
+
+Use a permutation test if the expected counts aren't large enough
+
+
+
+## Example {.smaller}
+
+Some people think that children who are the older ones in their class at school naturally per‐ form better in sports and that these children then get more coaching and encouragement. Could that make a difference in who makes it to the professional level in sports? Below is the birth month of 1478 major league players born since 1975, along with the national birth percentage across the same years.
+
+| Month    | 1     | 2     | 3     | 4     | 5     | 6     | 7     | 8     | 9     | 10    | 11    | 12    |
+|----------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|
+| Obs      | 137   | 121   | 116   | 121   | 126   | 114   | 102   | 165   | 134   | 115   | 105   | 122   |
+| Birth \% | 8\%   | 7\%   | 8\%   | 8\%   | 8\%   | 8\%   | 9\%   | 9\%   | 9\%   | 9\%   | 8\%   | 9\%   |
+
+
+::: nonincremental
+- Write out an appropriate null and alternative hypothesis
+- Compute the chi-square test statistic
+- Compute the p-value
+- Draw a conclusion in context
+:::
+
+## Likelihood Ratio test
+
+
