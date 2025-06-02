@@ -1,6 +1,6 @@
 ---
-title: Chi-Squared Tests
-subtitle: "Day 23"
+title: Intro to Bayesian Inference
+subtitle: "Day 27"
 title-slide-attributes:
   data-background-gradient: "linear-gradient(to right, #46337e, #440154)"
   data-slide-number: none
