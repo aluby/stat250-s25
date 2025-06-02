@@ -8,6 +8,7 @@ author: "Prof Amanda Luby"
 format: 
   revealjs:
     incremental: true
+    scrollable: true
 editor: 
   markdown: 
     wrap: 72
@@ -39,7 +40,7 @@ library(latex2exp)
 library(plotly)
 library(ggthemes)
 library(janitor)
-
+library(bayesrules)
 # #440154
 knitr::opts_chunk$set(echo = TRUE,
                   message = FALSE,
@@ -237,13 +238,16 @@ Suppose that during a recent doctor's visit, you tested positive for a very rare
 
 # A first Bayesian example
 
-## TODO 
+## Example: 
 
+A Des Moines register poll a few days before the 2024 Presidential election showed Kamala Harris with 51.61% of the 2-party vote share in a poll of $n=808$ likely voters. This poll result received a lot of buzz, because in the two months leading up to this poll, this proportion was estimated between 44.7 and 47.7. 
 
-##
-### Overview of the Bayesian method
+- Nov 2: 51.5% (x = 417; n=808)
+- Nov 2: 44.7% (x = 358; n=800)
+- Oct 2: 46.8% (x=281; n=600)
+- Sept 15: 47.7% (x=382; n=800)
 
-
+## Overview of the Bayesian method
 
 1. Choose (or elicit) a probability distribution to express the pre-data belief about the parameter of interest, $\theta$.
 
@@ -325,10 +329,12 @@ $$\textrm{marginal pdf of data} = f(x_1, \dotsc, x_n) = \int_{-\infty}^{\infty} 
 ## Binomial example: prior
 
 - Goal is to estimate the parameter:
-$$p = \textrm{proportion of all US adults who approve of the President}$$
+$$p = \textrm{proportion of Iowa likely voters who will vote for Harris}$$
 
 - **Prior**: A natural prior for a proportion is a uniform:
 $$p \sim Unif[0,1] \textrm{ so that } f(p) = 1 \textrm{ for } 0 \leq p \leq 1$$
+
+. . . 
 
 ```{r, echo=FALSE, fig.height=3}
 library(ggplot2)
@@ -341,13 +347,13 @@ ggplot(data.frame(p=c(0,1)), aes(p)) +
 
 ## Binomial example: data
 
-- **Data** Suppose Gallup surveys a random sample of 1000 US adults and finds that 39% approve of the President. 
+- **Data** 808 respondents who responded to the 2-party presidential vote question. 
 
-- Our random sample $X_1, \dotsc, X_{1000}$ is Bernoulli: 
-$$f(x_1, \dotsc, x_n \mid p) = \prod_{i=1}^{1000}p^{x_i}(1-p)^{(1-x_i)} = p^{\sum_{i=1}^{1000}x_i}(1-p)^{1000 - \sum_{i=1}^{1000}x_i}$$
+- Our random sample $X_1, \dotsc, X_{808}$ is Bernoulli: 
+$$f(x_1, \dotsc, x_n \mid p) = \prod_{i=1}^{808}p^{x_i}(1-p)^{(1-x_i)} = p^{\sum_{i=1}^{808}x_i}(1-p)^{808 - \sum_{i=1}^{808}x_i}$$
 
-- or, an **equivalent** data model just models the total number of "success" (approves) $X = \sum_{i=1}^{1000}X_i$ which is a Binomial count:
-$$f(x \mid p) = \binom{1000}{x}p^x(1-p)^{1000-x}$$
+- or, an **equivalent** data model just models the total number of "success" (approves) $X = \sum_{i=1}^{808}X_i$ which is a Binomial count:
+$$f(x \mid p) = \binom{808}{x}p^x(1-p)^{808-x}$$
 
 ## Binomial example: posterior
 
@@ -367,7 +373,7 @@ $$1 =  \int_{0}^1\dfrac{\Gamma(a + b)}{\Gamma(a) \Gamma(b)}p^{a-1}(1-p)^{b-1} dp
 
 ## Binomial example: posterior
 
-- ...which allows us to solve our integration problem without our calc book or mathematica:
+- ...which allows us to solve our integration problem without actually doing the integral
 $$ \dfrac{\Gamma(a)\Gamma(b)}{\Gamma(a + b)} = \int_{0}^1p^{a-1}(1-p)^{b-1} dp$$
 
 - Letting $a = x + 1$ and $b=n - x + 1$, we have
@@ -381,8 +387,8 @@ $$f(p \mid  x)  = \dfrac{\binom{n}{x}p^x(1-p)^{n-x}}{\binom{n}{x}  \dfrac{\Gamma
 - Which is the pdf for Beta distribution:
 $$p \mid x \sim Beta(x + 1, n - x + 1)$$
 
-- Gallup data: our posterior distribution for $n=1000$ and $x=390$ is
-$$p \mid x = 390 \sim Beta(391, 611)$$
+- Iowa data: our posterior distribution for $n=808$ and $x=417$ is
+$$p \mid x = 417 \sim Beta(418, 392)$$
 
 ## Binomial example: posterior {.smaller}
 
@@ -415,18 +421,18 @@ ggplot(data.frame(p=c(0,1)), aes(p)) +
 
 ## Binomial example: posterior
 
-$$p \mid x = 390 \sim Beta(391, 611)$$
+$$p \mid x = 417 \sim Beta(418, 392)$$
 
-- **Point Estimate**: $\hat{p}_{bayes} = E(p \mid x=390) = \dfrac{391}{391 + 611} = \dfrac{391}{1002} = 0.3902$
+- **Point Estimate**: $\hat{p}_{bayes} = E(p \mid x=417) = \dfrac{418}{418 + 392} = \dfrac{418}{810} = 0.5160$
 
-- **Variation**: $SD(p \mid x=390) = \sqrt{V(p \mid x=390)} = \sqrt{\dfrac{391(611)}{(391 + 611)^2(391 + 611 +1)}} = 0.0154$
+- **Variation**: $SD(p \mid x=417) = \sqrt{V(p \mid x=417)} = \sqrt{\dfrac{418(392)}{(418 + 392)^2(418 + 392 +1)}} = 0.0003$
 
 - **Credible Interval for $p$**: A common choice of $100(1-\alpha)$% interval estimates is to use the $\alpha/2$ and $1-\alpha/2$ quantiles of the posterior
 
 . . . 
 
 ```{r}
-qbeta(c(.025,.975),391,611)  # 95% credible interval for p
+qbeta(c(.025,.975),418,392)  # 95% credible interval for p
 ```
 
 ## Binomial example: posterior
@@ -435,11 +441,11 @@ qbeta(c(.025,.975),391,611)  # 95% credible interval for p
 
 
 - **Bayes Point Estimate of $p$**: Our posterior expectation for $p$ is
-$\hat{p}_{bayes} =0.3902$
+$\hat{p}_{bayes} =0.5160$
 
 
 - **Frequentist Point Estimate of $p$**: MLE of $p$ is
-$$\hat{p}_{MLE} = \dfrac{x}{n} = \dfrac{390}{1000} = 0.39$$
+$$\hat{p}_{MLE} = \dfrac{x}{n} = \dfrac{417}{808} = 0.5161$$
 
 ## Binomial example: posterior
 
@@ -458,10 +464,10 @@ $$\hat{p}_{bayes} = \dfrac{x+1}{n + 2} = \dfrac{n}{n+2}\dfrac{x}{n} + \dfrac{2}{
 ## Binomial example: posterior
 
 
-- **Bayes SD**: $\sqrt{V(p \mid x=390)} =  0.0154$
+- **Bayes SD**: $\sqrt{V(p \mid x=390)} =  0.01754$
 
 - **Frequentist SE**: The sample proportion SE is
-$$SE(\hat{p}) = \sqrt{\dfrac{\hat{p}(1-\hat{p})}{n}} = \sqrt{\dfrac{0.39(1-0.39)}{1000}}=0.0154$$
+$$SE(\hat{p}) = \sqrt{\dfrac{\hat{p}(1-\hat{p})}{n}} = \sqrt{\dfrac{0.39(1-0.39)}{1000}}=0.01758$$
 Same as the Bayes SD up to 4 decimal spots!
 
 - We can write the posterior variance as 
@@ -470,46 +476,34 @@ which is similar in form as the frequentist SE.
 
 ## Binomial example: posterior
 
-**Bayes Credible Interval for $p$**: There is a 95% **probability** that the Presidential approval rating is between 36.0% and 42.1%. 
+**Bayes Credible Interval for $p$**: There is a 95% **probability** that the Harris two-party vote share is between 48.16% and 55.04%. 
 ```{r}
-qbeta(c(.025,.975),391,611)  # 95% credible interval for p
+qbeta(c(.025,.975),418,392)  # 95% credible interval for p
 ```
 
 . . . 
 
-**Frequentist Confidence Interval for $p$**: I am 95% **confident** that  the Presidential approval rating is between 36.0% and 42.1%. 
+**Frequentist Confidence Interval for $p$**: I am 95% **confident** that he Harris two-party vote share is between 48.1% and 55.1%. 
 
 ```{r}
-prop.test(390,1000)$conf  # 95% confidence interval for p
+prop.test(417,808)$conf  # 95% confidence interval for p
 ```
 
 . . . 
 
 Intervals contain very similar values, but are interpreted very differently!
 
-## Binomial example: posterior
 
-What if we vary $n$ but keep the observed proportion 0.39?
+## What if we chose a different prior? 
 
+In the three polls leading up to the Des Moines register poll, Harris' 2-party vote share hovered between 44.7 and 47.7 percent. What if my prior distribution took that information into account? 
 
 ```{r}
 #| echo: false
-
-ggplot(data.frame(p=seq(0,1, by = .01)), aes(x=p))  + 
-  stat_function(fun = dbeta, args = list(shape1=390+1, shape2 = 1000-390 + 1), aes(color="posterior n=1000", linetype="posterior n=1000"), show.legend=TRUE)  +
-    stat_function(fun = dbeta, args = list(shape1=100*.39+1, shape2 = 100 - 100*.39 + 1), aes(color="posterior n=100", linetype="posterior n=100"), show.legend=TRUE)  +
-    stat_function(fun = dbeta, args = list(shape1=10*.39+1, shape2 = 10 - 10*.39 + 1), aes(color="posterior n=10", linetype="posterior n=10"), show.legend=TRUE)  +
-  stat_function(fun = dunif, aes(color="prior Unif(0,1)", linetype="prior Unif(0,1)"), show.legend=TRUE)  +
-  geom_vline(xintercept = .39, linetype=2) + 
-  guides(color=guide_legend("model"), linetype=guide_legend("model")) + 
-  labs(y="density")+ 
-  scale_color_brewer(type = "qual", palette = 2) 
-
+plot_beta(1,1) + plot_beta(140, 160)
 ```
 
-## Beta-Binomial model
-
-- What if we vary the prior?
+## What if we chose a different prior?
 
 - A more flexible prior for $p$ is a Beta( $\alpha, \beta$ ) distribution:
 $$f(p) = \dfrac{\Gamma(\alpha + \beta)}{\Gamma(\alpha)\Gamma(\beta)} p^{\alpha - 1}(1-p)^{\beta-1} \textrm{ for } 0 \leq p \leq 1$$
@@ -544,46 +538,50 @@ $$f(\theta \mid x_1, \dotsc, x_n) \propto f(\theta)f(x_1, \dotsc, x_n \mid \thet
 - The prior is like adding $\alpha$ succeses and $\beta$ failures to the data. 
     - Larger values mean more weight given to the prior (success and/or failures)
 
-## Beta-Binomial model
+## Beta-Binomial model: flat prior
 
-- The Beta(1,1) prior is the most "uninformative" prior while the others pull the posterior (a bit) towards the prior means
-
-```{r,  echo=FALSE, fig.height=4.3, fig.width=11}
+```{r,  echo=FALSE}
 library(ggplot2)
-ggplot(data.frame(p=c(0,1)), aes(p)) + 
-  stat_function(fun = dbeta, args = list(shape1=390+1, shape2 = 1000-390 + 1), aes(color="prior Beta(1,1)", linetype="posterior"), show.legend=TRUE)  +
-  stat_function(fun = dbeta, args = list(shape1=390+20, shape2 = 1000-390 + 80), aes(color="prior Beta(20,80)", linetype="posterior"), show.legend=TRUE)  +
-  stat_function(fun = dbeta, args = list(shape1=390+500, shape2 = 1000-390 + 500), aes(color="prior Beta(500,500)", linetype="posterior"), show.legend=TRUE)  +
-  stat_function(fun = dbeta, args=list(shape1 = 1,shape2=1), aes(color="prior Beta(1,1)", linetype="prior"), show.legend=TRUE)  +
-  stat_function(fun = dbeta, args=list(shape1 = 20,shape2=80), aes(color="prior Beta(20,80)", linetype="prior"), show.legend=TRUE)  +
-  stat_function(fun = dbeta, args=list(shape1 = 500,shape2=500), aes(color="prior Beta(500,500)", linetype="prior"), show.legend=TRUE)  +
-  ggtitle("Our prior and posterior beliefs about p for n=1000 and 390 successes") + 
-  geom_vline(xintercept = .39, linetype=2) + 
-  guides(color=guide_legend("model"), linetype=guide_legend("type")) + 
-  labs(y="density")+ 
-  scale_color_brewer(type = "qual", palette = 2) 
+plot_beta_binomial(1,1,y=417, n=808)
+
+```
+
+## Beta-Binomial model: somewhat informative prior
+
+```{r,  echo=FALSE}
+library(ggplot2)
+plot_beta_binomial(140,160,y=417, n=808)
+```
+
+## Beta-Binomial model: extremely informative prior
+
+```{r,  echo=FALSE}
+library(ggplot2)
+plot_beta_binomial(1021,1179,y=417, n=808)
 ```
 
 ## Beta-Binomial model
 
-For $n = 1000$ and $x=390$ successes:
+For $n = 808$ and $x=417$ successes:
 ```{r, echo=FALSE}
-post <- function(x,n,a,b)
-{
-  pex <- (a)/(a + b)
-  pse <- sqrt(pex*(1-pex)/(a + b + 1))
-  ex <- (x + a)/(n + a + b)
-  se <- sqrt(ex*(1-ex)/(n + a + b + 1))
-  return(list(prior.mean=pex,prior.sd=pse,posterior.mean=ex,posterior.sd = se))
-}
-library(dplyr)
-df <- data.frame(alpha = c(1,20,500), beta=c(1,80,500))
-df <- df %>% bind_cols(post(390,1000,df$alpha,df$beta))
-knitr::kable(round(df,4), format = "html")
+summarize_beta_binomial(1, 1, 417, 808)
+summarize_beta_binomial(140, 160, 417, 808)
+summarize_beta_binomial(1021, 1179, 417, 808)
 ```
 
 
-- As our prior contains a bigger "sample size", we see 
-    - a posterior mean pulled more towards the prior mean
-    - a reduction in the posterior standard deviation
+As our prior contains a bigger "sample size", we see 
+  - a posterior mean pulled more towards the prior mean
+  - a reduction in the posterior standard deviation
 
+## Comparing intervals
+
+If we compare credible intervals for the 3 posteriors: 
+
+```{r}
+qbeta(c(.025,.975),418,392)  
+qbeta(c(.025,.975),557,551)  
+qbeta(c(.025,.975),1438,1570)  
+```
+
+*Note:* on election day, Harris received 43.27% of the two-party vote share
