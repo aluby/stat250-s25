@@ -1,0 +1,1318 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-054b4dac1a392494bc2b80d423da1e9d.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.6.32">
+
+  <meta name="author" content="Prof Amanda Luby">
+  <title>Stat 250 – Intro to Bayesian Inference</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #657b83; background-color: #fdf6e3; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #657b83; } /* Normal */
+    code span.al { color: #d33682; font-weight: bold; } /* Alert */
+    code span.an { color: #268bd2; } /* Annotation */
+    code span.at { color: #268bd2; } /* Attribute */
+    code span.bn { color: #2aa198; } /* BaseN */
+    code span.bu { color: #cb4b16; } /* BuiltIn */
+    code span.cf { color: #859900; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #2aa198; } /* Char */
+    code span.cn { color: #2aa198; font-weight: bold; } /* Constant */
+    code span.co { color: #93a1a1; font-style: italic; } /* Comment */
+    code span.cv { color: #2aa198; } /* CommentVar */
+    code span.do { color: #dc322f; } /* Documentation */
+    code span.dt { color: #b58900; font-weight: bold; } /* DataType */
+    code span.dv { color: #2aa198; } /* DecVal */
+    code span.er { color: #dc322f; text-decoration: underline; } /* Error */
+    code span.ex { color: #268bd2; font-weight: bold; } /* Extension */
+    code span.fl { color: #2aa198; } /* Float */
+    code span.fu { color: #268bd2; } /* Function */
+    code span.im { color: #2aa198; } /* Import */
+    code span.in { color: #b58900; } /* Information */
+    code span.kw { color: #859900; font-weight: bold; } /* Keyword */
+    code span.op { color: #859900; } /* Operator */
+    code span.ot { color: #859900; } /* Other */
+    code span.pp { color: #cb4b16; } /* Preprocessor */
+    code span.re { color: #268bd2; background-color: #eee8d5; } /* RegionMarker */
+    code span.sc { color: #dc322f; } /* SpecialChar */
+    code span.ss { color: #dc322f; } /* SpecialString */
+    code span.st { color: #2aa198; } /* String */
+    code span.va { color: #268bd2; } /* Variable */
+    code span.vs { color: #2aa198; } /* VerbatimString */
+    code span.wa { color: #cb4b16; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-095bdce5e8e580bfe93dbeb7e06c07ef.css">
+  <link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+
+  .callout {
+    margin-top: 1em;
+    margin-bottom: 1em;  
+    border-radius: .25rem;
+  }
+
+  .callout.callout-style-simple { 
+    padding: 0em 0.5em;
+    border-left: solid #acacac .3rem;
+    border-right: solid 1px silver;
+    border-top: solid 1px silver;
+    border-bottom: solid 1px silver;
+    display: flex;
+  }
+
+  .callout.callout-style-default {
+    border-left: solid #acacac .3rem;
+    border-right: solid 1px silver;
+    border-top: solid 1px silver;
+    border-bottom: solid 1px silver;
+  }
+
+  .callout .callout-body-container {
+    flex-grow: 1;
+  }
+
+  .callout.callout-style-simple .callout-body {
+    font-size: 1rem;
+    font-weight: 400;
+  }
+
+  .callout.callout-style-default .callout-body {
+    font-size: 0.9rem;
+    font-weight: 400;
+  }
+
+  .callout.callout-titled.callout-style-simple .callout-body {
+    margin-top: 0.2em;
+  }
+
+  .callout:not(.callout-titled) .callout-body {
+      display: flex;
+  }
+
+  .callout:not(.no-icon).callout-titled.callout-style-simple .callout-content {
+    padding-left: 1.6em;
+  }
+
+  .callout.callout-titled .callout-header {
+    padding-top: 0.2em;
+    margin-bottom: -0.2em;
+  }
+
+  .callout.callout-titled .callout-title  p {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+  }
+    
+  .callout.callout-titled.callout-style-simple .callout-content  p {
+    margin-top: 0;
+  }
+
+  .callout.callout-titled.callout-style-default .callout-content  p {
+    margin-top: 0.7em;
+  }
+
+  .callout.callout-style-simple div.callout-title {
+    border-bottom: none;
+    font-size: .9rem;
+    font-weight: 600;
+    opacity: 75%;
+  }
+
+  .callout.callout-style-default  div.callout-title {
+    border-bottom: none;
+    font-weight: 600;
+    opacity: 85%;
+    font-size: 0.9rem;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .callout.callout-style-default div.callout-content {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .callout.callout-style-simple .callout-icon::before {
+    height: 1rem;
+    width: 1rem;
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 1rem 1rem;
+  }
+
+  .callout.callout-style-default .callout-icon::before {
+    height: 0.9rem;
+    width: 0.9rem;
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 0.9rem 0.9rem;
+  }
+
+  .callout-title {
+    display: flex
+  }
+    
+  .callout-icon::before {
+    margin-top: 1rem;
+    padding-right: .5rem;
+  }
+
+  .callout.no-icon::before {
+    display: none !important;
+  }
+
+  .callout.callout-titled .callout-body > .callout-content > :last-child {
+    padding-bottom: 0.5rem;
+    margin-bottom: 0;
+  }
+
+  .callout.callout-titled .callout-icon::before {
+    margin-top: .5rem;
+    padding-right: .5rem;
+  }
+
+  .callout:not(.callout-titled) .callout-icon::before {
+    margin-top: 1rem;
+    padding-right: .5rem;
+  }
+
+  /* Callout Types */
+
+  div.callout-note {
+    border-left-color: #4582ec !important;
+  }
+
+  div.callout-note .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEU0lEQVRYCcVXTWhcVRQ+586kSUMMxkyaElstCto2SIhitS5Ek8xUKV2poatCcVHtUlFQk8mbaaziwpWgglJwVaquitBOfhQXFlqlzSJpFSpIYyXNjBNiTCck7x2/8/LeNDOZxDuEkgOXe++553zfefee+/OYLOXFk3+1LLrRdiO81yNqZ6K9cG0P3MeFaMIQjXssE8Z1JzLO9ls20MBZX7oG8w9GxB0goaPrW5aNMp1yOZIa7Wv6o2ykpLtmAPs/vrG14Z+6d4jpbSKuhdcSyq9wGMPXjonwmESXrriLzFGOdDBLB8Y6MNYBu0dRokSygMA/mrun8MGFN3behm6VVAwg4WR3i6FvYK1T7MHo9BK7ydH+1uurECoouk5MPRyVSBrBHMYwVobG2aOXM07sWrn5qgB60rc6mcwIDJtQrnrEr44kmy+UO9r0u9O5/YbkS9juQckLed3DyW2XV/qWBBB3ptvI8EUY3I9p/67OW+g967TNr3Sotn3IuVlfMLVnsBwH4fsnebJvyGm5GeIUA3jljERmrv49SizPYuq+z7c2H/jlGC+Ghhupn/hcapqmcudB9jwJ/3jvnvu6vu5lVzF1fXyZuZZ7U8nRmVzytvT+H3kilYvH09mLWrQdwFSsFEsxFVs5fK7A0g8gMZjbif4ACpKbjv7gNGaD8bUrlk8x+KRflttr22JEMRUbTUwwDQScyzPgedQHZT0xnx7ujw2jfVfExwYHwOsDTjLdJ2ebmeQIlJ7neo41s/DrsL3kl+W2lWvAga0tR3zueGr6GL78M3ifH0rGXrBC2aAR8uYcIA5gwV8zIE8onoh8u0Fca/ciF7j1uOzEnqcIm59sEXoGc0+z6+H45V1CvAvHcD7THztu669cnp+L0okAeIc6zjbM/24LgGM1gZk7jnRu1aQWoU9sfUOuhrmtaPIO3YY1KLLWZaEO5TKUbMY5zx8W9UJ6elpLwKXbsaZ4EFl7B4bMtDv0iRipKoDQT2sNQI9b1utXFdYisi+wzZ/ri/1m7QfDgEuvgUUEIJPq3DhX/5DWNqIXDOweC2wvIR90Oq3lDpdMIgD2r0dXvGdsEW5H6x6HLRJYU7C69VefO1x8Gde1ZFSJLfWS1jbCnhtOPxmpfv2LXOA2Xk2tvnwKKPFuZ/oRmwBwqRQDcKNeVQkYcOjtWVBuM/JuYw5b6isojIkYxyYAFn5K7ZBF10fea52y8QltAg6jnMqNHFBmGkQ1j+U43HMi2xMar1Nv0zGsf1s8nUsmUtPOOrbFIR8bHFDMB5zL13Gmr/kGlCkUzedTzzmzsaJXhYawnA3UmARpiYj5ooJZiUoxFRtK3X6pgNPv+IZVPcnwbOl6f+aBaO1CNvPW9n9LmCp01nuSaTRF2YxHqZ8DYQT6WsXT+RD6eUztwYLZ8rM+rcPxamv1VQzFUkzFXvkiVrySGQgJNvXHJAxiU3/NwiC03rSf05VBaPtu/Z7/B8Yn/w7eguloAAAAAElFTkSuQmCC');
+  }
+
+  div.callout-note.callout-style-default .callout-title {
+    background-color: #dae6fb
+  }
+
+  div.callout-important {
+    border-left-color: #d9534f !important;
+  }
+
+  div.callout-important .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEKklEQVRYCcVXTWhcVRS+575MJym48A+hSRFr00ySRQhURRfd2HYjk2SSTokuBCkU2o0LoSKKraKIBTcuFCoidGFD08nkBzdREbpQ1EDNIv8qSGMFUboImMSZd4/f9zJv8ibJMC8xJQfO3HPPPef7zrvvvnvviIkpC9nsw0UttFunbUhpFzFtarSd6WJkStVMw5xyVqYTvkwfzuf/5FgtkVoB0729j1rjXwThS7Vio+Mo6DNnvLfahoZ+i/o32lULuJ3NNiz7q6+pyAUkJaFF6JwaM2lUJlV0MlnQn5aTRbEu0SEqHUa0A4AdiGuB1kFXRfVyg5d87+Dg4DL6m2TLAub60ilj7A1Ec4odSAc8X95sHh7+ZRPCFo6Fnp7HfU/fBng/hi10CjCnWnJjsxvDNxWw0NfV6Rv5GgP3I3jGWXumdTD/3cbEOP2ZbOZp69yniG3FQ9z1jD7bnBu9Fc2tKGC2q+uAJOQHBDRiZX1x36o7fWBs7J9ownbtO+n0/qWkvW7UPIfc37WgT6ZGR++EOJyeQDSb9UB+DZ1G6DdLDzyS+b/kBCYGsYgJbSQHuThGKRcw5xdeQf8YdNHsc6ePXrlSYMBuSIAFTGAtQo+VuALo4BX83N190NWZWbynBjhOHsmNfFWLeL6v+ynsA58zDvvAC8j5PkbOcXCMg2PZFk3q8MjI7WAG/Dp9AwP7jdGBOOQkAvlFUB+irtm16I1Zw9YBcpGTGXYmk3kQIC/Cds55l+iMI3jqhjAuaoe+am2Jw5GT3Nbz3CkE12NavmzN5+erJW7046n/CH1RO/RVa8lBLozXk9uqykkGAyRXLWlLv5jyp4RFsG5vGVzpDLnIjTWgnRy2Rr+tDKvRc7Y8AyZq10jj8DqXdnIRNtFZb+t/ZRtXcDiVnzpqx8mPcDWxgARUqx0W1QB9MeUZiNrV4qP+Ehc+BpNgATsTX8ozYKL2NtFYAHc84fG7ndxUPr+AR/iQSns7uSUufAymwDOb2+NjK27lEFocm/EE2WpyIy/Hi66MWuMKJn8RvxIcj87IM5Vh9663ziW36kR0HNenXuxmfaD8JC7tfKbrhFr7LiZCrMjrzTeGx+PmkosrkNzW94ObzwocJ7A1HokLolY+AvkTiD/q1H0cN48c5EL8Crkttsa/AXQVDmutfyku0E7jShx49XqV3MFK8IryDhYVbj7Sj2P2eBxwcXoe8T8idsKKPRcnZw1b+slFTubwUwhktrfnAt7J++jwQtLZcm3sr9LQrjRzz6cfMv9aLvgmnAGvpoaGLxM4mAEaLV7iAzQ3oU0IvD5x9ix3yF2RAAuYAOO2f7PEFWCXZ4C9Pb2UsgDeVnFSpbFK7/IWu7TPTvBqzbGdCHOJQSxiEjt6IyZmxQyEJHv6xyQsYk//moVFsN2zP6fRImjfq7/n/wFDguUQFNEwugAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-important.callout-style-default .callout-title {
+    background-color: #f7dddc
+  }
+
+  div.callout-warning {
+    border-left-color: #f0ad4e !important;
+  }
+
+  div.callout-warning .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAETklEQVRYCeVWW2gcVRg+58yaTUnizqbipZeX4uWhBEniBaoUX1Ioze52t7sRq6APio9V9MEaoWlVsFasRq0gltaAPuxms8lu0gcviE/FFOstVbSIxgcv6SU7EZqmdc7v9+9mJtNks51NTUH84ed889/PP+cmxP+d5FIbMJmNbpREu4WUkiTtCicKny0l1pIKmBzovF2S+hIJHX8iEu3hZJ5lNZGqyRrGSIQpq15AzF28jgpeY6yk6GVdrfFqdrD6Iw+QlB8g0YS2g7dyQmXM/IDhBhT0UCiRf59lfqmmDvzRt6kByV/m4JjtzuaujMUM2c5Z2d6JdKrRb3K2q6mA+oYVz8JnDdKPmmNthzkAk/lN63sYPgevrguc72aZX/L9C6x09GYyxBgCX4NlvyGUHOKELlm5rXeR1kchuChJt4SSwyddZRXgvwMGvYo4QSlk3/zkHD8UHxwVJA6zjZZqP8v8kK8OWLnIZtLyCAJagYC4rTGW/9Pqj92N/c+LUaAj27movwbi19tk/whRCIE7Q9vyI6yvRpftAKVTdUjOW40X3h5OXsKCdmFcx0xlLJoSuQngnrJe7Kcjm4OMq9FlC7CMmScQANuNvjfP3PjGXDBaUQmbp296S5L4DrpbrHN1T87ZVEZVCzg1FF0Ft+dKrlLukI+/c9ENo+TvlTDbYFvuKPtQ9+l052rXrgKoWkDAFnvh0wTOmYn8R5f4k/jN/fZiCM1tQx9jQQ4ANhqG4hiL0qIFTGViG9DKB7GYzgubnpofgYRwO+DFjh0Zin2m4b/97EDkXkc+f6xYAPX0KK2I/7fUQuwzuwo/L3AkcjugPNixC8cHf0FyPjWlItmLxWw4Ou9YsQCr5fijMGoD/zpdRy95HRysyXA74MWOnscpO4j2y3HAVisw85hX5+AFBRSHt4ShfLFkIMXTqyKFc46xdzQM6XbAi702a7sy04J0+feReMFKp5q9esYLCqAZYw/k14E/xcLLsFElaornTuJB0svMuJINy8xkIYuL+xPAlWRceH6+HX7THJ0djLUom46zREu7tTkxwmf/FdOZ/sh6Q8qvEAiHpm4PJ4a/doJe0gH1t+aHRgCzOvBvJedEK5OFE5jpm4AGP2a8Dxe3gGJ/pAutug9Gp6he92CsSsWBaEcxGx0FHytmIpuqGkOpldqNYQK8cSoXvd+xLxXADw0kf6UkJNFtdo5MOgaLjiQOQHcn+A6h5NuL2s0qsC2LOM75PcF3yr5STuBSAcGG+meA14K/CI21HcS4LBT6tv0QAh8Dr5l93AhZzG5ZJ4VxAqdZUEl9z7WJ4aN+svMvwHHL21UKTd1mqvChH7/Za5xzXBBKrUcB0TQ+Ulgkfbi/H/YT5EptrGzsEK7tR1B7ln9BBwckYfMiuSqklSznIuoIIOM42MQO+QnduCoFCI0bpkzjCjddHPN/F+2Yu+sd9bKNpVwHhbS3LluK/0zgfwD0xYI5dXuzlQAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-warning.callout-style-default .callout-title {
+    background-color: #fcefdc
+  }
+
+  div.callout-tip {
+    border-left-color: #02b875 !important;
+  }
+
+  div.callout-tip .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAADr0lEQVRYCe1XTWgTQRj9ZjZV8a9SPIkKgj8I1bMHsUWrqYLVg4Ue6v9BwZOxSYsIerFao7UiUryIqJcqgtpimhbBXoSCVxUFe9CTiogUrUp2Pt+3aUI2u5vdNh4dmMzOzHvvezuz8xNFM0mjnbXaNu1MvFWRXkXEyE6aYOYJpdW4IXuA4r0fo8qqSMDBU0v1HJUgVieAXxzCsdE/YJTdFcVIZQNMyhruOMJKXYFoLfIfIvVIMWdsrd+Rpd86ZmyzzjJmLStqRn0v8lzkb4rVIXvnpScOJuAn2ACC65FkPzEdEy4TPWRLJ2h7z4cArXzzaOdKlbOvKKX25Wl00jSnrwVxAg3o4dRxhO13RBSdNvH0xSARv3adTXbBdTf64IWO2vH0LT+cv4GR1DJt+DUItaQogeBX/chhbTBxEiZ6gftlDNXTrvT7co4ub5A6gp9HIcHvzTa46OS5fBeP87Qm0fQkr4FsYgVQ7Qg+ZayaDg9jhg1GkWj8RG6lkeSacrrHgDaxdoBiZPg+NXV/KifMuB6//JmYH4CntVEHy/keA6x4h4CU5oFy8GzrBS18cLJMXcljAKB6INjWsRcuZBWVaS3GDrqB7rdapVIeA+isQ57Eev9eCqzqOa81CY05VLd6SamW2wA2H3SiTbnbSxmzfp7WtKZkqy4mdyAlGx7ennghYf8voqp9cLSgKdqNfa6RdRsAAkPwRuJZNbpByn+RrJi1RXTwdi8RQF6ymDwGMAtZ6TVE+4uoKh+MYkcLsT0Hk8eAienbiGdjJHZTpmNjlbFJNKDVAp2fJlYju6IreQxQ08UJDNYdoLSl6AadO+fFuCQqVMB1NJwPm69T04Wv5WhfcWyfXQB+wXRs1pt+nCknRa0LVzSA/2B+a9+zQJadb7IyyV24YAxKp2Jqs3emZTuNnKxsah+uabKbMk7CbTgJx/zIgQYErIeTKRQ9yD9wxVof5YolPHqaWo7TD6tJlh7jQnK5z2n3+fGdggIOx2kaa2YI9QWarc5Ce1ipNWMKeSG4DysFF52KBmTNMmn5HqCFkwy34rDg05gDwgH3bBi+sgFhN/e8QvRn8kbamCOhgrZ9GJhFDgfcMHzFb6BAtjKpFhzTjwv1KCVuxHvCbsSiEz4CANnj84cwHdFXAbAOJ4LTSAawGWFn5tDhLMYz6nWeU2wJfIhmIJBefcd/A5FWQWGgrWzyORZ3Q6HuV+Jf0Bj+BTX69fm1zWgK7By1YTXchFDORywnfQ7GpzOo6S+qECrsx2ifVQAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-tip.callout-style-default .callout-title {
+    background-color: #ccf1e3
+  }
+
+  div.callout-caution {
+    border-left-color: #fd7e14 !important;
+  }
+
+  div.callout-caution .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAACV0lEQVRYCdVWzWoUQRCuqp2ICBLJXgITZL1EfQDBW/bkzUMUD7klD+ATSHBEfAIfQO+iXsWDxJsHL96EHAwhgzlkg8nBg25XWb0zIb0zs9muYYWkoKeru+vn664fBqElyZNuyh167NXJ8Ut8McjbmEraKHkd7uAnAFku+VWdb3reSmRV8PKSLfZ0Gjn3a6Xlcq9YGb6tADjn+lUfTXtVmaZ1KwBIvFI11rRXlWlatwIAAv2asaa9mlB9wwygiDX26qaw1yYPzFXg2N1GgG0FMF8Oj+VIx7E/03lHx8UhvYyNZLN7BwSPgekXXLribw7w5/c8EF+DBK5idvDVYtEEwMeYefjjLAdEyQ3M9nfOkgnPTEkYU+sxMq0BxNR6jExrAI31H1rzvLEfRIdgcv1XEdj6QTQAS2wtstEALLG1yEZ3QhH6oDX7ExBSFEkFINXH98NTrme5IOaaA7kIfiu2L8A3qhH9zRbukdCqdsA98TdElyeMe5BI8Rs2xHRIsoTSSVFfCFCWGPn9XHb4cdobRIWABNf0add9jakDjQJpJ1bTXOJXnnRXHRf+dNL1ZV1MBRCXhMbaHqGI1JkKIL7+i8uffuP6wVQAzO7+qVEbF6NbS0LJureYcWXUUhH66nLR5rYmva+2tjRFtojkM2aD76HEGAD3tPtKM309FJg5j/K682ywcWJ3PASCcycH/22u+Bh7Aa0ehM2Fu4z0SAE81HF9RkB21c5bEn4Dzw+/qNOyXr3DCTQDMBOdhi4nAgiFDGCinIa2owCEChUwD8qzd03PG+qdW/4fDzjUMcE1ZpIAAAAASUVORK5CYII=');
+  }
+
+  div.callout-caution.callout-style-default .callout-title {
+    background-color: #ffe5d0
+  }
+
+  </style>
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" data-background-gradient="linear-gradient(to right, #46337e, #440154)" data-slide-number="none" class="quarto-title-block center">
+  <h1 class="title">Intro to Bayesian Inference</h1>
+  <p class="subtitle">Day 27</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Prof Amanda Luby 
+</div>
+        <p class="quarto-title-affiliation">
+            Carleton College <br> Stat 250 - Spring 2025
+          </p>
+    </div>
+</div>
+
+</section>
+<section>
+<section id="a-bayesian-personality-quiz" class="title-slide slide level1 center">
+<h1>A Bayesian “personality quiz”</h1>
+<div class="footer">
+<p>Adapted from <em>Bayes Rules! An Introduction to Bayesian Modeling with R</em></p>
+</div>
+</section>
+<section id="question-1" class="slide level2 scrollable">
+<h2>Question 1</h2>
+<p>When flipping a fair coin, we say that “the probability of flipping Heads is 0.5.” How do you interpret this probability?</p>
+<div>
+<ol type="1">
+<li><p>If I flip this coin over and over, roughly 50% will be Heads.</p></li>
+<li><p>Heads and Tails are equally plausible.</p></li>
+<li><p>Both a and b make sense.</p></li>
+</ol>
+</div>
+</section>
+<section id="question-2" class="slide level2 scrollable">
+<h2>Question 2</h2>
+<p>An election is coming up and a pollster claims that “candidate A has a 0.9 probability of winning.” How do you interpret this probability?</p>
+<div>
+<ol type="1">
+<li><p>If we observe the election over and over, candidate A will win roughly 90% of the time.</p></li>
+<li><p>Candidate A is much more likely to win than to lose.</p></li>
+<li><p>The pollster’s calculation is wrong. Candidate A will either win or lose, thus their probability of winning can only be 0 or 1.</p></li>
+</ol>
+</div>
+</section>
+<section id="question-3" class="slide level2 scrollable">
+<h2>Question 3</h2>
+<p>Consider two claims.</p>
+<div>
+<ul>
+<li>Lou claims that he can predict the outcome of a coin flip. To test his claim, you flip a fair coin 10 times and he correctly predicts all 10.</li>
+<li>Kavya claims that she can distinguish natural and artificial sweeteners. To test her claim, you give her 10 sweetener samples and she correctly identifies each.</li>
+</ul>
+</div>
+<p>In light of these experiments, what do you conclude?</p>
+<div>
+<ol type="1">
+<li><p>You’re more confident in Kavya’s claim than Lou’s claim.</p></li>
+<li><p>The evidence supporting Lou’s claim is just as strong as the evidence supporting Kavya’s claim.</p></li>
+</ol>
+</div>
+</section>
+<section id="question-4" class="slide level2 scrollable">
+<h2>Question 4</h2>
+<p>Suppose that during a recent doctor’s visit, you tested positive for a very rare disease. If you only get to ask the doctor one question, which would it be?</p>
+<div>
+<ol type="1">
+<li><p>What’s the chance that I actually have the disease?</p></li>
+<li><p>If in fact I don’t have the disease, what’s the chance that I would’ve gotten this positive test result?</p></li>
+</ol>
+</div>
+</section>
+<section id="tally-your-points" class="slide level2">
+<h2>Tally your points</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>Question 1:</p>
+<ul>
+<li>1 = 1 points</li>
+<li>2 = 3 points</li>
+<li>3 = 2 points</li>
+</ul>
+<p>Question 2:</p>
+<ul>
+<li>1 = 1 points</li>
+<li>2 = 3 points</li>
+<li>3 = 1 points</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p>Question 3:</p>
+<ul>
+<li>1 = 3 points</li>
+<li>2 = 1 points <br> <br></li>
+</ul>
+<p>Question 4:</p>
+<ul>
+<li>1 = 3 points</li>
+<li>2 = 1 points</li>
+</ul>
+</div></div>
+</section>
+<section id="what-does-your-score-mean" class="slide level2">
+<h2>What does your score mean?</h2>
+<ul>
+<li class="fragment"><p>4-5 <span class="math inline">\(\rightarrow\)</span> you’re more of a frequentist thinker</p></li>
+<li class="fragment"><p>6-8 <span class="math inline">\(\rightarrow\)</span> you see the merit in both (a pragmatist?)</p></li>
+<li class="fragment"><p>9-12 <span class="math inline">\(\rightarrow\)</span> you’re more of a Bayesian thinker</p></li>
+</ul>
+</section>
+<section id="section" class="slide level2 scrollable">
+<h2></h2>
+<h3 id="question-1-interpreting-probability">Question 1: Interpreting probability</h3>
+<p>When flipping a fair coin, we say that “the probability of flipping Heads is 0.5.” How do you interpret this probability?</p>
+<div>
+<ol type="1">
+<li><p>(Frequentist) If I flip this coin over and over, roughly 50% will be Heads.</p></li>
+<li><p>(Bayesian) Heads and Tails are equally plausible.</p></li>
+<li><p>Both a and b make sense.</p></li>
+</ol>
+</div>
+</section>
+<section id="section-1" class="slide level2 scrollable">
+<h2></h2>
+<h3 id="question-2-interpreting-probability">Question 2: Interpreting probability</h3>
+<p>An election is coming up and a pollster claims that “candidate A has a 0.9 probability of winning.” How do you interpret this probability?</p>
+<div>
+<ol type="1">
+<li><p>(Frequentist) If we observe the election over and over, candidate A will win roughly 90% of the time.</p></li>
+<li><p>(Bayesian) Candidate A is much more likely to win than to lose.</p></li>
+<li><p>(Rabid frequentist) The pollster’s calculation is wrong. Candidate A will either win or lose, thus their probability of winning can only be 0 or 1.</p></li>
+</ol>
+</div>
+</section>
+<section id="section-2" class="slide level2 scrollable">
+<h2></h2>
+<h3 id="question-3-balancing-prior-info-and-observed-data">Question 3: Balancing prior info and observed data</h3>
+<div style="font-size: 85%;">
+<p>Consider two claims.</p>
+<div>
+<ul>
+<li>Lou claims that he can predict the outcome of a coin flip. To test his claim, you flip a fair coin 10 times and he correctly predicts all 10.</li>
+<li>Kavya claims that she can distinguish natural and artificial sweeteners. To test her claim, you give her 10 sweetener samples and she correctly identifies each.</li>
+</ul>
+</div>
+<p>In light of these experiments, what do you conclude?</p>
+<div>
+<ol type="1">
+<li><p>(Bayesian) You’re more confident in Kavya’s claim than Lou’s claim.</p></li>
+<li><p>(Frequentist) The evidence supporting Lou’s claim is just as strong as the evidence supporting Kavya’s claim.</p></li>
+</ol>
+</div>
+</div>
+</section>
+<section id="section-3" class="slide level2 scrollable">
+<h2></h2>
+<h3 id="question-4-asking-questions">Question 4: Asking questions</h3>
+<p>Suppose that during a recent doctor’s visit, you tested positive for a very rare disease. If you only get to ask the doctor one question, which would it be?</p>
+<div>
+<ol type="1">
+<li><p>(Bayesian) What’s the chance that I actually have the disease?</p></li>
+<li><p>(Frequentist) If in fact I don’t have the disease, what’s the chance that I would’ve gotten this positive test result?</p></li>
+</ol>
+</div>
+</section></section>
+<section>
+<section id="a-first-bayesian-example" class="title-slide slide level1 center">
+<h1>A first Bayesian example</h1>
+
+</section>
+<section id="example" class="slide level2">
+<h2>Example:</h2>
+<p>A Des Moines register poll a few days before the 2024 Presidential election showed Kamala Harris with 51.61% of the 2-party vote share in a poll of <span class="math inline">\(n=808\)</span> likely voters. This poll result received a lot of buzz, because in the two months leading up to this poll, this proportion was estimated between 44.7 and 47.7.</p>
+<ul>
+<li class="fragment">Nov 2: 51.5% (x = 417; n=808)</li>
+<li class="fragment">Nov 2: 44.7% (x = 358; n=800)</li>
+<li class="fragment">Oct 2: 46.8% (x=281; n=600)</li>
+<li class="fragment">Sept 15: 47.7% (x=382; n=800)</li>
+</ul>
+</section>
+<section id="overview-of-the-bayesian-method" class="slide level2 scrollable">
+<h2>Overview of the Bayesian method</h2>
+<ol type="1">
+<li class="fragment"><p>Choose (or elicit) a probability distribution to express the pre-data belief about the parameter of interest, <span class="math inline">\(\theta\)</span>.</p></li>
+<li class="fragment"><p>Choose a model for the data given <span class="math inline">\(\theta\)</span>.</p></li>
+<li class="fragment"><p>Observe data, <span class="math inline">\(Y_1, \ldots, Y_n\)</span>.</p></li>
+<li class="fragment"><p>Update the belief about <span class="math inline">\(\theta\)</span> by combining the prior belief and the data.</p></li>
+<li class="fragment"><p>Draw inferences using this updated belief about <span class="math inline">\(\theta\)</span>.</p></li>
+</ol>
+</section>
+<section id="section-4" class="slide level2 scrollable">
+<h2></h2>
+<h3 id="overview-of-the-bayesian-method---math">Overview of the Bayesian method - math</h3>
+<ol type="1">
+<li class="fragment"><p>Assume a <strong>prior distribution:</strong> <span class="math inline">\(\theta \sim f_\theta(\theta)\)</span></p></li>
+<li class="fragment"><p>Choose a <strong>likelihood function</strong> for the data: <span class="math inline">\(Y|\theta \sim f_{y|\theta}(y|\theta)\)</span></p></li>
+<li class="fragment"><p>Observe data, <span class="math inline">\(Y_1, \ldots, Y_n\)</span>.</p></li>
+<li class="fragment"><p>Find the <strong>posterior distribution</strong> of <span class="math inline">\(\theta\)</span> given the data: <span class="math inline">\(\theta \mid Y \sim f_{\theta \mid Y}(\theta \mid Y)\)</span></p></li>
+<li class="fragment"><p>Draw inferences with <span class="math inline">\(f_{\theta|Y}\)</span></p></li>
+</ol>
+</section>
+<section id="choosing-a-data-model" class="slide level2">
+<h2>Choosing a data model</h2>
+<ul>
+<li class="fragment"><p><strong>Likelihood</strong>: a model for our data <span class="math inline">\(X_1, \dotsc, X_n\)</span></p></li>
+<li class="fragment"><p><span class="math inline">\(X_i\)</span> is drawn from a population/distribution with pdf/pmf <span class="math display">\[X_i \sim f(x_i | \theta)\]</span></p></li>
+<li class="fragment"><p>The <strong>joint</strong> probability model for all <span class="math inline">\(n\)</span> data values (likelihood function) <span class="math display">\[f(x_1, \dotsc, x_n \mid \theta) = \prod_{i=1}^n f(x_i | \theta)\]</span></p></li>
+<li class="fragment"><p>Our inference goal will be to derive a model our unknown parameter(s) <span class="math inline">\(\theta\)</span> that is informed by our observed data values</p></li>
+</ul>
+</section>
+<section id="choosing-a-prior" class="slide level2">
+<h2>Choosing a prior</h2>
+<ul>
+<li class="fragment"><p><strong>Prior</strong>: we give <span class="math inline">\(\theta\)</span> an initial probability model that reflects our beliefs about <span class="math inline">\(\theta\)</span> <em>prior</em> to observing our data <span class="math display">\[\theta \sim f(\theta)\]</span></p></li>
+<li class="fragment"><p>The model <span class="math inline">\(f(\theta)\)</span> can be either a pdf or pmf</p></li>
+<li class="fragment"><p>and <span class="math inline">\(f(\theta)\)</span> should be defined on reasonable values of <span class="math inline">\(\theta\)</span></p>
+<ul>
+<li class="fragment">e.g.&nbsp;<span class="math inline">\(\theta = p\)</span> is a probability of success: then <span class="math inline">\(f\)</span> could be Unif[0,1]</li>
+<li class="fragment">e.g.&nbsp;<span class="math inline">\(\theta = \sigma^2\)</span> from a half-normal: then <span class="math inline">\(f\)</span> could be a Gamma model</li>
+</ul></li>
+</ul>
+</section>
+<section id="finding-the-posterior" class="slide level2">
+<h2>Finding the posterior</h2>
+<ul>
+<li class="fragment"><p><strong>Posterior</strong>: update our prior <span class="math inline">\(f\)</span> to reflect the information about <span class="math inline">\(\theta\)</span> that is provided by our data <span class="math inline">\(x_1, \dotsc, x_n\)</span> <span class="math display">\[\theta \mid  x_1, \dotsc, x_n \sim f(\theta \mid x_1, \dotsc, x_n)\]</span></p></li>
+<li class="fragment"><p>We compute our conditional posterior distribution using Bayes theorem: <span class="math display">\[f(\theta \mid  x_1, \dotsc, x_n) = \dfrac{f(\theta, x_1, \dotsc, x_n)}{f(x_1, \dotsc, x_n)} = \dfrac{f(\theta)f(x_1, \dotsc, x_n \mid \theta)}{f(x_1, \dotsc, x_n)}\]</span></p></li>
+<li class="fragment"><p>the first expression is our definition of conditional probability</p></li>
+<li class="fragment"><p>the second expression is “Bayes theorem” which tells us (in words): <span class="math display">\[\textrm{posterior} = \dfrac{\textrm{prior} \times \textrm{data }}{\textrm{marginal  of data}}\]</span></p></li>
+</ul>
+</section>
+<section id="finding-the-posterior-1" class="slide level2">
+<h2>Finding the posterior</h2>
+<p><span class="math display">\[f(\theta \mid  x_1, \dotsc, x_n)  = \dfrac{f(\theta)f(x_1, \dotsc, x_n \mid \theta)}{f(x_1, \dotsc, x_n)} = \dfrac{\textrm{prior} \times \textrm{data }}{\textrm{marginal  of data}}\]</span></p>
+<ul>
+<li class="fragment">Recall from probability: We find a marginal probability by integrating “out” nuisance variables from a joint distribution <span class="math display">\[\textrm{marginal pdf of data} = f(x_1, \dotsc, x_n) = \int_{-\infty}^{\infty} f(\theta)f(x_1, \dotsc, x_n \mid \theta) d\theta\]</span></li>
+</ul>
+</section>
+<section id="binomial-example-prior" class="slide level2">
+<h2>Binomial example: prior</h2>
+<ul>
+<li class="fragment"><p>Goal is to estimate the parameter: <span class="math display">\[p = \textrm{proportion of Iowa likely voters who will vote for Harris}\]</span></p></li>
+<li class="fragment"><p><strong>Prior</strong>: A natural prior for a proportion is a uniform: <span class="math display">\[p \sim Unif[0,1] \textrm{ so that } f(p) = 1 \textrm{ for } 0 \leq p \leq 1\]</span></p></li>
+</ul>
+<div class="fragment">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="slides27_files/figure-revealjs/unnamed-chunk-1-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="binomial-example-data" class="slide level2">
+<h2>Binomial example: data</h2>
+<ul>
+<li class="fragment"><p><strong>Data</strong> 808 respondents who responded to the 2-party presidential vote question.</p></li>
+<li class="fragment"><p>Our random sample <span class="math inline">\(X_1, \dotsc, X_{808}\)</span> is Bernoulli: <span class="math display">\[f(x_1, \dotsc, x_n \mid p) = \prod_{i=1}^{808}p^{x_i}(1-p)^{(1-x_i)} = p^{\sum_{i=1}^{808}x_i}(1-p)^{808 - \sum_{i=1}^{808}x_i}\]</span></p></li>
+<li class="fragment"><p>or, an <strong>equivalent</strong> data model just models the total number of “success” (approves) <span class="math inline">\(X = \sum_{i=1}^{808}X_i\)</span> which is a Binomial count: <span class="math display">\[f(x \mid p) = \binom{808}{x}p^x(1-p)^{808-x}\]</span></p></li>
+</ul>
+</section>
+<section id="binomial-example-posterior" class="slide level2">
+<h2>Binomial example: posterior</h2>
+<ul>
+<li class="fragment"><strong>Posterior</strong> We need to derive the following pdf for <span class="math inline">\(p\)</span>: <span class="math display">\[f(p \mid  x)  = \dfrac{f(\theta)f(x \mid p)}{f(x)} = \dfrac{1 \times \binom{n}{x}p^x(1-p)^{n-x}}{\int_{0}^1 1 \times \binom{n}{x}p^x(1-p)^{n-x} dp} \textrm{ for } 0 \leq p \leq 1\]</span></li>
+</ul>
+</section>
+<section id="binomial-example-posterior-1" class="slide level2">
+<h2>Binomial example: posterior</h2>
+<ul>
+<li class="fragment"><p>The toughest part of any posterior calculation is usually the marginal integration: <span class="math display">\[f(x) = \int_{0}^1\binom{n}{x}p^x(1-p)^{n-x} dp\]</span></p></li>
+<li class="fragment"><p>Any terms not involving <span class="math inline">\(p\)</span> can come outside the integrand: <span class="math display">\[f(x) = \binom{n}{x} \int_{0}^1p^x(1-p)^{n-x} dp\]</span></p></li>
+<li class="fragment"><p>…which still looks bad, until you remember the Beta distribution which tells us that a Beta pdf integrates to 1 over the interval [0,1]: <span class="math display">\[1 =  \int_{0}^1\dfrac{\Gamma(a + b)}{\Gamma(a) \Gamma(b)}p^{a-1}(1-p)^{b-1} dp\]</span></p></li>
+</ul>
+</section>
+<section id="binomial-example-posterior-2" class="slide level2">
+<h2>Binomial example: posterior</h2>
+<ul>
+<li class="fragment"><p>…which allows us to solve our integration problem without actually doing the integral <span class="math display">\[ \dfrac{\Gamma(a)\Gamma(b)}{\Gamma(a + b)} = \int_{0}^1p^{a-1}(1-p)^{b-1} dp\]</span></p></li>
+<li class="fragment"><p>Letting <span class="math inline">\(a = x + 1\)</span> and <span class="math inline">\(b=n - x + 1\)</span>, we have <span class="math display">\[f(x) = \binom{n}{x} \int_{0}^1p^x(1-p)^{n-x} dp = \binom{n}{x}  \dfrac{\Gamma(x + 1)\Gamma(n - x + 1)}{\Gamma(n + 2)}\]</span></p></li>
+</ul>
+</section>
+<section id="binomial-example-posterior-3" class="slide level2">
+<h2>Binomial example: posterior</h2>
+<ul>
+<li class="fragment"><p>…then for <span class="math inline">\(0 \leq p \leq 1\)</span> <span class="math display">\[f(p \mid  x)  = \dfrac{\binom{n}{x}p^x(1-p)^{n-x}}{\binom{n}{x}  \dfrac{\Gamma(x + 1)\Gamma(n - x + 1)}{\Gamma(n + 2)}} = \dfrac{\Gamma(n + 2)}{\Gamma(x + 1)\Gamma(n - x + 1)} p^x(1-p)^{n-x}\]</span></p></li>
+<li class="fragment"><p>Which is the pdf for Beta distribution: <span class="math display">\[p \mid x \sim Beta(x + 1, n - x + 1)\]</span></p></li>
+<li class="fragment"><p>Iowa data: our posterior distribution for <span class="math inline">\(n=808\)</span> and <span class="math inline">\(x=417\)</span> is <span class="math display">\[p \mid x = 417 \sim Beta(418, 392)\]</span></p></li>
+</ul>
+</section>
+<section id="binomial-example-posterior-4" class="slide level2 smaller">
+<h2>Binomial example: posterior</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<ul>
+<li>Inferences about <span class="math inline">\(p\)</span> use the Beta(391, 611) distribution.
+<ul>
+<li>What values of <span class="math inline">\(p\)</span> are most <em>probable</em>? (interval)</li>
+<li>What is the expected value of <span class="math inline">\(p\)</span>? (point estimate)</li>
+<li>How much uncertainty do we have in the distribution of <span class="math inline">\(p\)</span>? (SE)</li>
+</ul></li>
+</ul>
+</div><div class="column" style="width:60%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="slides27_files/figure-revealjs/unnamed-chunk-2-1.png" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="binomial-example-posterior-5" class="slide level2">
+<h2>Binomial example: posterior</h2>
+<p><span class="math display">\[p \mid x = 417 \sim Beta(418, 392)\]</span></p>
+<ul>
+<li class="fragment"><p><strong>Point Estimate</strong>: <span class="math inline">\(\hat{p}_{bayes} = E(p \mid x=417) = \dfrac{418}{418 + 392} = \dfrac{418}{810} = 0.5160\)</span></p></li>
+<li class="fragment"><p><strong>Variation</strong>: <span class="math inline">\(SD(p \mid x=417) = \sqrt{V(p \mid x=417)} = \sqrt{\dfrac{418(392)}{(418 + 392)^2(418 + 392 +1)}} = 0.0003\)</span></p></li>
+<li class="fragment"><p><strong>Credible Interval for <span class="math inline">\(p\)</span></strong>: A common choice of <span class="math inline">\(100(1-\alpha)\)</span>% interval estimates is to use the <span class="math inline">\(\alpha/2\)</span> and <span class="math inline">\(1-\alpha/2\)</span> quantiles of the posterior</p></li>
+</ul>
+<div class="fragment">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a></a><span class="fu">qbeta</span>(<span class="fu">c</span>(.<span class="dv">025</span>,.<span class="dv">975</span>),<span class="dv">418</span>,<span class="dv">392</span>)  <span class="co"># 95% credible interval for p</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.4816267 0.5503970</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="binomial-example-posterior-6" class="slide level2">
+<h2>Binomial example: posterior</h2>
+<ul>
+<li class="fragment"><p>What if we used classical frequentist methods instead of our Bayesian model?</p></li>
+<li class="fragment"><p><strong>Bayes Point Estimate of <span class="math inline">\(p\)</span></strong>: Our posterior expectation for <span class="math inline">\(p\)</span> is <span class="math inline">\(\hat{p}_{bayes} =0.5160\)</span></p></li>
+<li class="fragment"><p><strong>Frequentist Point Estimate of <span class="math inline">\(p\)</span></strong>: MLE of <span class="math inline">\(p\)</span> is <span class="math display">\[\hat{p}_{MLE} = \dfrac{x}{n} = \dfrac{417}{808} = 0.5161\]</span></p></li>
+</ul>
+</section>
+<section id="binomial-example-posterior-7" class="slide level2">
+<h2>Binomial example: posterior</h2>
+<ul>
+<li class="fragment"><p>Why are the Bayes estimate and MLE so close?</p></li>
+<li class="fragment"><p>Rewrite <span class="math inline">\(\hat{p}_{bayes}\)</span>: <span class="math display">\[\hat{p}_{bayes} = \dfrac{x+1}{n + 2} = \dfrac{n}{n+2}\dfrac{x}{n} + \dfrac{2}{n+2}\dfrac{1}{2} = \dfrac{n}{n+2}\hat{p}_{MLE} + \dfrac{2}{n+2}E(p)\]</span></p></li>
+<li class="fragment"><p>The Bayes estimate is a <em>weighted average</em> of the MLE and prior expectation</p></li>
+<li class="fragment"><p>The Unif[0,1] prior is like adding 2 units to the sample: 1 success and 1 failure so we have a prior expectation of 50% for <span class="math inline">\(p\)</span></p>
+<ul>
+<li class="fragment">weight <span class="math inline">\(n/(n+2)\)</span> favors the likelihood when <span class="math inline">\(n &gt; &gt; 2\)</span> (data size is much bigger than prior sample addition)</li>
+<li class="fragment">weight <span class="math inline">\(2/(n+2)\)</span> gives more weight to the prior mean when <span class="math inline">\(n\)</span> is closer to 2</li>
+</ul></li>
+</ul>
+</section>
+<section id="binomial-example-posterior-8" class="slide level2">
+<h2>Binomial example: posterior</h2>
+<ul>
+<li class="fragment"><p><strong>Bayes SD</strong>: <span class="math inline">\(\sqrt{V(p \mid x=390)} =  0.01754\)</span></p></li>
+<li class="fragment"><p><strong>Frequentist SE</strong>: The sample proportion SE is <span class="math display">\[SE(\hat{p}) = \sqrt{\dfrac{\hat{p}(1-\hat{p})}{n}} = \sqrt{\dfrac{0.39(1-0.39)}{1000}}=0.01758\]</span> Same as the Bayes SD up to 4 decimal spots!</p></li>
+<li class="fragment"><p>We can write the posterior variance as <span class="math display">\[V(p \mid x) = \dfrac{(x+1)(n-x+1)}{(n+2)^2(n+2 +1)} = \dfrac{\hat{p}_{bayes}(1-\hat{p}_{bayes})}{n+2 +1}\]</span> which is similar in form as the frequentist SE.</p></li>
+</ul>
+</section>
+<section id="binomial-example-posterior-9" class="slide level2">
+<h2>Binomial example: posterior</h2>
+<p><strong>Bayes Credible Interval for <span class="math inline">\(p\)</span></strong>: There is a 95% <strong>probability</strong> that the Harris two-party vote share is between 48.16% and 55.04%.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a></a><span class="fu">qbeta</span>(<span class="fu">c</span>(.<span class="dv">025</span>,.<span class="dv">975</span>),<span class="dv">418</span>,<span class="dv">392</span>)  <span class="co"># 95% credible interval for p</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.4816267 0.5503970</code></pre>
+</div>
+</div>
+<div class="fragment">
+<p><strong>Frequentist Confidence Interval for <span class="math inline">\(p\)</span></strong>: I am 95% <strong>confident</strong> that he Harris two-party vote share is between 48.1% and 55.1%.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a></a><span class="fu">prop.test</span>(<span class="dv">417</span>,<span class="dv">808</span>)<span class="sc">$</span>conf  <span class="co"># 95% confidence interval for p</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.4810195 0.5510037
+attr(,"conf.level")
+[1] 0.95</code></pre>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>Intervals contain very similar values, but are interpreted very differently!</p>
+</div>
+</section>
+<section id="what-if-we-chose-a-different-prior" class="slide level2">
+<h2>What if we chose a different prior?</h2>
+<p>In the three polls leading up to the Des Moines register poll, Harris’ 2-party vote share hovered between 44.7 and 47.7 percent. What if my prior distribution took that information into account?</p>
+
+<img data-src="slides27_files/figure-revealjs/unnamed-chunk-6-1.png" width="960" class="r-stretch"></section>
+<section id="what-if-we-chose-a-different-prior-1" class="slide level2">
+<h2>What if we chose a different prior?</h2>
+<ul>
+<li class="fragment"><p>A more flexible prior for <span class="math inline">\(p\)</span> is a Beta( <span class="math inline">\(\alpha, \beta\)</span> ) distribution: <span class="math display">\[f(p) = \dfrac{\Gamma(\alpha + \beta)}{\Gamma(\alpha)\Gamma(\beta)} p^{\alpha - 1}(1-p)^{\beta-1} \textrm{ for } 0 \leq p \leq 1\]</span></p></li>
+<li class="fragment"><p>The posterior then looks like: <span class="math display">\[f(p \mid  x)   = \dfrac{\dfrac{\Gamma(\alpha + \beta)}{\Gamma(\alpha)\Gamma(\beta)} p^{\alpha - 1}(1-p)^{\beta-1} \times \binom{n}{x}p^x(1-p)^{n-x}}{f(x)} \\
+\ \ \ \ \ \ \ \ \ \ \ \  = \dfrac{\dfrac{\Gamma(\alpha + \beta)}{\Gamma(\alpha)\Gamma(\beta)} \binom{n}{x} }{f(x)}p^{x + \alpha - 1}(1-p)^{n - x + \beta -1}  \textrm{ for } 0 \leq p \leq 1\]</span></p></li>
+</ul>
+</section>
+<section id="beta-binomial-model" class="slide level2">
+<h2>Beta-Binomial model</h2>
+<ul>
+<li class="fragment"><p>The <strong>kernel</strong> of the posterior (the part that involves <span class="math inline">\(p\)</span>) looks like: <span class="math display">\[f(p \mid  x) \propto  p^{x + \alpha - 1}(1-p)^{n - x + \beta -1}  \textrm{ for } 0 \leq p \leq 1\]</span></p></li>
+<li class="fragment"><p>Since <span class="math inline">\(f(p \mid x)\)</span> must integrate to 1 over [0,1], the kernel uniquely identifies the pdf as a Beta( <span class="math inline">\(x + \alpha, n-x+\beta\)</span> )</p>
+<ul>
+<li class="fragment">which means the <strong>normalizing constant</strong> for this kernel is <span class="math display">\[\dfrac{\Gamma(n + \alpha + \beta)}{\Gamma(x + \alpha)\Gamma(n-x+\beta)} = \dfrac{\dfrac{\Gamma(\alpha + \beta)}{\Gamma(\alpha)\Gamma(\beta)} \binom{n}{x} }{f(x)}\]</span></li>
+<li class="fragment">we just need to look at <span class="math display">\[f(\theta \mid x_1, \dotsc, x_n) \propto f(\theta)f(x_1, \dotsc, x_n \mid \theta)\]</span></li>
+</ul></li>
+</ul>
+</section>
+<section id="beta-binomial-model-1" class="slide level2">
+<h2>Beta-Binomial model</h2>
+<ul>
+<li class="fragment"><p>Data: <span class="math inline">\(X \mid p \sim Binom(n,p)\)</span></p></li>
+<li class="fragment"><p>Prior: <span class="math inline">\(p \sim Beta(\alpha, \beta)\)</span></p></li>
+<li class="fragment"><p>Prior Expectation: <span class="math inline">\(E(p) = \dfrac{\alpha}{\alpha + \beta}\)</span></p></li>
+<li class="fragment"><p>Posterior: <span class="math inline">\(p \mid x \sim Beta(x + \alpha, n-x + \beta)\)</span></p></li>
+<li class="fragment"><p>Posterior Expectation: <span class="math inline">\(E(p \mid x) = \dfrac{x + \alpha}{n + \alpha + \beta} = \dfrac{n}{n+\alpha + \beta}\hat{p}_{MLE} + \dfrac{\alpha + \beta}{n+\alpha + \beta}E(p)\)</span></p></li>
+<li class="fragment"><p>The prior is like adding <span class="math inline">\(\alpha\)</span> succeses and <span class="math inline">\(\beta\)</span> failures to the data.</p>
+<ul>
+<li class="fragment">Larger values mean more weight given to the prior (success and/or failures)</li>
+</ul></li>
+</ul>
+</section>
+<section id="beta-binomial-model-flat-prior" class="slide level2">
+<h2>Beta-Binomial model: flat prior</h2>
+
+<img data-src="slides27_files/figure-revealjs/unnamed-chunk-7-1.png" width="960" class="r-stretch"></section>
+<section id="beta-binomial-model-somewhat-informative-prior" class="slide level2">
+<h2>Beta-Binomial model: somewhat informative prior</h2>
+
+<img data-src="slides27_files/figure-revealjs/unnamed-chunk-8-1.png" width="960" class="r-stretch"></section>
+<section id="beta-binomial-model-extremely-informative-prior" class="slide level2">
+<h2>Beta-Binomial model: extremely informative prior</h2>
+
+<img data-src="slides27_files/figure-revealjs/unnamed-chunk-9-1.png" width="960" class="r-stretch"></section>
+<section id="beta-binomial-model-2" class="slide level2">
+<h2>Beta-Binomial model</h2>
+<p>For <span class="math inline">\(n = 808\)</span> and <span class="math inline">\(x=417\)</span> successes:</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>      model alpha beta      mean      mode          var         sd
+1     prior     1    1 0.5000000       NaN 0.0833333333 0.28867513
+2 posterior   418  392 0.5160494 0.5160891 0.0003079438 0.01754833</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      model alpha beta      mean      mode          var         sd
+1     prior   140  160 0.4666667 0.4664430 0.0008268734 0.02875541
+2 posterior   557  551 0.5027076 0.5027125 0.0002254217 0.01501405</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      model alpha beta      mean      mode          var          sd
+1     prior  1021 1179 0.4640909 0.4640582 1.129989e-04 0.010630093
+2 posterior  1438 1570 0.4780585 0.4780439 8.292408e-05 0.009106266</code></pre>
+</div>
+</div>
+<p>As our prior contains a bigger “sample size”, we see - a posterior mean pulled more towards the prior mean - a reduction in the posterior standard deviation</p>
+</section>
+<section id="comparing-intervals" class="slide level2">
+<h2>Comparing intervals</h2>
+<p>If we compare credible intervals for the 3 posteriors:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a></a><span class="fu">qbeta</span>(<span class="fu">c</span>(.<span class="dv">025</span>,.<span class="dv">975</span>),<span class="dv">418</span>,<span class="dv">392</span>)  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.4816267 0.5503970</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a></a><span class="fu">qbeta</span>(<span class="fu">c</span>(.<span class="dv">025</span>,.<span class="dv">975</span>),<span class="dv">557</span>,<span class="dv">551</span>)  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.4732816 0.5321244</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a></a><span class="fu">qbeta</span>(<span class="fu">c</span>(.<span class="dv">025</span>,.<span class="dv">975</span>),<span class="dv">1438</span>,<span class="dv">1570</span>)  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.4602256 0.4959190</code></pre>
+</div>
+</div>
+<p><em>Note:</em> on election day, Harris received 43.27% of the two-party vote share</p>
+
+
+</section></section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="../../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../../site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'chalkboard': {"buttons":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'fade',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
+    <script id="quarto-html-after-body" type="application/javascript">
+    window.document.addEventListener("DOMContentLoaded", function (event) {
+      const toggleBodyColorMode = (bsSheetEl) => {
+        const mode = bsSheetEl.getAttribute("data-mode");
+        const bodyEl = window.document.querySelector("body");
+        if (mode === "dark") {
+          bodyEl.classList.add("quarto-dark");
+          bodyEl.classList.remove("quarto-light");
+        } else {
+          bodyEl.classList.add("quarto-light");
+          bodyEl.classList.remove("quarto-dark");
+        }
+      }
+      const toggleBodyColorPrimary = () => {
+        const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+        if (bsSheetEl) {
+          toggleBodyColorMode(bsSheetEl);
+        }
+      }
+      toggleBodyColorPrimary();  
+      const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+      tabsets.forEach(function(tabset) {
+        const tabby = new Tabby('#' + tabset.id);
+      });
+      const isCodeAnnotation = (el) => {
+        for (const clz of el.classList) {
+          if (clz.startsWith('code-annotation-')) {                     
+            return true;
+          }
+        }
+        return false;
+      }
+      const onCopySuccess = function(e) {
+        // button target
+        const button = e.trigger;
+        // don't keep focus
+        button.blur();
+        // flash "checked"
+        button.classList.add('code-copy-button-checked');
+        var currentTitle = button.getAttribute("title");
+        button.setAttribute("title", "Copied!");
+        let tooltip;
+        if (window.bootstrap) {
+          button.setAttribute("data-bs-toggle", "tooltip");
+          button.setAttribute("data-bs-placement", "left");
+          button.setAttribute("data-bs-title", "Copied!");
+          tooltip = new bootstrap.Tooltip(button, 
+            { trigger: "manual", 
+              customClass: "code-copy-button-tooltip",
+              offset: [0, -8]});
+          tooltip.show();    
+        }
+        setTimeout(function() {
+          if (tooltip) {
+            tooltip.hide();
+            button.removeAttribute("data-bs-title");
+            button.removeAttribute("data-bs-toggle");
+            button.removeAttribute("data-bs-placement");
+          }
+          button.setAttribute("title", currentTitle);
+          button.classList.remove('code-copy-button-checked');
+        }, 1000);
+        // clear code selection
+        e.clearSelection();
+      }
+      const getTextToCopy = function(trigger) {
+          const codeEl = trigger.previousElementSibling.cloneNode(true);
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+      }
+      const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+        text: getTextToCopy
+      });
+      clipboard.on('success', onCopySuccess);
+      if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+        // For code content inside modals, clipBoardJS needs to be initialized with a container option
+        // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+        const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+          text: getTextToCopy,
+          container: window.document.getElementById('quarto-embedded-source-code-modal')
+        });
+        clipboardModal.on('success', onCopySuccess);
+      }
+        var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+        var mailtoRegex = new RegExp(/^mailto:/);
+          var filterRegex = new RegExp("https:\/\/aluby\.github\.io\/stat250-s25\/");
+        var isInternal = (href) => {
+            return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+        }
+        // Inspect non-navigation links and adorn them if external
+     	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+        for (var i=0; i<links.length; i++) {
+          const link = links[i];
+          if (!isInternal(link.href)) {
+            // undo the damage that might have been done by quarto-nav.js in the case of
+            // links that we want to consider external
+            if (link.dataset.originalHref !== undefined) {
+              link.href = link.dataset.originalHref;
+            }
+          }
+        }
+      function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+        const config = {
+          allowHTML: true,
+          maxWidth: 500,
+          delay: 100,
+          arrow: false,
+          appendTo: function(el) {
+              return el.closest('section.slide') || el.parentElement;
+          },
+          interactive: true,
+          interactiveBorder: 10,
+          theme: 'light-border',
+          placement: 'bottom-start',
+        };
+        if (contentFn) {
+          config.content = contentFn;
+        }
+        if (onTriggerFn) {
+          config.onTrigger = onTriggerFn;
+        }
+        if (onUntriggerFn) {
+          config.onUntrigger = onUntriggerFn;
+        }
+          config['offset'] = [0,0];
+          config['maxWidth'] = 700;
+        window.tippy(el, config); 
+      }
+      const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+      for (var i=0; i<noterefs.length; i++) {
+        const ref = noterefs[i];
+        tippyHover(ref, function() {
+          // use id or data attribute instead here
+          let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+          try { href = new URL(href).hash; } catch {}
+          const id = href.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note) {
+            return note.innerHTML;
+          } else {
+            return "";
+          }
+        });
+      }
+      const findCites = (el) => {
+        const parentEl = el.parentElement;
+        if (parentEl) {
+          const cites = parentEl.dataset.cites;
+          if (cites) {
+            return {
+              el,
+              cites: cites.split(' ')
+            };
+          } else {
+            return findCites(el.parentElement)
+          }
+        } else {
+          return undefined;
+        }
+      };
+      var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+      for (var i=0; i<bibliorefs.length; i++) {
+        const ref = bibliorefs[i];
+        const citeInfo = findCites(ref);
+        if (citeInfo) {
+          tippyHover(citeInfo.el, function() {
+            var popup = window.document.createElement('div');
+            citeInfo.cites.forEach(function(cite) {
+              var citeDiv = window.document.createElement('div');
+              citeDiv.classList.add('hanging-indent');
+              citeDiv.classList.add('csl-entry');
+              var biblioDiv = window.document.getElementById('ref-' + cite);
+              if (biblioDiv) {
+                citeDiv.innerHTML = biblioDiv.innerHTML;
+              }
+              popup.appendChild(citeDiv);
+            });
+            return popup.innerHTML;
+          });
+        }
+      }
+    });
+    </script>
+    
+
+</body></html>

@@ -427,16 +427,16 @@ Prof Amanda Luby
 <section id="type-i-and-type-ii-errors" class="slide level2">
 <h2>Type I and type II errors</h2>
 
-<img data-src="slides19_files/figure-html/unnamed-chunk-1-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:73.0%"><p>How could we decrease the Type I error rate?</p>
+<img data-src="slides19_files/figure-revealjs/unnamed-chunk-1-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:73.0%"><p>How could we decrease the Type I error rate?</p>
 </section>
 <section id="smaller-type-i-to-bigger-type-ii" class="slide level2">
 <h2>Smaller Type I <span class="math inline">\(\to\)</span> bigger Type II</h2>
 
-<img data-src="slides19_files/figure-html/unnamed-chunk-2-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:73.0%"></section>
+<img data-src="slides19_files/figure-revealjs/unnamed-chunk-2-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:73.0%"></section>
 <section id="effect-size-and-type-ii-error" class="slide level2">
 <h2>Effect size and type II error</h2>
 
-<img data-src="slides19_files/figure-html/unnamed-chunk-3-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:73.0%"></section>
+<img data-src="slides19_files/figure-revealjs/unnamed-chunk-3-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:73.0%"></section>
 <section id="se-and-type-ii-error" class="slide level2">
 <h2>SE and type II error</h2>
 <div class="panel-tabset">
@@ -447,7 +447,7 @@ Prof Amanda Luby
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="slides19_files/figure-html/unnamed-chunk-4-1.png" class="quarto-figure quarto-figure-center" style="width:73.0%"></p>
+<p><img data-src="slides19_files/figure-revealjs/unnamed-chunk-4-1.png" class="quarto-figure quarto-figure-center" style="width:73.0%"></p>
 </figure>
 </div>
 </div>
@@ -458,7 +458,7 @@ Prof Amanda Luby
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="slides19_files/figure-html/unnamed-chunk-5-1.png" class="quarto-figure quarto-figure-center" style="width:73.0%"></p>
+<p><img data-src="slides19_files/figure-revealjs/unnamed-chunk-5-1.png" class="quarto-figure quarto-figure-center" style="width:73.0%"></p>
 </figure>
 </div>
 </div>
@@ -508,11 +508,11 @@ Prof Amanda Luby
 <section id="example-math-curriculum" class="slide level2">
 <h2>Example: Math Curriculum</h2>
 
-<img data-src="slides19_files/figure-html/unnamed-chunk-6-1.png" width="672" class="r-stretch"></section>
+<img data-src="slides19_files/figure-revealjs/unnamed-chunk-6-1.png" width="960" class="r-stretch"></section>
 <section id="example-one-sample-t-test-for-h_0-mu-5-vs.-h_a-mu-ne-5-at-the-alpha-.05-level-assuming-s2." class="slide level2">
 <h2>Example: One sample t-test for <span class="math inline">\(H_0: \mu = 5\)</span> vs.&nbsp;<span class="math inline">\(H_a: \mu \ne 5\)</span> at the <span class="math inline">\(\alpha = .05\)</span> level (assuming <span class="math inline">\(s=2\)</span>).</h2>
 
-<img data-src="slides19_files/figure-html/unnamed-chunk-7-1.png" width="672" class="r-stretch"></section>
+<img data-src="slides19_files/figure-revealjs/unnamed-chunk-7-1.png" width="960" class="r-stretch"></section>
 <section id="section-8" class="slide level2">
 <h2></h2>
 <p><strong>Example:</strong> Let <span class="math inline">\(Y_i \sim N(\mu,52)\)</span>. We wish to test <span class="math inline">\(H_0: \mu = 7\)</span> vs.&nbsp;<span class="math inline">\(H_A:\mu&gt;7\)</span> at the <span class="math inline">\(\alpha=0.05\)</span> level. What is the smallest sample size such that the test has power at least .80 when <span class="math inline">\(\mu=8\)</span>?</p>
@@ -736,6 +736,44 @@ Prof Amanda Luby
         ]
       });
     </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
     <script id="quarto-html-after-body" type="application/javascript">
     window.document.addEventListener("DOMContentLoaded", function (event) {
       const toggleBodyColorMode = (bsSheetEl) => {

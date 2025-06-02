@@ -469,7 +469,7 @@ Prof Amanda Luby
 <section id="bill-length" class="slide level2">
 <h2>Bill length</h2>
 
-<img data-src="slides13_files/figure-html/unnamed-chunk-2-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:55.0%"><div class="cell">
+<img data-src="slides13_files/figure-revealjs/unnamed-chunk-2-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:55.0%"><div class="cell">
 <div class="cell-output-display">
 <table class="caption-top">
 <thead>
@@ -514,13 +514,13 @@ Prof Amanda Luby
 <section id="bootstrap-distribution" class="slide level2">
 <h2>Bootstrap distribution</h2>
 
-<img data-src="slides13_files/figure-html/unnamed-chunk-5-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:80.0%"></section>
+<img data-src="slides13_files/figure-revealjs/unnamed-chunk-5-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:80.0%"></section>
 <section id="bootstrap-percentile-interval" class="slide level2">
 <h2>Bootstrap percentile interval</h2>
 <p>A 95% confidence interval can be constructed from the 2.5 and 97.5th percentiles of the bootstrap distribution</p>
 <p>&nbsp;</p>
 
-<img data-src="slides13_files/figure-html/unnamed-chunk-6-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:55.0%"></section>
+<img data-src="slides13_files/figure-revealjs/unnamed-chunk-6-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:55.0%"></section>
 <section id="the-one-sample-bootstrap-algorithm" class="slide level2">
 <h2>The one-sample bootstrap algorithm</h2>
 <p>Given a sample of size <em>n</em> from a population,</p>
@@ -551,13 +551,13 @@ Prof Amanda Luby
 <h2>Population</h2>
 <p>Consider a Gamma(2, 2) population distribution</p>
 
-<img data-src="slides13_files/figure-html/unnamed-chunk-8-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:80.0%"><p><span class="math display">\[E(X) = 1 \qquad SD(X) = 1/2\]</span></p>
+<img data-src="slides13_files/figure-revealjs/unnamed-chunk-8-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:80.0%"><p><span class="math display">\[E(X) = 1 \qquad SD(X) = 1/2\]</span></p>
 </section>
 <section id="sample" class="slide level2">
 <h2>Sample</h2>
 <p>Suppose we draw a random sample of size <span class="math inline">\(n=50\)</span></p>
 
-<img data-src="slides13_files/figure-html/unnamed-chunk-9-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:80.0%"><div class="cell">
+<img data-src="slides13_files/figure-revealjs/unnamed-chunk-9-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:80.0%"><div class="cell">
 <div class="cell-output-display">
 <div id="fiksyvnhqm" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>#fiksyvnhqm table {
@@ -1044,7 +1044,7 @@ Prof Amanda Luby
 <h2>Bootstrap distribution</h2>
 <p>We can bootstrap our sample and obtain the bootstrap distribution</p>
 
-<img data-src="slides13_files/figure-html/unnamed-chunk-12-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:80.0%"><div class="cell">
+<img data-src="slides13_files/figure-revealjs/unnamed-chunk-12-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:80.0%"><div class="cell">
 <div class="cell-output-display">
 <div id="ksrizbiuwf" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>#ksrizbiuwf table {
@@ -1531,7 +1531,7 @@ Prof Amanda Luby
 <h2>Sampling distribution</h2>
 <p>We could also draw many different samples and obtain the sampling distribution</p>
 
-<img data-src="slides13_files/figure-html/unnamed-chunk-14-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:80.0%"><div class="cell">
+<img data-src="slides13_files/figure-revealjs/unnamed-chunk-14-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:80.0%"><div class="cell">
 <div class="cell-output-display">
 <div id="qscbumkyum" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>#qscbumkyum table {
@@ -2121,7 +2121,7 @@ X_1^{*(B)}, X_2^{*(B)}, ... X_n^{*(B} \sim \widehat F_n
 <section id="as-n-increases-widehatf_n-gets-closer-to-true-f" class="slide level2">
 <h2>As n increases, <span class="math inline">\(\widehat{F}_n\)</span> gets closer to true <span class="math inline">\(F\)</span></h2>
 
-<img data-src="slides13_files/figure-html/unnamed-chunk-16-1.png" width="960" class="r-stretch"></section>
+<img data-src="slides13_files/figure-revealjs/unnamed-chunk-16-1.png" width="960" class="r-stretch"></section>
 <section id="section-1" class="slide level2">
 <h2></h2>
 <p>It turns out that <span class="math inline">\(\widehat{F}_n\)</span> is an <strong>unbiased</strong> and <strong>consistent</strong> estimator for <span class="math inline">\(F\)</span>!</p>
@@ -2380,6 +2380,44 @@ X_1^{*(B)}, X_2^{*(B)}, ... X_n^{*(B} \sim \widehat F_n
         ]
       });
     </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
     <script id="quarto-html-after-body" type="application/javascript">
     window.document.addEventListener("DOMContentLoaded", function (event) {
       const toggleBodyColorMode = (bsSheetEl) => {
