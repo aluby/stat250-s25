@@ -1,0 +1,61 @@
+---
+title: "27: Intro to Bayesian Inference"
+author: "Prof Amanda Luby"
+subtitle: "Stat250 S25"
+callout-appearance: minimal
+knitr:
+    opts_chunk: 
+      dev: "ragg_png"
+      echo: false
+      warning: false
+      message: false
+format:
+  pdf:
+    include-in-header: 
+       - "../preamble.tex"
+    toc: false
+    number-sections: true
+    colorlinks: true
+    geometry:
+      - top=1in
+      - left=1in
+      - right=1in
+      - bottom=1in
+      - heightrounded
+    mainfont: "Linux Libertine"
+    sansfont: "Linux Libertine"
+    mathfont: "Libertinus Math"
+    monofont: "Monaco"
+fontsize: 11pt
+---
+
+```{r}
+library(tidyverse)
+library(ggformula)
+library(ggthemes)
+library(knitr)
+library(mosaic)
+library(patchwork)
+library(palmerpenguins)
+library(ggridges)
+library(janitor)
+library(gt)
+theme_set(theme_minimal())
+data("happy", package = "ggmosaic")
+happy2018 <- filter(happy, year == 2018) %>%
+  drop_na(happy, finrela)
+yt <- 0
+```
+
+# A Bayesian Personality Quiz
+
+Record your answer to each question here:
+
+| **Question**   | Q1  | Q2  | Q3  | Q4  |
+|------------|-----|-----|-----|-----|
+| **Answer** |     |     |     |     |
+| **Points** |     |     |     |     |
+
+# First Bayesian Example
+
+

@@ -1,0 +1,589 @@
+---
+title: Chi-Squared Tests
+subtitle: "Day 23"
+title-slide-attributes:
+  data-background-gradient: "linear-gradient(to right, #46337e, #440154)"
+  data-slide-number: none
+author: "Prof Amanda Luby"
+format: 
+  revealjs:
+    incremental: true
+editor: 
+  markdown: 
+    wrap: 72
+---
+
+```{r setup}
+#| include: false
+
+library(tidyverse)
+library(countdown)
+
+library(ggformula)
+library(openintro)
+library(patchwork)
+library(fivethirtyeight)
+library(dplyr)
+library(tidyr)
+library(fontawesome)
+library(gt)
+
+library(gridExtra)
+library(tidyverse)
+library(knitr)
+library(mosaic)
+library(infer)
+library(kableExtra)
+library(latex2exp)
+
+library(plotly)
+library(ggthemes)
+library(janitor)
+
+# #440154
+knitr::opts_chunk$set(echo = TRUE,
+                  message = FALSE,
+                  warning = FALSE)
+
+slides_theme = theme_minimal(base_family = "serif", base_size = 24) +
+  theme(plot.background = element_rect(fill = "#f0f1eb", colour = NA))
+  
+
+theme_set(slides_theme)
+
+data("happy", package = "ggmosaic")
+happy2018 <- filter(happy, year == 2018) %>%
+  drop_na(happy, finrela)
+yt <- 0
+```
+
+# A Bayesian "personality quiz"
+
+:::{.footer}
+Adapted from *Bayes Rules! An Introduction to Bayesian Modeling with R* 
+:::
+
+
+
+## Question 1
+
+When flipping a fair coin, we say that "the probability of flipping Heads is 0.5." How do you interpret this probability?
+
+::: nonincremental
+1. If I flip this coin over and over, roughly 50% will be Heads.
+
+2. Heads and Tails are equally plausible.
+
+3. Both a and b make sense.
+:::
+
+## Question 2
+
+
+An election is coming up and a pollster claims that "candidate A has a 0.9 probability of winning." How do you interpret this probability?
+
+::: nonincremental
+1. If we observe the election over and over, candidate A will win roughly 90% of the time.
+
+2. Candidate A is much more likely to win than to lose.
+
+3. The pollster's calculation is wrong. Candidate A will either win or lose, thus their probability of winning can only be 0 or 1.
+:::
+
+## Question 3
+
+
+Consider two claims. 
+
+::: nonincremental
+- Lou claims that he can predict the outcome of a coin flip. To test his claim, you flip a fair coin 10 times and he correctly predicts all 10. 
+- Kavya claims that she can distinguish natural and artificial sweeteners. To test her claim, you give her 10 sweetener samples and she correctly identifies each. 
+:::
+
+In light of these experiments, what do you conclude?
+
+::: nonincremental
+1. You're more confident in Kavya's claim than Lou's claim.
+
+2. The evidence supporting Lou's claim is just as strong as the evidence supporting Kavya's claim.
+
+:::
+
+## Question 4
+
+
+Suppose that during a recent doctor's visit, you tested positive for a very rare disease. If you only get to ask the doctor one question, which would it be?
+
+::: nonincremental
+1. What's the chance that I actually have the disease?
+
+2. If in fact I don't have the disease, what's the chance that I would've gotten this positive test result?
+:::
+
+## Tally your points
+
+
+::::{.columns }
+:::{.column .nonincremental width="50%"}
+Question 1:
+
+
+- 1 = 1 points
+- 2 = 3 points
+- 3 = 2 points
+
+
+Question 2:
+
+- 1 = 1 points
+- 2 = 3 points
+- 3 = 1 points
+:::
+:::{.column .nonincremental width="50%"}
+Question 3:
+
+- 1 = 3 points
+- 2 = 1 points
+<br>
+<br>
+
+Question 4:
+
+
+- 1 = 3 points
+- 2 = 1 points
+:::
+::::
+
+
+
+## What does your score mean?
+
+- 4-5 $\rightarrow$ you're more of a frequentist thinker 
+
+- 6-8 $\rightarrow$ you see the merit in both (a pragmatist?)
+
+- 9-12 $\rightarrow$ you're more of a Bayesian thinker 
+
+
+
+
+##
+### Question 1: Interpreting probability
+
+
+When flipping a fair coin, we say that "the probability of flipping Heads is 0.5." How do you interpret this probability?
+
+::: nonincremental
+1. (Frequentist) If I flip this coin over and over, roughly 50% will be Heads.
+
+2. (Bayesian) Heads and Tails are equally plausible.
+
+3. Both a and b make sense.
+:::
+
+
+##
+### Question 2: Interpreting probability
+
+
+An election is coming up and a pollster claims that "candidate A has a 0.9 probability of winning." How do you interpret this probability?
+
+::: nonincremental
+1. (Frequentist) If we observe the election over and over, candidate A will win roughly 90% of the time.
+
+2. (Bayesian) Candidate A is much more likely to win than to lose.
+
+3. (Rabid frequentist) The pollster's calculation is wrong. Candidate A will either win or lose, thus their probability of winning can only be 0 or 1.
+:::
+
+
+##
+### Question 3: Balancing prior info and observed data
+
+
+:::{style="font-size: 85%;"}
+Consider two claims. 
+
+::: nonincremental
+- Lou claims that he can predict the outcome of a coin flip. To test his claim, you flip a fair coin 10 times and he correctly predicts all 10. 
+- Kavya claims that she can distinguish natural and artificial sweeteners. To test her claim, you give her 10 sweetener samples and she correctly identifies each. 
+:::
+
+In light of these experiments, what do you conclude?
+
+::: nonincremental
+1. (Bayesian) You're more confident in Kavya's claim than Lou's claim.
+
+2. (Frequentist) The evidence supporting Lou's claim is just as strong as the evidence supporting Kavya's claim.
+:::
+
+:::
+
+##
+### Question 4: Asking questions
+
+
+Suppose that during a recent doctor's visit, you tested positive for a very rare disease. If you only get to ask the doctor one question, which would it be?
+
+::: nonincremental
+
+1. (Bayesian) What's the chance that I actually have the disease?
+
+2. (Frequentist) If in fact I don't have the disease, what's the chance that I would've gotten this positive test result?
+:::
+
+
+
+# A first Bayesian example
+
+## TODO 
+
+
+##
+### Overview of the Bayesian method
+
+
+
+1. Choose (or elicit) a probability distribution to express the pre-data belief about the parameter of interest, $\theta$.
+
+
+2. Choose a model for the data given $\theta$.
+
+
+3. Observe data, $Y_1, \ldots, Y_n$.
+
+
+4. Update the belief about $\theta$ by combining the prior belief and the data.
+
+
+5. Draw inferences using this updated belief about $\theta$.
+
+##
+### Overview of the Bayesian method - math
+
+
+
+1. Assume a **prior distribution:** $\theta \sim f_\theta(\theta)$
+
+
+2. Choose a **likelihood function** for the data: $Y|\theta \sim f_{y|\theta}(y|\theta)$
+
+
+3. Observe data, $Y_1, \ldots, Y_n$.
+
+
+4. Find the **posterior distribution** of $\theta$ given the data: $\theta \mid Y \sim f_{\theta \mid Y}(\theta \mid Y)$
+
+
+5. Draw inferences with $f_{\theta|Y}$
+
+
+## Choosing a data model
+
+- **Likelihood**: a model for our data $X_1, \dotsc, X_n$
+
+-  $X_i$ is drawn from a population/distribution with pdf/pmf $$X_i \sim f(x_i | \theta)$$
+
+- The **joint** probability model for all $n$ data values (likelihood function)
+$$f(x_1, \dotsc, x_n \mid \theta) = \prod_{i=1}^n f(x_i | \theta)$$
+
+- Our inference goal will be to derive a model our unknown parameter(s) $\theta$ that is informed by our observed data values 
+
+## Choosing a prior
+
+- **Prior**: we give $\theta$ an initial probability model that reflects our beliefs about $\theta$ *prior* to observing our data
+$$\theta \sim f(\theta)$$
+
+- The model $f(\theta)$ can be either a pdf or pmf 
+
+- and $f(\theta)$ should be defined on reasonable values of $\theta$
+  - e.g. $\theta = p$ is a probability of success: then $f$ could be Unif[0,1]
+  - e.g. $\theta = \sigma^2$ from a half-normal: then $f$ could be a Gamma model
+
+## Finding the posterior
+
+
+- **Posterior**: update our prior $f$ to reflect the information about $\theta$ that is provided by our data $x_1, \dotsc, x_n$
+$$\theta \mid  x_1, \dotsc, x_n \sim f(\theta \mid x_1, \dotsc, x_n)$$
+
+- We compute our conditional posterior distribution using Bayes theorem:
+$$f(\theta \mid  x_1, \dotsc, x_n) = \dfrac{f(\theta, x_1, \dotsc, x_n)}{f(x_1, \dotsc, x_n)} = \dfrac{f(\theta)f(x_1, \dotsc, x_n \mid \theta)}{f(x_1, \dotsc, x_n)}$$
+
+- the first expression is our definition of conditional probability
+
+- the second expression is "Bayes theorem" which tells us (in words):
+$$\textrm{posterior} = \dfrac{\textrm{prior} \times \textrm{data }}{\textrm{marginal  of data}}$$
+
+## Finding the posterior
+
+$$f(\theta \mid  x_1, \dotsc, x_n)  = \dfrac{f(\theta)f(x_1, \dotsc, x_n \mid \theta)}{f(x_1, \dotsc, x_n)} = \dfrac{\textrm{prior} \times \textrm{data }}{\textrm{marginal  of data}}$$
+
+- Recall from probability: We find a marginal probability by integrating "out" nuisance variables from a joint distribution
+$$\textrm{marginal pdf of data} = f(x_1, \dotsc, x_n) = \int_{-\infty}^{\infty} f(\theta)f(x_1, \dotsc, x_n \mid \theta) d\theta$$
+
+## Binomial example: prior
+
+- Goal is to estimate the parameter:
+$$p = \textrm{proportion of all US adults who approve of the President}$$
+
+- **Prior**: A natural prior for a proportion is a uniform:
+$$p \sim Unif[0,1] \textrm{ so that } f(p) = 1 \textrm{ for } 0 \leq p \leq 1$$
+
+```{r, echo=FALSE, fig.height=3}
+library(ggplot2)
+ggplot(data.frame(p=c(0,1)), aes(p)) + 
+  stat_function(fun = dunif)  +
+  ggtitle("Our prior beliefs about p") + 
+  labs(y="prior density") 
+```
+
+
+## Binomial example: data
+
+- **Data** Suppose Gallup surveys a random sample of 1000 US adults and finds that 39% approve of the President. 
+
+- Our random sample $X_1, \dotsc, X_{1000}$ is Bernoulli: 
+$$f(x_1, \dotsc, x_n \mid p) = \prod_{i=1}^{1000}p^{x_i}(1-p)^{(1-x_i)} = p^{\sum_{i=1}^{1000}x_i}(1-p)^{1000 - \sum_{i=1}^{1000}x_i}$$
+
+- or, an **equivalent** data model just models the total number of "success" (approves) $X = \sum_{i=1}^{1000}X_i$ which is a Binomial count:
+$$f(x \mid p) = \binom{1000}{x}p^x(1-p)^{1000-x}$$
+
+## Binomial example: posterior
+
+- **Posterior** We need to derive the following pdf for $p$:
+$$f(p \mid  x)  = \dfrac{f(\theta)f(x \mid p)}{f(x)} = \dfrac{1 \times \binom{n}{x}p^x(1-p)^{n-x}}{\int_{0}^1 1 \times \binom{n}{x}p^x(1-p)^{n-x} dp} \textrm{ for } 0 \leq p \leq 1$$
+
+## Binomial example: posterior
+
+- The toughest part of any posterior calculation is usually the marginal integration:
+$$f(x) = \int_{0}^1\binom{n}{x}p^x(1-p)^{n-x} dp$$
+
+- Any terms not involving $p$ can come outside the integrand:
+$$f(x) = \binom{n}{x} \int_{0}^1p^x(1-p)^{n-x} dp$$
+
+- ...which still looks bad, until you remember the Beta distribution which tells us that a Beta pdf integrates to 1 over the interval [0,1]:
+$$1 =  \int_{0}^1\dfrac{\Gamma(a + b)}{\Gamma(a) \Gamma(b)}p^{a-1}(1-p)^{b-1} dp$$
+
+## Binomial example: posterior
+
+- ...which allows us to solve our integration problem without our calc book or mathematica:
+$$ \dfrac{\Gamma(a)\Gamma(b)}{\Gamma(a + b)} = \int_{0}^1p^{a-1}(1-p)^{b-1} dp$$
+
+- Letting $a = x + 1$ and $b=n - x + 1$, we have
+$$f(x) = \binom{n}{x} \int_{0}^1p^x(1-p)^{n-x} dp = \binom{n}{x}  \dfrac{\Gamma(x + 1)\Gamma(n - x + 1)}{\Gamma(n + 2)}$$
+
+## Binomial example: posterior
+
+- ...then for $0 \leq p \leq 1$
+$$f(p \mid  x)  = \dfrac{\binom{n}{x}p^x(1-p)^{n-x}}{\binom{n}{x}  \dfrac{\Gamma(x + 1)\Gamma(n - x + 1)}{\Gamma(n + 2)}} = \dfrac{\Gamma(n + 2)}{\Gamma(x + 1)\Gamma(n - x + 1)} p^x(1-p)^{n-x}$$
+
+- Which is the pdf for Beta distribution:
+$$p \mid x \sim Beta(x + 1, n - x + 1)$$
+
+- Gallup data: our posterior distribution for $n=1000$ and $x=390$ is
+$$p \mid x = 390 \sim Beta(391, 611)$$
+
+## Binomial example: posterior {.smaller}
+
+:::: {.columns}
+
+::: {.column .nonincremental width="40%"}
+- Inferences about $p$ use the Beta(391, 611) distribution. 
+    - What values of $p$ are most *probable*? (interval)
+    - What is the expected value of $p$? (point estimate)
+    - How much uncertainty do we have in the distribution of $p$? (SE)
+:::
+
+::: {.column width="60%"}
+```{r}
+#| echo: false
+#| fig-width: 6
+#| fig-height: 6
+library(ggplot2)
+ggplot(data.frame(p=c(0,1)), aes(p)) + 
+  stat_function(fun = dunif, aes(color="prior", linetype="prior"), show.legend=TRUE, size = 2)  +
+    stat_function(fun = dbeta, args = list(shape1=390+1, shape2 = 1000-390 + 1), aes(color="posterior Beta(391,611)", linetype="posterior Beta(391,611)"), show.legend=FALSE, size = 2)  +
+  guides(color=guide_legend("model"), linetype=guide_legend("model")) + 
+  labs(y="density") + 
+  scale_color_brewer(type = "qual", palette = 6) +
+  theme(legend.position = "none") + 
+  scale_color_brewer(type = "qual", palette = 2)
+```
+:::
+::::
+
+## Binomial example: posterior
+
+$$p \mid x = 390 \sim Beta(391, 611)$$
+
+- **Point Estimate**: $\hat{p}_{bayes} = E(p \mid x=390) = \dfrac{391}{391 + 611} = \dfrac{391}{1002} = 0.3902$
+
+- **Variation**: $SD(p \mid x=390) = \sqrt{V(p \mid x=390)} = \sqrt{\dfrac{391(611)}{(391 + 611)^2(391 + 611 +1)}} = 0.0154$
+
+- **Credible Interval for $p$**: A common choice of $100(1-\alpha)$% interval estimates is to use the $\alpha/2$ and $1-\alpha/2$ quantiles of the posterior
+
+. . . 
+
+```{r}
+qbeta(c(.025,.975),391,611)  # 95% credible interval for p
+```
+
+## Binomial example: posterior
+
+- What if we used classical frequentist methods instead of our Bayesian model?
+
+
+- **Bayes Point Estimate of $p$**: Our posterior expectation for $p$ is
+$\hat{p}_{bayes} =0.3902$
+
+
+- **Frequentist Point Estimate of $p$**: MLE of $p$ is
+$$\hat{p}_{MLE} = \dfrac{x}{n} = \dfrac{390}{1000} = 0.39$$
+
+## Binomial example: posterior
+
+- Why are the Bayes estimate and MLE so close?
+
+- Rewrite $\hat{p}_{bayes}$:
+$$\hat{p}_{bayes} = \dfrac{x+1}{n + 2} = \dfrac{n}{n+2}\dfrac{x}{n} + \dfrac{2}{n+2}\dfrac{1}{2} = \dfrac{n}{n+2}\hat{p}_{MLE} + \dfrac{2}{n+2}E(p)$$
+
+- The Bayes estimate is a *weighted average* of the MLE and prior expectation
+
+- The Unif[0,1] prior is like adding 2 units to the sample: 1 success and 1 failure so we have a prior expectation of 50% for $p$
+    - weight $n/(n+2)$ favors the likelihood when $n > > 2$ (data size is much bigger than prior sample addition)
+    - weight $2/(n+2)$ gives more weight to the prior mean when $n$ is closer to 2 
+
+
+## Binomial example: posterior
+
+
+- **Bayes SD**: $\sqrt{V(p \mid x=390)} =  0.0154$
+
+- **Frequentist SE**: The sample proportion SE is
+$$SE(\hat{p}) = \sqrt{\dfrac{\hat{p}(1-\hat{p})}{n}} = \sqrt{\dfrac{0.39(1-0.39)}{1000}}=0.0154$$
+Same as the Bayes SD up to 4 decimal spots!
+
+- We can write the posterior variance as 
+$$V(p \mid x) = \dfrac{(x+1)(n-x+1)}{(n+2)^2(n+2 +1)} = \dfrac{\hat{p}_{bayes}(1-\hat{p}_{bayes})}{n+2 +1}$$
+which is similar in form as the frequentist SE. 
+
+## Binomial example: posterior
+
+**Bayes Credible Interval for $p$**: There is a 95% **probability** that the Presidential approval rating is between 36.0% and 42.1%. 
+```{r}
+qbeta(c(.025,.975),391,611)  # 95% credible interval for p
+```
+
+. . . 
+
+**Frequentist Confidence Interval for $p$**: I am 95% **confident** that  the Presidential approval rating is between 36.0% and 42.1%. 
+
+```{r}
+prop.test(390,1000)$conf  # 95% confidence interval for p
+```
+
+. . . 
+
+Intervals contain very similar values, but are interpreted very differently!
+
+## Binomial example: posterior
+
+What if we vary $n$ but keep the observed proportion 0.39?
+
+
+```{r}
+#| echo: false
+
+ggplot(data.frame(p=seq(0,1, by = .01)), aes(x=p))  + 
+  stat_function(fun = dbeta, args = list(shape1=390+1, shape2 = 1000-390 + 1), aes(color="posterior n=1000", linetype="posterior n=1000"), show.legend=TRUE)  +
+    stat_function(fun = dbeta, args = list(shape1=100*.39+1, shape2 = 100 - 100*.39 + 1), aes(color="posterior n=100", linetype="posterior n=100"), show.legend=TRUE)  +
+    stat_function(fun = dbeta, args = list(shape1=10*.39+1, shape2 = 10 - 10*.39 + 1), aes(color="posterior n=10", linetype="posterior n=10"), show.legend=TRUE)  +
+  stat_function(fun = dunif, aes(color="prior Unif(0,1)", linetype="prior Unif(0,1)"), show.legend=TRUE)  +
+  geom_vline(xintercept = .39, linetype=2) + 
+  guides(color=guide_legend("model"), linetype=guide_legend("model")) + 
+  labs(y="density")+ 
+  scale_color_brewer(type = "qual", palette = 2) 
+
+```
+
+## Beta-Binomial model
+
+- What if we vary the prior?
+
+- A more flexible prior for $p$ is a Beta( $\alpha, \beta$ ) distribution:
+$$f(p) = \dfrac{\Gamma(\alpha + \beta)}{\Gamma(\alpha)\Gamma(\beta)} p^{\alpha - 1}(1-p)^{\beta-1} \textrm{ for } 0 \leq p \leq 1$$
+
+- The posterior then looks like:
+$$f(p \mid  x)   = \dfrac{\dfrac{\Gamma(\alpha + \beta)}{\Gamma(\alpha)\Gamma(\beta)} p^{\alpha - 1}(1-p)^{\beta-1} \times \binom{n}{x}p^x(1-p)^{n-x}}{f(x)} \\
+\ \ \ \ \ \ \ \ \ \ \ \  = \dfrac{\dfrac{\Gamma(\alpha + \beta)}{\Gamma(\alpha)\Gamma(\beta)} \binom{n}{x} }{f(x)}p^{x + \alpha - 1}(1-p)^{n - x + \beta -1}  \textrm{ for } 0 \leq p \leq 1$$
+
+## Beta-Binomial model
+
+- The **kernel** of the posterior (the part that involves $p$) looks like:
+$$f(p \mid  x) \propto  p^{x + \alpha - 1}(1-p)^{n - x + \beta -1}  \textrm{ for } 0 \leq p \leq 1$$
+
+- Since $f(p \mid x)$ must integrate to 1 over [0,1], the kernel uniquely identifies the pdf as a Beta( $x + \alpha, n-x+\beta$ )
+    - which means the **normalizing constant** for this kernel is
+$$\dfrac{\Gamma(n + \alpha + \beta)}{\Gamma(x + \alpha)\Gamma(n-x+\beta)} = \dfrac{\dfrac{\Gamma(\alpha + \beta)}{\Gamma(\alpha)\Gamma(\beta)} \binom{n}{x} }{f(x)}$$
+    -  we just need to look at
+$$f(\theta \mid x_1, \dotsc, x_n) \propto f(\theta)f(x_1, \dotsc, x_n \mid \theta)$$
+    
+    
+## Beta-Binomial model
+
+- Data: $X \mid p \sim Binom(n,p)$
+- Prior: $p \sim Beta(\alpha, \beta)$ 
+- Prior Expectation: $E(p) = \dfrac{\alpha}{\alpha + \beta}$
+
+
+- Posterior: $p \mid x \sim Beta(x + \alpha, n-x + \beta)$
+- Posterior Expectation: $E(p \mid x) = \dfrac{x + \alpha}{n + \alpha + \beta} = \dfrac{n}{n+\alpha + \beta}\hat{p}_{MLE} + \dfrac{\alpha + \beta}{n+\alpha + \beta}E(p)$
+
+
+- The prior is like adding $\alpha$ succeses and $\beta$ failures to the data. 
+    - Larger values mean more weight given to the prior (success and/or failures)
+
+## Beta-Binomial model
+
+- The Beta(1,1) prior is the most "uninformative" prior while the others pull the posterior (a bit) towards the prior means
+
+```{r,  echo=FALSE, fig.height=4.3, fig.width=11}
+library(ggplot2)
+ggplot(data.frame(p=c(0,1)), aes(p)) + 
+  stat_function(fun = dbeta, args = list(shape1=390+1, shape2 = 1000-390 + 1), aes(color="prior Beta(1,1)", linetype="posterior"), show.legend=TRUE)  +
+  stat_function(fun = dbeta, args = list(shape1=390+20, shape2 = 1000-390 + 80), aes(color="prior Beta(20,80)", linetype="posterior"), show.legend=TRUE)  +
+  stat_function(fun = dbeta, args = list(shape1=390+500, shape2 = 1000-390 + 500), aes(color="prior Beta(500,500)", linetype="posterior"), show.legend=TRUE)  +
+  stat_function(fun = dbeta, args=list(shape1 = 1,shape2=1), aes(color="prior Beta(1,1)", linetype="prior"), show.legend=TRUE)  +
+  stat_function(fun = dbeta, args=list(shape1 = 20,shape2=80), aes(color="prior Beta(20,80)", linetype="prior"), show.legend=TRUE)  +
+  stat_function(fun = dbeta, args=list(shape1 = 500,shape2=500), aes(color="prior Beta(500,500)", linetype="prior"), show.legend=TRUE)  +
+  ggtitle("Our prior and posterior beliefs about p for n=1000 and 390 successes") + 
+  geom_vline(xintercept = .39, linetype=2) + 
+  guides(color=guide_legend("model"), linetype=guide_legend("type")) + 
+  labs(y="density")+ 
+  scale_color_brewer(type = "qual", palette = 2) 
+```
+
+## Beta-Binomial model
+
+For $n = 1000$ and $x=390$ successes:
+```{r, echo=FALSE}
+post <- function(x,n,a,b)
+{
+  pex <- (a)/(a + b)
+  pse <- sqrt(pex*(1-pex)/(a + b + 1))
+  ex <- (x + a)/(n + a + b)
+  se <- sqrt(ex*(1-ex)/(n + a + b + 1))
+  return(list(prior.mean=pex,prior.sd=pse,posterior.mean=ex,posterior.sd = se))
+}
+library(dplyr)
+df <- data.frame(alpha = c(1,20,500), beta=c(1,80,500))
+df <- df %>% bind_cols(post(390,1000,df$alpha,df$beta))
+knitr::kable(round(df,4), format = "html")
+```
+
+
+- As our prior contains a bigger "sample size", we see 
+    - a posterior mean pulled more towards the prior mean
+    - a reduction in the posterior standard deviation
+
