@@ -57,6 +57,8 @@ Day25: [handout](/notes/25-least-squares/notes25.pdf)
 
 Day26: [handout](/notes/26-slr-inference/notes26.pdf) 
 
+Day27: [handout](/notes/27-intro-bayes/notes27.pdf) | [slides](/slides/27/slides27.html) 
+
 # Project
 
 [Proposal Info and Rubric](/notes/project/project.pdf) 
