@@ -61,7 +61,7 @@ yt <- 0
 
 ## Two pillars of stat inference:
 
-## Estimation 
+## Estimation: evaluating point estimates
 
 ## Estimation: techniques for uncertainty
 

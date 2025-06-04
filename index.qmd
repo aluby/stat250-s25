@@ -59,6 +59,8 @@ Day26: [handout](/notes/26-slr-inference/notes26.pdf)
 
 Day27: [handout](/notes/27-intro-bayes/notes27.pdf) | [slides](/slides/27/slides27.html) 
 
+Day28: [handout](/notes/28-final-review/notes28.pdf) | [slides](/slides/28/slides28.html) 
+
 # Project
 
 [Proposal Info and Rubric](/notes/project/project.pdf) 

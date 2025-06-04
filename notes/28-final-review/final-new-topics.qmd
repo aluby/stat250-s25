@@ -1,5 +1,5 @@
 ---
-title: "Final Exam Review"
+title: "Final Exam Review (New Topics)"
 author: "Prof Amanda Luby"
 subtitle: "Stat250 S25"
 callout-appearance: minimal
@@ -45,7 +45,7 @@ The final exam will take place on **Saturday, June 7 from 3:30-6pm**. The exam i
 
 To study, I recommend carefully going through class notes, homework problems, previous exams and exam prep, and this handout. After reviewing those materials, I recommend solving lots and lots of practice problems (e.g. the problems in the textbook with answers in the back). 
 
-This document focuses on the course content since Exam II. 
+This document focuses on the course content since Exam II, but all material from the course is "fair game" for the final exam. 
 
 # 1. $\chi^2$ tests
 
@@ -96,7 +96,7 @@ gf_function(fun = dchisq, args = list(df = 5), xlim = c(0, 15))
 | Total       | 130    | 370           | 500   |
 
 ```{r}
-counts <- matrix(c(40, 90, 130, 180, 190, 370, 220, 280, 500), ncol =3)
+smoke_exercise_table <- matrix(c(40, 90, 130, 180, 190, 370, 220, 280, 500), ncol =3)
 ```
 
 ```{r} 
@@ -104,9 +104,12 @@ counts <- matrix(c(40, 90, 130, 180, 190, 370, 220, 280, 500), ncol =3)
 #| collapse: true
 #| comment: ">"
 
-chisq.test(counts)
+chisq.test(smoke_exercise_table)
 ```
 
+(a) What are the null and alternative hypotheses? 
+(b) Show or explain how the expected counts were computed
+(c) Interpret the results of the hypothesis test in context. What doy ou conclude? 
 
 # 2. Inference for Regression
 
@@ -120,13 +123,11 @@ chisq.test(counts)
 - Understand the meaning of coefficients, standard errors, and p-values
 - Interpret R’s output for `lm()` and `predict()` 
 
-**Example Question:** [description of data]
+**Example Question:** We are interested in prediction penguins' `bill_length` using their `bill_depth`. We fit the following model: 
 
 ```{r}
-#| eval: false
-
-lm() 
-summary()
+pen_fit <- lm(bill_length_mm ~ bill_depth_mm, data = penguins) 
+summary(pen_fit)
 ```
 
 (a) Interpret the slope.
@@ -140,8 +141,9 @@ summary()
 
 **Example Question:** Let $(x_1, Y_1), (x_2, Y_2), ..., (x_n, Y_n)$ satisfy the conditions for the SLR model.
 
+(a) Write out the SLR model formally. Your model should include $Y_i$, $x_i$, $\beta_0$, $\beta_1$ and $\sigma^2$.
 (a) Show that $E(\bar{Y}) = \beta_0 + \beta_1 \bar{X}$
-(b) $\text{Var}(\bar{Y}) = \frac{\sigma^2}{n}$
+(b) Show that $\text{Var}(\bar{Y}) = \frac{\sigma^2}{n}$
 
 # 3. Bayesian Inference for Beta-Binomial Model
 
@@ -152,7 +154,7 @@ summary()
 
 ## Finding the Bayesian estimates 
 
-**Example Question:** A baseball player had 18 hits in 60 at-bats.
+**Example Question:** A baseball player had 18 hits in 60 at-bats We are interested in estimating their "true" batting average (the probability they get a hit in a given at-bat) with uncertainty. 
 
 (a) Write out the likelihood function for this data
 (a) Suppose your prior belief about the player’s true batting average is Beta(3, 7). Find the posterior distribution.
@@ -171,3 +173,4 @@ qbeta(c(.025, .975), 3+18, 7 + (60-18))
 
 **Example:**  If someone says "There is a 95% chance that the true batting average is between 0.25 and 0.35," are they using a frequentist or Bayesian interpretation? How can you tell?
 
+**Example:** If we instead used a Unif(0,1) prior in part (b), would the credible interval in (d) be wider, narrower, or stay the same? Explain.
