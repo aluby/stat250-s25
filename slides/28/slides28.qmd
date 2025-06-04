@@ -1,0 +1,74 @@
+---
+title: Inference Overview
+subtitle: "Day 28"
+title-slide-attributes:
+  data-background-gradient: "linear-gradient(to right, #46337e, #440154)"
+  data-slide-number: none
+author: "Prof Amanda Luby"
+format: 
+  revealjs:
+    incremental: true
+editor: 
+  markdown: 
+    wrap: 72
+---
+
+```{r setup}
+#| include: false
+
+library(tidyverse)
+library(countdown)
+
+library(ggformula)
+library(openintro)
+library(patchwork)
+library(fivethirtyeight)
+library(dplyr)
+library(tidyr)
+library(fontawesome)
+library(gt)
+
+library(gridExtra)
+library(tidyverse)
+library(knitr)
+library(mosaic)
+library(infer)
+library(kableExtra)
+library(latex2exp)
+
+library(plotly)
+library(ggthemes)
+library(janitor)
+
+# #440154
+knitr::opts_chunk$set(echo = TRUE,
+                  message = FALSE,
+                  warning = FALSE)
+
+slides_theme = theme_minimal(base_family = "serif", base_size = 24) +
+  theme(plot.background = element_rect(fill = "#f0f1eb", colour = NA))
+  
+
+theme_set(slides_theme)
+
+data("happy", package = "ggmosaic")
+happy2018 <- filter(happy, year == 2018) %>%
+  drop_na(happy, finrela)
+yt <- 0
+```
+
+## Why are we here
+
+## Two pillars of stat inference:
+
+## Estimation 
+
+## Estimation: techniques for uncertainty
+
+## Hypothesis Testing: Setup
+
+## Hypothesis Testing: Errors 
+
+## "Flavors" of Inference
+
+

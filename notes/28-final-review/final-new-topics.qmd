@@ -1,0 +1,173 @@
+---
+title: "Final Exam Review"
+author: "Prof Amanda Luby"
+subtitle: "Stat250 S25"
+callout-appearance: minimal
+knitr:
+    opts_chunk: 
+      dev: "ragg_png"
+      echo: false
+      warning: false
+      message: false
+format:
+  pdf:
+    include-in-header: 
+       - "../preamble.tex"
+    toc: false
+    number-sections: false
+    colorlinks: true
+    geometry:
+      - top=1in
+      - left=1in
+      - right=1in
+      - bottom=1in
+      - heightrounded
+    mainfont: "Linux Libertine"
+    sansfont: "Linux Libertine"
+    mathfont: "Libertinus Math"
+    monofont: "Monaco"
+fontsize: 11pt
+---
+
+```{r setup, include = FALSE}
+library(tidyverse)
+library(ggformula)
+library(ggthemes)
+library(knitr)
+library(mosaic)
+library(patchwork)
+library(palmerpenguins)
+library(ggridges)
+theme_set(theme_minimal())
+```
+
+The final exam will take place on **Saturday, June 7 from 3:30-6pm**. The exam is closed book, but you can use the formula sheet provided by me along with both sides of one notecard of your own notes. You will also have access to a calculator. 
+
+To study, I recommend carefully going through class notes, homework problems, previous exams and exam prep, and this handout. After reviewing those materials, I recommend solving lots and lots of practice problems (e.g. the problems in the textbook with answers in the back). 
+
+This document focuses on the course content since Exam II. 
+
+# 1. $\chi^2$ tests
+
+- Know when to use chi-squared goodness of fit vs test of independence
+- Know assumptions of the chi-squared test (e.g., expected counts ≥ 5)
+- Write appropriate null and alternative hypotheses
+- Calculate test statistics and interpret R output
+
+## Goodness of Fit
+
+- Compute expected frequencies 
+- Compute test statistic using observed and expected frequencies
+- Know degrees of freedom for a GOF test
+- Provide appropriate R code to find the p-value
+
+**Example question:** A die is rolled 60 times. The observed counts for each face are:
+
+| Face  | 1 | 2  | 3 | 4  | 5  | 6  |
+| ----- | - | -- | - | -- | -- | -- |
+| Count | 8 | 10 | 9 | 11 | 12 | 10 |
+
+(a) State the hypotheses for testing whether the die is fair.
+(b) Calculate the expected counts under the null.
+(c) Calculate the chi-squared test statistic and degrees of freedom.
+(d) Sketch the p-value on the following curve:
+
+```{r}
+#| fig-width: 4
+#| fig-height: 1
+
+gf_function(fun = dchisq, args = list(df = 5), xlim = c(0, 15))
+```
+
+## Test of independence 
+
+- Compute expected frequencies 
+- Compute test statistic using observed and expected frequencies
+- Know degrees of freedom for a GOF test
+- Provide appropriate R code to find the p-value
+
+
+**Example question:** A random sample of 500 people is surveyed about their smoking and exercise habits. The data and analysis code and results are shown below
+
+|             | Smokes | Doesn't Smoke | Total |
+| ----------- | ------ | ------------- | ----- |
+| Exercises   | 40     | 180           | 220   |
+| Doesn’t Ex. | 90     | 190           | 280   |
+| Total       | 130    | 370           | 500   |
+
+```{r}
+counts <- matrix(c(40, 90, 130, 180, 190, 370, 220, 280, 500), ncol =3)
+```
+
+```{r} 
+#| echo: true
+#| collapse: true
+#| comment: ">"
+
+chisq.test(counts)
+```
+
+
+# 2. Inference for Regression
+
+- Know the form of a linear regression model and its assumptions
+- Interpret coefficients in context
+- Use regression output to run hypothesis tests or compute confidence intervals
+- Know the difference between a confidence and prediction interval 
+
+## Reading R output
+
+- Understand the meaning of coefficients, standard errors, and p-values
+- Interpret R’s output for `lm()` and `predict()` 
+
+**Example Question:** [description of data]
+
+```{r}
+#| eval: false
+
+lm() 
+summary()
+```
+
+(a) Interpret the slope.
+(b) Write the regression equation with estimates included.
+(c) What is the 95% CI for the slope? 
+
+## Theoretical Results
+
+- Manipulate linear regression quantities
+- Derive theoretical properties of linear regression estimators
+
+**Example Question:** Let $(x_1, Y_1), (x_2, Y_2), ..., (x_n, Y_n)$ satisfy the conditions for the SLR model.
+
+(a) Show that $E(\bar{Y}) = \beta_0 + \beta_1 \bar{X}$
+(b) $\text{Var}(\bar{Y}) = \frac{\sigma^2}{n}$
+
+# 3. Bayesian Inference for Beta-Binomial Model
+
+- Know the relationship between Beta and Binomial
+- Interpret parameters of the prior, likelihood, and posterior
+- Compute posterior summaries (mean, variance, credible intervals)
+- Compare Bayesian vs. frequentist perspectives
+
+## Finding the Bayesian estimates 
+
+**Example Question:** A baseball player had 18 hits in 60 at-bats.
+
+(a) Write out the likelihood function for this data
+(a) Suppose your prior belief about the player’s true batting average is Beta(3, 7). Find the posterior distribution.
+(b) What is the posterior mean?
+(c) Provide R code to find the 95% credible interval (the answer is shown below if you'd like to check your answer)
+
+```{r}
+#| echo: false
+qbeta(c(.025, .975), 3+18, 7 + (60-18))
+```
+
+## Bayesian Interpretation
+
+- Interpret probability statements about parameters
+- Understand how prior beliefs influence the posterior, especially with small sample sizes
+
+**Example:**  If someone says "There is a 95% chance that the true batting average is between 0.25 and 0.35," are they using a frequentist or Bayesian interpretation? How can you tell?
+
